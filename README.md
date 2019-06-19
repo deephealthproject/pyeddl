@@ -19,6 +19,17 @@
 > More information: [https://deephealth-project.eu/](https://deephealth-project.eu/)
 
 
+# Requirements
+
+- Python 3
+- CMake 3.9.2 or higher
+- A modern compiler with C++11 support
+
+> To clone all third_party submodules use: 
+>
+> `git clone --recurse-submodules -j8 https://github.com/deephealthproject/pyeddl.git`
+
+
 # Installation
 
 To build and install `pyeddl`, clone or download this repository and then, from within the repository, run:
@@ -70,21 +81,3 @@ To execute all unit tests, run the following command:
 ```bash
 python3 ./setup.py test
 ```
-
-
-# Requirements
-
-- Python 3
-- CMake 3.14 or higher
-- A modern compiler with C++11 support
-
-
-# Continuous build status
-
-| **Build Type**  | **Status** |
-|-------------|--------|
-| **Linux CPU**   |  [![Build Status](https://travis-ci.org/salvacarrion/EDDL.svg?branch=master)](https://travis-ci.org/salvacarrion/EDDL)|
-| **Linux GPU**   |  [![Build Status](https://travis-ci.org/salvacarrion/EDDL.svg?branch=master)](https://travis-ci.org/salvacarrion/EDDL)|
-| **Mac OS**      |  [![Build Status](https://travis-ci.org/salvacarrion/EDDL.svg?branch=master)](https://travis-ci.org/salvacarrion/EDDL)|
-| **Windows CPU** |  [![Build Status](https://travis-ci.org/salvacarrion/EDDL.svg?branch=master)](https://travis-ci.org/salvacarrion/EDDL)|
-| **Windows GPU** |  [![Build Status](https://travis-ci.org/salvacarrion/EDDL.svg?branch=master)](https://travis-ci.org/salvacarrion/EDDL)|
