@@ -26,7 +26,6 @@
 - A modern compiler with C++11 support
 
 > To clone all third_party submodules use: 
->
 > `git clone --recurse-submodules -j8 https://github.com/deephealthproject/pyeddl.git`
 
 
