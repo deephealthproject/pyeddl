@@ -1,0 +1,4 @@
+[submodule "third_party/eddl"]
+    ignore = dirty
+	path = third_party/eddl
+	url = https://github.com/deephealthproject/EDDLL.git
