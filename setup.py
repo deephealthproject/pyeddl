@@ -115,24 +115,24 @@ class CMakeBuild(build_ext):
         subprocess.check_call(['cmake', '--build', '.'] + build_args,
                               cwd=self.build_temp)
 
-        # Copy *_test file to tests directory
-        test_bin = os.path.join(self.build_temp, 'eddl_test')
-        self.copy_test_file(test_bin)
-        print()  # Add empty line for nicer output
-
-    def copy_test_file(self, src_file):
-        # Create directory if needed
-        dest_dir = os.path.abspath("./bin")
-        if dest_dir != "" and not os.path.exists(dest_dir):
-            print("creating directory {}".format(dest_dir))
-            os.makedirs(dest_dir)
-
-        # Copy/Move file
-        dest_file = os.path.join(dest_dir, os.path.basename(src_file))
-        print("moving {} -> {}".format(src_file, dest_file))
-        move(src_file, dest_file)
-        # copyfile(src_file, dest_file)
-        # copymode(src_file, dest_file)
+    #     # Copy *_test file to tests directory
+    #     test_bin = os.path.join(self.build_temp, 'eddl_test')
+    #     self.copy_test_file(test_bin)
+    #     print()  # Add empty line for nicer output
+    #
+    # def copy_test_file(self, src_file):
+    #     # Create directory if needed
+    #     dest_dir = os.path.abspath("./bin")
+    #     if dest_dir != "" and not os.path.exists(dest_dir):
+    #         print("creating directory {}".format(dest_dir))
+    #         os.makedirs(dest_dir)
+    #
+    #     # Copy/Move file
+    #     dest_file = os.path.join(dest_dir, os.path.basename(src_file))
+    #     print("moving {} -> {}".format(src_file, dest_file))
+    #     move(src_file, dest_file)
+    #     # copyfile(src_file, dest_file)
+    #     # copymode(src_file, dest_file)
 
 
 class install(setuptools.command.install.install):
