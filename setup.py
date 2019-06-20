@@ -87,7 +87,10 @@ class CMakeBuild(build_ext):
 
     def build_extension(self, ext):
         cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + ext.dest_dir,
-                      '-DPYTHON_EXECUTABLE=' + sys.executable
+                      '-DPYTHON_EXECUTABLE=' + sys.executable,
+                      '-DBUILD_PYTHON=' + 'ON',
+                      '-DBUILD_TESTS=' + 'OFF',
+                      '-DBUILD_EXAMPLES=' + 'OFF',
                       ]
 
         cfg = 'Debug' if self.debug else 'Release'
