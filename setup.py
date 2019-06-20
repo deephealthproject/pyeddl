@@ -246,7 +246,7 @@ if __name__ == '__main__':
         license="MIT",
         platforms="Unix",
         packages=find_packages(),  # Load python packages from the python folder
-        #ext_modules=extensions,  # Name of the shared library
+        ext_modules=extensions,  # Name of the shared library
         cmdclass=cmdclass,
         test_suite='tests',
         install_requires=requirements,
