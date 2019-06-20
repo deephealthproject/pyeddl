@@ -1,4 +1,4 @@
-# European Distributed Deep Learning Library
+# PyEDDL
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/salvacarrion/salvacarrion.github.io/master/assets/hot-linking/logo-pyeddl.png">
@@ -25,9 +25,12 @@
 - CMake 3.9.2 or higher
 - A modern compiler with C++11 support
 
-> To clone all third_party submodules use: 
-> `git clone --recurse-submodules -j8 https://github.com/deephealthproject/pyeddl.git`
+To clone all third_party submodules use:
 
+```bash
+git clone --recurse-submodules -j8 https://github.com/deephealthproject/pyeddl.git
+```
+ 
 
 # Installation
 
@@ -70,7 +73,7 @@ print("Evaluate train:")
 m.evaluate(x_train, y_train)
 ```
 
-Learn more examples about how to do specific tasks in PyEddl at the [tutorials page](https://pyeddl.readthedocs.io/en/latest/user/tutorial.html)
+Learn more examples about how to do specific tasks in PyEDDL at the [tutorials page](https://pyeddl.readthedocs.io/en/latest/user/tutorial.html)
 
 
 # Tests
@@ -78,5 +81,5 @@ Learn more examples about how to do specific tasks in PyEddl at the [tutorials p
 To execute all unit tests, run the following command:
 
 ```bash
-python3 ./setup.py test
+python3 setup.py test
 ```
