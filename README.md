@@ -1,7 +1,5 @@
-# PyEDDL
-
 <div align="center">
-  <img src="https://raw.githubusercontent.com/salvacarrion/salvacarrion.github.io/master/assets/hot-linking/logo-pyeddl.png">
+  <img src="https://raw.githubusercontent.com/salvacarrion/salvacarrion.github.io/master/assets/hot-linking/logo-pyeddl.png" height="150" width="300">
 </div>
 
 -----------------
@@ -15,9 +13,8 @@
 - Tensor computation (like NumPy) with strong GPU acceleration
 - Deep neural networks
 
-> **What is EDDL?** A European Deep Learning Library for numerical computation tailored to the healthcare domain.
-> More information: [https://deephealth-project.eu/](https://deephealth-project.eu/)
-
+> **What is EDDL?** A European Distributed Deep Learning library for numerical computation tailored to the healthcare domain.
+> Repo: [https://github.com/deephealthproject/eddl](https://github.com/deephealthproject/eddl)
 
 # Requirements
 
