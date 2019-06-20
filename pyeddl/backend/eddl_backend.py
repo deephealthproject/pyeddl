@@ -67,17 +67,9 @@ def plot(model, filename):
 
 def train_batch(model, x, y):
     # Transform array to a single vector
-    txi = _C.Tensor(x.shape, _C.DEV_CPU)
-    tyi = _C.Tensor(y.shape, _C.DEV_CPU)
+    tx = _C.tensor_from_npy(x, _C.DEV_CPU)
+    ty = _C.tensor_from_npy(y, _C.DEV_CPU)
 
-    # Row major
-    xi_row_major = x.flatten(order='C').astype(np.float32)
-    yi_row_major = y.flatten(order='C').astype(np.float32)
-
-    # Copy data
-    _C.copydata(txi, xi_row_major)
-    _C.copydata(tyi, yi_row_major)
-
-    model.train_batch2([txi], [tyi])
+    model.train_batch_ni([tx], [ty])
     asdas = 33
     #_C.train_batch(x, y)
