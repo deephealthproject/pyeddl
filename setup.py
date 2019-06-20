@@ -138,9 +138,9 @@ class CMakeBuild(build_ext):
     #     # copymode(src_file, dest_file)
 
 
-class install(setuptools.command.install.install):
-    def run(self):
-        setuptools.command.install.install.run(self)
+# class install(setuptools.command.install.install):
+#     def run(self):
+#         setuptools.command.install.install.run(self)
 
 
 class clean(distutils.command.clean.clean):
@@ -184,7 +184,6 @@ def build_deps():
 # Declare extensions and package
 ################################################################################
 # Packages
-#package_dir = {'': 'src/python/'}
 #packages = find_packages('src/python/')
 
 # Extensions
@@ -199,7 +198,7 @@ ext_modules = []
 cmdclass = {
     'build_ext': CMakeBuild,
     'clean': clean,
-    'install': install,
+    #'install': install,
 }
 
 entry_points = {
@@ -247,8 +246,7 @@ if __name__ == '__main__':
         license="MIT",
         platforms="Unix",
         packages=find_packages(),  # Load python packages from the python folder
-        #package_dir=package_dir,
-        ext_modules=extensions,  # Name of the shared library
+        #ext_modules=extensions,  # Name of the shared library
         cmdclass=cmdclass,
         test_suite='tests',
         install_requires=requirements,
