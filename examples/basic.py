@@ -6,7 +6,7 @@ from pyeddl.datasets import mnist
 from pyeddl.utils import to_categorical
 
 # Params
-batch_size = 1000
+batch_size = 128
 num_classes = 10
 epochs = 1
 
@@ -18,7 +18,7 @@ x_train, x_test = x_train/255.0, x_test/255.0
 x_train = x_train.reshape((len(x_train), -1))
 x_test = x_test.reshape((len(x_test), -1))
 
-# Tranform to categorical
+# Transform to categorical
 y_train = to_categorical(y_train, num_classes)
 y_test = to_categorical(y_test, num_classes)
 
