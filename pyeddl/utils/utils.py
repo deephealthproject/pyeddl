@@ -1,3 +1,4 @@
+import time
 import numpy as np
 
 
@@ -12,3 +13,9 @@ def iterate_minibatches(inputs, targets, batchsize, shuffle=False):
         else:
             excerpt = slice(start_idx, start_idx + batchsize)
         yield inputs[excerpt], targets[excerpt]
+
+
+def get_pretty_time(start_time, s=""):
+    hours, rem = divmod(time.time() - start_time, 3600)
+    minutes, seconds = divmod(rem, 60)
+    return "{}{:0>2}:{:0>2}:{:05.3f}".format(s, int(hours), int(minutes), seconds)

@@ -6,7 +6,7 @@ from pyeddl.datasets import mnist
 from pyeddl.utils import to_categorical
 
 # Params
-batch_size = 128
+batch_size = 1000
 num_classes = 10
 epochs = 1
 
@@ -23,7 +23,7 @@ y_train = to_categorical(y_train, num_classes)
 y_test = to_categorical(y_test, num_classes)
 
 # View model
-m = Model.from_model('mlp')
+m = Model.from_model('mlp', batch_size=batch_size)
 print(m.summary())
 m.plot("model.pdf")
 

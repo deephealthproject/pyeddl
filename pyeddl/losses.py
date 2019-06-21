@@ -1,20 +1,27 @@
-"""Built-in loss functions.
-"""
+class Loss:
+    def __init__(self, name):
+        self.name = name
 
 
-def mean_squared_error():
+class MeanSquaredError(Loss):
     """Mean Squared Error
     """
-    return "mean_squared_error"
+
+    def __init__(self):
+        super(MeanSquaredError, self).__init__('mean_squared_error')
 
 
-def categorical_crossentropy():
+class CategoricalCrossEntropy(Loss):
     """Categorical Cross-Entropy
     """
-    return "categorical_crossentropy"
+
+    def __init__(self):
+        super(CategoricalCrossEntropy, self).__init__('categorical_crossentropy')
 
 
-def categorical_soft_crossentropy():
+class CategoricalSoftCrossEntropy(Loss):
     """Categorical Soft Cross-Entropy
     """
-    return "categorical_soft_crossentropy"
+
+    def __init__(self):
+        super(CategoricalSoftCrossEntropy, self).__init__('categorical_soft_crossentropy')

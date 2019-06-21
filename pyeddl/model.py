@@ -1,6 +1,9 @@
-from . import backend as K
+import time
 import numpy as np
-from pyeddl.utils.utils import iterate_minibatches
+
+from . import backend as K
+from pyeddl.utils.utils import iterate_minibatches, get_pretty_time
+from pyeddl.utils.helpers import get_loss, get_metric
 
 
 class Model(object):
@@ -12,8 +15,8 @@ class Model(object):
             self.c_model = cmodel
 
     @classmethod
-    def from_model(cls, name):
-        return cls(cmodel=K.get_model(name))
+    def from_model(cls, name, batch_size):
+        return cls(cmodel=K.get_model(name, batch_size))
 
     def compile(self, optimizer,
                 losses=None,
@@ -72,15 +75,15 @@ class Model(object):
                `optimizer`, `loss`, `metrics` or `sample_weight_mode`.
         """
         self.optimizer = optimizer
-        self.losses = losses or []
-        self.metrics = metrics or []
+        self.losses = [get_loss(l) for l in losses]
+        self.metrics = [get_metric(m) for m in metrics]
         self.loss_weights = loss_weights
         self.sample_weight_mode = sample_weight_mode
         self.weighted_metrics = weighted_metrics
         self.device = device
 
         # Compile model
-        K.compile(self.c_model, self.optimizer, self.losses, self.metrics, self.device)
+        K.compile(self, self.optimizer, self.losses, self.metrics, self.device)
 
 
     def fit(self,
@@ -229,17 +232,26 @@ class Model(object):
         # Check optimizer
         # Check input sizes
 
+        start_time = time.time()
         print("Training model...")
         for e in range(epochs):
-            print("Epoch #{}...".format(e))
+            print("Epoch #{}...".format(e+1))
+
             for i, batch in enumerate(iterate_minibatches(x, y, batch_size, shuffle=shuffle)):
-                print('\t- Training batch #{}...'.format(i))
+                print('\t- Training batch #{}...'.format(i+1))
 
+                # Train single batch
+                start_time_b = time.time()
                 x_batch, y_batch = batch
-                self.train_on_batch(x_batch, y_batch)
+                fiterr = self.train_on_batch(x_batch, y_batch)
+                elapsed_time = time.time() - start_time_b
 
-            print('\t=> Epoch #{}\tTrain loss: {:.5f}\tAcc: {:.5f}\tVal. loss: {:.5f}\tVal. acc: {:.5f}'.format(e, 0,0,0,0))
+                # Print errors
+                loss_err, acc_err = fiterr[0], fiterr[1]
+                print('\t\t=> Train loss: {:.5f}\tAcc: {:.5f}\t{:.3f} secs/batch'.format(loss_err, acc_err, elapsed_time))
 
+        print("")
+        print("Time to train this model: " + get_pretty_time(start_time))
 
     def evaluate(self,
                  x=None,
@@ -310,7 +322,7 @@ class Model(object):
             and/or metrics). The attribute `model.metrics_names` will give you
             the display labels for the scalar outputs.
         """
-        pass
+        return K.evaluate(self, x, y)
 
     def train_on_batch(self, x, y,
                        sample_weight=None,
@@ -343,17 +355,17 @@ class Model(object):
                 samples from an under-represented class.
 
         Returns:
-            Scalar training loss
+            Scalar training loss and metric
             (if the model has a single output and no metrics)
             or list of scalars (if the model has multiple outputs
             and/or metrics). The attribute `model.metrics_names` will give you
             the display labels for the scalar outputs.
 
         """
-        K.train_batch(self.c_model, x, y)
+        return K.train_batch(self, x, y)
 
     def summary(self):
-        return K.summary(self.c_model)
+        return K.summary(self)
 
     def plot(self, filename='model.pdf'):
-        return K.plot(self.c_model, filename)
+        return K.plot(self, filename)

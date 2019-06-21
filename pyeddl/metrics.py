@@ -1,11 +1,18 @@
+class Metric:
+    def __init__(self, name):
+        self.name = name
 
-def mean_squared_error():
+
+class MeanSquaredError(Metric):
     """Mean Squared Error
-    """
-    return "mean_squared_error"
+        """
+    def __init__(self):
+        super(MeanSquaredError, self).__init__('mean_squared_error')
 
 
-def categorical_accuracy():
+class CategoricalAccuracy(Metric):
     """Categorical Accuracy
     """
-    return "categorical_accuracy"
+
+    def __init__(self):
+        super(CategoricalAccuracy, self).__init__('categorical_accuracy')
