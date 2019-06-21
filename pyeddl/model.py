@@ -26,6 +26,7 @@ class Model(object):
                 weighted_metrics=None,
                 target_tensors=None,
                 device='cpu',
+                workers=1,
                 **kwargs):
         """Configures the model for training.
         # Arguments
@@ -81,9 +82,10 @@ class Model(object):
         self.sample_weight_mode = sample_weight_mode
         self.weighted_metrics = weighted_metrics
         self.device = device
+        self.workers = workers
 
         # Compile model
-        K.compile(self, self.optimizer, self.losses, self.metrics, self.device)
+        K.compile(self, self.optimizer, self.losses, self.metrics, self.device, self.workers)
 
 
     def fit(self,
@@ -238,8 +240,6 @@ class Model(object):
             print("Epoch #{}...".format(e+1))
 
             for i, batch in enumerate(iterate_minibatches(x, y, batch_size, shuffle=shuffle)):
-                print('\t- Training batch #{}...'.format(i+1))
-
                 # Train single batch
                 start_time_b = time.time()
                 x_batch, y_batch = batch
@@ -248,7 +248,8 @@ class Model(object):
 
                 # Print errors
                 loss_err, acc_err = fiterr[0], fiterr[1]
-                print('\t\t=> Train loss: {:.5f}\tAcc: {:.5f}\t{:.3f} secs/batch'.format(loss_err, acc_err, elapsed_time))
+                loss_err, acc_err = "{:.3}".format(loss_err), "{:.3}".format(acc_err)
+                print('\t- Batch #{:<4}\tTrain loss: {:<12}\tAcc: {:<12}\t{:.3f} secs/batch'.format(i+1, loss_err, acc_err, elapsed_time))
 
         print("")
         print("Time to train this model: " + get_pretty_time(start_time))

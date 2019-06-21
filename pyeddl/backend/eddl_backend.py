@@ -33,9 +33,9 @@ def _get_metric(metric):
         NotImplementedError('Unknown metric')
 
 
-def _get_compserv(device):
+def _get_compserv(device, workers=1):
     if device == 'cpu':
-        return _C.EDDL.CS_CPU(1)
+        return _C.EDDL.CS_CPU(workers)
     elif device == 'gpu':
         NotImplementedError('GPU')
     elif device == 'fpga':
@@ -53,11 +53,11 @@ def get_model(name='mlp', batch_size=128):
         NotImplementedError('Unknown model')
 
 
-def compile(model, optim, losses, metrics, device):
+def compile(model, optim, losses, metrics, device, workers):
     model.c_optim = _get_optim(optim)
     model.c_losses = [_get_loss(l) for l in losses]
     model.c_metrics = [_get_metric(m) for m in metrics]
-    model.c_compserv = _get_compserv(device)
+    model.c_compserv = _get_compserv(device, workers)
 
     _C.EDDL.build(model.c_model, model.c_optim, model.c_losses, model.c_metrics, model.c_compserv)
 

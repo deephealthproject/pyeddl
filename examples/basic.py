@@ -33,7 +33,7 @@ losses = ['soft_crossentropy']
 metrics = ['accuracy']
 
 # Build model
-m.compile(optimizer=optim, losses=losses, metrics=metrics, device='cpu')
+m.compile(optimizer=optim, losses=losses, metrics=metrics, device='cpu', workers=4)
 
 # Training
 m.fit(x_train, y_train, batch_size=batch_size, epochs=epochs)
