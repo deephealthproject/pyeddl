@@ -1,5 +1,5 @@
-from pyeddl import losses
-from pyeddl import metrics
+from eddl import losses
+from eddl import metrics
 
 
 def get_loss(loss):

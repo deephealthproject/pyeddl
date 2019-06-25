@@ -1,9 +1,9 @@
 import numpy as np
 
-import pyeddl
-from pyeddl.model import Model
-from pyeddl.datasets import mnist
-from pyeddl.utils import to_categorical
+import eddl
+from eddl.model import Model
+from eddl.datasets import mnist
+from eddl.utils import to_categorical
 
 # Params
 batch_size = 1000
@@ -28,7 +28,7 @@ print(m.summary())
 m.plot("model.pdf")
 
 # Building params
-optim = pyeddl.optim.SGD(0.01, 0.9)
+optim = eddl.optim.SGD(0.01, 0.9)
 losses = ['soft_crossentropy']
 metrics = ['accuracy']
 

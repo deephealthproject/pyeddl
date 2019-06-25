@@ -1,4 +1,4 @@
-from pyeddl.optim import Optimizer
+from eddl.optim import Optimizer
 
 
 class SGD(Optimizer):

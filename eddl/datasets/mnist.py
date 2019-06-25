@@ -2,7 +2,7 @@
 """
 import numpy as np
 
-from pyeddl.utils.data_utils import get_file
+from eddl.utils.data_utils import get_file
 
 
 def load_data(path='mnist.npz'):

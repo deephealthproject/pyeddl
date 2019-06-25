@@ -189,7 +189,7 @@ def build_deps():
 # Extensions
 extensions = []
 if RERUN_CMAKE:
-    C = CMakeExtension(name='_C', dest_dir='pyeddl', source_dir='third_party/eddl')
+    C = CMakeExtension(name='_C', dest_dir='eddl', source_dir='third_party/eddl')
     extensions.append(C)
 
 # If doesn't exists a compatible shared library, compile C++ EDDL
@@ -235,14 +235,14 @@ if __name__ == '__main__':
     if RUN_BUILD_DEPS:
         build_deps()
     setup(
-        name='pyeddl',
+        name='eddl',
         version='0.1',
         author='Salva Carrion',
         author_email='salcarpo@prhlt.upv.es',
-        description='Python wrapper for the European Distributed Deep Learning Library',
+        description='Python wrapper for the European Distributed Deep Learning library',
         long_description=long_description,
         keywords='deep learning, neural networks',
-        download_url="https://github.com/deephealthproject/EDDLL",
+        download_url="https://github.com/deephealthproject/pyeddl",
         license="MIT",
         platforms="Unix",
         packages=find_packages(),  # Load python packages from the python folder

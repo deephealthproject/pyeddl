@@ -7,7 +7,7 @@ import importlib
 _BACKEND = 'eddl'
 
 if _BACKEND == "eddl":
-    sys.stderr.write('Using Eddl backend.\n')
+    sys.stderr.write('Using EDDL backend.\n')
     from .eddl_backend import *
 
 else:
@@ -38,7 +38,7 @@ def backend():
         String, the name of the backend PyEddl is currently using.
     # Example
     ```python
-        >>> pyeddl.backend.backend()
+        >>> eddl.backend.backend()
         'eddl'
     ```
     """

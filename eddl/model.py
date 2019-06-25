@@ -2,8 +2,8 @@ import time
 import numpy as np
 
 from . import backend as K
-from pyeddl.utils.utils import iterate_minibatches, get_pretty_time
-from pyeddl.utils.helpers import get_loss, get_metric
+from eddl.utils.utils import iterate_minibatches, get_pretty_time
+from eddl.utils.helpers import get_loss, get_metric
 
 
 class Model(object):

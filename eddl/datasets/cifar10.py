@@ -4,8 +4,8 @@ import os
 
 import numpy as np
 
-from pyeddl.datasets.cifar import load_batch
-from pyeddl.utils.data_utils import get_file
+from eddl.datasets.cifar import load_batch
+from eddl.utils.data_utils import get_file
 
 
 

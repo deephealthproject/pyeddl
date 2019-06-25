@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 
-# from pyeddl.layers import Tensor
-from pyeddl import _C
+# from eddl.layers import Tensor
+from eddl import _C
 
 t_array = np.array([
     [1, 2, 3],

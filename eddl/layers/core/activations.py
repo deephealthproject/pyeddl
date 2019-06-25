@@ -1,4 +1,4 @@
-from pyeddl.layers.base import Layer
+from eddl.layers.base import Layer
 
 
 class Activation(Layer):

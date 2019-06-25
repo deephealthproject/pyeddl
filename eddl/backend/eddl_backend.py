@@ -1,13 +1,13 @@
 import numpy as np
 
-import pyeddl
-from pyeddl import _C
-from pyeddl import losses
-from pyeddl import metrics
+import eddl
+from eddl import _C
+from eddl import losses
+from eddl import metrics
 
 
 def _get_optim(optim):
-    if isinstance(optim, pyeddl.optim.SGD):
+    if isinstance(optim, eddl.optim.SGD):
         return _C.SGD(optim.lr, optim.momentum, optim.decay, optim.nesterov)
     else:
         NotImplementedError('optim')
@@ -76,6 +76,11 @@ def train_batch(model, x, y):
     ty = _C.tensor_from_npy(y, _C.DEV_CPU)
 
     model.c_model.train_batch_ni([tx], [ty])
+
+    # TODO: Fix loss and metric values
+    # for i in range(len(model.tout)):
+    #     total_loss += model.c_model.fiterr[i][0]
+    #     total_metric += model.c_model.fiterr[i][1]
     return model.c_model.fiterr
 
 
