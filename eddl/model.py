@@ -1,3 +1,7 @@
+"""
+TODO: THIS IS DEPENDENT OF THE BACKEND (EDDL), BUT IT SHOULDN'T!
+"""
+
 import time
 import numpy as np
 
@@ -239,6 +243,10 @@ class Model(object):
         for e in range(epochs):
             print("Epoch #{}...".format(e+1))
 
+            # TODO: For each output (this len(output)==1)
+            loss_outerr = [0.0] * len(self.c_model.output_layers)
+            acc_outerr = [0.0] * len(self.c_model.output_layers)
+
             for i, batch in enumerate(iterate_minibatches(x, y, batch_size, shuffle=shuffle)):
                 # Train single batch
                 start_time_b = time.time()
@@ -247,8 +255,15 @@ class Model(object):
                 elapsed_time = time.time() - start_time_b
 
                 # Print errors
-                loss_err, acc_err = fiterr[0], fiterr[1]
-                loss_err, acc_err = "{:.3}".format(loss_err), "{:.3}".format(acc_err)
+                for j in range(len(self.c_model.output_layers)):
+                    loss_outerr[j] += fiterr[0+j*2]
+                    acc_outerr[j] += fiterr[1+j*2]
+                    self.c_model.clean_fiterr()
+
+                # If there are multiple losses/metrics, make the average
+                avg_loss_err = sum(loss_outerr)/len(loss_outerr)
+                avg_acc_err = sum(acc_outerr)/len(acc_outerr)
+                loss_err, acc_err = "{:.3f}".format(avg_loss_err / (batch_size * (i + 1))), "{:.3f}".format(avg_acc_err / (batch_size * (i + 1)))
                 print('\t- Batch #{:<4}\tTrain loss: {:<12}\tAcc: {:<12}\t{:.3f} secs/batch'.format(i+1, loss_err, acc_err, elapsed_time))
 
         print("")

@@ -8,7 +8,7 @@ from eddl.utils import to_categorical
 # Params
 batch_size = 1000
 num_classes = 10
-epochs = 1
+epochs = 5
 
 # Load dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
