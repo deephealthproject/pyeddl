@@ -1,7 +1,7 @@
-Convolutional (``pyeddl.layers.conv``)
+Convolutional (``eddl.layers.conv``)
 ******************************************
 
-.. automodule:: pyeddl.layers.conv
+.. automodule:: eddl.layers.conv
 
 
 .. autosummary::

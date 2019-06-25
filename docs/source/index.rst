@@ -9,7 +9,7 @@ Welcome to PyEddl's documentation!
 .. figure:: ./_static/logo-pyeddl.png
 
 
-PyEddl is a Python library that wraps the C++ European Distributed Deep Learning Library (EDDLL).
+PyEddl is a Python library that wraps the C++ European Distributed Deep Learning library (EDDL).
 The code is open source, and `available on github`_.
 
 .. toctree::
@@ -58,4 +58,4 @@ Indices and tables
 
 
 
-.. _available on github: https://github.com/salvacarrion/pyeddl
+.. _available on github: https://github.com/deephealthproject/pyeddl

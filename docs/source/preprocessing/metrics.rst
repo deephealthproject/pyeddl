@@ -1,7 +1,7 @@
-Metrics (``pyeddl.metrics``)
+Metrics (``eddl.metrics``)
 ******************************************
 
-.. automodule:: pyeddl.metrics
+.. automodule:: eddl.metrics
 
 
 .. autosummary::
@@ -14,11 +14,15 @@ Metrics (``pyeddl.metrics``)
 Mean Squared Error
 ============================
 
-.. autofunction:: mean_squared_error
+.. autoclass:: MeanSquaredError
+   :members:
+   :special-members: __init__
 
 
 
 Categorical accuracy
 ============================
 
-.. autofunction:: categorical_accuracy
+.. autoclass:: CategoricalAccuracy
+   :members:
+   :special-members: __init__

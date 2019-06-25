@@ -1,7 +1,7 @@
-Merge (``pyeddl.layers.merge``)
+Merge (``eddl.layers.merge``)
 ******************************************
 
-.. automodule:: pyeddl.layers.merge
+.. automodule:: eddl.layers.merge
 
 
 .. autosummary::

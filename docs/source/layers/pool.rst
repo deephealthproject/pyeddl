@@ -1,7 +1,7 @@
-Pooling (``pyeddl.layers.pooling``)
+Pooling (``eddl.layers.pooling``)
 ******************************************
 
-.. automodule:: pyeddl.layers.pooling
+.. automodule:: eddl.layers.pooling
 
 
 .. autosummary::

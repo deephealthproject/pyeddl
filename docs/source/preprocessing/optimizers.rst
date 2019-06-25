@@ -1,7 +1,7 @@
-Optimizers (``pyeddl.optim``)
+Optimizers (``eddl.optim``)
 ******************************************
 
-.. automodule:: pyeddl.optim
+.. automodule:: eddl.optim
 
 The classes presented in this section are optimizers to modify the SGD updates
 during the training of a model.

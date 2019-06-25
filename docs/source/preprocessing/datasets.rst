@@ -1,8 +1,8 @@
-Datasets (``pyeddl.datasets``)
+Datasets (``eddl.datasets``)
 ******************************************
 
 
-.. currentmodule:: pyeddl.datasets
+.. currentmodule:: eddl.datasets
 
 
 .. autosummary::
@@ -16,7 +16,7 @@ Datasets (``pyeddl.datasets``)
 MNIST
 ============================
 
-.. automodule:: pyeddl.datasets.mnist
+.. automodule:: eddl.datasets.mnist
    :members:
    :undoc-members:
 
@@ -24,7 +24,7 @@ MNIST
 CIFAR-10
 ============================
 
-.. automodule:: pyeddl.datasets.cifar10
+.. automodule:: eddl.datasets.cifar10
    :members:
    :undoc-members:
 

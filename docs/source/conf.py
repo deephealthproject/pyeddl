@@ -18,14 +18,14 @@ import sys
 #  Mock out the imports of libraries that depend on C modules
 import mock
 
-MOCK_MODULES = ['pyeddl._C']
+MOCK_MODULES = ['eddl._C']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'pyeddl'
+project = 'eddl'
 copyright = '2019, Salva Carrión'
 author = 'Salva Carrión'
 

@@ -1,7 +1,7 @@
-Core (``pyeddl.layers.core``)
+Core (``eddl.layers.core``)
 ******************************************
 
-.. automodule:: pyeddl.layers.core
+.. automodule:: eddl.layers.core
 
 
 .. autosummary::

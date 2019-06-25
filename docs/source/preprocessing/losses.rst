@@ -1,7 +1,7 @@
-Losses (``pyeddl.losses``)
+Losses (``eddl.losses``)
 ******************************************
 
-.. automodule:: pyeddl.losses
+.. automodule:: eddl.losses
 
 
 .. autosummary::
@@ -16,16 +16,22 @@ Losses (``pyeddl.losses``)
 Mean Squared Error
 ============================
 
-.. autofunction:: mean_squared_error
+.. autoclass:: MeanSquaredError
+   :members:
+   :special-members: __init__
 
 
 Cross Entropy
 ============================
 
-.. autofunction:: categorical_crossentropy
+.. autoclass:: CategoricalCrossEntropy
+   :members:
+   :special-members: __init__
 
 
 Soft Cross Entropy
 ============================
 
-.. autofunction:: categorical_soft_crossentropy
+.. autoclass:: CategoricalSoftCrossEntropy
+   :members:
+   :special-members: __init__

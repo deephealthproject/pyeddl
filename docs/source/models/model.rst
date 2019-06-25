@@ -1,7 +1,7 @@
-Model (``pyeddl.models``)
+Model (``eddl.models``)
 ******************************************
 
-.. automodule:: pyeddl.model
+.. automodule:: eddl.model
 
 
 .. autosummary::
