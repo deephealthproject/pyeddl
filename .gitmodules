@@ -1,0 +1,3 @@
+[submodule "third_party/eddl"]
+	path = third_party/eddl
+	url = https://github.com/deephealthproject/eddl
