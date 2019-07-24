@@ -9,5 +9,8 @@
 #include <metrics/metric.h>
 #include <layers/layer.h>
 #include <layers/core/layer_core.h>
+#include <layers/conv/layer_conv.h>
+#include <layers/pool/layer_pool.h>
+#include <layers/noise/layer_noise.h>
 #include <optimizers/optim.h>
 #include <net.h>

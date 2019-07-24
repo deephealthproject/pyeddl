@@ -43,6 +43,7 @@ void bind_bits_libio(std::function< pybind11::module &(std::string const &namesp
 #include <losses/loss.h>
 #include <memory>
 #include <metrics/metric.h>
+#include <pooldescriptor_addons.h>
 #include <sstream> // __str__
 #include <stdio.h>
 #include <string>
@@ -261,6 +262,8 @@ void bind_compserv(std::function< pybind11::module &(std::string const &namespac
 
 		cl.def("build", (void (PoolDescriptor::*)(class Tensor *)) &PoolDescriptor::build, "C++: PoolDescriptor::build(class Tensor *) --> void", pybind11::arg("A"));
 		cl.def("resize", (void (PoolDescriptor::*)(class Tensor *)) &PoolDescriptor::resize, "C++: PoolDescriptor::resize(class Tensor *) --> void", pybind11::arg("A"));
+
+		pooldescriptor_addons(cl);
 	}
 	{ // Tensor file: line:129
 		pybind11::class_<Tensor, std::shared_ptr<Tensor>> cl(M(""), "Tensor", pybind11::buffer_protocol());
@@ -377,15 +380,17 @@ void bind_compserv(std::function< pybind11::module &(std::string const &namespac
 #include <iterator>
 #include <lactivation_addons.h>
 #include <layer_addons.h>
+#include <layers/conv/layer_conv.h>
 #include <layers/core/layer_core.h>
 #include <layers/layer.h>
+#include <lconv_addons.h>
 #include <ldense_addons.h>
 #include <lembedding_addons.h>
 #include <linput_addons.h>
+#include <lreshape_addons.h>
 #include <ltensor_addons.h>
 #include <memory>
 #include <metrics/metric.h>
-#include <optimizers/optim.h>
 #include <sstream> // __str__
 #include <stdio.h>
 #include <string>
@@ -1451,13 +1456,39 @@ struct PyCallBack_LBatchNorm : public LBatchNorm {
 	}
 };
 
-// Optimizer file:optimizers/optim.h line:39
-struct PyCallBack_Optimizer : public Optimizer {
-	using Optimizer::Optimizer;
+// LConv file:layers/conv/layer_conv.h line:36
+struct PyCallBack_LConv : public LConv {
+	using LConv::LConv;
 
-	void applygrads(int a0) override { 
+	void forward() override { 
 		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const Optimizer *>(this), "applygrads");
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LConv::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LConv::backward();
+	}
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "resize");
 		if (overload) {
 			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
 			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
@@ -1466,43 +1497,56 @@ struct PyCallBack_Optimizer : public Optimizer {
 			}
 			else return pybind11::detail::cast_safe<void>(std::move(o));
 		}
-		return Optimizer::applygrads(a0);
+		return LConv::resize(a0);
 	}
-	class Optimizer * clone() override { 
+	void addchild(class Layer * a0) override { 
 		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const Optimizer *>(this), "clone");
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "addchild");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "info");
 		if (overload) {
 			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
-				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
-				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
 			}
-			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+			else return pybind11::detail::cast_safe<void>(std::move(o));
 		}
-		return Optimizer::clone();
+		return Layer::info();
 	}
 };
 
-// SGD file:optimizers/optim.h line:56
-struct PyCallBack_SGD : public SGD {
-	using SGD::SGD;
+// LConvT file:layers/conv/layer_conv.h line:68
+struct PyCallBack_LConvT : public LConvT {
+	using LConvT::LConvT;
 
-	class Optimizer * clone() override { 
+	void addchild(class Layer * a0) override { 
 		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const SGD *>(this), "clone");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
-				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
-				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
-		}
-		return SGD::clone();
-	}
-	void applygrads(int a0) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const SGD *>(this), "applygrads");
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "addchild");
 		if (overload) {
 			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
 			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
@@ -1511,7 +1555,156 @@ struct PyCallBack_SGD : public SGD {
 			}
 			else return pybind11::detail::cast_safe<void>(std::move(o));
 		}
-		return SGD::applygrads(a0);
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "resize");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::resize(a0);
+	}
+	void forward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::backward();
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "info");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Layer::info();
+	}
+};
+
+// LUpSampling file:layers/conv/layer_conv.h line:95
+struct PyCallBack_LUpSampling : public LUpSampling {
+	using LUpSampling::LUpSampling;
+
+	void addchild(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LUpSampling *>(this), "addchild");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LUpSampling *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LUpSampling *>(this), "resize");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::resize(a0);
+	}
+	void forward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LUpSampling *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LUpSampling *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::backward();
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LUpSampling *>(this), "info");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Layer::info();
 	}
 };
 
@@ -1663,6 +1856,8 @@ void bind_metrics_metric(std::function< pybind11::module &(std::string const &na
 		cl.def("backward", (void (LReshape::*)()) &LReshape::backward, "C++: LReshape::backward() --> void");
 		cl.def("resize", (void (LReshape::*)(int)) &LReshape::resize, "C++: LReshape::resize(int) --> void", pybind11::arg("batch"));
 		cl.def("assign", (class LReshape & (LReshape::*)(const class LReshape &)) &LReshape::operator=, "C++: LReshape::operator=(const class LReshape &) --> class LReshape &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		lreshape_addons(cl);
 	}
 	{ // LTranspose file:layers/core/layer_core.h line:194
 		pybind11::class_<LTranspose, std::shared_ptr<LTranspose>, PyCallBack_LTranspose, LinLayer> cl(M(""), "LTranspose", "Transpose Layer");
@@ -1697,50 +1892,42 @@ void bind_metrics_metric(std::function< pybind11::module &(std::string const &na
 		cl.def("resize", (void (LBatchNorm::*)(int)) &LBatchNorm::resize, "C++: LBatchNorm::resize(int) --> void", pybind11::arg("batch"));
 		cl.def("assign", (class LBatchNorm & (LBatchNorm::*)(const class LBatchNorm &)) &LBatchNorm::operator=, "C++: LBatchNorm::operator=(const class LBatchNorm &) --> class LBatchNorm &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // Optimizer file:optimizers/optim.h line:39
-		pybind11::class_<Optimizer, std::shared_ptr<Optimizer>, PyCallBack_Optimizer> cl(M(""), "Optimizer", "");
+	{ // LConv file:layers/conv/layer_conv.h line:36
+		pybind11::class_<LConv, std::shared_ptr<LConv>, PyCallBack_LConv, LinLayer> cl(M(""), "LConv", "Conv2D Layer");
 		pybind11::handle cl_type = cl;
 
-		cl.def( pybind11::init( [](){ return new Optimizer(); }, [](){ return new PyCallBack_Optimizer(); } ) );
-		cl.def( pybind11::init( [](PyCallBack_Optimizer const &o){ return new PyCallBack_Optimizer(o); } ) );
-		cl.def( pybind11::init( [](Optimizer const &o){ return new Optimizer(o); } ) );
-		cl.def_readwrite("name", &Optimizer::name);
-		cl.def_readwrite("layers", &Optimizer::layers);
-		cl.def("applygrads", (void (Optimizer::*)(int)) &Optimizer::applygrads, "C++: Optimizer::applygrads(int) --> void", pybind11::arg("batch"));
-		cl.def("clone", (class Optimizer * (Optimizer::*)()) &Optimizer::clone, "C++: Optimizer::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
-		cl.def("assign", (class Optimizer & (Optimizer::*)(const class Optimizer &)) &Optimizer::operator=, "C++: Optimizer::operator=(const class Optimizer &) --> class Optimizer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+		cl.def("forward", (void (LConv::*)()) &LConv::forward, "C++: LConv::forward() --> void");
+		cl.def("backward", (void (LConv::*)()) &LConv::backward, "C++: LConv::backward() --> void");
+		cl.def("resize", (void (LConv::*)(int)) &LConv::resize, "C++: LConv::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LConv & (LConv::*)(const class LConv &)) &LConv::operator=, "C++: LConv::operator=(const class LConv &) --> class LConv &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		lconv_addons(cl);
 	}
-	{ // SGD file:optimizers/optim.h line:56
-		pybind11::class_<SGD, std::shared_ptr<SGD>, PyCallBack_SGD, Optimizer> cl(M(""), "SGD", "");
+	{ // LConvT file:layers/conv/layer_conv.h line:68
+		pybind11::class_<LConvT, std::shared_ptr<LConvT>, PyCallBack_LConvT, LinLayer> cl(M(""), "LConvT", "ConvT2D Layer");
 		pybind11::handle cl_type = cl;
 
-		cl.def( pybind11::init( [](){ return new SGD(); }, [](){ return new PyCallBack_SGD(); } ), "doc");
-		cl.def( pybind11::init( [](float const & a0){ return new SGD(a0); }, [](float const & a0){ return new PyCallBack_SGD(a0); } ), "doc");
-		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new SGD(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_SGD(a0, a1); } ), "doc");
-		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new SGD(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_SGD(a0, a1, a2); } ), "doc");
-		cl.def( pybind11::init<float, float, float, bool>(), pybind11::arg("lr"), pybind11::arg("momentum"), pybind11::arg("weight_decay"), pybind11::arg("nesterov") );
+		cl.def("assign", (class LConvT & (LConvT::*)(const class LConvT &)) &LConvT::operator=, "C++: LConvT::operator=(const class LConvT &) --> class LConvT &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // LUpSampling file:layers/conv/layer_conv.h line:95
+		pybind11::class_<LUpSampling, std::shared_ptr<LUpSampling>, PyCallBack_LUpSampling, LinLayer> cl(M(""), "LUpSampling", "UpSampling2D Layer");
+		pybind11::handle cl_type = cl;
 
-		cl.def_readwrite("lr", &SGD::lr);
-		cl.def_readwrite("mu", &SGD::mu);
-		cl.def_readwrite("weight_decay", &SGD::weight_decay);
-		cl.def_readwrite("nesterov", &SGD::nesterov);
-		cl.def_readwrite("mT", &SGD::mT);
-		cl.def("clone", (class Optimizer * (SGD::*)()) &SGD::clone, "C++: SGD::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
-		cl.def("applygrads", (void (SGD::*)(int)) &SGD::applygrads, "C++: SGD::applygrads(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class SGD & (SGD::*)(const class SGD &)) &SGD::operator=, "C++: SGD::operator=(const class SGD &) --> class SGD &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+		cl.def_readwrite("size", &LUpSampling::size);
+		cl.def_readwrite("interpolation", &LUpSampling::interpolation);
+		cl.def("assign", (class LUpSampling & (LUpSampling::*)(const class LUpSampling &)) &LUpSampling::operator=, "C++: LUpSampling::operator=(const class LUpSampling &) --> class LUpSampling &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
 }
 
 
-// File: optimizers/optim.cpp
-#include <compserv.h>
+// File: layers/pool/layer_pool.cpp
 #include <iterator>
 #include <layers/layer.h>
-#include <losses/loss.h>
+#include <layers/noise/layer_noise.h>
+#include <layers/pool/layer_pool.h>
+#include <lgaussiannoise_addons.h>
+#include <lmaxpool_addons.h>
 #include <memory>
-#include <metrics/metric.h>
-#include <net.h>
-#include <net_addons.h>
 #include <optimizers/optim.h>
 #include <sstream> // __str__
 #include <stdio.h>
@@ -1760,6 +1947,574 @@ void bind_metrics_metric(std::function< pybind11::module &(std::string const &na
 	PYBIND11_DECLARE_HOLDER_TYPE(T, T*);
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
+
+// LPool file:layers/pool/layer_pool.h line:37
+struct PyCallBack_LPool : public LPool {
+	using LPool::LPool;
+
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LPool *>(this), "resize");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LPool::resize(a0);
+	}
+	void addchild(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LPool *>(this), "addchild");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LPool *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void forward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LPool *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LPool *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::backward();
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LPool *>(this), "info");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Layer::info();
+	}
+};
+
+// LMaxPool file:layers/pool/layer_pool.h line:49
+struct PyCallBack_LMaxPool : public LMaxPool {
+	using LMaxPool::LMaxPool;
+
+	void forward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LMaxPool *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LMaxPool::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LMaxPool *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LMaxPool::backward();
+	}
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LMaxPool *>(this), "resize");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LMaxPool::resize(a0);
+	}
+	void addchild(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LMaxPool *>(this), "addchild");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LMaxPool *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LMaxPool *>(this), "info");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Layer::info();
+	}
+};
+
+// LAveragePool file:layers/pool/layer_pool.h line:82
+struct PyCallBack_LAveragePool : public LAveragePool {
+	using LAveragePool::LAveragePool;
+
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LAveragePool *>(this), "resize");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LPool::resize(a0);
+	}
+	void addchild(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LAveragePool *>(this), "addchild");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LAveragePool *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void forward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LAveragePool *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LAveragePool *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::backward();
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LAveragePool *>(this), "info");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Layer::info();
+	}
+};
+
+// LGlobalMaxPool file:layers/pool/layer_pool.h line:106
+struct PyCallBack_LGlobalMaxPool : public LGlobalMaxPool {
+	using LGlobalMaxPool::LGlobalMaxPool;
+
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalMaxPool *>(this), "resize");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LPool::resize(a0);
+	}
+	void addchild(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalMaxPool *>(this), "addchild");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalMaxPool *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void forward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalMaxPool *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalMaxPool *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::backward();
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalMaxPool *>(this), "info");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Layer::info();
+	}
+};
+
+// LGlobalAveragePool file:layers/pool/layer_pool.h line:129
+struct PyCallBack_LGlobalAveragePool : public LGlobalAveragePool {
+	using LGlobalAveragePool::LGlobalAveragePool;
+
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalAveragePool *>(this), "resize");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LPool::resize(a0);
+	}
+	void addchild(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalAveragePool *>(this), "addchild");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalAveragePool *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void forward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalAveragePool *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalAveragePool *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::backward();
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGlobalAveragePool *>(this), "info");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Layer::info();
+	}
+};
+
+// LGaussianNoise file:layers/noise/layer_noise.h line:36
+struct PyCallBack_LGaussianNoise : public LGaussianNoise {
+	using LGaussianNoise::LGaussianNoise;
+
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGaussianNoise *>(this), "resize");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LGaussianNoise::resize(a0);
+	}
+	void forward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGaussianNoise *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LGaussianNoise::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGaussianNoise *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LGaussianNoise::backward();
+	}
+	void addchild(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGaussianNoise *>(this), "addchild");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGaussianNoise *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LGaussianNoise *>(this), "info");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Layer::info();
+	}
+};
+
+// Optimizer file:optimizers/optim.h line:39
+struct PyCallBack_Optimizer : public Optimizer {
+	using Optimizer::Optimizer;
+
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Optimizer *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Optimizer::applygrads(a0);
+	}
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Optimizer *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::clone();
+	}
+};
+
+// SGD file:optimizers/optim.h line:56
+struct PyCallBack_SGD : public SGD {
+	using SGD::SGD;
+
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const SGD *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return SGD::clone();
+	}
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const SGD *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return SGD::applygrads(a0);
+	}
+};
 
 // Adam file:optimizers/optim.h line:77
 struct PyCallBack_Adam : public Adam {
@@ -1953,8 +2708,88 @@ struct PyCallBack_RMSProp : public RMSProp {
 	}
 };
 
-void bind_optimizers_optim(std::function< pybind11::module &(std::string const &namespace_) > &M)
+void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
+	{ // LPool file:layers/pool/layer_pool.h line:37
+		pybind11::class_<LPool, std::shared_ptr<LPool>, PyCallBack_LPool, LinLayer> cl(M(""), "LPool", "Pool2D Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def("resize", (void (LPool::*)(int)) &LPool::resize, "C++: LPool::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LPool & (LPool::*)(const class LPool &)) &LPool::operator=, "C++: LPool::operator=(const class LPool &) --> class LPool &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // LMaxPool file:layers/pool/layer_pool.h line:49
+		pybind11::class_<LMaxPool, std::shared_ptr<LMaxPool>, PyCallBack_LMaxPool, LPool> cl(M(""), "LMaxPool", "MaxPool2D Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def("forward", (void (LMaxPool::*)()) &LMaxPool::forward, "C++: LMaxPool::forward() --> void");
+		cl.def("backward", (void (LMaxPool::*)()) &LMaxPool::backward, "C++: LMaxPool::backward() --> void");
+		cl.def("resize", (void (LMaxPool::*)(int)) &LMaxPool::resize, "C++: LMaxPool::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LMaxPool & (LMaxPool::*)(const class LMaxPool &)) &LMaxPool::operator=, "C++: LMaxPool::operator=(const class LMaxPool &) --> class LMaxPool &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		lmaxpool_addons(cl);
+	}
+	{ // LAveragePool file:layers/pool/layer_pool.h line:82
+		pybind11::class_<LAveragePool, std::shared_ptr<LAveragePool>, PyCallBack_LAveragePool, LPool> cl(M(""), "LAveragePool", "AveragePool2D Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def("assign", (class LAveragePool & (LAveragePool::*)(const class LAveragePool &)) &LAveragePool::operator=, "C++: LAveragePool::operator=(const class LAveragePool &) --> class LAveragePool &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // LGlobalMaxPool file:layers/pool/layer_pool.h line:106
+		pybind11::class_<LGlobalMaxPool, std::shared_ptr<LGlobalMaxPool>, PyCallBack_LGlobalMaxPool, LPool> cl(M(""), "LGlobalMaxPool", "GlobalMaxPool2D Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def("assign", (class LGlobalMaxPool & (LGlobalMaxPool::*)(const class LGlobalMaxPool &)) &LGlobalMaxPool::operator=, "C++: LGlobalMaxPool::operator=(const class LGlobalMaxPool &) --> class LGlobalMaxPool &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // LGlobalAveragePool file:layers/pool/layer_pool.h line:129
+		pybind11::class_<LGlobalAveragePool, std::shared_ptr<LGlobalAveragePool>, PyCallBack_LGlobalAveragePool, LPool> cl(M(""), "LGlobalAveragePool", "GlobalAveragePool2D Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def("assign", (class LGlobalAveragePool & (LGlobalAveragePool::*)(const class LGlobalAveragePool &)) &LGlobalAveragePool::operator=, "C++: LGlobalAveragePool::operator=(const class LGlobalAveragePool &) --> class LGlobalAveragePool &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // LGaussianNoise file:layers/noise/layer_noise.h line:36
+		pybind11::class_<LGaussianNoise, std::shared_ptr<LGaussianNoise>, PyCallBack_LGaussianNoise, LinLayer> cl(M(""), "LGaussianNoise", "GaussianNoise Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def_readwrite("stdev", &LGaussianNoise::stdev);
+		cl.def("resize", (void (LGaussianNoise::*)(int)) &LGaussianNoise::resize, "C++: LGaussianNoise::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("forward", (void (LGaussianNoise::*)()) &LGaussianNoise::forward, "C++: LGaussianNoise::forward() --> void");
+		cl.def("backward", (void (LGaussianNoise::*)()) &LGaussianNoise::backward, "C++: LGaussianNoise::backward() --> void");
+		cl.def("assign", (class LGaussianNoise & (LGaussianNoise::*)(const class LGaussianNoise &)) &LGaussianNoise::operator=, "C++: LGaussianNoise::operator=(const class LGaussianNoise &) --> class LGaussianNoise &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		lgaussiannoise_addons(cl);
+	}
+	{ // Optimizer file:optimizers/optim.h line:39
+		pybind11::class_<Optimizer, std::shared_ptr<Optimizer>, PyCallBack_Optimizer> cl(M(""), "Optimizer", "");
+		pybind11::handle cl_type = cl;
+
+		cl.def( pybind11::init( [](){ return new Optimizer(); }, [](){ return new PyCallBack_Optimizer(); } ) );
+		cl.def( pybind11::init( [](PyCallBack_Optimizer const &o){ return new PyCallBack_Optimizer(o); } ) );
+		cl.def( pybind11::init( [](Optimizer const &o){ return new Optimizer(o); } ) );
+		cl.def_readwrite("name", &Optimizer::name);
+		cl.def_readwrite("layers", &Optimizer::layers);
+		cl.def("applygrads", (void (Optimizer::*)(int)) &Optimizer::applygrads, "C++: Optimizer::applygrads(int) --> void", pybind11::arg("batch"));
+		cl.def("clone", (class Optimizer * (Optimizer::*)()) &Optimizer::clone, "C++: Optimizer::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
+		cl.def("assign", (class Optimizer & (Optimizer::*)(const class Optimizer &)) &Optimizer::operator=, "C++: Optimizer::operator=(const class Optimizer &) --> class Optimizer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // SGD file:optimizers/optim.h line:56
+		pybind11::class_<SGD, std::shared_ptr<SGD>, PyCallBack_SGD, Optimizer> cl(M(""), "SGD", "");
+		pybind11::handle cl_type = cl;
+
+		cl.def( pybind11::init( [](){ return new SGD(); }, [](){ return new PyCallBack_SGD(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new SGD(a0); }, [](float const & a0){ return new PyCallBack_SGD(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new SGD(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_SGD(a0, a1); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new SGD(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_SGD(a0, a1, a2); } ), "doc");
+		cl.def( pybind11::init<float, float, float, bool>(), pybind11::arg("lr"), pybind11::arg("momentum"), pybind11::arg("weight_decay"), pybind11::arg("nesterov") );
+
+		cl.def_readwrite("lr", &SGD::lr);
+		cl.def_readwrite("mu", &SGD::mu);
+		cl.def_readwrite("weight_decay", &SGD::weight_decay);
+		cl.def_readwrite("nesterov", &SGD::nesterov);
+		cl.def_readwrite("mT", &SGD::mT);
+		cl.def("clone", (class Optimizer * (SGD::*)()) &SGD::clone, "C++: SGD::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
+		cl.def("applygrads", (void (SGD::*)(int)) &SGD::applygrads, "C++: SGD::applygrads(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class SGD & (SGD::*)(const class SGD &)) &SGD::operator=, "C++: SGD::operator=(const class SGD &) --> class SGD &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
 	{ // Adam file:optimizers/optim.h line:77
 		pybind11::class_<Adam, std::shared_ptr<Adam>, PyCallBack_Adam, Optimizer> cl(M(""), "Adam", "");
 		pybind11::handle cl_type = cl;
@@ -2063,6 +2898,40 @@ void bind_optimizers_optim(std::function< pybind11::module &(std::string const &
 		cl.def_readwrite("mT", &RMSProp::mT);
 		cl.def("assign", (class RMSProp & (RMSProp::*)(const class RMSProp &)) &RMSProp::operator=, "C++: RMSProp::operator=(const class RMSProp &) --> class RMSProp &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
+}
+
+
+// File: net.cpp
+#include <compserv.h>
+#include <iterator>
+#include <layers/layer.h>
+#include <losses/loss.h>
+#include <memory>
+#include <metrics/metric.h>
+#include <net.h>
+#include <net_addons.h>
+#include <optimizers/optim.h>
+#include <sstream> // __str__
+#include <stdio.h>
+#include <string>
+#include <vector>
+
+#include <pybind11/pybind11.h>
+#include <functional>
+#include <string>
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
+
+
+#ifndef BINDER_PYBIND11_TYPE_CASTER
+	#define BINDER_PYBIND11_TYPE_CASTER
+	PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>);
+	PYBIND11_DECLARE_HOLDER_TYPE(T, T*);
+	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
+#endif
+
+void bind_net(std::function< pybind11::module &(std::string const &namespace_) > &M)
+{
 	// train_batch_t(void *) file:net.h line:47
 	M("").def("train_batch_t", (void * (*)(void *)) &train_batch_t, "C++: train_batch_t(void *) --> void *", pybind11::return_value_policy::automatic, pybind11::arg("targs"));
 
@@ -2123,7 +2992,8 @@ typedef std::function< pybind11::module & (std::string const &) > ModuleGetter;
 void bind_bits_libio(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_metrics_metric(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_optimizers_optim(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_net(std::function< pybind11::module &(std::string const &namespace_) > &M);
 
 
 PYBIND11_MODULE(pyeddl, root_module) {
@@ -2147,16 +3017,18 @@ PYBIND11_MODULE(pyeddl, root_module) {
 	bind_bits_libio(M);
 	bind_compserv(M);
 	bind_metrics_metric(M);
-	bind_optimizers_optim(M);
+	bind_layers_pool_layer_pool(M);
+	bind_net(M);
 
 }
 
-// Source list file: /binder/examples/example_eddl_keepalive/bash_bindings/pyeddl.sources
+// Source list file: /codegen/bindings/pyeddl.sources
 // pyeddl.cpp
 // bits/libio.cpp
 // compserv.cpp
 // metrics/metric.cpp
-// optimizers/optim.cpp
+// layers/pool/layer_pool.cpp
+// net.cpp
 
-// Modules list file: /binder/examples/example_eddl_keepalive/bash_bindings/pyeddl.modules
+// Modules list file: /codegen/bindings/pyeddl.modules
 // 
