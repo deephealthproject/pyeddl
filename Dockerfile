@@ -20,3 +20,5 @@ RUN cd /pyeddl/third_party/eddl && \
     make install
 
 WORKDIR /pyeddl
+
+RUN bash build.sh
