@@ -1,0 +1,5 @@
+.*
+Dockerfile*
+build_bindings.sh
+codegen
+README.md

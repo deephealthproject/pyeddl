@@ -3022,7 +3022,7 @@ PYBIND11_MODULE(pyeddl, root_module) {
 
 }
 
-// Source list file: /codegen/bindings/pyeddl.sources
+// Source list file: /pyeddl/codegen/bindings/pyeddl.sources
 // pyeddl.cpp
 // bits/libio.cpp
 // compserv.cpp
@@ -3030,5 +3030,5 @@ PYBIND11_MODULE(pyeddl, root_module) {
 // layers/pool/layer_pool.cpp
 // net.cpp
 
-// Modules list file: /codegen/bindings/pyeddl.modules
+// Modules list file: /pyeddl/codegen/bindings/pyeddl.modules
 // 
