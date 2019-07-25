@@ -7,7 +7,7 @@ pyinc=$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["include"])')
 g++ \
     -O3 \
     -I"${pyinc}" \
-    -I${PWD}/third_party/eddl/build/install/include/eddll \
+    -I${PWD}/third_party/eddl/build/install/include/eddl \
     -I${PWD}/third_party/eddl/third_party/pybind11/include \
     -I${PWD}/third_party/eddl/third_party/eigen \
     -I${PWD}/src \
@@ -17,4 +17,4 @@ g++ \
     -o pyeddl.o \
     -fPIC
 
-g++ -o pyeddl.so -shared pyeddl.o -L${PWD}/third_party/eddl/build/install/lib/static -leddll -lstdc++ -Wl,-rpath
+g++ -o pyeddl.so -shared pyeddl.o -L${PWD}/third_party/eddl/build/install/lib/static -leddl -lstdc++ -Wl,-rpath

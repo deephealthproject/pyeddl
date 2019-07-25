@@ -1,6 +1,8 @@
 #define tensor_addons(cl) \
-cl.def(pybind11::init<vector<int>, int>()); \
-cl.def(pybind11::init<string, int>(), pybind11::arg("fname"), pybind11::arg("bin") = 1); \
+cl.def(pybind11::init<const vector<int>&, int>(), \
+       pybind11::arg("shape"), pybind11::arg("dev"), \
+       pybind11::keep_alive<1, 2>()); \
+cl.def("load", (void (Tensor::*)(string, int)) &Tensor::load, "C++: Tensor::load(string, int) --> void", pybind11::arg("fname"), pybind11::arg("bin") = 1); \
 cl.def_buffer([](Tensor &t) -> pybind11::buffer_info { \
 	  std::vector<ssize_t> strides(t.ndim); \
 	  ssize_t S = sizeof(float); \

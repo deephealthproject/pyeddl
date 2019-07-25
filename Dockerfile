@@ -12,7 +12,6 @@ RUN python3 -m pip install --upgrade --no-cache-dir \
 COPY . /pyeddl
 
 RUN cd /pyeddl/third_party/eddl && \
-    patch -p1 < ../../compserv.diff && \
     mkdir build && \
     cd build && \
     cmake .. && \
