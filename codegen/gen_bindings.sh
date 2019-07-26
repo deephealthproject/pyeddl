@@ -2,8 +2,14 @@
 
 set -e
 
-# this should be used from the crs4/binder docker container
-binder=/binder/build/llvm-4.0.0/build_4.0.0*/bin/binder
+this="${BASH_SOURCE:-$0}"
+this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
+
+# this refers to the crs4/binder docker container
+binder=${BINDER_EXE:-/binder/build/llvm-4.0.0/build_4.0.0*/bin/binder}
+
+eddl_inc=${EDDL_INCLUDE:-"${this_dir}"/../third_party/eddl/src}
+eigen_inc=${EIGEN_INCLUDE:-"${this_dir}"/../third_party/eddl/third_party/eigen}
 
 rm -rf ./bindings/ && mkdir bindings/
 ${binder} \
@@ -14,9 +20,9 @@ ${binder} \
   --single-file \
   all_bash_includes.hpp \
   -- -std=c++11 \
-  -I${PWD}/../third_party/eddl/src \
-  -I${PWD}/../third_party/eddl/third_party/eigen \
-  -I${PWD}/../src \
+  -I"${eddl_inc}" \
+  -I"${eigen_inc}" \
+  -I"${this_dir}"/../src \
   -DNDEBUG
 
 # Fix for pybind11 ImportError
