@@ -13,7 +13,7 @@ eigen_inc=${EIGEN_INCLUDE:-"${this_dir}"/../third_party/eddl/third_party/eigen}
 
 rm -rf ./bindings/ && mkdir bindings/
 ${binder} \
-  --root-module pyeddl \
+  --root-module _core \
   --prefix $PWD/bindings/ \
   --bind "" \
   --config config.cfg \
@@ -26,7 +26,7 @@ ${binder} \
 
 # Fix for pybind11 ImportError
 # "overloading a method with both static and instance methods is not supported"
-sed -i 's/def("sum"/def("sum_unary"/' bindings/pyeddl.cpp
+sed -i 's/def("sum"/def("sum_unary"/' bindings/_core.cpp
 
 # add buffer_protocol annotation
-sed -i -f add_annotation.sed bindings/pyeddl.cpp
+sed -i -f add_annotation.sed bindings/_core.cpp

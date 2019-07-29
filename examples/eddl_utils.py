@@ -1,6 +1,6 @@
 import os
 import subprocess
-import pyeddl
+import pyeddl._core as pyeddl
 
 
 DATA_URLS = [

@@ -2997,8 +2997,8 @@ void bind_eddl_layers_conv_layer_conv(std::function< pybind11::module &(std::str
 void bind_eddl_net(std::function< pybind11::module &(std::string const &namespace_) > &M);
 
 
-PYBIND11_MODULE(pyeddl, root_module) {
-	root_module.doc() = "pyeddl module";
+PYBIND11_MODULE(_core, root_module) {
+	root_module.doc() = "_core module";
 
 	std::map <std::string, pybind11::module> modules;
 	ModuleGetter M = [&](std::string const &namespace_) -> pybind11::module & {
@@ -3023,13 +3023,13 @@ PYBIND11_MODULE(pyeddl, root_module) {
 
 }
 
-// Source list file: /pyeddl/codegen/bindings/pyeddl.sources
-// pyeddl.cpp
+// Source list file: /pyeddl/codegen/bindings/_core.sources
+// _core.cpp
 // bits/libio.cpp
 // eddl/compserv.cpp
 // eddl/metrics/metric.cpp
 // eddl/layers/conv/layer_conv.cpp
 // eddl/net.cpp
 
-// Modules list file: /pyeddl/codegen/bindings/pyeddl.modules
+// Modules list file: /pyeddl/codegen/bindings/_core.modules
 // 

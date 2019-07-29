@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-# re-generate src/pyeddl.cpp
-
 this="${BASH_SOURCE:-$0}"
 this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
@@ -21,4 +19,4 @@ docker run --rm -v "${this_dir}":"${pyeddl_mount}" \
   -e EDDL_INCLUDE="${pyeddl_mount}"/include \
   -e EIGEN_INCLUDE="${pyeddl_mount}"/third_party/eddl/third_party/eigen \
   -w "${pyeddl_mount}"/codegen crs4/binder:2f3665b ./gen_bindings.sh
-cp codegen/bindings/pyeddl.cpp src/
+cp codegen/bindings/_core.cpp src/

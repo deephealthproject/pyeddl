@@ -1,4 +1,4 @@
-import pyeddl
+import pyeddl._core as pyeddl
 from eddl_utils import download_mnist
 
 epochs = 10

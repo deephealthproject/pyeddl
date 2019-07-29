@@ -21,5 +21,7 @@ bash build_docker.sh
 Run the examples on the Docker image, e.g.:
 
 ```
-docker run --rm -it pyeddl bash -c 'python3 eddl_mlp.py'
+docker run --rm -it pyeddl bash
+cd examples
+python3 eddl_mlp.py
 ```
