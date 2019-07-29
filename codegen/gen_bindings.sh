@@ -22,7 +22,6 @@ ${binder} \
   -- -std=c++11 \
   -I"${eddl_inc}" \
   -I"${eigen_inc}" \
-  -I"${this_dir}"/../src \
   -DNDEBUG
 
 # Fix for pybind11 ImportError

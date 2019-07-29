@@ -36,13 +36,13 @@ void bind_bits_libio(std::function< pybind11::module &(std::string const &namesp
 }
 
 
-// File: compserv.cpp
-#include <compserv.h>
+// File: eddl/compserv.cpp
 #include <compserv_addons.h>
+#include <eddl/compserv.h>
+#include <eddl/losses/loss.h>
+#include <eddl/metrics/metric.h>
 #include <iterator>
-#include <losses/loss.h>
 #include <memory>
-#include <metrics/metric.h>
 #include <pooldescriptor_addons.h>
 #include <sstream> // __str__
 #include <stdio.h>
@@ -64,7 +64,7 @@ void bind_bits_libio(std::function< pybind11::module &(std::string const &namesp
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
 
-// Loss file:losses/loss.h line:31
+// Loss file:eddl/losses/loss.h line:31
 struct PyCallBack_Loss : public Loss {
 	using Loss::Loss;
 
@@ -96,7 +96,7 @@ struct PyCallBack_Loss : public Loss {
 	}
 };
 
-// LMeanSquaredError file:losses/loss.h line:42
+// LMeanSquaredError file:eddl/losses/loss.h line:42
 struct PyCallBack_LMeanSquaredError : public LMeanSquaredError {
 	using LMeanSquaredError::LMeanSquaredError;
 
@@ -128,7 +128,7 @@ struct PyCallBack_LMeanSquaredError : public LMeanSquaredError {
 	}
 };
 
-// LCrossEntropy file:losses/loss.h line:51
+// LCrossEntropy file:eddl/losses/loss.h line:51
 struct PyCallBack_LCrossEntropy : public LCrossEntropy {
 	using LCrossEntropy::LCrossEntropy;
 
@@ -160,7 +160,7 @@ struct PyCallBack_LCrossEntropy : public LCrossEntropy {
 	}
 };
 
-// LSoftCrossEntropy file:losses/loss.h line:60
+// LSoftCrossEntropy file:eddl/losses/loss.h line:60
 struct PyCallBack_LSoftCrossEntropy : public LSoftCrossEntropy {
 	using LSoftCrossEntropy::LSoftCrossEntropy;
 
@@ -192,7 +192,7 @@ struct PyCallBack_LSoftCrossEntropy : public LSoftCrossEntropy {
 	}
 };
 
-// Metric file:metrics/metric.h line:32
+// Metric file:eddl/metrics/metric.h line:32
 struct PyCallBack_Metric : public Metric {
 	using Metric::Metric;
 
@@ -211,9 +211,9 @@ struct PyCallBack_Metric : public Metric {
 	}
 };
 
-void bind_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M)
+void bind_eddl_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
-	{ // CompServ file:compserv.h line:30
+	{ // CompServ file:eddl/compserv.h line:30
 		pybind11::class_<CompServ, std::shared_ptr<CompServ>> cl(M(""), "CompServ", "");
 		pybind11::handle cl_type = cl;
 
@@ -329,7 +329,7 @@ void bind_compserv(std::function< pybind11::module &(std::string const &namespac
 
 		tensor_addons(cl);
 	}
-	{ // Loss file:losses/loss.h line:31
+	{ // Loss file:eddl/losses/loss.h line:31
 		pybind11::class_<Loss, std::shared_ptr<Loss>, PyCallBack_Loss> cl(M(""), "Loss", "");
 		pybind11::handle cl_type = cl;
 
@@ -338,7 +338,7 @@ void bind_compserv(std::function< pybind11::module &(std::string const &namespac
 		cl.def("value", (float (Loss::*)(class Tensor *, class Tensor *)) &Loss::value, "C++: Loss::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class Loss & (Loss::*)(const class Loss &)) &Loss::operator=, "C++: Loss::operator=(const class Loss &) --> class Loss &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LMeanSquaredError file:losses/loss.h line:42
+	{ // LMeanSquaredError file:eddl/losses/loss.h line:42
 		pybind11::class_<LMeanSquaredError, std::shared_ptr<LMeanSquaredError>, PyCallBack_LMeanSquaredError, Loss> cl(M(""), "LMeanSquaredError", "");
 		pybind11::handle cl_type = cl;
 
@@ -347,7 +347,7 @@ void bind_compserv(std::function< pybind11::module &(std::string const &namespac
 		cl.def("value", (float (LMeanSquaredError::*)(class Tensor *, class Tensor *)) &LMeanSquaredError::value, "C++: LMeanSquaredError::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class LMeanSquaredError & (LMeanSquaredError::*)(const class LMeanSquaredError &)) &LMeanSquaredError::operator=, "C++: LMeanSquaredError::operator=(const class LMeanSquaredError &) --> class LMeanSquaredError &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LCrossEntropy file:losses/loss.h line:51
+	{ // LCrossEntropy file:eddl/losses/loss.h line:51
 		pybind11::class_<LCrossEntropy, std::shared_ptr<LCrossEntropy>, PyCallBack_LCrossEntropy, Loss> cl(M(""), "LCrossEntropy", "");
 		pybind11::handle cl_type = cl;
 
@@ -356,7 +356,7 @@ void bind_compserv(std::function< pybind11::module &(std::string const &namespac
 		cl.def("value", (float (LCrossEntropy::*)(class Tensor *, class Tensor *)) &LCrossEntropy::value, "C++: LCrossEntropy::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class LCrossEntropy & (LCrossEntropy::*)(const class LCrossEntropy &)) &LCrossEntropy::operator=, "C++: LCrossEntropy::operator=(const class LCrossEntropy &) --> class LCrossEntropy &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LSoftCrossEntropy file:losses/loss.h line:60
+	{ // LSoftCrossEntropy file:eddl/losses/loss.h line:60
 		pybind11::class_<LSoftCrossEntropy, std::shared_ptr<LSoftCrossEntropy>, PyCallBack_LSoftCrossEntropy, Loss> cl(M(""), "LSoftCrossEntropy", "");
 		pybind11::handle cl_type = cl;
 
@@ -365,7 +365,7 @@ void bind_compserv(std::function< pybind11::module &(std::string const &namespac
 		cl.def("value", (float (LSoftCrossEntropy::*)(class Tensor *, class Tensor *)) &LSoftCrossEntropy::value, "C++: LSoftCrossEntropy::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class LSoftCrossEntropy & (LSoftCrossEntropy::*)(const class LSoftCrossEntropy &)) &LSoftCrossEntropy::operator=, "C++: LSoftCrossEntropy::operator=(const class LSoftCrossEntropy &) --> class LSoftCrossEntropy &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // Metric file:metrics/metric.h line:32
+	{ // Metric file:eddl/metrics/metric.h line:32
 		pybind11::class_<Metric, std::shared_ptr<Metric>, PyCallBack_Metric> cl(M(""), "Metric", "");
 		pybind11::handle cl_type = cl;
 
@@ -376,13 +376,14 @@ void bind_compserv(std::function< pybind11::module &(std::string const &namespac
 }
 
 
-// File: metrics/metric.cpp
+// File: eddl/metrics/metric.cpp
+#include <eddl/layers/conv/layer_conv.h>
+#include <eddl/layers/core/layer_core.h>
+#include <eddl/layers/layer.h>
+#include <eddl/metrics/metric.h>
 #include <iterator>
 #include <lactivation_addons.h>
 #include <layer_addons.h>
-#include <layers/conv/layer_conv.h>
-#include <layers/core/layer_core.h>
-#include <layers/layer.h>
 #include <lconv_addons.h>
 #include <ldense_addons.h>
 #include <lembedding_addons.h>
@@ -390,7 +391,6 @@ void bind_compserv(std::function< pybind11::module &(std::string const &namespac
 #include <lreshape_addons.h>
 #include <ltensor_addons.h>
 #include <memory>
-#include <metrics/metric.h>
 #include <sstream> // __str__
 #include <stdio.h>
 #include <string>
@@ -410,7 +410,7 @@ void bind_compserv(std::function< pybind11::module &(std::string const &namespac
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
 
-// MMeanSquaredError file:metrics/metric.h line:42
+// MMeanSquaredError file:eddl/metrics/metric.h line:42
 struct PyCallBack_MMeanSquaredError : public MMeanSquaredError {
 	using MMeanSquaredError::MMeanSquaredError;
 
@@ -429,7 +429,7 @@ struct PyCallBack_MMeanSquaredError : public MMeanSquaredError {
 	}
 };
 
-// MCategoricalAccuracy file:metrics/metric.h line:50
+// MCategoricalAccuracy file:eddl/metrics/metric.h line:50
 struct PyCallBack_MCategoricalAccuracy : public MCategoricalAccuracy {
 	using MCategoricalAccuracy::MCategoricalAccuracy;
 
@@ -448,7 +448,7 @@ struct PyCallBack_MCategoricalAccuracy : public MCategoricalAccuracy {
 	}
 };
 
-// Layer file:layers/layer.h line:34
+// Layer file:eddl/layers/layer.h line:34
 struct PyCallBack_Layer : public Layer {
 	using Layer::Layer;
 
@@ -532,7 +532,7 @@ struct PyCallBack_Layer : public Layer {
 	}
 };
 
-// LinLayer file:layers/layer.h line:97
+// LinLayer file:eddl/layers/layer.h line:97
 struct PyCallBack_LinLayer : public LinLayer {
 	using LinLayer::LinLayer;
 
@@ -616,7 +616,7 @@ struct PyCallBack_LinLayer : public LinLayer {
 	}
 };
 
-// MLayer file:layers/layer.h line:125
+// MLayer file:eddl/layers/layer.h line:125
 struct PyCallBack_MLayer : public MLayer {
 	using MLayer::MLayer;
 
@@ -700,7 +700,7 @@ struct PyCallBack_MLayer : public MLayer {
 	}
 };
 
-// LTensor file:layers/core/layer_core.h line:35
+// LTensor file:eddl/layers/core/layer_core.h line:35
 struct PyCallBack_LTensor : public LTensor {
 	using LTensor::LTensor;
 
@@ -784,7 +784,7 @@ struct PyCallBack_LTensor : public LTensor {
 	}
 };
 
-// LInput file:layers/core/layer_core.h line:70
+// LInput file:eddl/layers/core/layer_core.h line:70
 struct PyCallBack_LInput : public LInput {
 	using LInput::LInput;
 
@@ -868,7 +868,7 @@ struct PyCallBack_LInput : public LInput {
 	}
 };
 
-// LEmbedding file:layers/core/layer_core.h line:91
+// LEmbedding file:eddl/layers/core/layer_core.h line:91
 struct PyCallBack_LEmbedding : public LEmbedding {
 	using LEmbedding::LEmbedding;
 
@@ -952,7 +952,7 @@ struct PyCallBack_LEmbedding : public LEmbedding {
 	}
 };
 
-// LDense file:layers/core/layer_core.h line:114
+// LDense file:eddl/layers/core/layer_core.h line:114
 struct PyCallBack_LDense : public LDense {
 	using LDense::LDense;
 
@@ -1036,7 +1036,7 @@ struct PyCallBack_LDense : public LDense {
 	}
 };
 
-// LActivation file:layers/core/layer_core.h line:143
+// LActivation file:eddl/layers/core/layer_core.h line:143
 struct PyCallBack_LActivation : public LActivation {
 	using LActivation::LActivation;
 
@@ -1120,7 +1120,7 @@ struct PyCallBack_LActivation : public LActivation {
 	}
 };
 
-// LReshape file:layers/core/layer_core.h line:165
+// LReshape file:eddl/layers/core/layer_core.h line:165
 struct PyCallBack_LReshape : public LReshape {
 	using LReshape::LReshape;
 
@@ -1204,7 +1204,7 @@ struct PyCallBack_LReshape : public LReshape {
 	}
 };
 
-// LTranspose file:layers/core/layer_core.h line:190
+// LTranspose file:eddl/layers/core/layer_core.h line:190
 struct PyCallBack_LTranspose : public LTranspose {
 	using LTranspose::LTranspose;
 
@@ -1288,7 +1288,7 @@ struct PyCallBack_LTranspose : public LTranspose {
 	}
 };
 
-// LDropout file:layers/core/layer_core.h line:215
+// LDropout file:eddl/layers/core/layer_core.h line:215
 struct PyCallBack_LDropout : public LDropout {
 	using LDropout::LDropout;
 
@@ -1372,7 +1372,7 @@ struct PyCallBack_LDropout : public LDropout {
 	}
 };
 
-// LBatchNorm file:layers/core/layer_core.h line:241
+// LBatchNorm file:eddl/layers/core/layer_core.h line:241
 struct PyCallBack_LBatchNorm : public LBatchNorm {
 	using LBatchNorm::LBatchNorm;
 
@@ -1456,7 +1456,7 @@ struct PyCallBack_LBatchNorm : public LBatchNorm {
 	}
 };
 
-// LConv file:layers/conv/layer_conv.h line:36
+// LConv file:eddl/layers/conv/layer_conv.h line:36
 struct PyCallBack_LConv : public LConv {
 	using LConv::LConv;
 
@@ -1540,7 +1540,7 @@ struct PyCallBack_LConv : public LConv {
 	}
 };
 
-// LConvT file:layers/conv/layer_conv.h line:68
+// LConvT file:eddl/layers/conv/layer_conv.h line:68
 struct PyCallBack_LConvT : public LConvT {
 	using LConvT::LConvT;
 
@@ -1624,7 +1624,240 @@ struct PyCallBack_LConvT : public LConvT {
 	}
 };
 
-// LUpSampling file:layers/conv/layer_conv.h line:95
+void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string const &namespace_) > &M)
+{
+	{ // MMeanSquaredError file:eddl/metrics/metric.h line:42
+		pybind11::class_<MMeanSquaredError, std::shared_ptr<MMeanSquaredError>, PyCallBack_MMeanSquaredError, Metric> cl(M(""), "MMeanSquaredError", "");
+		pybind11::handle cl_type = cl;
+
+		cl.def( pybind11::init( [](){ return new MMeanSquaredError(); }, [](){ return new PyCallBack_MMeanSquaredError(); } ) );
+		cl.def("value", (float (MMeanSquaredError::*)(class Tensor *, class Tensor *)) &MMeanSquaredError::value, "C++: MMeanSquaredError::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
+		cl.def("assign", (class MMeanSquaredError & (MMeanSquaredError::*)(const class MMeanSquaredError &)) &MMeanSquaredError::operator=, "C++: MMeanSquaredError::operator=(const class MMeanSquaredError &) --> class MMeanSquaredError &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // MCategoricalAccuracy file:eddl/metrics/metric.h line:50
+		pybind11::class_<MCategoricalAccuracy, std::shared_ptr<MCategoricalAccuracy>, PyCallBack_MCategoricalAccuracy, Metric> cl(M(""), "MCategoricalAccuracy", "");
+		pybind11::handle cl_type = cl;
+
+		cl.def( pybind11::init( [](){ return new MCategoricalAccuracy(); }, [](){ return new PyCallBack_MCategoricalAccuracy(); } ) );
+		cl.def("value", (float (MCategoricalAccuracy::*)(class Tensor *, class Tensor *)) &MCategoricalAccuracy::value, "C++: MCategoricalAccuracy::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
+		cl.def("assign", (class MCategoricalAccuracy & (MCategoricalAccuracy::*)(const class MCategoricalAccuracy &)) &MCategoricalAccuracy::operator=, "C++: MCategoricalAccuracy::operator=(const class MCategoricalAccuracy &) --> class MCategoricalAccuracy &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // Layer file:eddl/layers/layer.h line:34
+		pybind11::class_<Layer, std::shared_ptr<Layer>, PyCallBack_Layer> cl(M(""), "Layer", "");
+		pybind11::handle cl_type = cl;
+
+		cl.def( pybind11::init( [](PyCallBack_Layer const &o){ return new PyCallBack_Layer(o); } ) );
+		cl.def( pybind11::init( [](Layer const &o){ return new Layer(o); } ) );
+		cl.def_readwrite("name", &Layer::name);
+		cl.def_readwrite("params", &Layer::params);
+		cl.def_readwrite("gradients", &Layer::gradients);
+		cl.def_readwrite("parent", &Layer::parent);
+		cl.def_readwrite("child", &Layer::child);
+		cl.def_readwrite("mode", &Layer::mode);
+		cl.def_readwrite("dev", &Layer::dev);
+		cl.def_readwrite("lin", &Layer::lin);
+		cl.def_readwrite("lout", &Layer::lout);
+		cl.def_readwrite("delta_bp", &Layer::delta_bp);
+		cl.def("initialize", (void (Layer::*)()) &Layer::initialize, "C++: Layer::initialize() --> void");
+		cl.def("reset", (void (Layer::*)()) &Layer::reset, "C++: Layer::reset() --> void");
+		cl.def("info", (void (Layer::*)()) &Layer::info, "C++: Layer::info() --> void");
+		cl.def("setmode", (void (Layer::*)(int)) &Layer::setmode, "C++: Layer::setmode(int) --> void", pybind11::arg("m"));
+		cl.def("getWeights", (class Tensor * (Layer::*)()) &Layer::getWeights, "C++: Layer::getWeights() --> class Tensor *", pybind11::return_value_policy::automatic);
+		cl.def("setWeights", (class Tensor * (Layer::*)(class Tensor)) &Layer::setWeights, "C++: Layer::setWeights(class Tensor) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("bias"));
+		cl.def("getBias", (class Tensor * (Layer::*)()) &Layer::getBias, "C++: Layer::getBias() --> class Tensor *", pybind11::return_value_policy::automatic);
+		cl.def("setBias", (class Tensor * (Layer::*)(class Tensor)) &Layer::setBias, "C++: Layer::setBias(class Tensor) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("bias"));
+		cl.def("resize", (void (Layer::*)(int)) &Layer::resize, "C++: Layer::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("addchild", (void (Layer::*)(class Layer *)) &Layer::addchild, "C++: Layer::addchild(class Layer *) --> void", pybind11::arg("l"));
+		cl.def("addparent", (void (Layer::*)(class Layer *)) &Layer::addparent, "C++: Layer::addparent(class Layer *) --> void", pybind11::arg("l"));
+		cl.def("forward", (void (Layer::*)()) &Layer::forward, "C++: Layer::forward() --> void");
+		cl.def("backward", (void (Layer::*)()) &Layer::backward, "C++: Layer::backward() --> void");
+		cl.def("assign", (class Layer & (Layer::*)(const class Layer &)) &Layer::operator=, "C++: Layer::operator=(const class Layer &) --> class Layer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		layer_addons(cl);
+	}
+	{ // LinLayer file:eddl/layers/layer.h line:97
+		pybind11::class_<LinLayer, std::shared_ptr<LinLayer>, PyCallBack_LinLayer, Layer> cl(M(""), "LinLayer", "//////////////////////////////////////\n//////////////////////////////////////");
+		pybind11::handle cl_type = cl;
+
+		cl.def( pybind11::init( [](PyCallBack_LinLayer const &o){ return new PyCallBack_LinLayer(o); } ) );
+		cl.def( pybind11::init( [](LinLayer const &o){ return new LinLayer(o); } ) );
+		cl.def("addchild", (void (LinLayer::*)(class Layer *)) &LinLayer::addchild, "C++: LinLayer::addchild(class Layer *) --> void", pybind11::arg("l"));
+		cl.def("addparent", (void (LinLayer::*)(class Layer *)) &LinLayer::addparent, "C++: LinLayer::addparent(class Layer *) --> void", pybind11::arg("l"));
+		cl.def("resize", (void (LinLayer::*)(int)) &LinLayer::resize, "C++: LinLayer::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("forward", (void (LinLayer::*)()) &LinLayer::forward, "C++: LinLayer::forward() --> void");
+		cl.def("backward", (void (LinLayer::*)()) &LinLayer::backward, "C++: LinLayer::backward() --> void");
+		cl.def("assign", (class LinLayer & (LinLayer::*)(const class LinLayer &)) &LinLayer::operator=, "C++: LinLayer::operator=(const class LinLayer &) --> class LinLayer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // MLayer file:eddl/layers/layer.h line:125
+		pybind11::class_<MLayer, std::shared_ptr<MLayer>, PyCallBack_MLayer, Layer> cl(M(""), "MLayer", "//////////////////////////////////////\n//////////////////////////////////////");
+		pybind11::handle cl_type = cl;
+
+		cl.def("addchild", (void (MLayer::*)(class Layer *)) &MLayer::addchild, "C++: MLayer::addchild(class Layer *) --> void", pybind11::arg("l"));
+		cl.def("addparent", (void (MLayer::*)(class Layer *)) &MLayer::addparent, "C++: MLayer::addparent(class Layer *) --> void", pybind11::arg("l"));
+		cl.def("resize", (void (MLayer::*)(int)) &MLayer::resize, "C++: MLayer::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("forward", (void (MLayer::*)()) &MLayer::forward, "C++: MLayer::forward() --> void");
+		cl.def("backward", (void (MLayer::*)()) &MLayer::backward, "C++: MLayer::backward() --> void");
+		cl.def("assign", (class MLayer & (MLayer::*)(const class MLayer &)) &MLayer::operator=, "C++: MLayer::operator=(const class MLayer &) --> class MLayer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // LTensor file:eddl/layers/core/layer_core.h line:35
+		pybind11::class_<LTensor, std::shared_ptr<LTensor>, PyCallBack_LTensor, LinLayer> cl(M(""), "LTensor", "Tensor Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def( pybind11::init<class Layer *>(), pybind11::arg("l") );
+
+		cl.def("info", (void (LTensor::*)()) &LTensor::info, "C++: LTensor::info() --> void");
+		cl.def("forward", (void (LTensor::*)()) &LTensor::forward, "C++: LTensor::forward() --> void");
+		cl.def("backward", (void (LTensor::*)()) &LTensor::backward, "C++: LTensor::backward() --> void");
+		cl.def("resize", (void (LTensor::*)(int)) &LTensor::resize, "C++: LTensor::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("__add__", (class LTensor (LTensor::*)(class LTensor)) &LTensor::operator+, "C++: LTensor::operator+(class LTensor) --> class LTensor", pybind11::arg("L"));
+		cl.def("assign", (class LTensor & (LTensor::*)(const class LTensor &)) &LTensor::operator=, "C++: LTensor::operator=(const class LTensor &) --> class LTensor &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		ltensor_addons(cl);
+	}
+	{ // LInput file:eddl/layers/core/layer_core.h line:70
+		pybind11::class_<LInput, std::shared_ptr<LInput>, PyCallBack_LInput, LinLayer> cl(M(""), "LInput", "INPUT Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def("forward", (void (LInput::*)()) &LInput::forward, "C++: LInput::forward() --> void");
+		cl.def("backward", (void (LInput::*)()) &LInput::backward, "C++: LInput::backward() --> void");
+		cl.def("resize", (void (LInput::*)(int)) &LInput::resize, "C++: LInput::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LInput & (LInput::*)(const class LInput &)) &LInput::operator=, "C++: LInput::operator=(const class LInput &) --> class LInput &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		linput_addons(cl);
+	}
+	{ // LEmbedding file:eddl/layers/core/layer_core.h line:91
+		pybind11::class_<LEmbedding, std::shared_ptr<LEmbedding>, PyCallBack_LEmbedding, LinLayer> cl(M(""), "LEmbedding", "EMBEDDING Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def_readwrite("input_dim", &LEmbedding::input_dim);
+		cl.def_readwrite("output_dim", &LEmbedding::output_dim);
+		cl.def("forward", (void (LEmbedding::*)()) &LEmbedding::forward, "C++: LEmbedding::forward() --> void");
+		cl.def("backward", (void (LEmbedding::*)()) &LEmbedding::backward, "C++: LEmbedding::backward() --> void");
+		cl.def("resize", (void (LEmbedding::*)(int)) &LEmbedding::resize, "C++: LEmbedding::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LEmbedding & (LEmbedding::*)(const class LEmbedding &)) &LEmbedding::operator=, "C++: LEmbedding::operator=(const class LEmbedding &) --> class LEmbedding &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		lembedding_addons(cl);
+	}
+	{ // LDense file:eddl/layers/core/layer_core.h line:114
+		pybind11::class_<LDense, std::shared_ptr<LDense>, PyCallBack_LDense, LinLayer> cl(M(""), "LDense", "Dense Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def_readwrite("ndim", &LDense::ndim);
+		cl.def_readwrite("use_bias", &LDense::use_bias);
+		cl.def("forward", (void (LDense::*)()) &LDense::forward, "C++: LDense::forward() --> void");
+		cl.def("backward", (void (LDense::*)()) &LDense::backward, "C++: LDense::backward() --> void");
+		cl.def("resize", (void (LDense::*)(int)) &LDense::resize, "C++: LDense::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LDense & (LDense::*)(const class LDense &)) &LDense::operator=, "C++: LDense::operator=(const class LDense &) --> class LDense &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		ldense_addons(cl);
+	}
+	{ // LActivation file:eddl/layers/core/layer_core.h line:143
+		pybind11::class_<LActivation, std::shared_ptr<LActivation>, PyCallBack_LActivation, LinLayer> cl(M(""), "LActivation", "Activation Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def_readwrite("act", &LActivation::act);
+		cl.def("forward", (void (LActivation::*)()) &LActivation::forward, "C++: LActivation::forward() --> void");
+		cl.def("backward", (void (LActivation::*)()) &LActivation::backward, "C++: LActivation::backward() --> void");
+		cl.def("resize", (void (LActivation::*)(int)) &LActivation::resize, "C++: LActivation::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LActivation & (LActivation::*)(const class LActivation &)) &LActivation::operator=, "C++: LActivation::operator=(const class LActivation &) --> class LActivation &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		lactivation_addons(cl);
+	}
+	{ // LReshape file:eddl/layers/core/layer_core.h line:165
+		pybind11::class_<LReshape, std::shared_ptr<LReshape>, PyCallBack_LReshape, LinLayer> cl(M(""), "LReshape", "Reshape Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def_readwrite("ls", &LReshape::ls);
+		cl.def("forward", (void (LReshape::*)()) &LReshape::forward, "C++: LReshape::forward() --> void");
+		cl.def("backward", (void (LReshape::*)()) &LReshape::backward, "C++: LReshape::backward() --> void");
+		cl.def("resize", (void (LReshape::*)(int)) &LReshape::resize, "C++: LReshape::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LReshape & (LReshape::*)(const class LReshape &)) &LReshape::operator=, "C++: LReshape::operator=(const class LReshape &) --> class LReshape &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		lreshape_addons(cl);
+	}
+	{ // LTranspose file:eddl/layers/core/layer_core.h line:190
+		pybind11::class_<LTranspose, std::shared_ptr<LTranspose>, PyCallBack_LTranspose, LinLayer> cl(M(""), "LTranspose", "Transpose Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def_readwrite("dims", &LTranspose::dims);
+		cl.def_readwrite("rdims", &LTranspose::rdims);
+		cl.def("forward", (void (LTranspose::*)()) &LTranspose::forward, "C++: LTranspose::forward() --> void");
+		cl.def("backward", (void (LTranspose::*)()) &LTranspose::backward, "C++: LTranspose::backward() --> void");
+		cl.def("resize", (void (LTranspose::*)(int)) &LTranspose::resize, "C++: LTranspose::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LTranspose & (LTranspose::*)(const class LTranspose &)) &LTranspose::operator=, "C++: LTranspose::operator=(const class LTranspose &) --> class LTranspose &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // LDropout file:eddl/layers/core/layer_core.h line:215
+		pybind11::class_<LDropout, std::shared_ptr<LDropout>, PyCallBack_LDropout, LinLayer> cl(M(""), "LDropout", "Drop-out Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def_readwrite("df", &LDropout::df);
+		cl.def("forward", (void (LDropout::*)()) &LDropout::forward, "C++: LDropout::forward() --> void");
+		cl.def("backward", (void (LDropout::*)()) &LDropout::backward, "C++: LDropout::backward() --> void");
+		cl.def("resize", (void (LDropout::*)(int)) &LDropout::resize, "C++: LDropout::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LDropout & (LDropout::*)(const class LDropout &)) &LDropout::operator=, "C++: LDropout::operator=(const class LDropout &) --> class LDropout &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // LBatchNorm file:eddl/layers/core/layer_core.h line:241
+		pybind11::class_<LBatchNorm, std::shared_ptr<LBatchNorm>, PyCallBack_LBatchNorm, LinLayer> cl(M(""), "LBatchNorm", "BatchNormalization Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def_readwrite("momentum", &LBatchNorm::momentum);
+		cl.def_readwrite("epsilon", &LBatchNorm::epsilon);
+		cl.def_readwrite("affine", &LBatchNorm::affine);
+		cl.def("forward", (void (LBatchNorm::*)()) &LBatchNorm::forward, "C++: LBatchNorm::forward() --> void");
+		cl.def("backward", (void (LBatchNorm::*)()) &LBatchNorm::backward, "C++: LBatchNorm::backward() --> void");
+		cl.def("resize", (void (LBatchNorm::*)(int)) &LBatchNorm::resize, "C++: LBatchNorm::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LBatchNorm & (LBatchNorm::*)(const class LBatchNorm &)) &LBatchNorm::operator=, "C++: LBatchNorm::operator=(const class LBatchNorm &) --> class LBatchNorm &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // LConv file:eddl/layers/conv/layer_conv.h line:36
+		pybind11::class_<LConv, std::shared_ptr<LConv>, PyCallBack_LConv, LinLayer> cl(M(""), "LConv", "Conv2D Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def("forward", (void (LConv::*)()) &LConv::forward, "C++: LConv::forward() --> void");
+		cl.def("backward", (void (LConv::*)()) &LConv::backward, "C++: LConv::backward() --> void");
+		cl.def("resize", (void (LConv::*)(int)) &LConv::resize, "C++: LConv::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LConv & (LConv::*)(const class LConv &)) &LConv::operator=, "C++: LConv::operator=(const class LConv &) --> class LConv &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		lconv_addons(cl);
+	}
+	{ // LConvT file:eddl/layers/conv/layer_conv.h line:68
+		pybind11::class_<LConvT, std::shared_ptr<LConvT>, PyCallBack_LConvT, LinLayer> cl(M(""), "LConvT", "ConvT2D Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def("assign", (class LConvT & (LConvT::*)(const class LConvT &)) &LConvT::operator=, "C++: LConvT::operator=(const class LConvT &) --> class LConvT &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+}
+
+
+// File: eddl/layers/conv/layer_conv.cpp
+#include <eddl/layers/conv/layer_conv.h>
+#include <eddl/layers/layer.h>
+#include <eddl/layers/noise/layer_noise.h>
+#include <eddl/layers/pool/layer_pool.h>
+#include <eddl/optimizers/optim.h>
+#include <iterator>
+#include <lgaussiannoise_addons.h>
+#include <lmaxpool_addons.h>
+#include <memory>
+#include <sstream> // __str__
+#include <stdio.h>
+#include <string>
+#include <vector>
+
+#include <pybind11/pybind11.h>
+#include <functional>
+#include <string>
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
+
+
+#ifndef BINDER_PYBIND11_TYPE_CASTER
+	#define BINDER_PYBIND11_TYPE_CASTER
+	PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>);
+	PYBIND11_DECLARE_HOLDER_TYPE(T, T*);
+	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
+#endif
+
+// LUpSampling file:eddl/layers/conv/layer_conv.h line:95
 struct PyCallBack_LUpSampling : public LUpSampling {
 	using LUpSampling::LUpSampling;
 
@@ -1708,247 +1941,7 @@ struct PyCallBack_LUpSampling : public LUpSampling {
 	}
 };
 
-void bind_metrics_metric(std::function< pybind11::module &(std::string const &namespace_) > &M)
-{
-	{ // MMeanSquaredError file:metrics/metric.h line:42
-		pybind11::class_<MMeanSquaredError, std::shared_ptr<MMeanSquaredError>, PyCallBack_MMeanSquaredError, Metric> cl(M(""), "MMeanSquaredError", "");
-		pybind11::handle cl_type = cl;
-
-		cl.def( pybind11::init( [](){ return new MMeanSquaredError(); }, [](){ return new PyCallBack_MMeanSquaredError(); } ) );
-		cl.def("value", (float (MMeanSquaredError::*)(class Tensor *, class Tensor *)) &MMeanSquaredError::value, "C++: MMeanSquaredError::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
-		cl.def("assign", (class MMeanSquaredError & (MMeanSquaredError::*)(const class MMeanSquaredError &)) &MMeanSquaredError::operator=, "C++: MMeanSquaredError::operator=(const class MMeanSquaredError &) --> class MMeanSquaredError &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
-	{ // MCategoricalAccuracy file:metrics/metric.h line:50
-		pybind11::class_<MCategoricalAccuracy, std::shared_ptr<MCategoricalAccuracy>, PyCallBack_MCategoricalAccuracy, Metric> cl(M(""), "MCategoricalAccuracy", "");
-		pybind11::handle cl_type = cl;
-
-		cl.def( pybind11::init( [](){ return new MCategoricalAccuracy(); }, [](){ return new PyCallBack_MCategoricalAccuracy(); } ) );
-		cl.def("value", (float (MCategoricalAccuracy::*)(class Tensor *, class Tensor *)) &MCategoricalAccuracy::value, "C++: MCategoricalAccuracy::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
-		cl.def("assign", (class MCategoricalAccuracy & (MCategoricalAccuracy::*)(const class MCategoricalAccuracy &)) &MCategoricalAccuracy::operator=, "C++: MCategoricalAccuracy::operator=(const class MCategoricalAccuracy &) --> class MCategoricalAccuracy &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
-	{ // Layer file:layers/layer.h line:34
-		pybind11::class_<Layer, std::shared_ptr<Layer>, PyCallBack_Layer> cl(M(""), "Layer", "");
-		pybind11::handle cl_type = cl;
-
-		cl.def( pybind11::init( [](PyCallBack_Layer const &o){ return new PyCallBack_Layer(o); } ) );
-		cl.def( pybind11::init( [](Layer const &o){ return new Layer(o); } ) );
-		cl.def_readwrite("name", &Layer::name);
-		cl.def_readwrite("params", &Layer::params);
-		cl.def_readwrite("gradients", &Layer::gradients);
-		cl.def_readwrite("parent", &Layer::parent);
-		cl.def_readwrite("child", &Layer::child);
-		cl.def_readwrite("mode", &Layer::mode);
-		cl.def_readwrite("dev", &Layer::dev);
-		cl.def_readwrite("lin", &Layer::lin);
-		cl.def_readwrite("lout", &Layer::lout);
-		cl.def_readwrite("delta_bp", &Layer::delta_bp);
-		cl.def("initialize", (void (Layer::*)()) &Layer::initialize, "C++: Layer::initialize() --> void");
-		cl.def("reset", (void (Layer::*)()) &Layer::reset, "C++: Layer::reset() --> void");
-		cl.def("info", (void (Layer::*)()) &Layer::info, "C++: Layer::info() --> void");
-		cl.def("setmode", (void (Layer::*)(int)) &Layer::setmode, "C++: Layer::setmode(int) --> void", pybind11::arg("m"));
-		cl.def("getWeights", (class Tensor * (Layer::*)()) &Layer::getWeights, "C++: Layer::getWeights() --> class Tensor *", pybind11::return_value_policy::automatic);
-		cl.def("setWeights", (class Tensor * (Layer::*)(class Tensor)) &Layer::setWeights, "C++: Layer::setWeights(class Tensor) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("bias"));
-		cl.def("getBias", (class Tensor * (Layer::*)()) &Layer::getBias, "C++: Layer::getBias() --> class Tensor *", pybind11::return_value_policy::automatic);
-		cl.def("setBias", (class Tensor * (Layer::*)(class Tensor)) &Layer::setBias, "C++: Layer::setBias(class Tensor) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("bias"));
-		cl.def("resize", (void (Layer::*)(int)) &Layer::resize, "C++: Layer::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("addchild", (void (Layer::*)(class Layer *)) &Layer::addchild, "C++: Layer::addchild(class Layer *) --> void", pybind11::arg("l"));
-		cl.def("addparent", (void (Layer::*)(class Layer *)) &Layer::addparent, "C++: Layer::addparent(class Layer *) --> void", pybind11::arg("l"));
-		cl.def("forward", (void (Layer::*)()) &Layer::forward, "C++: Layer::forward() --> void");
-		cl.def("backward", (void (Layer::*)()) &Layer::backward, "C++: Layer::backward() --> void");
-		cl.def("assign", (class Layer & (Layer::*)(const class Layer &)) &Layer::operator=, "C++: Layer::operator=(const class Layer &) --> class Layer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-
-		layer_addons(cl);
-	}
-	{ // LinLayer file:layers/layer.h line:97
-		pybind11::class_<LinLayer, std::shared_ptr<LinLayer>, PyCallBack_LinLayer, Layer> cl(M(""), "LinLayer", "//////////////////////////////////////\n//////////////////////////////////////");
-		pybind11::handle cl_type = cl;
-
-		cl.def( pybind11::init( [](PyCallBack_LinLayer const &o){ return new PyCallBack_LinLayer(o); } ) );
-		cl.def( pybind11::init( [](LinLayer const &o){ return new LinLayer(o); } ) );
-		cl.def("addchild", (void (LinLayer::*)(class Layer *)) &LinLayer::addchild, "C++: LinLayer::addchild(class Layer *) --> void", pybind11::arg("l"));
-		cl.def("addparent", (void (LinLayer::*)(class Layer *)) &LinLayer::addparent, "C++: LinLayer::addparent(class Layer *) --> void", pybind11::arg("l"));
-		cl.def("resize", (void (LinLayer::*)(int)) &LinLayer::resize, "C++: LinLayer::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("forward", (void (LinLayer::*)()) &LinLayer::forward, "C++: LinLayer::forward() --> void");
-		cl.def("backward", (void (LinLayer::*)()) &LinLayer::backward, "C++: LinLayer::backward() --> void");
-		cl.def("assign", (class LinLayer & (LinLayer::*)(const class LinLayer &)) &LinLayer::operator=, "C++: LinLayer::operator=(const class LinLayer &) --> class LinLayer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
-	{ // MLayer file:layers/layer.h line:125
-		pybind11::class_<MLayer, std::shared_ptr<MLayer>, PyCallBack_MLayer, Layer> cl(M(""), "MLayer", "//////////////////////////////////////\n//////////////////////////////////////");
-		pybind11::handle cl_type = cl;
-
-		cl.def("addchild", (void (MLayer::*)(class Layer *)) &MLayer::addchild, "C++: MLayer::addchild(class Layer *) --> void", pybind11::arg("l"));
-		cl.def("addparent", (void (MLayer::*)(class Layer *)) &MLayer::addparent, "C++: MLayer::addparent(class Layer *) --> void", pybind11::arg("l"));
-		cl.def("resize", (void (MLayer::*)(int)) &MLayer::resize, "C++: MLayer::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("forward", (void (MLayer::*)()) &MLayer::forward, "C++: MLayer::forward() --> void");
-		cl.def("backward", (void (MLayer::*)()) &MLayer::backward, "C++: MLayer::backward() --> void");
-		cl.def("assign", (class MLayer & (MLayer::*)(const class MLayer &)) &MLayer::operator=, "C++: MLayer::operator=(const class MLayer &) --> class MLayer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
-	{ // LTensor file:layers/core/layer_core.h line:35
-		pybind11::class_<LTensor, std::shared_ptr<LTensor>, PyCallBack_LTensor, LinLayer> cl(M(""), "LTensor", "Tensor Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def( pybind11::init<class Layer *>(), pybind11::arg("l") );
-
-		cl.def("info", (void (LTensor::*)()) &LTensor::info, "C++: LTensor::info() --> void");
-		cl.def("forward", (void (LTensor::*)()) &LTensor::forward, "C++: LTensor::forward() --> void");
-		cl.def("backward", (void (LTensor::*)()) &LTensor::backward, "C++: LTensor::backward() --> void");
-		cl.def("resize", (void (LTensor::*)(int)) &LTensor::resize, "C++: LTensor::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("__add__", (class LTensor (LTensor::*)(class LTensor)) &LTensor::operator+, "C++: LTensor::operator+(class LTensor) --> class LTensor", pybind11::arg("L"));
-		cl.def("assign", (class LTensor & (LTensor::*)(const class LTensor &)) &LTensor::operator=, "C++: LTensor::operator=(const class LTensor &) --> class LTensor &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-
-		ltensor_addons(cl);
-	}
-	{ // LInput file:layers/core/layer_core.h line:70
-		pybind11::class_<LInput, std::shared_ptr<LInput>, PyCallBack_LInput, LinLayer> cl(M(""), "LInput", "INPUT Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def("forward", (void (LInput::*)()) &LInput::forward, "C++: LInput::forward() --> void");
-		cl.def("backward", (void (LInput::*)()) &LInput::backward, "C++: LInput::backward() --> void");
-		cl.def("resize", (void (LInput::*)(int)) &LInput::resize, "C++: LInput::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class LInput & (LInput::*)(const class LInput &)) &LInput::operator=, "C++: LInput::operator=(const class LInput &) --> class LInput &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-
-		linput_addons(cl);
-	}
-	{ // LEmbedding file:layers/core/layer_core.h line:91
-		pybind11::class_<LEmbedding, std::shared_ptr<LEmbedding>, PyCallBack_LEmbedding, LinLayer> cl(M(""), "LEmbedding", "EMBEDDING Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def_readwrite("input_dim", &LEmbedding::input_dim);
-		cl.def_readwrite("output_dim", &LEmbedding::output_dim);
-		cl.def("forward", (void (LEmbedding::*)()) &LEmbedding::forward, "C++: LEmbedding::forward() --> void");
-		cl.def("backward", (void (LEmbedding::*)()) &LEmbedding::backward, "C++: LEmbedding::backward() --> void");
-		cl.def("resize", (void (LEmbedding::*)(int)) &LEmbedding::resize, "C++: LEmbedding::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class LEmbedding & (LEmbedding::*)(const class LEmbedding &)) &LEmbedding::operator=, "C++: LEmbedding::operator=(const class LEmbedding &) --> class LEmbedding &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-
-		lembedding_addons(cl);
-	}
-	{ // LDense file:layers/core/layer_core.h line:114
-		pybind11::class_<LDense, std::shared_ptr<LDense>, PyCallBack_LDense, LinLayer> cl(M(""), "LDense", "Dense Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def_readwrite("ndim", &LDense::ndim);
-		cl.def_readwrite("use_bias", &LDense::use_bias);
-		cl.def("forward", (void (LDense::*)()) &LDense::forward, "C++: LDense::forward() --> void");
-		cl.def("backward", (void (LDense::*)()) &LDense::backward, "C++: LDense::backward() --> void");
-		cl.def("resize", (void (LDense::*)(int)) &LDense::resize, "C++: LDense::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class LDense & (LDense::*)(const class LDense &)) &LDense::operator=, "C++: LDense::operator=(const class LDense &) --> class LDense &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-
-		ldense_addons(cl);
-	}
-	{ // LActivation file:layers/core/layer_core.h line:143
-		pybind11::class_<LActivation, std::shared_ptr<LActivation>, PyCallBack_LActivation, LinLayer> cl(M(""), "LActivation", "Activation Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def_readwrite("act", &LActivation::act);
-		cl.def("forward", (void (LActivation::*)()) &LActivation::forward, "C++: LActivation::forward() --> void");
-		cl.def("backward", (void (LActivation::*)()) &LActivation::backward, "C++: LActivation::backward() --> void");
-		cl.def("resize", (void (LActivation::*)(int)) &LActivation::resize, "C++: LActivation::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class LActivation & (LActivation::*)(const class LActivation &)) &LActivation::operator=, "C++: LActivation::operator=(const class LActivation &) --> class LActivation &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-
-		lactivation_addons(cl);
-	}
-	{ // LReshape file:layers/core/layer_core.h line:165
-		pybind11::class_<LReshape, std::shared_ptr<LReshape>, PyCallBack_LReshape, LinLayer> cl(M(""), "LReshape", "Reshape Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def_readwrite("ls", &LReshape::ls);
-		cl.def("forward", (void (LReshape::*)()) &LReshape::forward, "C++: LReshape::forward() --> void");
-		cl.def("backward", (void (LReshape::*)()) &LReshape::backward, "C++: LReshape::backward() --> void");
-		cl.def("resize", (void (LReshape::*)(int)) &LReshape::resize, "C++: LReshape::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class LReshape & (LReshape::*)(const class LReshape &)) &LReshape::operator=, "C++: LReshape::operator=(const class LReshape &) --> class LReshape &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-
-		lreshape_addons(cl);
-	}
-	{ // LTranspose file:layers/core/layer_core.h line:190
-		pybind11::class_<LTranspose, std::shared_ptr<LTranspose>, PyCallBack_LTranspose, LinLayer> cl(M(""), "LTranspose", "Transpose Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def_readwrite("dims", &LTranspose::dims);
-		cl.def_readwrite("rdims", &LTranspose::rdims);
-		cl.def("forward", (void (LTranspose::*)()) &LTranspose::forward, "C++: LTranspose::forward() --> void");
-		cl.def("backward", (void (LTranspose::*)()) &LTranspose::backward, "C++: LTranspose::backward() --> void");
-		cl.def("resize", (void (LTranspose::*)(int)) &LTranspose::resize, "C++: LTranspose::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class LTranspose & (LTranspose::*)(const class LTranspose &)) &LTranspose::operator=, "C++: LTranspose::operator=(const class LTranspose &) --> class LTranspose &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
-	{ // LDropout file:layers/core/layer_core.h line:215
-		pybind11::class_<LDropout, std::shared_ptr<LDropout>, PyCallBack_LDropout, LinLayer> cl(M(""), "LDropout", "Drop-out Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def_readwrite("df", &LDropout::df);
-		cl.def("forward", (void (LDropout::*)()) &LDropout::forward, "C++: LDropout::forward() --> void");
-		cl.def("backward", (void (LDropout::*)()) &LDropout::backward, "C++: LDropout::backward() --> void");
-		cl.def("resize", (void (LDropout::*)(int)) &LDropout::resize, "C++: LDropout::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class LDropout & (LDropout::*)(const class LDropout &)) &LDropout::operator=, "C++: LDropout::operator=(const class LDropout &) --> class LDropout &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
-	{ // LBatchNorm file:layers/core/layer_core.h line:241
-		pybind11::class_<LBatchNorm, std::shared_ptr<LBatchNorm>, PyCallBack_LBatchNorm, LinLayer> cl(M(""), "LBatchNorm", "BatchNormalization Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def_readwrite("momentum", &LBatchNorm::momentum);
-		cl.def_readwrite("epsilon", &LBatchNorm::epsilon);
-		cl.def_readwrite("affine", &LBatchNorm::affine);
-		cl.def("forward", (void (LBatchNorm::*)()) &LBatchNorm::forward, "C++: LBatchNorm::forward() --> void");
-		cl.def("backward", (void (LBatchNorm::*)()) &LBatchNorm::backward, "C++: LBatchNorm::backward() --> void");
-		cl.def("resize", (void (LBatchNorm::*)(int)) &LBatchNorm::resize, "C++: LBatchNorm::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class LBatchNorm & (LBatchNorm::*)(const class LBatchNorm &)) &LBatchNorm::operator=, "C++: LBatchNorm::operator=(const class LBatchNorm &) --> class LBatchNorm &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
-	{ // LConv file:layers/conv/layer_conv.h line:36
-		pybind11::class_<LConv, std::shared_ptr<LConv>, PyCallBack_LConv, LinLayer> cl(M(""), "LConv", "Conv2D Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def("forward", (void (LConv::*)()) &LConv::forward, "C++: LConv::forward() --> void");
-		cl.def("backward", (void (LConv::*)()) &LConv::backward, "C++: LConv::backward() --> void");
-		cl.def("resize", (void (LConv::*)(int)) &LConv::resize, "C++: LConv::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class LConv & (LConv::*)(const class LConv &)) &LConv::operator=, "C++: LConv::operator=(const class LConv &) --> class LConv &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-
-		lconv_addons(cl);
-	}
-	{ // LConvT file:layers/conv/layer_conv.h line:68
-		pybind11::class_<LConvT, std::shared_ptr<LConvT>, PyCallBack_LConvT, LinLayer> cl(M(""), "LConvT", "ConvT2D Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def("assign", (class LConvT & (LConvT::*)(const class LConvT &)) &LConvT::operator=, "C++: LConvT::operator=(const class LConvT &) --> class LConvT &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
-	{ // LUpSampling file:layers/conv/layer_conv.h line:95
-		pybind11::class_<LUpSampling, std::shared_ptr<LUpSampling>, PyCallBack_LUpSampling, LinLayer> cl(M(""), "LUpSampling", "UpSampling2D Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def_readwrite("size", &LUpSampling::size);
-		cl.def_readwrite("interpolation", &LUpSampling::interpolation);
-		cl.def("assign", (class LUpSampling & (LUpSampling::*)(const class LUpSampling &)) &LUpSampling::operator=, "C++: LUpSampling::operator=(const class LUpSampling &) --> class LUpSampling &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
-}
-
-
-// File: layers/pool/layer_pool.cpp
-#include <iterator>
-#include <layers/layer.h>
-#include <layers/noise/layer_noise.h>
-#include <layers/pool/layer_pool.h>
-#include <lgaussiannoise_addons.h>
-#include <lmaxpool_addons.h>
-#include <memory>
-#include <optimizers/optim.h>
-#include <sstream> // __str__
-#include <stdio.h>
-#include <string>
-#include <vector>
-
-#include <pybind11/pybind11.h>
-#include <functional>
-#include <string>
-#include <pybind11/stl.h>
-#include <pybind11/numpy.h>
-
-
-#ifndef BINDER_PYBIND11_TYPE_CASTER
-	#define BINDER_PYBIND11_TYPE_CASTER
-	PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>);
-	PYBIND11_DECLARE_HOLDER_TYPE(T, T*);
-	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
-#endif
-
-// LPool file:layers/pool/layer_pool.h line:37
+// LPool file:eddl/layers/pool/layer_pool.h line:37
 struct PyCallBack_LPool : public LPool {
 	using LPool::LPool;
 
@@ -2032,7 +2025,7 @@ struct PyCallBack_LPool : public LPool {
 	}
 };
 
-// LMaxPool file:layers/pool/layer_pool.h line:49
+// LMaxPool file:eddl/layers/pool/layer_pool.h line:49
 struct PyCallBack_LMaxPool : public LMaxPool {
 	using LMaxPool::LMaxPool;
 
@@ -2116,7 +2109,7 @@ struct PyCallBack_LMaxPool : public LMaxPool {
 	}
 };
 
-// LAveragePool file:layers/pool/layer_pool.h line:78
+// LAveragePool file:eddl/layers/pool/layer_pool.h line:78
 struct PyCallBack_LAveragePool : public LAveragePool {
 	using LAveragePool::LAveragePool;
 
@@ -2200,7 +2193,7 @@ struct PyCallBack_LAveragePool : public LAveragePool {
 	}
 };
 
-// LGlobalMaxPool file:layers/pool/layer_pool.h line:102
+// LGlobalMaxPool file:eddl/layers/pool/layer_pool.h line:102
 struct PyCallBack_LGlobalMaxPool : public LGlobalMaxPool {
 	using LGlobalMaxPool::LGlobalMaxPool;
 
@@ -2284,7 +2277,7 @@ struct PyCallBack_LGlobalMaxPool : public LGlobalMaxPool {
 	}
 };
 
-// LGlobalAveragePool file:layers/pool/layer_pool.h line:125
+// LGlobalAveragePool file:eddl/layers/pool/layer_pool.h line:125
 struct PyCallBack_LGlobalAveragePool : public LGlobalAveragePool {
 	using LGlobalAveragePool::LGlobalAveragePool;
 
@@ -2368,7 +2361,7 @@ struct PyCallBack_LGlobalAveragePool : public LGlobalAveragePool {
 	}
 };
 
-// LGaussianNoise file:layers/noise/layer_noise.h line:36
+// LGaussianNoise file:eddl/layers/noise/layer_noise.h line:36
 struct PyCallBack_LGaussianNoise : public LGaussianNoise {
 	using LGaussianNoise::LGaussianNoise;
 
@@ -2452,7 +2445,7 @@ struct PyCallBack_LGaussianNoise : public LGaussianNoise {
 	}
 };
 
-// Optimizer file:optimizers/optim.h line:38
+// Optimizer file:eddl/optimizers/optim.h line:38
 struct PyCallBack_Optimizer : public Optimizer {
 	using Optimizer::Optimizer;
 
@@ -2484,7 +2477,7 @@ struct PyCallBack_Optimizer : public Optimizer {
 	}
 };
 
-// SGD file:optimizers/optim.h line:55
+// SGD file:eddl/optimizers/optim.h line:55
 struct PyCallBack_SGD : public SGD {
 	using SGD::SGD;
 
@@ -2516,7 +2509,7 @@ struct PyCallBack_SGD : public SGD {
 	}
 };
 
-// Adam file:optimizers/optim.h line:76
+// Adam file:eddl/optimizers/optim.h line:76
 struct PyCallBack_Adam : public Adam {
 	using Adam::Adam;
 
@@ -2548,7 +2541,7 @@ struct PyCallBack_Adam : public Adam {
 	}
 };
 
-// AdaDelta file:optimizers/optim.h line:100
+// AdaDelta file:eddl/optimizers/optim.h line:100
 struct PyCallBack_AdaDelta : public AdaDelta {
 	using AdaDelta::AdaDelta;
 
@@ -2580,7 +2573,7 @@ struct PyCallBack_AdaDelta : public AdaDelta {
 	}
 };
 
-// Adagrad file:optimizers/optim.h line:121
+// Adagrad file:eddl/optimizers/optim.h line:121
 struct PyCallBack_Adagrad : public Adagrad {
 	using Adagrad::Adagrad;
 
@@ -2612,7 +2605,7 @@ struct PyCallBack_Adagrad : public Adagrad {
 	}
 };
 
-// Adamax file:optimizers/optim.h line:141
+// Adamax file:eddl/optimizers/optim.h line:141
 struct PyCallBack_Adamax : public Adamax {
 	using Adamax::Adamax;
 
@@ -2644,7 +2637,7 @@ struct PyCallBack_Adamax : public Adamax {
 	}
 };
 
-// Nadam file:optimizers/optim.h line:163
+// Nadam file:eddl/optimizers/optim.h line:163
 struct PyCallBack_Nadam : public Nadam {
 	using Nadam::Nadam;
 
@@ -2676,7 +2669,7 @@ struct PyCallBack_Nadam : public Nadam {
 	}
 };
 
-// RMSProp file:optimizers/optim.h line:185
+// RMSProp file:eddl/optimizers/optim.h line:185
 struct PyCallBack_RMSProp : public RMSProp {
 	using RMSProp::RMSProp;
 
@@ -2708,16 +2701,24 @@ struct PyCallBack_RMSProp : public RMSProp {
 	}
 };
 
-void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string const &namespace_) > &M)
+void bind_eddl_layers_conv_layer_conv(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
-	{ // LPool file:layers/pool/layer_pool.h line:37
+	{ // LUpSampling file:eddl/layers/conv/layer_conv.h line:95
+		pybind11::class_<LUpSampling, std::shared_ptr<LUpSampling>, PyCallBack_LUpSampling, LinLayer> cl(M(""), "LUpSampling", "UpSampling2D Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def_readwrite("size", &LUpSampling::size);
+		cl.def_readwrite("interpolation", &LUpSampling::interpolation);
+		cl.def("assign", (class LUpSampling & (LUpSampling::*)(const class LUpSampling &)) &LUpSampling::operator=, "C++: LUpSampling::operator=(const class LUpSampling &) --> class LUpSampling &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // LPool file:eddl/layers/pool/layer_pool.h line:37
 		pybind11::class_<LPool, std::shared_ptr<LPool>, PyCallBack_LPool, LinLayer> cl(M(""), "LPool", "Pool2D Layer");
 		pybind11::handle cl_type = cl;
 
 		cl.def("resize", (void (LPool::*)(int)) &LPool::resize, "C++: LPool::resize(int) --> void", pybind11::arg("batch"));
 		cl.def("assign", (class LPool & (LPool::*)(const class LPool &)) &LPool::operator=, "C++: LPool::operator=(const class LPool &) --> class LPool &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LMaxPool file:layers/pool/layer_pool.h line:49
+	{ // LMaxPool file:eddl/layers/pool/layer_pool.h line:49
 		pybind11::class_<LMaxPool, std::shared_ptr<LMaxPool>, PyCallBack_LMaxPool, LPool> cl(M(""), "LMaxPool", "MaxPool2D Layer");
 		pybind11::handle cl_type = cl;
 
@@ -2728,25 +2729,25 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 
 		lmaxpool_addons(cl);
 	}
-	{ // LAveragePool file:layers/pool/layer_pool.h line:78
+	{ // LAveragePool file:eddl/layers/pool/layer_pool.h line:78
 		pybind11::class_<LAveragePool, std::shared_ptr<LAveragePool>, PyCallBack_LAveragePool, LPool> cl(M(""), "LAveragePool", "AveragePool2D Layer");
 		pybind11::handle cl_type = cl;
 
 		cl.def("assign", (class LAveragePool & (LAveragePool::*)(const class LAveragePool &)) &LAveragePool::operator=, "C++: LAveragePool::operator=(const class LAveragePool &) --> class LAveragePool &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LGlobalMaxPool file:layers/pool/layer_pool.h line:102
+	{ // LGlobalMaxPool file:eddl/layers/pool/layer_pool.h line:102
 		pybind11::class_<LGlobalMaxPool, std::shared_ptr<LGlobalMaxPool>, PyCallBack_LGlobalMaxPool, LPool> cl(M(""), "LGlobalMaxPool", "GlobalMaxPool2D Layer");
 		pybind11::handle cl_type = cl;
 
 		cl.def("assign", (class LGlobalMaxPool & (LGlobalMaxPool::*)(const class LGlobalMaxPool &)) &LGlobalMaxPool::operator=, "C++: LGlobalMaxPool::operator=(const class LGlobalMaxPool &) --> class LGlobalMaxPool &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LGlobalAveragePool file:layers/pool/layer_pool.h line:125
+	{ // LGlobalAveragePool file:eddl/layers/pool/layer_pool.h line:125
 		pybind11::class_<LGlobalAveragePool, std::shared_ptr<LGlobalAveragePool>, PyCallBack_LGlobalAveragePool, LPool> cl(M(""), "LGlobalAveragePool", "GlobalAveragePool2D Layer");
 		pybind11::handle cl_type = cl;
 
 		cl.def("assign", (class LGlobalAveragePool & (LGlobalAveragePool::*)(const class LGlobalAveragePool &)) &LGlobalAveragePool::operator=, "C++: LGlobalAveragePool::operator=(const class LGlobalAveragePool &) --> class LGlobalAveragePool &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LGaussianNoise file:layers/noise/layer_noise.h line:36
+	{ // LGaussianNoise file:eddl/layers/noise/layer_noise.h line:36
 		pybind11::class_<LGaussianNoise, std::shared_ptr<LGaussianNoise>, PyCallBack_LGaussianNoise, LinLayer> cl(M(""), "LGaussianNoise", "GaussianNoise Layer");
 		pybind11::handle cl_type = cl;
 
@@ -2758,7 +2759,7 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 
 		lgaussiannoise_addons(cl);
 	}
-	{ // Optimizer file:optimizers/optim.h line:38
+	{ // Optimizer file:eddl/optimizers/optim.h line:38
 		pybind11::class_<Optimizer, std::shared_ptr<Optimizer>, PyCallBack_Optimizer> cl(M(""), "Optimizer", "");
 		pybind11::handle cl_type = cl;
 
@@ -2771,7 +2772,7 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 		cl.def("clone", (class Optimizer * (Optimizer::*)()) &Optimizer::clone, "C++: Optimizer::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
 		cl.def("assign", (class Optimizer & (Optimizer::*)(const class Optimizer &)) &Optimizer::operator=, "C++: Optimizer::operator=(const class Optimizer &) --> class Optimizer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // SGD file:optimizers/optim.h line:55
+	{ // SGD file:eddl/optimizers/optim.h line:55
 		pybind11::class_<SGD, std::shared_ptr<SGD>, PyCallBack_SGD, Optimizer> cl(M(""), "SGD", "");
 		pybind11::handle cl_type = cl;
 
@@ -2790,7 +2791,7 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 		cl.def("applygrads", (void (SGD::*)(int)) &SGD::applygrads, "C++: SGD::applygrads(int) --> void", pybind11::arg("batch"));
 		cl.def("assign", (class SGD & (SGD::*)(const class SGD &)) &SGD::operator=, "C++: SGD::operator=(const class SGD &) --> class SGD &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // Adam file:optimizers/optim.h line:76
+	{ // Adam file:eddl/optimizers/optim.h line:76
 		pybind11::class_<Adam, std::shared_ptr<Adam>, PyCallBack_Adam, Optimizer> cl(M(""), "Adam", "");
 		pybind11::handle cl_type = cl;
 
@@ -2811,7 +2812,7 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 		cl.def_readwrite("mT", &Adam::mT);
 		cl.def("assign", (class Adam & (Adam::*)(const class Adam &)) &Adam::operator=, "C++: Adam::operator=(const class Adam &) --> class Adam &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // AdaDelta file:optimizers/optim.h line:100
+	{ // AdaDelta file:eddl/optimizers/optim.h line:100
 		pybind11::class_<AdaDelta, std::shared_ptr<AdaDelta>, PyCallBack_AdaDelta, Optimizer> cl(M(""), "AdaDelta", "");
 		pybind11::handle cl_type = cl;
 
@@ -2828,7 +2829,7 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 		cl.def_readwrite("mT", &AdaDelta::mT);
 		cl.def("assign", (class AdaDelta & (AdaDelta::*)(const class AdaDelta &)) &AdaDelta::operator=, "C++: AdaDelta::operator=(const class AdaDelta &) --> class AdaDelta &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // Adagrad file:optimizers/optim.h line:121
+	{ // Adagrad file:eddl/optimizers/optim.h line:121
 		pybind11::class_<Adagrad, std::shared_ptr<Adagrad>, PyCallBack_Adagrad, Optimizer> cl(M(""), "Adagrad", "");
 		pybind11::handle cl_type = cl;
 
@@ -2843,7 +2844,7 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 		cl.def_readwrite("mT", &Adagrad::mT);
 		cl.def("assign", (class Adagrad & (Adagrad::*)(const class Adagrad &)) &Adagrad::operator=, "C++: Adagrad::operator=(const class Adagrad &) --> class Adagrad &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // Adamax file:optimizers/optim.h line:141
+	{ // Adamax file:eddl/optimizers/optim.h line:141
 		pybind11::class_<Adamax, std::shared_ptr<Adamax>, PyCallBack_Adamax, Optimizer> cl(M(""), "Adamax", "");
 		pybind11::handle cl_type = cl;
 
@@ -2862,7 +2863,7 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 		cl.def_readwrite("mT", &Adamax::mT);
 		cl.def("assign", (class Adamax & (Adamax::*)(const class Adamax &)) &Adamax::operator=, "C++: Adamax::operator=(const class Adamax &) --> class Adamax &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // Nadam file:optimizers/optim.h line:163
+	{ // Nadam file:eddl/optimizers/optim.h line:163
 		pybind11::class_<Nadam, std::shared_ptr<Nadam>, PyCallBack_Nadam, Optimizer> cl(M(""), "Nadam", "");
 		pybind11::handle cl_type = cl;
 
@@ -2881,7 +2882,7 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 		cl.def_readwrite("mT", &Nadam::mT);
 		cl.def("assign", (class Nadam & (Nadam::*)(const class Nadam &)) &Nadam::operator=, "C++: Nadam::operator=(const class Nadam &) --> class Nadam &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // RMSProp file:optimizers/optim.h line:185
+	{ // RMSProp file:eddl/optimizers/optim.h line:185
 		pybind11::class_<RMSProp, std::shared_ptr<RMSProp>, PyCallBack_RMSProp, Optimizer> cl(M(""), "RMSProp", "");
 		pybind11::handle cl_type = cl;
 
@@ -2901,16 +2902,16 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 }
 
 
-// File: net.cpp
-#include <compserv.h>
+// File: eddl/net.cpp
+#include <eddl/compserv.h>
+#include <eddl/layers/layer.h>
+#include <eddl/losses/loss.h>
+#include <eddl/metrics/metric.h>
+#include <eddl/net.h>
+#include <eddl/optimizers/optim.h>
 #include <iterator>
-#include <layers/layer.h>
-#include <losses/loss.h>
 #include <memory>
-#include <metrics/metric.h>
-#include <net.h>
 #include <net_addons.h>
-#include <optimizers/optim.h>
 #include <sstream> // __str__
 #include <stdio.h>
 #include <string>
@@ -2930,15 +2931,15 @@ void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string c
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
 
-void bind_net(std::function< pybind11::module &(std::string const &namespace_) > &M)
+void bind_eddl_net(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
-	// train_batch_t(void *) file:net.h line:46
+	// train_batch_t(void *) file:eddl/net.h line:46
 	M("").def("train_batch_t", (void * (*)(void *)) &train_batch_t, "C++: train_batch_t(void *) --> void *", pybind11::return_value_policy::automatic, pybind11::arg("targs"));
 
-	// applygrads_t(void *) file:net.h line:48
+	// applygrads_t(void *) file:eddl/net.h line:48
 	M("").def("applygrads_t", (void * (*)(void *)) &applygrads_t, "C++: applygrads_t(void *) --> void *", pybind11::return_value_policy::automatic, pybind11::arg("t"));
 
-	{ // Net file:net.h line:52
+	{ // Net file:eddl/net.h line:52
 		pybind11::class_<Net, std::shared_ptr<Net>> cl(M(""), "Net", "");
 		pybind11::handle cl_type = cl;
 
@@ -2990,10 +2991,10 @@ void bind_net(std::function< pybind11::module &(std::string const &namespace_) >
 typedef std::function< pybind11::module & (std::string const &) > ModuleGetter;
 
 void bind_bits_libio(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_metrics_metric(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_layers_pool_layer_pool(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_net(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_eddl_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_eddl_layers_conv_layer_conv(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_eddl_net(std::function< pybind11::module &(std::string const &namespace_) > &M);
 
 
 PYBIND11_MODULE(pyeddl, root_module) {
@@ -3015,20 +3016,20 @@ PYBIND11_MODULE(pyeddl, root_module) {
 	//pybind11::class_<std::shared_ptr<void>>(M(""), "_encapsulated_data_");
 
 	bind_bits_libio(M);
-	bind_compserv(M);
-	bind_metrics_metric(M);
-	bind_layers_pool_layer_pool(M);
-	bind_net(M);
+	bind_eddl_compserv(M);
+	bind_eddl_metrics_metric(M);
+	bind_eddl_layers_conv_layer_conv(M);
+	bind_eddl_net(M);
 
 }
 
 // Source list file: /pyeddl/codegen/bindings/pyeddl.sources
 // pyeddl.cpp
 // bits/libio.cpp
-// compserv.cpp
-// metrics/metric.cpp
-// layers/pool/layer_pool.cpp
-// net.cpp
+// eddl/compserv.cpp
+// eddl/metrics/metric.cpp
+// eddl/layers/conv/layer_conv.cpp
+// eddl/net.cpp
 
 // Modules list file: /pyeddl/codegen/bindings/pyeddl.modules
 // 

@@ -1,5 +1,6 @@
 .*
 Dockerfile*
-build_bindings.sh
+build_docker.sh
+generate_bindings.sh
 codegen
 README.md

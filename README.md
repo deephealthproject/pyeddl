@@ -9,13 +9,17 @@ Regenerate the binding code (if necessary, e.g., after making changes to the
 code generation setup):
 
 ```
-bash build_bindings.sh
+bash generate_bindings.sh
 ```
 
-Build the Docker image, which builds EDDL and the Python bindings:
+Build the Docker images:
 
 ```
-docker build -t binder_example .
+bash build_docker.sh
 ```
 
-Run the examples on the Docker image.
+Run the examples on the Docker image, e.g.:
+
+```
+docker run --rm -it pyeddl bash -c 'python3 eddl_mlp.py'
+```
