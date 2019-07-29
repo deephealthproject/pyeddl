@@ -1,5 +1,5 @@
 import pyeddl._core as pyeddl
-from eddl_utils import download_mnist, loss_func, metric_func
+from pyeddl.utils import download_mnist, loss_func, metric_func
 
 epochs = 5
 batch_size = 1000

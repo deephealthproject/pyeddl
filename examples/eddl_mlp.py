@@ -1,22 +1,5 @@
-import os
-import subprocess
 import pyeddl._core as pyeddl
-
-
-DATA_URLS = [
-    "https://www.dropbox.com/s/khrb3th2z6owd9t/trX.bin",
-    "https://www.dropbox.com/s/m82hmmrg46kcugp/trY.bin",
-    "https://www.dropbox.com/s/7psutd4m4wna2d5/tsX.bin",
-    "https://www.dropbox.com/s/q0tnbjvaenb4tjs/tsY.bin",
-]
-
-
-def download_mnist():
-    for url in DATA_URLS:
-        fn = url.rsplit("/", 1)[-1]
-        if not os.path.exists(fn):
-            print("getting ", url)
-            subprocess.check_call("wget %s" % url, shell=True)
+from pyeddl.utils import download_mnist, loss_func, metric_func
 
 
 num_classes = 10
@@ -34,8 +17,8 @@ n = pyeddl.Net([i], [o])
 print(n.summary())
 
 optimizer = pyeddl.SGD(0.01, 0.9)
-losses = [pyeddl.LSoftCrossEntropy()]
-metrics = [pyeddl.MCategoricalAccuracy()]
+losses = [loss_func("soft_cross_entropy")]
+metrics = [metric_func("categorical_accuracy")]
 compserv = pyeddl.CompServ(4, [], [])
 
 n.build(optimizer, losses, metrics, compserv)

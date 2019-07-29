@@ -3,7 +3,7 @@ import subprocess
 import pyeddl._core as pyeddl
 
 
-DATA_URLS = [
+MNIST_DATA_URLS = [
     "https://www.dropbox.com/s/khrb3th2z6owd9t/trX.bin",
     "https://www.dropbox.com/s/m82hmmrg46kcugp/trY.bin",
     "https://www.dropbox.com/s/7psutd4m4wna2d5/tsX.bin",
@@ -12,7 +12,7 @@ DATA_URLS = [
 
 
 def download_mnist():
-    for url in DATA_URLS:
+    for url in MNIST_DATA_URLS:
         fn = url.rsplit("/", 1)[-1]
         if not os.path.exists(fn):
             print("getting ", url)

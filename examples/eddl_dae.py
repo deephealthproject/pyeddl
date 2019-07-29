@@ -1,5 +1,5 @@
 import pyeddl._core as pyeddl
-from eddl_utils import download_mnist
+from pyeddl.utils import download_mnist, loss_func, metric_func
 
 epochs = 10
 batch_size = 1000
@@ -18,8 +18,8 @@ n = pyeddl.Net([i], [o])
 print(n.summary())
 
 optimizer = pyeddl.SGD(0.01, 0.9)
-losses = [pyeddl.LMeanSquaredError()]
-metrics = [pyeddl.MMeanSquaredError()]
+losses = [loss_func("mean_squared_error")]
+metrics = [metric_func("mean_squared_error")]
 compserv = pyeddl.CompServ(4, [], [])
 
 n.build(optimizer, losses, metrics, compserv)
