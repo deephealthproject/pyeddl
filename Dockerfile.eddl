@@ -8,13 +8,19 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
 COPY third_party/eddl /eddl
 WORKDIR /eddl
 
-RUN mkdir build && \
-    cd build && \
-    cmake .. && \
-    make -j$(grep -c ^processor /proc/cpuinfo)
+# RUN mkdir build && \
+#     cd build && \
+#     cmake .. && \
+#     make -j$(grep -c ^processor /proc/cpuinfo)
 
-# install/include/third_party/eigen/Eigen is missing the "src" subdir
-RUN cd build && make install && \
-    cp -rf install/include/eddl /usr/local/include/ && \
-    cp -rf ../third_party/eigen/Eigen /usr/local/include/ && \
-    cp install/lib/static/libeddl.a /usr/local/lib
+# # install/include/third_party/eigen/Eigen is missing the "src" subdir
+# RUN cd build && make install && \
+#     cp -rf install/include/eddl /usr/local/include/ && \
+#     cp -rf ../third_party/eigen/Eigen /usr/local/include/ && \
+#     cp install/lib/static/libeddl.a /usr/local/lib
+
+RUN cd build && make -j$(grep -c ^processor /proc/cpuinfo)
+
+RUN cp -rf third_party/eigen/Eigen /usr/local/include/ && \
+    cp -rf src /usr/local/include/eddl && \
+    cp build/eddl.so /usr/local/lib/libeddl.so

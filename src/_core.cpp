@@ -96,7 +96,7 @@ struct PyCallBack_Loss : public Loss {
 	}
 };
 
-// LMeanSquaredError file:eddl/losses/loss.h line:42
+// LMeanSquaredError file:eddl/losses/loss.h line:45
 struct PyCallBack_LMeanSquaredError : public LMeanSquaredError {
 	using LMeanSquaredError::LMeanSquaredError;
 
@@ -128,7 +128,7 @@ struct PyCallBack_LMeanSquaredError : public LMeanSquaredError {
 	}
 };
 
-// LCrossEntropy file:eddl/losses/loss.h line:51
+// LCrossEntropy file:eddl/losses/loss.h line:54
 struct PyCallBack_LCrossEntropy : public LCrossEntropy {
 	using LCrossEntropy::LCrossEntropy;
 
@@ -160,7 +160,7 @@ struct PyCallBack_LCrossEntropy : public LCrossEntropy {
 	}
 };
 
-// LSoftCrossEntropy file:eddl/losses/loss.h line:60
+// LSoftCrossEntropy file:eddl/losses/loss.h line:63
 struct PyCallBack_LSoftCrossEntropy : public LSoftCrossEntropy {
 	using LSoftCrossEntropy::LSoftCrossEntropy;
 
@@ -275,10 +275,8 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def_readwrite("size", &Tensor::size);
 		cl.def_readwrite("shape", &Tensor::shape);
 		cl.def_readwrite("stride", &Tensor::stride);
-		cl.def_readwrite("mat", &Tensor::mat);
 		cl.def_readwrite("gpu_device", &Tensor::gpu_device);
 		cl.def("info", (void (Tensor::*)()) &Tensor::info, "C++: Tensor::info() --> void");
-		cl.def("share", (class Tensor * (Tensor::*)()) &Tensor::share, "C++: Tensor::share() --> class Tensor *", pybind11::return_value_policy::automatic);
 		cl.def("print", (void (Tensor::*)()) &Tensor::print, "C++: Tensor::print() --> void");
 		cl.def("isCPU", (int (Tensor::*)()) &Tensor::isCPU, "C++: Tensor::isCPU() --> int");
 		cl.def("isGPU", (int (Tensor::*)()) &Tensor::isGPU, "C++: Tensor::isGPU() --> int");
@@ -338,7 +336,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def("value", (float (Loss::*)(class Tensor *, class Tensor *)) &Loss::value, "C++: Loss::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class Loss & (Loss::*)(const class Loss &)) &Loss::operator=, "C++: Loss::operator=(const class Loss &) --> class Loss &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LMeanSquaredError file:eddl/losses/loss.h line:42
+	{ // LMeanSquaredError file:eddl/losses/loss.h line:45
 		pybind11::class_<LMeanSquaredError, std::shared_ptr<LMeanSquaredError>, PyCallBack_LMeanSquaredError, Loss> cl(M(""), "LMeanSquaredError", "");
 		pybind11::handle cl_type = cl;
 
@@ -347,7 +345,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def("value", (float (LMeanSquaredError::*)(class Tensor *, class Tensor *)) &LMeanSquaredError::value, "C++: LMeanSquaredError::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class LMeanSquaredError & (LMeanSquaredError::*)(const class LMeanSquaredError &)) &LMeanSquaredError::operator=, "C++: LMeanSquaredError::operator=(const class LMeanSquaredError &) --> class LMeanSquaredError &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LCrossEntropy file:eddl/losses/loss.h line:51
+	{ // LCrossEntropy file:eddl/losses/loss.h line:54
 		pybind11::class_<LCrossEntropy, std::shared_ptr<LCrossEntropy>, PyCallBack_LCrossEntropy, Loss> cl(M(""), "LCrossEntropy", "");
 		pybind11::handle cl_type = cl;
 
@@ -356,7 +354,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def("value", (float (LCrossEntropy::*)(class Tensor *, class Tensor *)) &LCrossEntropy::value, "C++: LCrossEntropy::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class LCrossEntropy & (LCrossEntropy::*)(const class LCrossEntropy &)) &LCrossEntropy::operator=, "C++: LCrossEntropy::operator=(const class LCrossEntropy &) --> class LCrossEntropy &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LSoftCrossEntropy file:eddl/losses/loss.h line:60
+	{ // LSoftCrossEntropy file:eddl/losses/loss.h line:63
 		pybind11::class_<LSoftCrossEntropy, std::shared_ptr<LSoftCrossEntropy>, PyCallBack_LSoftCrossEntropy, Loss> cl(M(""), "LSoftCrossEntropy", "");
 		pybind11::handle cl_type = cl;
 
@@ -410,7 +408,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
 
-// MMeanSquaredError file:eddl/metrics/metric.h line:42
+// MMeanSquaredError file:eddl/metrics/metric.h line:46
 struct PyCallBack_MMeanSquaredError : public MMeanSquaredError {
 	using MMeanSquaredError::MMeanSquaredError;
 
@@ -429,7 +427,7 @@ struct PyCallBack_MMeanSquaredError : public MMeanSquaredError {
 	}
 };
 
-// MCategoricalAccuracy file:eddl/metrics/metric.h line:50
+// MCategoricalAccuracy file:eddl/metrics/metric.h line:54
 struct PyCallBack_MCategoricalAccuracy : public MCategoricalAccuracy {
 	using MCategoricalAccuracy::MCategoricalAccuracy;
 
@@ -1626,7 +1624,7 @@ struct PyCallBack_LConvT : public LConvT {
 
 void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
-	{ // MMeanSquaredError file:eddl/metrics/metric.h line:42
+	{ // MMeanSquaredError file:eddl/metrics/metric.h line:46
 		pybind11::class_<MMeanSquaredError, std::shared_ptr<MMeanSquaredError>, PyCallBack_MMeanSquaredError, Metric> cl(M(""), "MMeanSquaredError", "");
 		pybind11::handle cl_type = cl;
 
@@ -1634,7 +1632,7 @@ void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string cons
 		cl.def("value", (float (MMeanSquaredError::*)(class Tensor *, class Tensor *)) &MMeanSquaredError::value, "C++: MMeanSquaredError::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class MMeanSquaredError & (MMeanSquaredError::*)(const class MMeanSquaredError &)) &MMeanSquaredError::operator=, "C++: MMeanSquaredError::operator=(const class MMeanSquaredError &) --> class MMeanSquaredError &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // MCategoricalAccuracy file:eddl/metrics/metric.h line:50
+	{ // MCategoricalAccuracy file:eddl/metrics/metric.h line:54
 		pybind11::class_<MCategoricalAccuracy, std::shared_ptr<MCategoricalAccuracy>, PyCallBack_MCategoricalAccuracy, Metric> cl(M(""), "MCategoricalAccuracy", "");
 		pybind11::handle cl_type = cl;
 
