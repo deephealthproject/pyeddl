@@ -3,7 +3,7 @@ from pyeddl.utils import download_mnist, loss_func, metric_func
 
 
 num_classes = 10
-epochs = 5
+epochs = 10
 batch_size = 1000
 
 t = pyeddl.Tensor([1, 784], 0)
