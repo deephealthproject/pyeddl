@@ -1,33 +1,40 @@
-import pyeddl._core as pyeddl
-from pyeddl.utils import download_mnist, loss_func, metric_func
+from pyeddl.api import (
+    Input, Activation, Dense, Model, sgd, CS_CPU, build, T_load, div, fit,
+    GaussianNoise
+)
+from pyeddl.utils import download_mnist
 
-epochs = 10
-batch_size = 1000
 
-t = pyeddl.Tensor([1, 784], 0)
-i = pyeddl.LInput(t, "foo", 0)
-l = i
-l = pyeddl.LGaussianNoise(l, 0.5, "", 0)
-l = pyeddl.LActivation(pyeddl.LDense(l, 256, True, "", 0), "relu", "", 0)
-l = pyeddl.LActivation(pyeddl.LDense(l, 128, True, "", 0), "relu", "", 0)
-l = pyeddl.LActivation(pyeddl.LDense(l, 64, True, "", 0), "relu", "", 0)
-l = pyeddl.LActivation(pyeddl.LDense(l, 128, True, "", 0), "relu", "", 0)
-l = pyeddl.LActivation(pyeddl.LDense(l, 256, True, "", 0), "relu", "", 0)
-o = pyeddl.LDense(l, 784, True, "", 0)
-n = pyeddl.Net([i], [o])
-print(n.summary())
+def main():
+    download_mnist()
 
-optimizer = pyeddl.SGD(0.01, 0.9)
-losses = [loss_func("mean_squared_error")]
-metrics = [metric_func("mean_squared_error")]
-compserv = pyeddl.CompServ(4, [], [])
+    epochs = 10
+    batch_size = 1000
 
-n.build(optimizer, losses, metrics, compserv)
+    in_ = Input([784])
+    layer = in_
+    layer = GaussianNoise(layer, 0.5)
+    layer = Activation(Dense(layer, 256), "relu")
+    layer = Activation(Dense(layer, 128), "relu")
+    layer = Activation(Dense(layer, 64), "relu")
+    layer = Activation(Dense(layer, 128), "relu")
+    layer = Activation(Dense(layer, 256), "relu")
+    out = Dense(layer, 784)
+    net = Model([in_], [out])
+    print(net.summary())
 
-download_mnist()
+    build(
+        net,
+        sgd(0.01, 0.9),
+        ["mean_squared_error"],
+        ["mean_squared_error"],
+        CS_CPU(4)
+    )
 
-x_train = pyeddl.LTensor("trX.bin")
+    x_train = T_load("trX.bin")
+    div(x_train, 255.0)
+    fit(net, [x_train], [x_train], batch_size, epochs)
 
-x_train.input.div(255.0)
 
-n.fit([x_train.input], [x_train.input], batch_size, epochs)
+if __name__ == "__main__":
+    main()

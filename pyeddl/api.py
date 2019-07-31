@@ -15,6 +15,11 @@ __all__ = [
     "T_load",
     "div",
     "fit",
+    "evaluate",
+    "GaussianNoise",
+    "Reshape",
+    "MaxPool",
+    "Conv",
 ]
 
 
@@ -63,3 +68,36 @@ def fit(model, inputs, outputs, batch_size, n_epochs):
     inputs = [_.input for _ in inputs]
     outputs = [_.input for _ in outputs]
     model.fit(inputs, outputs, batch_size, n_epochs)
+
+
+def evaluate(model, inputs, outputs):
+    inputs = [_.input for _ in inputs]
+    outputs = [_.input for _ in outputs]
+    model.evaluate(inputs, outputs)
+
+
+def GaussianNoise(parent, stddev, name=""):
+    return _core.LGaussianNoise(parent, stddev, name, DEV_CPU)
+
+
+def Reshape(parent, shape, name=""):
+    return _core.LReshape(parent, [1] + shape, name, DEV_CPU)
+
+
+def MaxPool(parent, pool_size=None, strides=None, padding="none", name=""):
+    if pool_size is None:
+        pool_size = [2, 2]
+    if strides is None:
+        strides = [2, 2]
+    pd = _core.PoolDescriptor(pool_size, strides, padding)
+    return _core.LMaxPool(parent, pd, name, DEV_CPU)
+
+
+def Conv(parent, filters, kernel_size, strides=None, padding="same",
+         groups=1, dilation_rate=None, use_bias=True, name=""):
+    if strides is None:
+        strides = [1, 1]
+    if dilation_rate is None:
+        dilation_rate = [1, 1]
+    return _core.LConv(parent, filters, kernel_size, strides, padding, groups,
+                       dilation_rate, use_bias, name, DEV_CPU)
