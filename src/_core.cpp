@@ -96,7 +96,7 @@ struct PyCallBack_Loss : public Loss {
 	}
 };
 
-// LMeanSquaredError file:eddl/losses/loss.h line:45
+// LMeanSquaredError file:eddl/losses/loss.h line:42
 struct PyCallBack_LMeanSquaredError : public LMeanSquaredError {
 	using LMeanSquaredError::LMeanSquaredError;
 
@@ -128,7 +128,7 @@ struct PyCallBack_LMeanSquaredError : public LMeanSquaredError {
 	}
 };
 
-// LCrossEntropy file:eddl/losses/loss.h line:54
+// LCrossEntropy file:eddl/losses/loss.h line:51
 struct PyCallBack_LCrossEntropy : public LCrossEntropy {
 	using LCrossEntropy::LCrossEntropy;
 
@@ -160,7 +160,7 @@ struct PyCallBack_LCrossEntropy : public LCrossEntropy {
 	}
 };
 
-// LSoftCrossEntropy file:eddl/losses/loss.h line:63
+// LSoftCrossEntropy file:eddl/losses/loss.h line:60
 struct PyCallBack_LSoftCrossEntropy : public LSoftCrossEntropy {
 	using LSoftCrossEntropy::LSoftCrossEntropy;
 
@@ -223,6 +223,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def_readwrite("local_threads", &CompServ::local_threads);
 		cl.def_readwrite("local_gpus", &CompServ::local_gpus);
 		cl.def_readwrite("local_fpgas", &CompServ::local_fpgas);
+		cl.def_readwrite("lsb", &CompServ::lsb);
 
 		compserv_addons(cl);
 	}
@@ -300,6 +301,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def("rand_gaussian", (void (Tensor::*)(float, float)) &Tensor::rand_gaussian, "C++: Tensor::rand_gaussian(float, float) --> void", pybind11::arg("m"), pybind11::arg("s"));
 		cl.def("rand_binary", (void (Tensor::*)(float)) &Tensor::rand_binary, "C++: Tensor::rand_binary(float) --> void", pybind11::arg("v"));
 		cl.def_static("eqsize", (int (*)(class Tensor *, class Tensor *)) &Tensor::eqsize, "////// static metods\n\nC++: Tensor::eqsize(class Tensor *, class Tensor *) --> int", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def_static("equal", (int (*)(class Tensor *, class Tensor *)) &Tensor::equal, "C++: Tensor::equal(class Tensor *, class Tensor *) --> int", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("copy", (void (*)(class Tensor *, class Tensor *)) &Tensor::copy, "C++: Tensor::copy(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("fill", (void (*)(class Tensor *, int, int, class Tensor *, int, int, int)) &Tensor::fill, "C++: Tensor::fill(class Tensor *, int, int, class Tensor *, int, int, int) --> void", pybind11::arg("A"), pybind11::arg("aini"), pybind11::arg("aend"), pybind11::arg("B"), pybind11::arg("bini"), pybind11::arg("bend"), pybind11::arg("inc"));
 		cl.def_static("sign", (void (*)(class Tensor *, class Tensor *)) &Tensor::sign, "C++: Tensor::sign(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
@@ -336,7 +338,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def("value", (float (Loss::*)(class Tensor *, class Tensor *)) &Loss::value, "C++: Loss::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class Loss & (Loss::*)(const class Loss &)) &Loss::operator=, "C++: Loss::operator=(const class Loss &) --> class Loss &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LMeanSquaredError file:eddl/losses/loss.h line:45
+	{ // LMeanSquaredError file:eddl/losses/loss.h line:42
 		pybind11::class_<LMeanSquaredError, std::shared_ptr<LMeanSquaredError>, PyCallBack_LMeanSquaredError, Loss> cl(M(""), "LMeanSquaredError", "");
 		pybind11::handle cl_type = cl;
 
@@ -345,7 +347,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def("value", (float (LMeanSquaredError::*)(class Tensor *, class Tensor *)) &LMeanSquaredError::value, "C++: LMeanSquaredError::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class LMeanSquaredError & (LMeanSquaredError::*)(const class LMeanSquaredError &)) &LMeanSquaredError::operator=, "C++: LMeanSquaredError::operator=(const class LMeanSquaredError &) --> class LMeanSquaredError &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LCrossEntropy file:eddl/losses/loss.h line:54
+	{ // LCrossEntropy file:eddl/losses/loss.h line:51
 		pybind11::class_<LCrossEntropy, std::shared_ptr<LCrossEntropy>, PyCallBack_LCrossEntropy, Loss> cl(M(""), "LCrossEntropy", "");
 		pybind11::handle cl_type = cl;
 
@@ -354,7 +356,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def("value", (float (LCrossEntropy::*)(class Tensor *, class Tensor *)) &LCrossEntropy::value, "C++: LCrossEntropy::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class LCrossEntropy & (LCrossEntropy::*)(const class LCrossEntropy &)) &LCrossEntropy::operator=, "C++: LCrossEntropy::operator=(const class LCrossEntropy &) --> class LCrossEntropy &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LSoftCrossEntropy file:eddl/losses/loss.h line:63
+	{ // LSoftCrossEntropy file:eddl/losses/loss.h line:60
 		pybind11::class_<LSoftCrossEntropy, std::shared_ptr<LSoftCrossEntropy>, PyCallBack_LSoftCrossEntropy, Loss> cl(M(""), "LSoftCrossEntropy", "");
 		pybind11::handle cl_type = cl;
 
@@ -2944,6 +2946,7 @@ void bind_eddl_net(std::function< pybind11::module &(std::string const &namespac
 		cl.def_readwrite("name", &Net::name);
 		cl.def_readwrite("dev", &Net::dev);
 		cl.def_readwrite("batch_size", &Net::batch_size);
+		cl.def_readwrite("tr_batches", &Net::tr_batches);
 		cl.def_readwrite("devsel", &Net::devsel);
 		cl.def_readwrite("layers", &Net::layers);
 		cl.def_readwrite("lin", &Net::lin);
