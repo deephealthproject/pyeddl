@@ -1,0 +1,15 @@
+FROM stal12/cuda10-gcc5
+
+COPY third_party/eddl /eddl
+WORKDIR /eddl
+
+RUN mkdir build && \
+    sed -i 's/GIT_FOUND AND EXISTS/GIT_FOUND AND IS_DIRECTORY/' CMakeLists.txt && \
+    cd build && \
+    cmake -D BUILD_TARGET=gpu -D BUILD_TESTS=ON .. && \
+    make -j$(grep -c ^processor /proc/cpuinfo)
+
+RUN cd build && make install && \
+    cp -rf install/include/eddl /usr/local/include/ && \
+    cp -rf install/include/third_party/eigen/Eigen /usr/local/include/ && \
+    cp install/lib/libeddl.a /usr/local/lib
