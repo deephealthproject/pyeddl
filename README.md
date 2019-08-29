@@ -1,9 +1,6 @@
-# EDDL: Binder examples
+# PyEDDL
 
-This branch contains an example of
-[Binder](https://github.com/RosettaCommons/binder)-generated code for part of
-the EDDL library, as well as Python usage examples that reproduce EDDL
-examples.
+Python bindings for EDDL.
 
 Regenerate the binding code (if necessary, e.g., after making changes to the
 code generation setup):
