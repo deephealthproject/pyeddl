@@ -2959,8 +2959,6 @@ void bind_eddl_net(std::function< pybind11::module &(std::string const &namespac
 		cl.def_readwrite("snets", &Net::snets);
 		cl.def("initialize", (void (Net::*)()) &Net::initialize, "C++: Net::initialize() --> void");
 		cl.def("reset", (void (Net::*)()) &Net::reset, "C++: Net::reset() --> void");
-		cl.def("save", (void (Net::*)(struct _IO_FILE *)) &Net::save, "C++: Net::save(struct _IO_FILE *) --> void", pybind11::arg("fe"));
-		cl.def("load", (void (Net::*)(struct _IO_FILE *)) &Net::load, "C++: Net::load(struct _IO_FILE *) --> void", pybind11::arg("fe"));
 		cl.def("forward", (void (Net::*)()) &Net::forward, "C++: Net::forward() --> void");
 		cl.def("delta", (void (Net::*)()) &Net::delta, "C++: Net::delta() --> void");
 		cl.def("loss", (void (Net::*)()) &Net::loss, "C++: Net::loss() --> void");

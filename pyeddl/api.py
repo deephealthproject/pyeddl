@@ -1,3 +1,4 @@
+import io
 from . import _core, utils
 
 DEV_CPU = 0
@@ -20,6 +21,8 @@ __all__ = [
     "Reshape",
     "MaxPool",
     "Conv",
+    "save",
+    "load",
 ]
 
 
@@ -101,3 +104,13 @@ def Conv(parent, filters, kernel_size, strides=None, padding="same",
         dilation_rate = [1, 1]
     return _core.LConv(parent, filters, kernel_size, strides, padding, groups,
                        dilation_rate, use_bias, name, DEV_CPU)
+
+
+def save(model, fname):
+    with io.open(fname, "wb") as f:
+        model.save(f)
+
+
+def load(model, fname):
+    with io.open(fname, "rb") as f:
+        model.load(f)
