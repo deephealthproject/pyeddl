@@ -12,4 +12,7 @@ COPY . /pyeddl
 
 WORKDIR /pyeddl
 
-RUN EDDL_WITH_CUDA=true python3 setup.py install
+ENV LD_LIBRARY_PATH="/usr/local/cuda-10.1/targets/x86_64-linux/lib:${LD_LIBRARY_PATH}"
+ENV EDDL_WITH_CUDA="true"
+RUN python3 setup.py build_ext -L /usr/local/cuda-10.1/targets/x86_64-linux/lib && \
+    python3 setup.py install
