@@ -49,8 +49,16 @@ def sgd(lr=0.01, momentum=0.0, weight_decay=0.0, nesterov=False):
 
 
 # compserv
-def CS_CPU(threads):
-    return _core.CompServ(threads, [], [])
+def CS_CPU(threads, lsb=1):
+    return _core.CompServ(threads, [], [], lsb)
+
+
+def CS_GPU(g, lsb=1):
+    return _core.CompServ(0, g, [], lsb)
+
+
+def CS_FPGA(f, lsb=1):
+    return _core.CompServ(0, [], f, lsb)
 
 
 def build(model, optimizer, losses, metrics, compserv):
