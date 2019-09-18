@@ -257,7 +257,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def("build", (void (ConvolDescriptor::*)(class Tensor *)) &ConvolDescriptor::build, "C++: ConvolDescriptor::build(class Tensor *) --> void", pybind11::arg("A"));
 		cl.def("resize", (void (ConvolDescriptor::*)(class Tensor *)) &ConvolDescriptor::resize, "C++: ConvolDescriptor::resize(class Tensor *) --> void", pybind11::arg("A"));
 	}
-	{ // PoolDescriptor file: line:111
+	{ // PoolDescriptor file: line:119
 		pybind11::class_<PoolDescriptor, std::shared_ptr<PoolDescriptor>, ConvolDescriptor> cl(M(""), "PoolDescriptor", "");
 		pybind11::handle cl_type = cl;
 
@@ -266,7 +266,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 
 		pooldescriptor_addons(cl);
 	}
-	{ // Tensor file: line:126
+	{ // Tensor file: line:134
 		pybind11::class_<Tensor, std::shared_ptr<Tensor>> cl(M(""), "Tensor", pybind11::buffer_protocol());
 		pybind11::handle cl_type = cl;
 
@@ -410,7 +410,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
 
-// MMeanSquaredError file:eddl/metrics/metric.h line:46
+// MMeanSquaredError file:eddl/metrics/metric.h line:42
 struct PyCallBack_MMeanSquaredError : public MMeanSquaredError {
 	using MMeanSquaredError::MMeanSquaredError;
 
@@ -429,7 +429,7 @@ struct PyCallBack_MMeanSquaredError : public MMeanSquaredError {
 	}
 };
 
-// MCategoricalAccuracy file:eddl/metrics/metric.h line:54
+// MCategoricalAccuracy file:eddl/metrics/metric.h line:50
 struct PyCallBack_MCategoricalAccuracy : public MCategoricalAccuracy {
 	using MCategoricalAccuracy::MCategoricalAccuracy;
 
@@ -1626,7 +1626,7 @@ struct PyCallBack_LConvT : public LConvT {
 
 void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
-	{ // MMeanSquaredError file:eddl/metrics/metric.h line:46
+	{ // MMeanSquaredError file:eddl/metrics/metric.h line:42
 		pybind11::class_<MMeanSquaredError, std::shared_ptr<MMeanSquaredError>, PyCallBack_MMeanSquaredError, Metric> cl(M(""), "MMeanSquaredError", "");
 		pybind11::handle cl_type = cl;
 
@@ -1634,7 +1634,7 @@ void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string cons
 		cl.def("value", (float (MMeanSquaredError::*)(class Tensor *, class Tensor *)) &MMeanSquaredError::value, "C++: MMeanSquaredError::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class MMeanSquaredError & (MMeanSquaredError::*)(const class MMeanSquaredError &)) &MMeanSquaredError::operator=, "C++: MMeanSquaredError::operator=(const class MMeanSquaredError &) --> class MMeanSquaredError &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // MCategoricalAccuracy file:eddl/metrics/metric.h line:54
+	{ // MCategoricalAccuracy file:eddl/metrics/metric.h line:50
 		pybind11::class_<MCategoricalAccuracy, std::shared_ptr<MCategoricalAccuracy>, PyCallBack_MCategoricalAccuracy, Metric> cl(M(""), "MCategoricalAccuracy", "");
 		pybind11::handle cl_type = cl;
 
