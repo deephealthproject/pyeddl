@@ -19,11 +19,18 @@ class TestTensor(object):
 
 
 def main():
-    A = TestTensor([10, 10])
-    B = TestTensor([10, 100])
-    C = TestTensor([10, 100])
-    D = TestTensor([10, 10])
-    E = TestTensor([10, 10])
+    dim1, dim2, dim3 = 1000, 1000, 100
+
+    A = TestTensor([dim1, dim3])
+    B = TestTensor([dim3, dim2])
+    Bt = TestTensor([dim1, dim2])
+    Bt2 = TestTensor([dim2, dim3])
+    C = TestTensor([dim1, dim2])
+    Ct = TestTensor([dim3, dim2])
+    Ct2 = TestTensor([dim1, dim2])
+    D = TestTensor([dim1, dim3])
+    E = TestTensor([dim1, dim3])
+    F = TestTensor([dim3])
 
     A.TC.rand_uniform(1.0)
     A.to_gpu()
@@ -32,6 +39,13 @@ def main():
     A.TC.set(1.0)
     A.TG.set(1.0)
     A.check("set")
+
+    A.TC.rand_suniform(1)
+    A.to_gpu()
+    fc = A.TC.total_sum()
+    fg = A.TG.total_sum()
+    res = "OK" if abs(fc - fg) <= 0.01 else "Fail"
+    print("total_sum: %s" % res)
 
     A.TC.rand_uniform(1.0)
     B.TC.rand_uniform(1.0)
@@ -42,12 +56,96 @@ def main():
     C.check("mult2D")
 
     A.TC.rand_uniform(1.0)
+    Bt.TC.rand_uniform(1.0)
+    A.to_gpu()
+    Bt.to_gpu()
+    Tensor.mult2D(A.TC, 1, Bt.TC, 0, Ct.TC, 0)
+    Tensor.mult2D(A.TG, 1, Bt.TG, 0, Ct.TG, 0)
+    Ct.check("mult2D Trasp")
+
+    A.TC.rand_uniform(1.0)
+    Bt2.TC.rand_uniform(1.0)
+    A.to_gpu()
+    Bt2.to_gpu()
+    Tensor.mult2D(A.TC, 0, Bt2.TC, 1, Ct2.TC, 0)
+    Tensor.mult2D(A.TG, 0, Bt2.TG, 1, Ct2.TG, 0)
+    Ct2.check("mult2D Trasp2")
+
+    A.TC.rand_uniform(1.0)
+    Bt2.TC.rand_uniform(1.0)
+    A.to_gpu()
+    Bt2.to_gpu()
+    Tensor.mult2D(A.TC, 0, Bt2.TC, 1, Ct2.TC, 1)
+    Tensor.mult2D(A.TG, 0, Bt2.TG, 1, Ct2.TG, 1)
+    Ct2.check("mult2D Trasp2 inc")
+
+    A.TC.rand_uniform(1.0)
     D.TC.rand_uniform(1.0)
     A.to_gpu()
     D.to_gpu()
     Tensor.sum(1.0, A.TC, 1.0, D.TC, E.TC, 0)
     Tensor.sum(1.0, A.TG, 1.0, D.TG, E.TG, 0)
     E.check("sum")
+
+    A.TC.rand_uniform(100.0)
+    D.TC.rand_uniform(100.0)
+    A.to_gpu()
+    D.to_gpu()
+    Tensor.inc(A.TC, D.TC)
+    Tensor.inc(A.TG, D.TG)
+    D.check("inc")
+
+    A.TC.rand_suniform(100000)
+    A.to_gpu()
+    Tensor.Softmax(A.TC, D.TC)
+    Tensor.Softmax(A.TG, D.TG)
+    D.check("Softmax")
+
+    A.TC.rand_uniform(1)
+    D.TC.rand_binary(0.1)
+    A.to_gpu()
+    D.to_gpu()
+    Tensor.cent(A.TC, D.TC, E.TC)
+    Tensor.cent(A.TG, D.TG, E.TG)
+    E.check("cross entropy")
+
+    A.TC.rand_uniform(1.0)
+    F.TC.rand_uniform(1.0)
+    A.to_gpu()
+    F.to_gpu()
+    Tensor.sum2D_rowwise(A.TC, F.TC, D.TC)
+    Tensor.sum2D_rowwise(A.TG, F.TG, D.TG)
+    D.check("sum2D_rowwise")
+
+    A.TC.rand_uniform(1.0)
+    F.TC.rand_uniform(1.0)
+    A.to_gpu()
+    F.to_gpu()
+    Tensor.reduce_sum2D(A.TC, F.TC, 0, 0)
+    Tensor.reduce_sum2D(A.TG, F.TG, 0, 0)
+    F.check("reduce_sum2D")
+
+    A.TC.rand_uniform(1.0)
+    F.TC.rand_uniform(1.0)
+    A.to_gpu()
+    F.to_gpu()
+    Tensor.reduce_sum2D(A.TC, F.TC, 0, 1)
+    Tensor.reduce_sum2D(A.TG, F.TG, 0, 1)
+    F.check("reduce_sum2D inc")
+
+    A.TC.rand_suniform(1.0)
+    A.to_gpu()
+    Tensor.ReLu(A.TC, D.TC)
+    Tensor.ReLu(A.TG, D.TG)
+    D.check("ReLu")
+
+    A.TC.rand_suniform(1.0)
+    D.TC.rand_suniform(1.0)
+    A.to_gpu()
+    D.to_gpu()
+    Tensor.D_ReLu(D.TC, A.TC, E.TC)
+    Tensor.D_ReLu(D.TG, A.TG, E.TG)
+    E.check("D_ReLu")
 
 
 if __name__ == "__main__":
