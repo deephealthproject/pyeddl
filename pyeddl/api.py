@@ -23,6 +23,8 @@ __all__ = [
     "Conv",
     "save",
     "load",
+    "T",
+    "predict",
 ]
 
 
@@ -122,3 +124,13 @@ def save(model, fname):
 def load(model, fname):
     with io.open(fname, "rb") as f:
         model.load(f)
+
+
+def T(shape):
+    return _core.LTensor(shape, DEV_CPU)
+
+
+def predict(model, inputs, outputs):
+    inputs = [_.input for _ in inputs]
+    outputs = [_.input for _ in outputs]
+    model.predict(inputs, outputs)
