@@ -40,7 +40,6 @@ void bind_bits_libio(std::function< pybind11::module &(std::string const &namesp
 #include <compserv_addons.h>
 #include <eddl/compserv.h>
 #include <eddl/losses/loss.h>
-#include <eddl/metrics/metric.h>
 #include <iterator>
 #include <memory>
 #include <pooldescriptor_addons.h>
@@ -160,57 +159,6 @@ struct PyCallBack_LCrossEntropy : public LCrossEntropy {
 	}
 };
 
-// LSoftCrossEntropy file:eddl/losses/loss.h line:60
-struct PyCallBack_LSoftCrossEntropy : public LSoftCrossEntropy {
-	using LSoftCrossEntropy::LSoftCrossEntropy;
-
-	void delta(class Tensor * a0, class Tensor * a1, class Tensor * a2) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LSoftCrossEntropy *>(this), "delta");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1, a2);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LSoftCrossEntropy::delta(a0, a1, a2);
-	}
-	float value(class Tensor * a0, class Tensor * a1) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LSoftCrossEntropy *>(this), "value");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1);
-			if (pybind11::detail::cast_is_temporary_value_reference<float>::value) {
-				static pybind11::detail::overload_caster_t<float> caster;
-				return pybind11::detail::cast_ref<float>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<float>(std::move(o));
-		}
-		return LSoftCrossEntropy::value(a0, a1);
-	}
-};
-
-// Metric file:eddl/metrics/metric.h line:32
-struct PyCallBack_Metric : public Metric {
-	using Metric::Metric;
-
-	float value(class Tensor * a0, class Tensor * a1) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const Metric *>(this), "value");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1);
-			if (pybind11::detail::cast_is_temporary_value_reference<float>::value) {
-				static pybind11::detail::overload_caster_t<float> caster;
-				return pybind11::detail::cast_ref<float>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<float>(std::move(o));
-		}
-		return Metric::value(a0, a1);
-	}
-};
-
 void bind_eddl_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
 	{ // CompServ file:eddl/compserv.h line:30
@@ -282,46 +230,56 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def("isCPU", (int (Tensor::*)()) &Tensor::isCPU, "C++: Tensor::isCPU() --> int");
 		cl.def("isGPU", (int (Tensor::*)()) &Tensor::isGPU, "C++: Tensor::isGPU() --> int");
 		cl.def("isFPGA", (int (Tensor::*)()) &Tensor::isFPGA, "C++: Tensor::isFPGA() --> int");
-		cl.def("set", (void (Tensor::*)(float)) &Tensor::set, "/////////////////////////////\n\nC++: Tensor::set(float) --> void", pybind11::arg("v"));
+		cl.def("set", (void (Tensor::*)(float)) &Tensor::set, "C++: Tensor::set(float) --> void", pybind11::arg("v"));
 		cl.def("mult", (void (Tensor::*)(float)) &Tensor::mult, "C++: Tensor::mult(float) --> void", pybind11::arg("v"));
 		cl.def("div", (void (Tensor::*)(float)) &Tensor::div, "C++: Tensor::div(float) --> void", pybind11::arg("v"));
-		cl.def("sum_unary", (void (Tensor::*)(float)) &Tensor::sum, "C++: Tensor::sum(float) --> void", pybind11::arg("v"));
+		cl.def("add_unary", (void (Tensor::*)(float)) &Tensor::add, "C++: Tensor::add(float) --> void", pybind11::arg("v"));
 		cl.def("sub", (void (Tensor::*)(float)) &Tensor::sub, "C++: Tensor::sub(float) --> void", pybind11::arg("v"));
-		cl.def("set_abs", (void (Tensor::*)()) &Tensor::set_abs, "C++: Tensor::set_abs() --> void");
-		cl.def("set_log", (void (Tensor::*)()) &Tensor::set_log, "C++: Tensor::set_log() --> void");
-		cl.def("set_log2", (void (Tensor::*)()) &Tensor::set_log2, "C++: Tensor::set_log2() --> void");
-		cl.def("set_log10", (void (Tensor::*)()) &Tensor::set_log10, "C++: Tensor::set_log10() --> void");
-		cl.def("set_exp", (void (Tensor::*)()) &Tensor::set_exp, "C++: Tensor::set_exp() --> void");
-		cl.def("set_sqrt", (void (Tensor::*)()) &Tensor::set_sqrt, "C++: Tensor::set_sqrt() --> void");
-		cl.def("set_sqr", (void (Tensor::*)()) &Tensor::set_sqr, "C++: Tensor::set_sqr() --> void");
-		cl.def("total_sum", (float (Tensor::*)()) &Tensor::total_sum, "C++: Tensor::total_sum() --> float");
-		cl.def("total_abs", (float (Tensor::*)()) &Tensor::total_abs, "C++: Tensor::total_abs() --> float");
+		cl.def("sum", (float (Tensor::*)()) &Tensor::sum, "C++: Tensor::sum() --> float");
+		cl.def("sum_abs", (float (Tensor::*)()) &Tensor::sum_abs, "C++: Tensor::sum_abs() --> float");
+		cl.def("abs", (void (Tensor::*)()) &Tensor::abs, "C++: Tensor::abs() --> void");
+		cl.def("log", (void (Tensor::*)()) &Tensor::log, "C++: Tensor::log() --> void");
+		cl.def("log2", (void (Tensor::*)()) &Tensor::log2, "C++: Tensor::log2() --> void");
+		cl.def("log10", (void (Tensor::*)()) &Tensor::log10, "C++: Tensor::log10() --> void");
+		cl.def("exp", (void (Tensor::*)()) &Tensor::exp, "C++: Tensor::exp() --> void");
+		cl.def("sqrt", (void (Tensor::*)()) &Tensor::sqrt, "C++: Tensor::sqrt() --> void");
+		cl.def("sqr", (void (Tensor::*)()) &Tensor::sqr, "C++: Tensor::sqr() --> void");
+		cl.def("pow", (void (Tensor::*)(float)) &Tensor::pow, "C++: Tensor::pow(float) --> void", pybind11::arg("exp"));
 		cl.def("rand_uniform", (void (Tensor::*)(float)) &Tensor::rand_uniform, "C++: Tensor::rand_uniform(float) --> void", pybind11::arg("v"));
-		cl.def("rand_suniform", (void (Tensor::*)(float)) &Tensor::rand_suniform, "C++: Tensor::rand_suniform(float) --> void", pybind11::arg("v"));
-		cl.def("rand_gaussian", (void (Tensor::*)(float, float)) &Tensor::rand_gaussian, "C++: Tensor::rand_gaussian(float, float) --> void", pybind11::arg("m"), pybind11::arg("s"));
+		cl.def("rand_signed_uniform", (void (Tensor::*)(float)) &Tensor::rand_signed_uniform, "C++: Tensor::rand_signed_uniform(float) --> void", pybind11::arg("v"));
+		cl.def("rand_normal", [](Tensor &o, float const & a0, float const & a1) -> void { return o.rand_normal(a0, a1); }, "", pybind11::arg("m"), pybind11::arg("s"));
+		cl.def("rand_normal", (void (Tensor::*)(float, float, bool)) &Tensor::rand_normal, "C++: Tensor::rand_normal(float, float, bool) --> void", pybind11::arg("m"), pybind11::arg("s"), pybind11::arg("fast_math"));
 		cl.def("rand_binary", (void (Tensor::*)(float)) &Tensor::rand_binary, "C++: Tensor::rand_binary(float) --> void", pybind11::arg("v"));
-		cl.def_static("eqsize", (int (*)(class Tensor *, class Tensor *)) &Tensor::eqsize, "////// static metods\n\nC++: Tensor::eqsize(class Tensor *, class Tensor *) --> int", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def_static("arange", [](float const & a0, float const & a1) -> Tensor * { return Tensor::arange(a0, a1); }, "", pybind11::return_value_policy::automatic, pybind11::arg("min"), pybind11::arg("max"));
+		cl.def_static("arange", [](float const & a0, float const & a1, float const & a2) -> Tensor * { return Tensor::arange(a0, a1, a2); }, "", pybind11::return_value_policy::automatic, pybind11::arg("min"), pybind11::arg("max"), pybind11::arg("step"));
+		cl.def_static("arange", (class Tensor * (*)(float, float, float, int)) &Tensor::arange, "C++: Tensor::arange(float, float, float, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("min"), pybind11::arg("max"), pybind11::arg("step"), pybind11::arg("dev"));
+		cl.def_static("linspace", [](float const & a0, float const & a1) -> Tensor * { return Tensor::linspace(a0, a1); }, "", pybind11::return_value_policy::automatic, pybind11::arg("start"), pybind11::arg("end"));
+		cl.def_static("linspace", [](float const & a0, float const & a1, int const & a2) -> Tensor * { return Tensor::linspace(a0, a1, a2); }, "", pybind11::return_value_policy::automatic, pybind11::arg("start"), pybind11::arg("end"), pybind11::arg("steps"));
+		cl.def_static("linspace", (class Tensor * (*)(float, float, int, int)) &Tensor::linspace, "C++: Tensor::linspace(float, float, int, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("start"), pybind11::arg("end"), pybind11::arg("steps"), pybind11::arg("dev"));
+		cl.def_static("eye", [](int const & a0) -> Tensor * { return Tensor::eye(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("size"));
+		cl.def_static("eye", (class Tensor * (*)(int, int)) &Tensor::eye, "C++: Tensor::eye(int, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("size"), pybind11::arg("dev"));
+		cl.def_static("eqsize", (int (*)(class Tensor *, class Tensor *)) &Tensor::eqsize, "C++: Tensor::eqsize(class Tensor *, class Tensor *) --> int", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("equal", (int (*)(class Tensor *, class Tensor *)) &Tensor::equal, "C++: Tensor::equal(class Tensor *, class Tensor *) --> int", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("copy", (void (*)(class Tensor *, class Tensor *)) &Tensor::copy, "C++: Tensor::copy(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("fill", (void (*)(class Tensor *, int, int, class Tensor *, int, int, int)) &Tensor::fill, "C++: Tensor::fill(class Tensor *, int, int, class Tensor *, int, int, int) --> void", pybind11::arg("A"), pybind11::arg("aini"), pybind11::arg("aend"), pybind11::arg("B"), pybind11::arg("bini"), pybind11::arg("bend"), pybind11::arg("inc"));
 		cl.def_static("sign", (void (*)(class Tensor *, class Tensor *)) &Tensor::sign, "C++: Tensor::sign(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("mult2D", (void (*)(class Tensor *, int, class Tensor *, int, class Tensor *, int)) &Tensor::mult2D, "C++: Tensor::mult2D(class Tensor *, int, class Tensor *, int, class Tensor *, int) --> void", pybind11::arg("A"), pybind11::arg("tA"), pybind11::arg("B"), pybind11::arg("tB"), pybind11::arg("C"), pybind11::arg("incC"));
 		cl.def_static("inc", (void (*)(class Tensor *, class Tensor *)) &Tensor::inc, "C++: Tensor::inc(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
-		cl.def_static("sum", (void (*)(float, class Tensor *, float, class Tensor *, class Tensor *, int)) &Tensor::sum, "C++: Tensor::sum(float, class Tensor *, float, class Tensor *, class Tensor *, int) --> void", pybind11::arg("scA"), pybind11::arg("A"), pybind11::arg("scB"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("incC"));
-		cl.def_static("sum", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::sum, "C++: Tensor::sum(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
+		cl.def_static("add", (void (*)(float, class Tensor *, float, class Tensor *, class Tensor *, int)) &Tensor::add, "C++: Tensor::add(float, class Tensor *, float, class Tensor *, class Tensor *, int) --> void", pybind11::arg("scA"), pybind11::arg("A"), pybind11::arg("scB"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("incC"));
+		cl.def_static("add", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::add, "C++: Tensor::add(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
 		cl.def_static("sum2D_rowwise", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::sum2D_rowwise, "C++: Tensor::sum2D_rowwise(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
 		cl.def_static("sum2D_colwise", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::sum2D_colwise, "C++: Tensor::sum2D_colwise(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
 		cl.def_static("reduce_sum2D", (void (*)(class Tensor *, class Tensor *, int, int)) &Tensor::reduce_sum2D, "C++: Tensor::reduce_sum2D(class Tensor *, class Tensor *, int, int) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("axis"), pybind11::arg("incB"));
 		cl.def_static("el_mult", (void (*)(class Tensor *, class Tensor *, class Tensor *, int)) &Tensor::el_mult, "C++: Tensor::el_mult(class Tensor *, class Tensor *, class Tensor *, int) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("incC"));
 		cl.def_static("el_div", (void (*)(class Tensor *, class Tensor *, class Tensor *, int)) &Tensor::el_div, "C++: Tensor::el_div(class Tensor *, class Tensor *, class Tensor *, int) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("incC"));
-		cl.def_static("reduceTosum", (void (*)(class Tensor *, class Tensor *, int)) &Tensor::reduceTosum, "////7\n\nC++: Tensor::reduceTosum(class Tensor *, class Tensor *, int) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("axis"));
-		cl.def_static("cent", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::cent, "///\n\nC++: Tensor::cent(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
+		cl.def_static("reduceTosum", (void (*)(class Tensor *, class Tensor *, int)) &Tensor::reduceTosum, "C++: Tensor::reduceTosum(class Tensor *, class Tensor *, int) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("axis"));
+		cl.def_static("cent", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::cent, "C++: Tensor::cent(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
 		cl.def_static("accuracy", (int (*)(class Tensor *, class Tensor *)) &Tensor::accuracy, "C++: Tensor::accuracy(class Tensor *, class Tensor *) --> int", pybind11::arg("A"), pybind11::arg("B"));
-		cl.def_static("ReLu", (void (*)(class Tensor *, class Tensor *)) &Tensor::ReLu, "//\n\nC++: Tensor::ReLu(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
-		cl.def_static("Softmax", (void (*)(class Tensor *, class Tensor *)) &Tensor::Softmax, "C++: Tensor::Softmax(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def_static("ReLu", (void (*)(class Tensor *, class Tensor *)) &Tensor::ReLu, "C++: Tensor::ReLu(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("D_ReLu", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::D_ReLu, "C++: Tensor::D_ReLu(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("D"), pybind11::arg("I"), pybind11::arg("PD"));
+		cl.def_static("Softmax", (void (*)(class Tensor *, class Tensor *)) &Tensor::Softmax, "C++: Tensor::Softmax(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("D_Softmax", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::D_Softmax, "C++: Tensor::D_Softmax(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("D"), pybind11::arg("I"), pybind11::arg("PD"));
-		cl.def_static("Conv2D", (void (*)(class ConvolDescriptor *)) &Tensor::Conv2D, "////\n\nC++: Tensor::Conv2D(class ConvolDescriptor *) --> void", pybind11::arg("D"));
+		cl.def_static("Conv2D", (void (*)(class ConvolDescriptor *)) &Tensor::Conv2D, "C++: Tensor::Conv2D(class ConvolDescriptor *) --> void", pybind11::arg("D"));
 		cl.def_static("Conv2D_grad", (void (*)(class ConvolDescriptor *)) &Tensor::Conv2D_grad, "C++: Tensor::Conv2D_grad(class ConvolDescriptor *) --> void", pybind11::arg("D"));
 		cl.def_static("Conv2D_back", (void (*)(class ConvolDescriptor *)) &Tensor::Conv2D_back, "C++: Tensor::Conv2D_back(class ConvolDescriptor *) --> void", pybind11::arg("D"));
 		cl.def_static("MPool2D", (void (*)(class PoolDescriptor *)) &Tensor::MPool2D, "C++: Tensor::MPool2D(class PoolDescriptor *) --> void", pybind11::arg("D"));
@@ -356,35 +314,17 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def("value", (float (LCrossEntropy::*)(class Tensor *, class Tensor *)) &LCrossEntropy::value, "C++: LCrossEntropy::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class LCrossEntropy & (LCrossEntropy::*)(const class LCrossEntropy &)) &LCrossEntropy::operator=, "C++: LCrossEntropy::operator=(const class LCrossEntropy &) --> class LCrossEntropy &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LSoftCrossEntropy file:eddl/losses/loss.h line:60
-		pybind11::class_<LSoftCrossEntropy, std::shared_ptr<LSoftCrossEntropy>, PyCallBack_LSoftCrossEntropy, Loss> cl(M(""), "LSoftCrossEntropy", "");
-		pybind11::handle cl_type = cl;
-
-		cl.def( pybind11::init( [](){ return new LSoftCrossEntropy(); }, [](){ return new PyCallBack_LSoftCrossEntropy(); } ) );
-		cl.def("delta", (void (LSoftCrossEntropy::*)(class Tensor *, class Tensor *, class Tensor *)) &LSoftCrossEntropy::delta, "C++: LSoftCrossEntropy::delta(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("T"), pybind11::arg("Y"), pybind11::arg("D"));
-		cl.def("value", (float (LSoftCrossEntropy::*)(class Tensor *, class Tensor *)) &LSoftCrossEntropy::value, "C++: LSoftCrossEntropy::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
-		cl.def("assign", (class LSoftCrossEntropy & (LSoftCrossEntropy::*)(const class LSoftCrossEntropy &)) &LSoftCrossEntropy::operator=, "C++: LSoftCrossEntropy::operator=(const class LSoftCrossEntropy &) --> class LSoftCrossEntropy &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
-	{ // Metric file:eddl/metrics/metric.h line:32
-		pybind11::class_<Metric, std::shared_ptr<Metric>, PyCallBack_Metric> cl(M(""), "Metric", "");
-		pybind11::handle cl_type = cl;
-
-		cl.def_readwrite("name", &Metric::name);
-		cl.def("value", (float (Metric::*)(class Tensor *, class Tensor *)) &Metric::value, "C++: Metric::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
-		cl.def("assign", (class Metric & (Metric::*)(const class Metric &)) &Metric::operator=, "C++: Metric::operator=(const class Metric &) --> class Metric &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
 }
 
 
-// File: eddl/metrics/metric.cpp
-#include <eddl/layers/conv/layer_conv.h>
+// File: eddl/losses/loss.cpp
 #include <eddl/layers/core/layer_core.h>
 #include <eddl/layers/layer.h>
+#include <eddl/losses/loss.h>
 #include <eddl/metrics/metric.h>
 #include <iterator>
 #include <lactivation_addons.h>
 #include <layer_addons.h>
-#include <lconv_addons.h>
 #include <ldense_addons.h>
 #include <lembedding_addons.h>
 #include <linput_addons.h>
@@ -409,6 +349,57 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 	PYBIND11_DECLARE_HOLDER_TYPE(T, T*);
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
+
+// LSoftCrossEntropy file:eddl/losses/loss.h line:60
+struct PyCallBack_LSoftCrossEntropy : public LSoftCrossEntropy {
+	using LSoftCrossEntropy::LSoftCrossEntropy;
+
+	void delta(class Tensor * a0, class Tensor * a1, class Tensor * a2) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LSoftCrossEntropy *>(this), "delta");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1, a2);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LSoftCrossEntropy::delta(a0, a1, a2);
+	}
+	float value(class Tensor * a0, class Tensor * a1) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LSoftCrossEntropy *>(this), "value");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1);
+			if (pybind11::detail::cast_is_temporary_value_reference<float>::value) {
+				static pybind11::detail::overload_caster_t<float> caster;
+				return pybind11::detail::cast_ref<float>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<float>(std::move(o));
+		}
+		return LSoftCrossEntropy::value(a0, a1);
+	}
+};
+
+// Metric file:eddl/metrics/metric.h line:32
+struct PyCallBack_Metric : public Metric {
+	using Metric::Metric;
+
+	float value(class Tensor * a0, class Tensor * a1) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Metric *>(this), "value");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1);
+			if (pybind11::detail::cast_is_temporary_value_reference<float>::value) {
+				static pybind11::detail::overload_caster_t<float> caster;
+				return pybind11::detail::cast_ref<float>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<float>(std::move(o));
+		}
+		return Metric::value(a0, a1);
+	}
+};
 
 // MMeanSquaredError file:eddl/metrics/metric.h line:42
 struct PyCallBack_MMeanSquaredError : public MMeanSquaredError {
@@ -1456,176 +1447,25 @@ struct PyCallBack_LBatchNorm : public LBatchNorm {
 	}
 };
 
-// LConv file:eddl/layers/conv/layer_conv.h line:36
-struct PyCallBack_LConv : public LConv {
-	using LConv::LConv;
-
-	void forward() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "forward");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LConv::forward();
-	}
-	void backward() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "backward");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LConv::backward();
-	}
-	void resize(int a0) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "resize");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LConv::resize(a0);
-	}
-	void addchild(class Layer * a0) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "addchild");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LinLayer::addchild(a0);
-	}
-	void addparent(class Layer * a0) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "addparent");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LinLayer::addparent(a0);
-	}
-	void info() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "info");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return Layer::info();
-	}
-};
-
-// LConvT file:eddl/layers/conv/layer_conv.h line:68
-struct PyCallBack_LConvT : public LConvT {
-	using LConvT::LConvT;
-
-	void addchild(class Layer * a0) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "addchild");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LinLayer::addchild(a0);
-	}
-	void addparent(class Layer * a0) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "addparent");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LinLayer::addparent(a0);
-	}
-	void resize(int a0) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "resize");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LinLayer::resize(a0);
-	}
-	void forward() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "forward");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LinLayer::forward();
-	}
-	void backward() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "backward");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return LinLayer::backward();
-	}
-	void info() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "info");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return Layer::info();
-	}
-};
-
-void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string const &namespace_) > &M)
+void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
+	{ // LSoftCrossEntropy file:eddl/losses/loss.h line:60
+		pybind11::class_<LSoftCrossEntropy, std::shared_ptr<LSoftCrossEntropy>, PyCallBack_LSoftCrossEntropy, Loss> cl(M(""), "LSoftCrossEntropy", "");
+		pybind11::handle cl_type = cl;
+
+		cl.def( pybind11::init( [](){ return new LSoftCrossEntropy(); }, [](){ return new PyCallBack_LSoftCrossEntropy(); } ) );
+		cl.def("delta", (void (LSoftCrossEntropy::*)(class Tensor *, class Tensor *, class Tensor *)) &LSoftCrossEntropy::delta, "C++: LSoftCrossEntropy::delta(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("T"), pybind11::arg("Y"), pybind11::arg("D"));
+		cl.def("value", (float (LSoftCrossEntropy::*)(class Tensor *, class Tensor *)) &LSoftCrossEntropy::value, "C++: LSoftCrossEntropy::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
+		cl.def("assign", (class LSoftCrossEntropy & (LSoftCrossEntropy::*)(const class LSoftCrossEntropy &)) &LSoftCrossEntropy::operator=, "C++: LSoftCrossEntropy::operator=(const class LSoftCrossEntropy &) --> class LSoftCrossEntropy &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // Metric file:eddl/metrics/metric.h line:32
+		pybind11::class_<Metric, std::shared_ptr<Metric>, PyCallBack_Metric> cl(M(""), "Metric", "");
+		pybind11::handle cl_type = cl;
+
+		cl.def_readwrite("name", &Metric::name);
+		cl.def("value", (float (Metric::*)(class Tensor *, class Tensor *)) &Metric::value, "C++: Metric::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
+		cl.def("assign", (class Metric & (Metric::*)(const class Metric &)) &Metric::operator=, "C++: Metric::operator=(const class Metric &) --> class Metric &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
 	{ // MMeanSquaredError file:eddl/metrics/metric.h line:42
 		pybind11::class_<MMeanSquaredError, std::shared_ptr<MMeanSquaredError>, PyCallBack_MMeanSquaredError, Metric> cl(M(""), "MMeanSquaredError", "");
 		pybind11::handle cl_type = cl;
@@ -1808,23 +1648,6 @@ void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string cons
 		cl.def("resize", (void (LBatchNorm::*)(int)) &LBatchNorm::resize, "C++: LBatchNorm::resize(int) --> void", pybind11::arg("batch"));
 		cl.def("assign", (class LBatchNorm & (LBatchNorm::*)(const class LBatchNorm &)) &LBatchNorm::operator=, "C++: LBatchNorm::operator=(const class LBatchNorm &) --> class LBatchNorm &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // LConv file:eddl/layers/conv/layer_conv.h line:36
-		pybind11::class_<LConv, std::shared_ptr<LConv>, PyCallBack_LConv, LinLayer> cl(M(""), "LConv", "Conv2D Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def("forward", (void (LConv::*)()) &LConv::forward, "C++: LConv::forward() --> void");
-		cl.def("backward", (void (LConv::*)()) &LConv::backward, "C++: LConv::backward() --> void");
-		cl.def("resize", (void (LConv::*)(int)) &LConv::resize, "C++: LConv::resize(int) --> void", pybind11::arg("batch"));
-		cl.def("assign", (class LConv & (LConv::*)(const class LConv &)) &LConv::operator=, "C++: LConv::operator=(const class LConv &) --> class LConv &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-
-		lconv_addons(cl);
-	}
-	{ // LConvT file:eddl/layers/conv/layer_conv.h line:68
-		pybind11::class_<LConvT, std::shared_ptr<LConvT>, PyCallBack_LConvT, LinLayer> cl(M(""), "LConvT", "ConvT2D Layer");
-		pybind11::handle cl_type = cl;
-
-		cl.def("assign", (class LConvT & (LConvT::*)(const class LConvT &)) &LConvT::operator=, "C++: LConvT::operator=(const class LConvT &) --> class LConvT &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
 }
 
 
@@ -1835,6 +1658,7 @@ void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string cons
 #include <eddl/layers/pool/layer_pool.h>
 #include <eddl/optimizers/optim.h>
 #include <iterator>
+#include <lconv_addons.h>
 #include <lgaussiannoise_addons.h>
 #include <lmaxpool_addons.h>
 #include <memory>
@@ -1856,6 +1680,174 @@ void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string cons
 	PYBIND11_DECLARE_HOLDER_TYPE(T, T*);
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
+
+// LConv file:eddl/layers/conv/layer_conv.h line:36
+struct PyCallBack_LConv : public LConv {
+	using LConv::LConv;
+
+	void forward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LConv::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LConv::backward();
+	}
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "resize");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LConv::resize(a0);
+	}
+	void addchild(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "addchild");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConv *>(this), "info");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Layer::info();
+	}
+};
+
+// LConvT file:eddl/layers/conv/layer_conv.h line:68
+struct PyCallBack_LConvT : public LConvT {
+	using LConvT::LConvT;
+
+	void addchild(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "addchild");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addchild(a0);
+	}
+	void addparent(class Layer * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "addparent");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::addparent(a0);
+	}
+	void resize(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "resize");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::resize(a0);
+	}
+	void forward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "forward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::forward();
+	}
+	void backward() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "backward");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return LinLayer::backward();
+	}
+	void info() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const LConvT *>(this), "info");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Layer::info();
+	}
+};
 
 // LUpSampling file:eddl/layers/conv/layer_conv.h line:95
 struct PyCallBack_LUpSampling : public LUpSampling {
@@ -2669,40 +2661,25 @@ struct PyCallBack_Nadam : public Nadam {
 	}
 };
 
-// RMSProp file:eddl/optimizers/optim.h line:185
-struct PyCallBack_RMSProp : public RMSProp {
-	using RMSProp::RMSProp;
-
-	void applygrads(int a0) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const RMSProp *>(this), "applygrads");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return Optimizer::applygrads(a0);
-	}
-	class Optimizer * clone() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const RMSProp *>(this), "clone");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
-				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
-				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
-		}
-		return Optimizer::clone();
-	}
-};
-
 void bind_eddl_layers_conv_layer_conv(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
+	{ // LConv file:eddl/layers/conv/layer_conv.h line:36
+		pybind11::class_<LConv, std::shared_ptr<LConv>, PyCallBack_LConv, LinLayer> cl(M(""), "LConv", "Conv2D Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def("forward", (void (LConv::*)()) &LConv::forward, "C++: LConv::forward() --> void");
+		cl.def("backward", (void (LConv::*)()) &LConv::backward, "C++: LConv::backward() --> void");
+		cl.def("resize", (void (LConv::*)(int)) &LConv::resize, "C++: LConv::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class LConv & (LConv::*)(const class LConv &)) &LConv::operator=, "C++: LConv::operator=(const class LConv &) --> class LConv &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		lconv_addons(cl);
+	}
+	{ // LConvT file:eddl/layers/conv/layer_conv.h line:68
+		pybind11::class_<LConvT, std::shared_ptr<LConvT>, PyCallBack_LConvT, LinLayer> cl(M(""), "LConvT", "ConvT2D Layer");
+		pybind11::handle cl_type = cl;
+
+		cl.def("assign", (class LConvT & (LConvT::*)(const class LConvT &)) &LConvT::operator=, "C++: LConvT::operator=(const class LConvT &) --> class LConvT &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
 	{ // LUpSampling file:eddl/layers/conv/layer_conv.h line:95
 		pybind11::class_<LUpSampling, std::shared_ptr<LUpSampling>, PyCallBack_LUpSampling, LinLayer> cl(M(""), "LUpSampling", "UpSampling2D Layer");
 		pybind11::handle cl_type = cl;
@@ -2882,27 +2859,10 @@ void bind_eddl_layers_conv_layer_conv(std::function< pybind11::module &(std::str
 		cl.def_readwrite("mT", &Nadam::mT);
 		cl.def("assign", (class Nadam & (Nadam::*)(const class Nadam &)) &Nadam::operator=, "C++: Nadam::operator=(const class Nadam &) --> class Nadam &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // RMSProp file:eddl/optimizers/optim.h line:185
-		pybind11::class_<RMSProp, std::shared_ptr<RMSProp>, PyCallBack_RMSProp, Optimizer> cl(M(""), "RMSProp", "");
-		pybind11::handle cl_type = cl;
-
-		cl.def( pybind11::init( [](){ return new RMSProp(); }, [](){ return new PyCallBack_RMSProp(); } ), "doc");
-		cl.def( pybind11::init( [](float const & a0){ return new RMSProp(a0); }, [](float const & a0){ return new PyCallBack_RMSProp(a0); } ), "doc");
-		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new RMSProp(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_RMSProp(a0, a1); } ), "doc");
-		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new RMSProp(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_RMSProp(a0, a1, a2); } ), "doc");
-		cl.def( pybind11::init<float, float, float, float>(), pybind11::arg("lr"), pybind11::arg("rho"), pybind11::arg("epsilon"), pybind11::arg("weight_decay") );
-
-		cl.def_readwrite("lr", &RMSProp::lr);
-		cl.def_readwrite("rho", &RMSProp::rho);
-		cl.def_readwrite("epsilon", &RMSProp::epsilon);
-		cl.def_readwrite("weight_decay", &RMSProp::weight_decay);
-		cl.def_readwrite("mT", &RMSProp::mT);
-		cl.def("assign", (class RMSProp & (RMSProp::*)(const class RMSProp &)) &RMSProp::operator=, "C++: RMSProp::operator=(const class RMSProp &) --> class RMSProp &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
 }
 
 
-// File: eddl/net.cpp
+// File: eddl/optimizers/optim.cpp
 #include <eddl/compserv.h>
 #include <eddl/layers/layer.h>
 #include <eddl/losses/loss.h>
@@ -2931,13 +2891,59 @@ void bind_eddl_layers_conv_layer_conv(std::function< pybind11::module &(std::str
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
 
-void bind_eddl_net(std::function< pybind11::module &(std::string const &namespace_) > &M)
+// RMSProp file:eddl/optimizers/optim.h line:185
+struct PyCallBack_RMSProp : public RMSProp {
+	using RMSProp::RMSProp;
+
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const RMSProp *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Optimizer::applygrads(a0);
+	}
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const RMSProp *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::clone();
+	}
+};
+
+void bind_eddl_optimizers_optim(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
+	{ // RMSProp file:eddl/optimizers/optim.h line:185
+		pybind11::class_<RMSProp, std::shared_ptr<RMSProp>, PyCallBack_RMSProp, Optimizer> cl(M(""), "RMSProp", "");
+		pybind11::handle cl_type = cl;
+
+		cl.def( pybind11::init( [](){ return new RMSProp(); }, [](){ return new PyCallBack_RMSProp(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new RMSProp(a0); }, [](float const & a0){ return new PyCallBack_RMSProp(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new RMSProp(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_RMSProp(a0, a1); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new RMSProp(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_RMSProp(a0, a1, a2); } ), "doc");
+		cl.def( pybind11::init<float, float, float, float>(), pybind11::arg("lr"), pybind11::arg("rho"), pybind11::arg("epsilon"), pybind11::arg("weight_decay") );
+
+		cl.def_readwrite("lr", &RMSProp::lr);
+		cl.def_readwrite("rho", &RMSProp::rho);
+		cl.def_readwrite("epsilon", &RMSProp::epsilon);
+		cl.def_readwrite("weight_decay", &RMSProp::weight_decay);
+		cl.def_readwrite("mT", &RMSProp::mT);
+		cl.def("assign", (class RMSProp & (RMSProp::*)(const class RMSProp &)) &RMSProp::operator=, "C++: RMSProp::operator=(const class RMSProp &) --> class RMSProp &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
 	// train_batch_t(void *) file:eddl/net.h line:46
 	M("").def("train_batch_t", (void * (*)(void *)) &train_batch_t, "C++: train_batch_t(void *) --> void *", pybind11::return_value_policy::automatic, pybind11::arg("targs"));
-
-	// applygrads_t(void *) file:eddl/net.h line:48
-	M("").def("applygrads_t", (void * (*)(void *)) &applygrads_t, "C++: applygrads_t(void *) --> void *", pybind11::return_value_policy::automatic, pybind11::arg("t"));
 
 	{ // Net file:eddl/net.h line:52
 		pybind11::class_<Net, std::shared_ptr<Net>> cl(M(""), "Net", "");
@@ -2991,9 +2997,9 @@ typedef std::function< pybind11::module & (std::string const &) > ModuleGetter;
 
 void bind_bits_libio(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_eddl_metrics_metric(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_layers_conv_layer_conv(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_eddl_net(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_eddl_optimizers_optim(std::function< pybind11::module &(std::string const &namespace_) > &M);
 
 
 PYBIND11_MODULE(_core, root_module) {
@@ -3016,9 +3022,9 @@ PYBIND11_MODULE(_core, root_module) {
 
 	bind_bits_libio(M);
 	bind_eddl_compserv(M);
-	bind_eddl_metrics_metric(M);
+	bind_eddl_losses_loss(M);
 	bind_eddl_layers_conv_layer_conv(M);
-	bind_eddl_net(M);
+	bind_eddl_optimizers_optim(M);
 
 }
 
@@ -3026,9 +3032,9 @@ PYBIND11_MODULE(_core, root_module) {
 // _core.cpp
 // bits/libio.cpp
 // eddl/compserv.cpp
-// eddl/metrics/metric.cpp
+// eddl/losses/loss.cpp
 // eddl/layers/conv/layer_conv.cpp
-// eddl/net.cpp
+// eddl/optimizers/optim.cpp
 
 // Modules list file: /pyeddl/codegen/bindings/_core.modules
 // 

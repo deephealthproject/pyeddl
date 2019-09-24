@@ -40,12 +40,12 @@ def main():
     A.TG.set(1.0)
     A.check("set")
 
-    A.TC.rand_suniform(1)
+    A.TC.rand_signed_uniform(1)
     A.to_gpu()
-    fc = A.TC.total_sum()
-    fg = A.TG.total_sum()
+    fc = A.TC.sum()
+    fg = A.TG.sum()
     res = "OK" if abs(fc - fg) <= 0.01 else "Fail"
-    print("total_sum: %s" % res)
+    print("sum: %s" % res)
 
     A.TC.rand_uniform(1.0)
     B.TC.rand_uniform(1.0)
@@ -83,9 +83,9 @@ def main():
     D.TC.rand_uniform(1.0)
     A.to_gpu()
     D.to_gpu()
-    Tensor.sum(1.0, A.TC, 1.0, D.TC, E.TC, 0)
-    Tensor.sum(1.0, A.TG, 1.0, D.TG, E.TG, 0)
-    E.check("sum")
+    Tensor.add(1.0, A.TC, 1.0, D.TC, E.TC, 0)
+    Tensor.add(1.0, A.TG, 1.0, D.TG, E.TG, 0)
+    E.check("add")
 
     A.TC.rand_uniform(100.0)
     D.TC.rand_uniform(100.0)
@@ -95,7 +95,7 @@ def main():
     Tensor.inc(A.TG, D.TG)
     D.check("inc")
 
-    A.TC.rand_suniform(100000)
+    A.TC.rand_signed_uniform(100000)
     A.to_gpu()
     Tensor.Softmax(A.TC, D.TC)
     Tensor.Softmax(A.TG, D.TG)
@@ -133,14 +133,14 @@ def main():
     Tensor.reduce_sum2D(A.TG, F.TG, 0, 1)
     F.check("reduce_sum2D inc")
 
-    A.TC.rand_suniform(1.0)
+    A.TC.rand_signed_uniform(1.0)
     A.to_gpu()
     Tensor.ReLu(A.TC, D.TC)
     Tensor.ReLu(A.TG, D.TG)
     D.check("ReLu")
 
-    A.TC.rand_suniform(1.0)
-    D.TC.rand_suniform(1.0)
+    A.TC.rand_signed_uniform(1.0)
+    D.TC.rand_signed_uniform(1.0)
     A.to_gpu()
     D.to_gpu()
     Tensor.D_ReLu(D.TC, A.TC, E.TC)

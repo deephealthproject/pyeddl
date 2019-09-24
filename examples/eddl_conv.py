@@ -5,11 +5,16 @@ from pyeddl.api import (
 from pyeddl.utils import download_mnist
 
 
+def Block(layer, filters, kernel_size, strides):
+    return MaxPool(Activation(
+        Conv(layer, filters, kernel_size, strides), "relu"), [2, 2])
+
+
 def main():
     download_mnist()
 
     epochs = 5
-    batch_size = 1000
+    batch_size = 100
     num_classes = 10
 
     in_ = Input([784])
@@ -17,14 +22,14 @@ def main():
 
     layer = Reshape(layer, [1, 28, 28])
 
-    layer = MaxPool(Activation(Conv(layer, 16, [3, 3]), "relu"), [2, 2])
-    layer = MaxPool(Activation(Conv(layer, 32, [3, 3]), "relu"), [2, 2])
-    layer = MaxPool(Activation(Conv(layer, 64, [3, 3]), "relu"), [2, 2])
-    layer = MaxPool(Activation(Conv(layer, 128, [3, 3]), "relu"), [2, 2])
+    layer = Block(layer, 64, [3, 3], [1, 1])
+    layer = Block(layer, 128, [3, 3], [1, 1])
+    layer = Block(layer, 256, [3, 3], [1, 1])
+    layer = Block(layer, 512, [3, 3], [1, 1])
 
     layer = Reshape(layer, [-1])
 
-    layer = Activation(Dense(layer, 32), "relu")
+    layer = Activation(Dense(layer, 256), "relu")
     out = Activation(Dense(layer, num_classes), "softmax")
 
     net = Model([in_], [out])
