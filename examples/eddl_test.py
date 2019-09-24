@@ -42,6 +42,13 @@ def main():
 
     A.TC.rand_signed_uniform(1)
     A.to_gpu()
+    exp = 2.0
+    A.TC.pow(exp)
+    A.TG.pow(exp)
+    A.check("pow")
+
+    A.TC.rand_signed_uniform(1)
+    A.to_gpu()
     fc = A.TC.sum()
     fg = A.TG.sum()
     res = "OK" if abs(fc - fg) <= 0.01 else "Fail"
