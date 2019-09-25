@@ -18,7 +18,7 @@ ${binder} \
   --bind "" \
   --config config.cfg \
   --single-file \
-  all_bash_includes.hpp \
+  all_includes.hpp \
   -- -std=c++11 \
   -I"${eddl_inc}" \
   -I"${eigen_inc}" \
