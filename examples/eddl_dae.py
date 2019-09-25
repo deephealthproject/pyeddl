@@ -1,15 +1,22 @@
+"""\
+DAE example.
+"""
+
+import argparse
+import sys
+
 from pyeddl.api import (
     Input, Activation, Dense, Model, sgd, CS_CPU, build, T_load, div, fit,
-    GaussianNoise
+    GaussianNoise, CS_GPU
 )
 from pyeddl.utils import download_mnist
 
 
-def main():
+def main(args):
     download_mnist()
 
-    epochs = 10
-    batch_size = 1000
+    epochs = args.epochs
+    batch_size = args.batch_size
 
     in_ = Input([784])
     layer = in_
@@ -28,7 +35,7 @@ def main():
         sgd(0.01, 0.9),
         ["mean_squared_error"],
         ["mean_squared_error"],
-        CS_CPU(4)
+        CS_GPU([1]) if args.gpu else CS_CPU(4)
     )
 
     x_train = T_load("trX.bin")
@@ -37,4 +44,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--epochs", type=int, metavar="INT", default=10)
+    parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
+    parser.add_argument("--gpu", action="store_true")
+    main(parser.parse_args(sys.argv[1:]))

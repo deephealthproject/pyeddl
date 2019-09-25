@@ -1,6 +1,13 @@
+"""\
+CONV example.
+"""
+
+import argparse
+import sys
+
 from pyeddl.api import (
     Input, Activation, Dense, Model, sgd, CS_CPU, build, T_load, div, fit,
-    evaluate, Reshape, MaxPool, Conv
+    evaluate, Reshape, MaxPool, Conv, CS_GPU
 )
 from pyeddl.utils import download_mnist
 
@@ -10,11 +17,11 @@ def Block(layer, filters, kernel_size, strides):
         Conv(layer, filters, kernel_size, strides), "relu"), [2, 2])
 
 
-def main():
+def main(args):
     download_mnist()
 
-    epochs = 5
-    batch_size = 100
+    epochs = args.epochs
+    batch_size = args.batch_size
     num_classes = 10
 
     in_ = Input([784])
@@ -40,7 +47,7 @@ def main():
         sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        CS_CPU(4)
+        CS_GPU([1]) if args.gpu else CS_CPU(4)
     )
 
     X = T_load("trX.bin")
@@ -60,4 +67,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--epochs", type=int, metavar="INT", default=5)
+    parser.add_argument("--batch-size", type=int, metavar="INT", default=100)
+    parser.add_argument("--gpu", action="store_true")
+    main(parser.parse_args(sys.argv[1:]))

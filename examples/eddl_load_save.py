@@ -1,15 +1,22 @@
+"""\
+LOAD_SAVE example.
+"""
+
+import argparse
+import sys
+
 from pyeddl.api import (
     Input, Activation, Dense, Model, sgd, CS_CPU, build, T_load, div, fit,
-    save, load
+    save, load, CS_GPU
 )
 from pyeddl.utils import download_mnist
 
 
-def main():
+def main(args):
     download_mnist()
 
-    epochs = 1
-    batch_size = 1000
+    epochs = args.epochs
+    batch_size = args.batch_size
     num_classes = 10
 
     in_ = Input([784])
@@ -26,7 +33,7 @@ def main():
         sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        CS_CPU(4)
+        CS_GPU([1]) if args.gpu else CS_CPU(4)
     )
 
     x_train = T_load("trX.bin")
@@ -44,4 +51,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--epochs", type=int, metavar="INT", default=1)
+    parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
+    parser.add_argument("--gpu", action="store_true")
+    main(parser.parse_args(sys.argv[1:]))
