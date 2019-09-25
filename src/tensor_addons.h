@@ -7,6 +7,7 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
     cl.def(pybind11::init<const vector<int>&, int>(),
            pybind11::arg("shape"), pybind11::arg("dev"),
            pybind11::keep_alive<1, 2>());
+    cl.def("getShape", &Tensor::getShape);
     cl.def_buffer([](Tensor &t) -> pybind11::buffer_info {
         std::vector<ssize_t> strides(t.ndim);
         ssize_t S = sizeof(float);

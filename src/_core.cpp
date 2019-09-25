@@ -38,6 +38,7 @@ void bind_bits_libio(std::function< pybind11::module &(std::string const &namesp
 
 // File: eddl/compserv.cpp
 #include <compserv_addons.h>
+#include <convoldescriptor_addons.h>
 #include <eddl/compserv.h>
 #include <eddl/losses/loss.h>
 #include <iterator>
@@ -204,6 +205,8 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 		cl.def_readwrite("matgK", &ConvolDescriptor::matgK);
 		cl.def("build", (void (ConvolDescriptor::*)(class Tensor *)) &ConvolDescriptor::build, "C++: ConvolDescriptor::build(class Tensor *) --> void", pybind11::arg("A"));
 		cl.def("resize", (void (ConvolDescriptor::*)(class Tensor *)) &ConvolDescriptor::resize, "C++: ConvolDescriptor::resize(class Tensor *) --> void", pybind11::arg("A"));
+
+		convoldescriptor_addons(cl);
 	}
 	{ // PoolDescriptor file: line:119
 		pybind11::class_<PoolDescriptor, std::shared_ptr<PoolDescriptor>, ConvolDescriptor> cl(M(""), "PoolDescriptor", "");
