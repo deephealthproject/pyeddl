@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <initializer_list>
-#include <vector>
-#include <string>
-#include <mutex>
-#include <Eigen/Dense>
+#include <eddl/tensor/tensor.h>
 #include <eddl/compserv.h>
 #include <eddl/losses/loss.h>
 #include <eddl/metrics/metric.h>

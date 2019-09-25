@@ -36,11 +36,12 @@ void bind_bits_libio(std::function< pybind11::module &(std::string const &namesp
 }
 
 
-// File: eddl/compserv.cpp
+// File: eddl/tensor/tensor.cpp
 #include <compserv_addons.h>
 #include <convoldescriptor_addons.h>
 #include <eddl/compserv.h>
 #include <eddl/losses/loss.h>
+#include <eddl/tensor/tensor.h>
 #include <iterator>
 #include <memory>
 #include <pooldescriptor_addons.h>
@@ -160,23 +161,9 @@ struct PyCallBack_LCrossEntropy : public LCrossEntropy {
 	}
 };
 
-void bind_eddl_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M)
+void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
-	{ // CompServ file:eddl/compserv.h line:30
-		pybind11::class_<CompServ, std::shared_ptr<CompServ>> cl(M(""), "CompServ", "");
-		pybind11::handle cl_type = cl;
-
-		cl.def( pybind11::init<struct _IO_FILE *>(), pybind11::arg("csspec") );
-
-		cl.def_readwrite("type", &CompServ::type);
-		cl.def_readwrite("local_threads", &CompServ::local_threads);
-		cl.def_readwrite("local_gpus", &CompServ::local_gpus);
-		cl.def_readwrite("local_fpgas", &CompServ::local_fpgas);
-		cl.def_readwrite("lsb", &CompServ::lsb);
-
-		compserv_addons(cl);
-	}
-	{ // ConvolDescriptor file: line:69
+	{ // ConvolDescriptor file:eddl/tensor/tensor.h line:69
 		pybind11::class_<ConvolDescriptor, std::shared_ptr<ConvolDescriptor>> cl(M(""), "ConvolDescriptor", "");
 		pybind11::handle cl_type = cl;
 
@@ -208,7 +195,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 
 		convoldescriptor_addons(cl);
 	}
-	{ // PoolDescriptor file: line:119
+	{ // PoolDescriptor file:eddl/tensor/tensor.h line:119
 		pybind11::class_<PoolDescriptor, std::shared_ptr<PoolDescriptor>, ConvolDescriptor> cl(M(""), "PoolDescriptor", "");
 		pybind11::handle cl_type = cl;
 
@@ -217,7 +204,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 
 		pooldescriptor_addons(cl);
 	}
-	{ // Tensor file: line:134
+	{ // Tensor file:eddl/tensor/tensor.h line:134
 		pybind11::class_<Tensor, std::shared_ptr<Tensor>> cl(M(""), "Tensor", pybind11::buffer_protocol());
 		pybind11::handle cl_type = cl;
 
@@ -290,6 +277,20 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 
 		tensor_addons(cl);
 	}
+	{ // CompServ file:eddl/compserv.h line:30
+		pybind11::class_<CompServ, std::shared_ptr<CompServ>> cl(M(""), "CompServ", "");
+		pybind11::handle cl_type = cl;
+
+		cl.def( pybind11::init<struct _IO_FILE *>(), pybind11::arg("csspec") );
+
+		cl.def_readwrite("type", &CompServ::type);
+		cl.def_readwrite("local_threads", &CompServ::local_threads);
+		cl.def_readwrite("local_gpus", &CompServ::local_gpus);
+		cl.def_readwrite("local_fpgas", &CompServ::local_fpgas);
+		cl.def_readwrite("lsb", &CompServ::lsb);
+
+		compserv_addons(cl);
+	}
 	{ // Loss file:eddl/losses/loss.h line:31
 		pybind11::class_<Loss, std::shared_ptr<Loss>, PyCallBack_Loss> cl(M(""), "Loss", "");
 		pybind11::handle cl_type = cl;
@@ -325,6 +326,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 #include <eddl/layers/layer.h>
 #include <eddl/losses/loss.h>
 #include <eddl/metrics/metric.h>
+#include <eddl/tensor/tensor.h>
 #include <iterator>
 #include <lactivation_addons.h>
 #include <layer_addons.h>
@@ -1660,6 +1662,7 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 #include <eddl/layers/noise/layer_noise.h>
 #include <eddl/layers/pool/layer_pool.h>
 #include <eddl/optimizers/optim.h>
+#include <eddl/tensor/tensor.h>
 #include <iterator>
 #include <lconv_addons.h>
 #include <lgaussiannoise_addons.h>
@@ -2872,6 +2875,7 @@ void bind_eddl_layers_conv_layer_conv(std::function< pybind11::module &(std::str
 #include <eddl/metrics/metric.h>
 #include <eddl/net.h>
 #include <eddl/optimizers/optim.h>
+#include <eddl/tensor/tensor.h>
 #include <iterator>
 #include <memory>
 #include <net_addons.h>
@@ -2999,7 +3003,7 @@ void bind_eddl_optimizers_optim(std::function< pybind11::module &(std::string co
 typedef std::function< pybind11::module & (std::string const &) > ModuleGetter;
 
 void bind_bits_libio(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_eddl_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_layers_conv_layer_conv(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_optimizers_optim(std::function< pybind11::module &(std::string const &namespace_) > &M);
@@ -3024,7 +3028,7 @@ PYBIND11_MODULE(_core, root_module) {
 	//pybind11::class_<std::shared_ptr<void>>(M(""), "_encapsulated_data_");
 
 	bind_bits_libio(M);
-	bind_eddl_compserv(M);
+	bind_eddl_tensor_tensor(M);
 	bind_eddl_losses_loss(M);
 	bind_eddl_layers_conv_layer_conv(M);
 	bind_eddl_optimizers_optim(M);
@@ -3034,7 +3038,7 @@ PYBIND11_MODULE(_core, root_module) {
 // Source list file: /pyeddl/codegen/bindings/_core.sources
 // _core.cpp
 // bits/libio.cpp
-// eddl/compserv.cpp
+// eddl/tensor/tensor.cpp
 // eddl/losses/loss.cpp
 // eddl/layers/conv/layer_conv.cpp
 // eddl/optimizers/optim.cpp
