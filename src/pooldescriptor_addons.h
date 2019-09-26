@@ -8,4 +8,6 @@ void pooldescriptor_addons(pybind11::class_<type_, options...> &cl) {
            std::string>(),
            pybind11::arg("ks"), pybind11::arg("st"), pybind11::arg("p"),
            pybind11::keep_alive<1, 2>(), pybind11::keep_alive<1, 3>());
+    cl.def_readwrite("indX", &PoolDescriptor::indX);
+    cl.def_readwrite("indY", &PoolDescriptor::indY);
 }
