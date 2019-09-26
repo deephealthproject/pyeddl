@@ -31,3 +31,57 @@ def test_tensor_array_ops():
     t.set(incr)
     a += t
     assert np.array_equal(a, b)
+
+
+def test_ones():
+    shape = [2, 3]
+    t = Tensor.ones(shape)
+    a = np.array(t, copy=False)
+    b = np.ones(shape, dtype=np.float32)
+    assert np.array_equal(a, b)
+
+
+def test_zeros():
+    shape = [2, 3]
+    t = Tensor.zeros(shape)
+    a = np.array(t, copy=False)
+    b = np.zeros(shape, dtype=np.float32)
+    assert np.array_equal(a, b)
+
+
+def test_full():
+    shape = [2, 3]
+    value = 42
+    t = Tensor.full(shape, value)
+    a = np.array(t, copy=False)
+    b = np.full(shape, value, dtype=np.float32)
+    assert np.array_equal(a, b)
+
+
+def test_arange():
+    start, stop, step = 0, 2, .33
+    t = Tensor.arange(start, stop, step)
+    a = np.array(t, copy=False)
+    b = np.arange(start, stop, step, dtype=np.float32)
+    assert np.allclose(a, b)
+
+
+def test_linspace():
+    start, stop, num = 0, 2, 7
+    t = Tensor.linspace(start, stop, num)
+    a = np.array(t, copy=False)
+    b = np.linspace(start, stop, num, dtype=np.float32)
+    assert np.allclose(a, b)
+
+
+def test_eye():
+    size = 3
+    t = Tensor.eye(size)
+    a = np.array(t, copy=False)
+    assert np.array_equal(a.diagonal(), np.ones(size, dtype=np.float32))
+
+
+def test_randn():
+    shape = [2, 3]
+    t = Tensor.randn(shape)
+    assert t.shape == shape
