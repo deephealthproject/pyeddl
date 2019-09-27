@@ -74,7 +74,7 @@ def T_load(fname):
 
 
 def div(ltensor, v):
-    ltensor.input.div(v)
+    ltensor.input.div_(v)
 
 
 def fit(model, inputs, outputs, batch_size, n_epochs):

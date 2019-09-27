@@ -24,9 +24,7 @@ ${binder} \
   -I"${eigen_inc}" \
   -DNDEBUG
 
-# Fix for pybind11 ImportError
-# "overloading a method with both static and instance methods is not supported"
-sed -i 's/def("add"/def("add_unary"/' bindings/_core.cpp
+sed -i '/pybind11::handle cl_type = cl;/d' bindings/_core.cpp
 
 # add buffer_protocol annotation
 sed -i -f add_annotation.sed bindings/_core.cpp

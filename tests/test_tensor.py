@@ -1,5 +1,5 @@
 import numpy as np
-from pyeddl._core import Tensor, PoolDescriptor
+from pyeddl._core import Tensor, PoolDescriptor, MPool2D
 from pyeddl.api import DEV_CPU
 
 
@@ -101,6 +101,6 @@ def test_MPool2D():
     pd.build(t)
     pd.indX = Tensor(pd.O.getShape(), DEV_CPU)
     pd.indY = Tensor(pd.O.getShape(), DEV_CPU)
-    Tensor.MPool2D(pd)
+    MPool2D(pd)
     a = np.array(pd.O, copy=False)
     assert np.array_equal(a, mpool_sol)

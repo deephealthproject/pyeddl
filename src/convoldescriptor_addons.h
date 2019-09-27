@@ -1,7 +1,7 @@
 #pragma once
 
 #include <pybind11/pybind11.h>
-#include <eddl/tensor/tensor.h>
+#include <eddl/descriptors/descriptors.h>
 
 template <typename type_, typename... options>
 void convoldescriptor_addons(pybind11::class_<type_, options...> &cl) {

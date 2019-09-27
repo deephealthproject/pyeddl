@@ -1,4 +1,7 @@
+#include <eddl/utils.h>
 #include <eddl/tensor/tensor.h>
+#include <eddl/descriptors/descriptors.h>
+#include <eddl/tensor/nn/tensor_nn.h>
 #include <eddl/compserv.h>
 #include <eddl/losses/loss.h>
 #include <eddl/metrics/metric.h>
