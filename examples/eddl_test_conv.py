@@ -1,4 +1,4 @@
-from pyeddl._core import Tensor, ConvolDescriptor
+from pyeddl._core import Tensor, ConvolDescriptor, Conv2D, Conv2D_grad
 from pyeddl.api import DEV_CPU, DEV_GPU
 
 
@@ -41,8 +41,8 @@ def main():
     Tensor.copy(CDC.I, CDG.I)
     Tensor.copy(CDC.K, CDG.K)
     Tensor.copy(CDC.bias, CDG.bias)
-    Tensor.Conv2D(CDG)
-    Tensor.Conv2D(CDC)
+    Conv2D(CDG)
+    Conv2D(CDC)
     check_c_vs_g(CDC.O, CDG.O, "conv2d")
 
     print("GRAD")
@@ -52,8 +52,8 @@ def main():
     Tensor.copy(CDC.D, CDG.D)
     CDG.gK.set(0.0)
     CDG.gbias.set(0.0)
-    Tensor.Conv2D_grad(CDC)
-    Tensor.Conv2D_grad(CDG)
+    Conv2D_grad(CDC)
+    Conv2D_grad(CDG)
     check_c_vs_g(CDC.gK, CDG.gK, "conv2d_grad gK")
     check_c_vs_g(CDC.gbias, CDG.gbias, "conv2d_grad gbias")
 
@@ -65,8 +65,8 @@ def main():
     Tensor.copy(CDC.D, CDG.D)
     CDG.ID.set(0.0)
     # --- FIXME Conv2D_back hangs indefinitely ---
-    # Tensor.Conv2D_back(CDC)
-    # Tensor.Conv2D_back(CDG)
+    # Conv2D_back(CDC)
+    # Conv2D_back(CDG)
     # check_c_vs_g(CDC.ID, CDG.ID, "conv2d_back")
 
 

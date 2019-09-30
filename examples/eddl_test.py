@@ -1,4 +1,4 @@
-from pyeddl._core import Tensor
+from pyeddl._core import Tensor, Softmax, cent, ReLu, D_ReLu
 from pyeddl.api import DEV_CPU, DEV_GPU
 
 
@@ -43,16 +43,16 @@ def main():
     A.TC.rand_signed_uniform(1)
     A.to_gpu()
     exp = 2.0
-    A.TC.pow(exp)
-    A.TG.pow(exp)
-    A.check("pow")
+    A.TC.pow_(exp)
+    A.TG.pow_(exp)
+    A.check("pow_")
 
     A.TC.rand_signed_uniform(1)
     A.to_gpu()
-    fc = A.TC.sum()
-    fg = A.TG.sum()
+    fc = A.TC.sum_()
+    fg = A.TG.sum_()
     res = "OK" if abs(fc - fg) <= 0.01 else "Fail"
-    print("sum: %s" % res)
+    print("sum_: %s" % res)
 
     A.TC.rand_uniform(1.0)
     B.TC.rand_uniform(1.0)
@@ -104,16 +104,16 @@ def main():
 
     A.TC.rand_signed_uniform(100000)
     A.to_gpu()
-    Tensor.Softmax(A.TC, D.TC)
-    Tensor.Softmax(A.TG, D.TG)
+    Softmax(A.TC, D.TC)
+    Softmax(A.TG, D.TG)
     D.check("Softmax")
 
     A.TC.rand_uniform(1)
     D.TC.rand_binary(0.1)
     A.to_gpu()
     D.to_gpu()
-    Tensor.cent(A.TC, D.TC, E.TC)
-    Tensor.cent(A.TG, D.TG, E.TG)
+    cent(A.TC, D.TC, E.TC)
+    cent(A.TG, D.TG, E.TG)
     E.check("cross entropy")
 
     A.TC.rand_uniform(1.0)
@@ -142,16 +142,16 @@ def main():
 
     A.TC.rand_signed_uniform(1.0)
     A.to_gpu()
-    Tensor.ReLu(A.TC, D.TC)
-    Tensor.ReLu(A.TG, D.TG)
+    ReLu(A.TC, D.TC)
+    ReLu(A.TG, D.TG)
     D.check("ReLu")
 
     A.TC.rand_signed_uniform(1.0)
     D.TC.rand_signed_uniform(1.0)
     A.to_gpu()
     D.to_gpu()
-    Tensor.D_ReLu(D.TC, A.TC, E.TC)
-    Tensor.D_ReLu(D.TG, A.TG, E.TG)
+    D_ReLu(D.TC, A.TC, E.TC)
+    D_ReLu(D.TG, A.TG, E.TG)
     E.check("D_ReLu")
 
 
