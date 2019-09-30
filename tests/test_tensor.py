@@ -64,6 +64,24 @@ def test_arange():
     a = np.array(t, copy=False)
     b = np.arange(start, stop, step, dtype=np.float32)
     assert np.allclose(a, b)
+    start, stop = 0, 3
+    t = Tensor.arange(start, stop)
+    a = np.array(t, copy=False)
+    b = np.arange(start, stop, dtype=np.float32)
+    assert np.allclose(a, b)
+
+
+def test_range():
+    start, stop, step = 0, 2, .33
+    t = Tensor.range(start, stop, step)
+    a = np.array(t, copy=False)
+    b = np.arange(start, stop, step, dtype=np.float32)
+    assert np.allclose(a, b)
+    start, stop = 0, 3
+    t = Tensor.range(start, stop)
+    a = np.array(t, copy=False)
+    b = np.append(np.arange(start, stop, dtype=np.float32), stop)
+    assert np.allclose(a, b)
 
 
 def test_linspace():
@@ -71,6 +89,14 @@ def test_linspace():
     t = Tensor.linspace(start, stop, num)
     a = np.array(t, copy=False)
     b = np.linspace(start, stop, num, dtype=np.float32)
+    assert np.allclose(a, b)
+
+
+def test_logspace():
+    start, stop, num = 0.1, 1.0, 5
+    t = Tensor.logspace(start, stop, num)
+    a = np.array(t, copy=False)
+    b = np.logspace(start, stop, num, dtype=np.float32)
     assert np.allclose(a, b)
 
 
