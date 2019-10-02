@@ -25,6 +25,9 @@ __all__ = [
     "load",
     "T",
     "predict",
+    "Dropout",
+    "UpSampling",
+    "Concat",
 ]
 
 
@@ -134,3 +137,15 @@ def predict(model, inputs, outputs):
     inputs = [_.input for _ in inputs]
     outputs = [_.input for _ in outputs]
     model.predict(inputs, outputs)
+
+
+def Dropout(parent, rate, name=""):
+    return _core.LDropout(parent, rate, name, DEV_CPU)
+
+
+def UpSampling(parent, size, interpolation="nearest", name=""):
+    return _core.LUpSampling(parent, size, interpolation, name, DEV_CPU)
+
+
+def Concat(layers, name=""):
+    return _core.LConcat(layers, name, DEV_CPU)
