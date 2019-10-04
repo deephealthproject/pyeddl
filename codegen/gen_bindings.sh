@@ -6,7 +6,7 @@ this="${BASH_SOURCE:-$0}"
 this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 # this refers to the crs4/binder docker container
-binder=${BINDER_EXE:-/binder/build/llvm-4.0.0/build_4.0.0*/bin/binder}
+binder=${BINDER_EXE:-/binder/build/llvm-5.0.0/build_5.0.0*/bin/binder}
 
 eddl_inc=${EDDL_INCLUDE:-"${this_dir}"/../third_party/eddl/src}
 eigen_inc=${EIGEN_INCLUDE:-"${this_dir}"/../third_party/eddl/third_party/eigen}
@@ -23,8 +23,6 @@ ${binder} \
   -I"${eddl_inc}" \
   -I"${eigen_inc}" \
   -DNDEBUG
-
-sed -i '/pybind11::handle cl_type = cl;/d' bindings/_core.cpp
 
 # add buffer_protocol annotation
 sed -i -f add_annotation.sed bindings/_core.cpp
