@@ -49,10 +49,10 @@ def main():
 
     A.TC.rand_signed_uniform(1)
     A.to_gpu()
-    fc = A.TC.sum_()
-    fg = A.TG.sum_()
+    fc = A.TC.sum()
+    fg = A.TG.sum()
     res = "OK" if abs(fc - fg) <= 0.01 else "Fail"
-    print("sum_: %s" % res)
+    print("sum: %s" % res)
 
     A.TC.rand_uniform(1.0)
     B.TC.rand_uniform(1.0)

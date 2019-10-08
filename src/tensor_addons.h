@@ -8,28 +8,28 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
            pybind11::arg("shape"), pybind11::arg("dev"),
            pybind11::keep_alive<1, 2>());
     cl.def("getShape", &Tensor::getShape);
-    cl.def_static("delta_reduce", &Tensor::delta_reduce, pybind11::arg("A"),
-		  pybind11::arg("B"), pybind11::arg("axis"),
-		  pybind11::arg("mode"), pybind11::arg("keepdims"),
-		  pybind11::arg("C"), pybind11::arg("incB"));
-    cl.def_static("delta_reduced_op", &Tensor::delta_reduced_op,
-		  pybind11::arg("A"), pybind11::arg("B"),
-		  pybind11::arg("axis"), pybind11::arg("op"),
-		  pybind11::arg("C"), pybind11::arg("incC"));
+    // cl.def_static("delta_reduce", &Tensor::delta_reduce, pybind11::arg("A"),
+    // 		  pybind11::arg("B"), pybind11::arg("axis"),
+    // 		  pybind11::arg("mode"), pybind11::arg("keepdims"),
+    // 		  pybind11::arg("C"), pybind11::arg("incB"));
+    // cl.def_static("delta_reduced_op", &Tensor::delta_reduced_op,
+    // 		  pybind11::arg("A"), pybind11::arg("B"),
+    // 		  pybind11::arg("axis"), pybind11::arg("op"),
+    // 		  pybind11::arg("C"), pybind11::arg("incC"));
     cl.def_static("full", &Tensor::full, pybind11::arg("shape"),
 		  pybind11::arg("value"), pybind11::arg("dev") = DEV_CPU);
     cl.def_static("ones", &Tensor::ones, pybind11::arg("shape"),
 		  pybind11::arg("dev") = DEV_CPU);
     cl.def_static("randn", &Tensor::randn, pybind11::arg("shape"),
 		  pybind11::arg("dev") = DEV_CPU);
-    cl.def_static("reduce", &Tensor::reduce, pybind11::arg("A"),
-		  pybind11::arg("B"), pybind11::arg("axis"),
-		  pybind11::arg("mode"), pybind11::arg("keepdims"),
-		  pybind11::arg("C"), pybind11::arg("incB"));
-    cl.def_static("reduced_op", &Tensor::reduced_op, pybind11::arg("A"),
-		  pybind11::arg("B"), pybind11::arg("axis"),
-		  pybind11::arg("op"), pybind11::arg("C"),
-		  pybind11::arg("incC"));
+    // cl.def_static("reduce", &Tensor::reduce, pybind11::arg("A"),
+    // 		  pybind11::arg("B"), pybind11::arg("axis"),
+    // 		  pybind11::arg("mode"), pybind11::arg("keepdims"),
+    // 		  pybind11::arg("C"), pybind11::arg("incB"));
+    // cl.def_static("reduced_op", &Tensor::reduced_op, pybind11::arg("A"),
+    // 		  pybind11::arg("B"), pybind11::arg("axis"),
+    // 		  pybind11::arg("op"), pybind11::arg("C"),
+    // 		  pybind11::arg("incC"));
     cl.def_static("select", &Tensor::select, pybind11::arg("A"),
 		  pybind11::arg("B"), pybind11::arg("sind"),
 		  pybind11::arg("ini"), pybind11::arg("end"));

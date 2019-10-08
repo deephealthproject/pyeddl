@@ -24,5 +24,9 @@ ${binder} \
   -I"${eigen_inc}" \
   -DNDEBUG
 
+# Fix for pybind11 ImportError
+# "overloading a method with both static and instance methods is not supported"
+sed -i 's/def_static("sum_abs"/def_static("static_sum_abs"/' bindings/_core.cpp
+
 # add buffer_protocol annotation
 sed -i -f add_annotation.sed bindings/_core.cpp

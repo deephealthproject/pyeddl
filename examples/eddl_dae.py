@@ -32,7 +32,7 @@ def main(args):
 
     build(
         net,
-        sgd(0.01, 0.9),
+        sgd(0.001, 0.9),
         ["mean_squared_error"],
         ["mean_squared_error"],
         CS_GPU([1]) if args.gpu else CS_CPU(4)
