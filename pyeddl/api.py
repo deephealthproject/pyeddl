@@ -28,6 +28,7 @@ __all__ = [
     "Dropout",
     "UpSampling",
     "Concat",
+    "BatchNormalization",
 ]
 
 
@@ -149,3 +150,8 @@ def UpSampling(parent, size, interpolation="nearest", name=""):
 
 def Concat(layers, name=""):
     return _core.LConcat(layers, name, DEV_CPU)
+
+
+def BatchNormalization(parent, momentum=0.9, epsilon=0.001, affine=True,
+                       name=""):
+    return _core.LBatchNorm(parent, momentum, epsilon, affine, name, DEV_CPU)

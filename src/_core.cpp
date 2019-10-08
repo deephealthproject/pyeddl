@@ -726,6 +726,7 @@ void bind_eddl_descriptors_descriptors(std::function< pybind11::module &(std::st
 #include <eddl/tensor/tensor.h>
 #include <iterator>
 #include <lactivation_addons.h>
+#include <lbatchnorm_addons.h>
 #include <lconv_addons.h>
 #include <ldense_addons.h>
 #include <ldropout_addons.h>
@@ -2822,6 +2823,8 @@ void bind_eddl_layers_layer(std::function< pybind11::module &(std::string const 
 		cl.def("resize", (void (LBatchNorm::*)(int)) &LBatchNorm::resize, "C++: LBatchNorm::resize(int) --> void", pybind11::arg("batch"));
 		cl.def("reset", (void (LBatchNorm::*)()) &LBatchNorm::reset, "C++: LBatchNorm::reset() --> void");
 		cl.def("assign", (class LBatchNorm & (LBatchNorm::*)(const class LBatchNorm &)) &LBatchNorm::operator=, "C++: LBatchNorm::operator=(const class LBatchNorm &) --> class LBatchNorm &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		lbatchnorm_addons(cl);
 	}
 	{ // LConv file:eddl/layers/conv/layer_conv.h line:36
 		pybind11::class_<LConv, std::shared_ptr<LConv>, PyCallBack_LConv, LinLayer> cl(M(""), "LConv", "Conv2D Layer");

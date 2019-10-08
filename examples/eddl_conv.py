@@ -7,14 +7,16 @@ import sys
 
 from pyeddl.api import (
     Input, Activation, Dense, Model, sgd, CS_CPU, build, T_load, div, fit,
-    evaluate, Reshape, MaxPool, Conv, CS_GPU
+    evaluate, Reshape, MaxPool, Conv, CS_GPU, BatchNormalization
 )
 from pyeddl.utils import download_mnist
 
 
-def Block(layer, filters, kernel_size, strides):
-    return MaxPool(Activation(
-        Conv(layer, filters, kernel_size, strides), "relu"), [2, 2])
+def Block(layer, filters, kernel_size, strides, gpu=False):
+    b = Activation(Conv(layer, filters, kernel_size, strides), "relu")
+    if not gpu:
+        b = BatchNormalization(b)
+    return MaxPool(b, [2, 2])
 
 
 def main(args):
@@ -29,10 +31,10 @@ def main(args):
 
     layer = Reshape(layer, [1, 28, 28])
 
-    layer = Block(layer, 64, [3, 3], [1, 1])
-    layer = Block(layer, 128, [3, 3], [1, 1])
-    layer = Block(layer, 256, [3, 3], [1, 1])
-    layer = Block(layer, 512, [3, 3], [1, 1])
+    layer = Block(layer, 16, [3, 3], [1, 1], gpu=args.gpu)
+    layer = Block(layer, 32, [3, 3], [1, 1], gpu=args.gpu)
+    layer = Block(layer, 64, [3, 3], [1, 1], gpu=args.gpu)
+    layer = Block(layer, 128, [3, 3], [1, 1], gpu=args.gpu)
 
     layer = Reshape(layer, [-1])
 
