@@ -225,6 +225,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 #include <layer_addons.h>
 #include <memory>
 #include <pooldescriptor_addons.h>
+#include <reducedescriptor_addons.h>
 #include <sstream> // __str__
 #include <stdio.h>
 #include <string>
@@ -538,6 +539,8 @@ void bind_eddl_descriptors_descriptors(std::function< pybind11::module &(std::st
 		cl.def_readwrite("index", &ReduceDescriptor::index);
 		cl.def("resize", (void (ReduceDescriptor::*)(int)) &ReduceDescriptor::resize, "C++: ReduceDescriptor::resize(int) --> void", pybind11::arg("b"));
 		cl.def("build_index", (void (ReduceDescriptor::*)()) &ReduceDescriptor::build_index, "C++: ReduceDescriptor::build_index() --> void");
+
+		reducedescriptor_addons(cl);
 	}
 	{ // ConvolDescriptor file:eddl/descriptors/descriptors.h line:40
 		pybind11::class_<ConvolDescriptor, std::shared_ptr<ConvolDescriptor>> cl(M(""), "ConvolDescriptor", "");
