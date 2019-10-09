@@ -40,6 +40,12 @@ def main():
     A.TG.set(1.0)
     A.check("set")
 
+    A.TC.rand_uniform(1.0)
+    A.to_gpu()
+    A.TC.abs_()
+    A.TG.abs_()
+    A.check("abs_")
+
     A.TC.rand_signed_uniform(1)
     A.to_gpu()
     exp = 2.0

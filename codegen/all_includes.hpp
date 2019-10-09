@@ -11,5 +11,6 @@
 #include <eddl/layers/pool/layer_pool.h>
 #include <eddl/layers/noise/layer_noise.h>
 #include <eddl/layers/merge/layer_merge.h>
+#include <eddl/layers/reductions/layer_reductions.h>
 #include <eddl/optimizers/optim.h>
 #include <eddl/net.h>
