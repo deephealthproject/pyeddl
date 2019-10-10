@@ -20,6 +20,12 @@ void net_addons(pybind11::class_<type_, options...> &cl) {
            pybind11::arg("tin"), pybind11::arg("tout"),
            pybind11::arg("batch_size"), pybind11::arg("epochs"),
            pybind11::keep_alive<1, 2>(), pybind11::keep_alive<1, 3>());
+    cl.def("train_batch",
+           (void (Net::*)(vtensor, vtensor, vind, int)) &Net::train_batch,
+           "C++: Net::train_batch(vtensor, vtensor, vind, int) --> void",
+           pybind11::arg("X"), pybind11::arg("Y"),
+           pybind11::arg("sind"), pybind11::arg("eval") = 0,
+           pybind11::keep_alive<1, 2>(), pybind11::keep_alive<1, 3>());
     cl.def("evaluate", (void (Net::*)(vtensor, vtensor)) &Net::evaluate,
            "C++: Net::evaluate(vtensor, vtensor) --> void",
            pybind11::arg("tin"), pybind11::arg("tout"),

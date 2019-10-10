@@ -5,6 +5,8 @@ DEV_CPU = 0
 DEV_GPU = 1000
 DEV_FPGA = 2000
 
+TRMODE = 1
+
 __all__ = [
     "Input",
     "Activation",
@@ -29,6 +31,9 @@ __all__ = [
     "UpSampling",
     "Concat",
     "BatchNormalization",
+    "resize_model",
+    "set_mode",
+    "train_batch",
 ]
 
 
@@ -155,3 +160,16 @@ def Concat(layers, name=""):
 def BatchNormalization(parent, momentum=0.9, epsilon=0.001, affine=True,
                        name=""):
     return _core.LBatchNorm(parent, momentum, epsilon, affine, name, DEV_CPU)
+
+
+def resize_model(model, batch_size):
+    model.resize(batch_size)
+
+
+def set_mode(model, mode):
+    model.setmode(mode)
+
+
+def train_batch(model, in_, out, indices):
+    model.tr_batches += 1
+    model.train_batch(in_, out, indices)

@@ -14,6 +14,7 @@ names=(
     eddl_load_save
     eddl_mlp
     eddl_predict
+    eddl_train_batch
 )
 
 for n in "${names[@]}"; do
