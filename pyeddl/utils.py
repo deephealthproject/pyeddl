@@ -27,7 +27,7 @@ def loss_func(fname):
     elif (fname == "soft_cross_entropy"):
         return pyeddl.LSoftCrossEntropy()
     else:
-        return None
+        raise ValueError("unknown loss function: %s" % fname)
 
 
 def metric_func(fname):
@@ -36,4 +36,4 @@ def metric_func(fname):
     elif fname == "categorical_accuracy" or fname == "accuracy":
         return pyeddl.MCategoricalAccuracy()
     else:
-        return None
+        raise ValueError("unknown metric: %s" % fname)

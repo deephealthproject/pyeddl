@@ -4487,6 +4487,8 @@ void bind_eddl_layers_merge_layer_merge(std::function< pybind11::module &(std::s
 
 
 // File: eddl/optimizers/optim.cpp
+#include <custom_binder.h>
+#include <dummy.h>
 #include <eddl/compserv.h>
 #include <eddl/layers/layer.h>
 #include <eddl/losses/loss.h>
@@ -4756,6 +4758,9 @@ void bind_eddl_optimizers_optim(std::function< pybind11::module &(std::string co
 
 		net_addons(cl);
 	}
+	// Dummy file:dummy.h line:3
+	bind_custom_metric<pybind11::module>(M(""));
+
 }
 
 
