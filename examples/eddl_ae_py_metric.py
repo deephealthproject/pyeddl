@@ -5,18 +5,18 @@ AE example with Python metric.
 import argparse
 import sys
 
+import numpy as np
 from pyeddl.api import (
     Input, Activation, Dense, Model, sgd, CS_CPU, T_load, div, fit, CS_GPU
 )
 from pyeddl.utils import download_mnist, loss_func
-from pyeddl._core import CustomMetric, Tensor
+from pyeddl._core import CustomMetric
 
 
 def py_mse(t, y):
-    aux = Tensor(t.getShape(), t.device)
-    Tensor.add(1, t, -1, y, aux, 0)
-    Tensor.el_mult(aux, aux, aux, 0)
-    return aux.sum()
+    a = np.array(t, copy=False)
+    b = np.array(y, copy=False)
+    return np.sum(np.square(a - b))
 
 
 def main(args):
