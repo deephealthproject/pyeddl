@@ -17,9 +17,7 @@ CustomMetric::CustomMetric(pybind11::object pymetric, std::string name) :
 }
 
 float CustomMetric::value(Tensor *T, Tensor *Y) {
-    pybind11::object pyvalue = pymetric.attr("value")(
-      pybind11::cast(T), pybind11::cast(Y)
-    );
+    pybind11::object pyvalue = pymetric(pybind11::cast(T), pybind11::cast(Y));
     return pyvalue.cast<float>();
 }
 

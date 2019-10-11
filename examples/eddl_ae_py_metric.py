@@ -12,13 +12,11 @@ from pyeddl.utils import download_mnist, loss_func
 from pyeddl._core import CustomMetric, Tensor
 
 
-class PyMSE(object):
-
-    def value(t, y):
-        aux = Tensor(t.getShape(), t.device)
-        Tensor.add(1, t, -1, y, aux, 0)
-        Tensor.el_mult(aux, aux, aux, 0)
-        return aux.sum()
+def py_mse(t, y):
+    aux = Tensor(t.getShape(), t.device)
+    Tensor.add(1, t, -1, y, aux, 0)
+    Tensor.el_mult(aux, aux, aux, 0)
+    return aux.sum()
 
 
 def main(args):
@@ -38,7 +36,7 @@ def main(args):
     net = Model([in_], [out])
     print(net.summary())
 
-    mse = CustomMetric(PyMSE, "py_mean_squared_error")
+    mse = CustomMetric(py_mse, "py_mean_squared_error")
 
     net.build(
         sgd(0.001, 0.9),
