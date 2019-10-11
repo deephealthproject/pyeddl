@@ -51,7 +51,7 @@ void bind_bits_libio(std::function< pybind11::module &(std::string const &namesp
 #include <sstream> // __str__
 #include <stdio.h>
 #include <string>
-#include <tensor_addons.h>
+#include <tensor_addons.hpp>
 #include <vector>
 
 #include <pybind11/pybind11.h>
@@ -212,8 +212,8 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 
 
 // File: eddl/descriptors/descriptors.cpp
-#include <compserv_addons.h>
-#include <convoldescriptor_addons.h>
+#include <compserv_addons.hpp>
+#include <convoldescriptor_addons.hpp>
 #include <eddl/compserv.h>
 #include <eddl/descriptors/descriptors.h>
 #include <eddl/layers/layer.h>
@@ -222,10 +222,10 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 #include <eddl/tensor/nn/tensor_nn.h>
 #include <eddl/tensor/tensor.h>
 #include <iterator>
-#include <layer_addons.h>
+#include <layer_addons.hpp>
 #include <memory>
-#include <pooldescriptor_addons.h>
-#include <reducedescriptor_addons.h>
+#include <pooldescriptor_addons.hpp>
+#include <reducedescriptor_addons.hpp>
 #include <sstream> // __str__
 #include <stdio.h>
 #include <string>
@@ -728,18 +728,18 @@ void bind_eddl_descriptors_descriptors(std::function< pybind11::module &(std::st
 #include <eddl/layers/pool/layer_pool.h>
 #include <eddl/tensor/tensor.h>
 #include <iterator>
-#include <lactivation_addons.h>
-#include <lbatchnorm_addons.h>
-#include <lconv_addons.h>
-#include <ldense_addons.h>
-#include <ldropout_addons.h>
-#include <lembedding_addons.h>
-#include <lgaussiannoise_addons.h>
-#include <linput_addons.h>
-#include <lmaxpool_addons.h>
-#include <lreshape_addons.h>
-#include <ltensor_addons.h>
-#include <lupsampling_addons.h>
+#include <lactivation_addons.hpp>
+#include <lbatchnorm_addons.hpp>
+#include <lconv_addons.hpp>
+#include <ldense_addons.hpp>
+#include <ldropout_addons.hpp>
+#include <lembedding_addons.hpp>
+#include <lgaussiannoise_addons.hpp>
+#include <linput_addons.hpp>
+#include <lmaxpool_addons.hpp>
+#include <lreshape_addons.hpp>
+#include <ltensor_addons.hpp>
+#include <lupsampling_addons.hpp>
 #include <memory>
 #include <sstream> // __str__
 #include <stdio.h>
@@ -2898,8 +2898,8 @@ void bind_eddl_layers_layer(std::function< pybind11::module &(std::string const 
 #include <eddl/optimizers/optim.h>
 #include <eddl/tensor/tensor.h>
 #include <iterator>
-#include <lconcat_addons.h>
-#include <lrmean_addons.h>
+#include <lconcat_addons.hpp>
+#include <lrmean_addons.hpp>
 #include <memory>
 #include <sstream> // __str__
 #include <stdio.h>
@@ -4487,8 +4487,8 @@ void bind_eddl_layers_merge_layer_merge(std::function< pybind11::module &(std::s
 
 
 // File: eddl/optimizers/optim.cpp
-#include <custom_binder.h>
-#include <dummy.h>
+#include <custom_binder.hpp>
+#include <dummy.hpp>
 #include <eddl/compserv.h>
 #include <eddl/layers/layer.h>
 #include <eddl/losses/loss.h>
@@ -4498,7 +4498,7 @@ void bind_eddl_layers_merge_layer_merge(std::function< pybind11::module &(std::s
 #include <eddl/tensor/tensor.h>
 #include <iterator>
 #include <memory>
-#include <net_addons.h>
+#include <net_addons.hpp>
 #include <sstream> // __str__
 #include <stdio.h>
 #include <string>
@@ -4758,7 +4758,7 @@ void bind_eddl_optimizers_optim(std::function< pybind11::module &(std::string co
 
 		net_addons(cl);
 	}
-	// Dummy file:dummy.h line:3
+	// Dummy file:dummy.hpp line:3
 	bind_custom_metric<pybind11::module>(M(""));
 
 }

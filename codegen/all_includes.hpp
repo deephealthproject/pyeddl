@@ -14,4 +14,4 @@
 #include <eddl/layers/reductions/layer_reductions.h>
 #include <eddl/optimizers/optim.h>
 #include <eddl/net.h>
-#include <dummy.h>
+#include <dummy.hpp>
