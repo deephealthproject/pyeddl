@@ -4,7 +4,7 @@ from distutils.core import setup, Extension
 import pybind11
 
 
-EXTRA_COMPILE_ARGS = ['-std=c++11']
+EXTRA_COMPILE_ARGS = ['-std=c++11', '-fvisibility=hidden']
 LIBRARIES = ["eddl"]
 if "EDDL_WITH_CUDA" in os.environ:
     LIBRARIES.extend(["cudart", "cublas", "curand"])
