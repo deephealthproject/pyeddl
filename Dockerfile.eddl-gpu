@@ -5,7 +5,8 @@ WORKDIR /eddl
 
 RUN mkdir build && \
     cd build && \
-    cmake -D BUILD_TARGET=gpu -D BUILD_TESTS=ON -D EDDL_SHARED=ON .. && \
+    ln -s /usr/lib/x86_64-linux-gnu/libcublas.so /usr/local/cuda/lib64/ && \
+    cmake -D BUILD_TARGET=GPU -D BUILD_TESTS=ON -D EDDL_SHARED=ON .. && \
     make -j$(grep -c ^processor /proc/cpuinfo)
 
 RUN cd build && make install && \

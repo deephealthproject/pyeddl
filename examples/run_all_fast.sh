@@ -9,7 +9,7 @@ this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 names=(
     eddl_ae
-    eddl_ae_py_metric
+    # eddl_ae_py_metric
     eddl_conv
     eddl_dae
     eddl_load_save
