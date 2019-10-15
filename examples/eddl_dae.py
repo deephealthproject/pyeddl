@@ -28,7 +28,6 @@ def main(args):
     layer = Activation(Dense(layer, 256), "relu")
     out = Dense(layer, 784)
     net = Model([in_], [out])
-    print(net.summary())
 
     build(
         net,
@@ -37,6 +36,8 @@ def main(args):
         ["mean_squared_error"],
         CS_GPU([1]) if args.gpu else CS_CPU(4)
     )
+
+    print(net.summary())
 
     x_train = T_load("trX.bin")
     div(x_train, 255.0)

@@ -42,7 +42,6 @@ def main(args):
     out = Activation(Dense(layer, num_classes), "softmax")
 
     net = Model([in_], [out])
-    print(net.summary())
 
     build(
         net,
@@ -51,6 +50,8 @@ def main(args):
         ["categorical_accuracy"],
         CS_GPU([1]) if args.gpu else CS_CPU(4)
     )
+
+    print(net.summary())
 
     X = T_load("trX.bin")
     Y = T_load("trY.bin")
