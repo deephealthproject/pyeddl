@@ -27,7 +27,7 @@ make
 make install
 ```
 
-Add `-D BUILD_TARGET=GPU` to compile EDDL for GPU.
+Add `-D BUILD_TARGET=GPU` to compile EDDL for GPU (requires the CUDA toolkit).
 
 
 ## Installation
@@ -48,6 +48,17 @@ Then install PyEDDL as follows:
 
 ```
 python3 -m pip install numpy pybind11 pytest
+python3 setup.py install
+```
+
+If EDDL was compiled for GPU, you need to export the `EDDL_WITH_CUDA`
+environment variable before installing. You might also need to tweak the
+library search path depending on your CUDA toolkit installation. For instance:
+
+```
+export LD_LIBRARY_PATH="/usr/local/cuda-10.1/targets/x86_64-linux/lib:${LD_LIBRARY_PATH}"
+export EDDL_WITH_CUDA="true"
+python3 setup.py build_ext -L /usr/local/cuda-10.1/targets/x86_64-linux/lib
 python3 setup.py install
 ```
 
