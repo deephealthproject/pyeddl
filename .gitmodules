@@ -1,3 +1,3 @@
 [submodule "third_party/eddl"]
 	path = third_party/eddl
-	url = git@github.com:deephealthproject/eddl.git
+	url = https://github.com/deephealthproject/eddl
