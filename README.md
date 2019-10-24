@@ -15,7 +15,8 @@ After cloning the repository, make sure you get all submodules:
 - pybind11
 - pytest (if you want to run the tests)
 
-EDDL in turn requires CMake 3.9.2 or higher. Make sure you build EDDL with
+EDDL installation instructions are available at
+https://github.com/deephealthproject/eddl. Make sure you build EDDL with
 shared library support. Here is a sample build sequence:
 
 ```
@@ -26,8 +27,6 @@ cmake -D EDDL_SHARED=ON ..
 make
 make install
 ```
-
-Add `-D BUILD_TARGET=GPU` to compile EDDL for GPU (requires the CUDA toolkit).
 
 
 ## Installation
@@ -48,17 +47,6 @@ Then install PyEDDL as follows:
 
 ```
 python3 -m pip install numpy pybind11 pytest
-python3 setup.py install
-```
-
-If EDDL was compiled for GPU, you need to export the `EDDL_WITH_CUDA`
-environment variable before installing. You might also need to tweak the
-library search path depending on your CUDA toolkit installation. For instance:
-
-```
-export LD_LIBRARY_PATH="/usr/local/cuda-10.1/targets/x86_64-linux/lib:${LD_LIBRARY_PATH}"
-export EDDL_WITH_CUDA="true"
-python3 setup.py build_ext -L /usr/local/cuda-10.1/targets/x86_64-linux/lib
 python3 setup.py install
 ```
 
@@ -132,3 +120,20 @@ if __name__ == "__main__":
 ```
 
 You can find more examples under `examples`.
+
+
+## GPU-specific instructions
+
+If EDDL was compiled for GPU, you need to export the `EDDL_WITH_CUDA`
+environment variable before installing, so that `setup.py` will also link the
+cudart", "cublas" and "curand" libraries. Again, these will be expected in
+"standard" system locations, so you might need to create symlinks depending on
+your CUDA toolkit installation. For instance:
+
+```
+export EDDL_WITH_CUDA="true"
+ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcudart.so /usr/lib/
+ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcurand.so /usr/lib/
+ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcublas.so /usr/lib/
+python3 setup.py install
+```
