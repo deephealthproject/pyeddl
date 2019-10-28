@@ -1,61 +1,30 @@
-# PyEDDL
-
-PyEDDL is a Python wrapper for [EDDL](https://github.com/deephealthproject/eddl), the European Distributed Deep Learning library.
-
-After cloning the repository, make sure you get all submodules:
-
-`git submodule update --init --recursive`
+<div align="center">
+  <img src="https://raw.githubusercontent.com/deephealthproject/pyeddl/master/docs/logo-pyeddl.png" height="120" width="300">
+</div>
+-----------------
 
 
-## Requirements
+**PyEDDL** is a Python wrapper for [EDDL](https://github.com/deephealthproject/eddl), the European Distributed Deep Learning library.
 
-- Python 3
-- EDDL
-- NumPy
-- pybind11
-- pytest (if you want to run the tests)
+It provides:
 
-EDDL installation instructions are available at
-https://github.com/deephealthproject/eddl. Make sure you build EDDL with
-shared library support. Here is a sample build sequence:
-
-```
-cd third_party/eddl
-mkdir build
-cd build
-cmake -D EDDL_SHARED=ON ..
-make
-make install
-```
+* Tensor computation (like NumPy) with strong GPU acceleration
+* Deep neural networks
 
 
-## Installation
+## Quick start
 
-Make sure EDDL installation artifacts are in "standard" system locations. You
-might need to copy them from the `third_party/eddl/build/install` directory
-created as a result of the EDDL installation process described above. For
-instance:
+    git clone --recurse-submodules https://github.com/deephealthproject/pyeddl.git
+    cd pyeddl
+    python3 -m pip install numpy pybind11 pytest
+    export EDDL_WITH_CUDA="true"
+    python3 setup.py install
+    pytest tests
+    
 
-```
-cd third_party/eddl/build
-cp -rf install/include/eddl /usr/include/
-cp -rf install/include/third_party/eigen/Eigen /usr/include/
-cp install/lib/libeddl.so /usr/lib/
-```
+See [full installation instructions below](#installation).
 
-Then install PyEDDL as follows:
 
-```
-python3 -m pip install numpy pybind11 pytest
-python3 setup.py install
-```
-
-To run tests:
-
-```
-cd tests
-pytest .
-```
 
 ## Getting started
 
@@ -122,11 +91,49 @@ if __name__ == "__main__":
 You can find more examples under `examples`.
 
 
-## GPU-specific instructions
+## Installation
+
+### Requirements
+
+- Python 3
+- EDDL
+- NumPy
+- pybind11
+- pytest (if you want to run the tests)
+
+
+### EDDL Installation
+
+Complete EDDL installation instructions are available at
+https://github.com/deephealthproject/eddl. Make sure you build EDDL with
+shared library support. Here is a sample build sequence:
+
+```
+cd third_party/eddl
+mkdir build
+cd build
+cmake -D EDDL_SHARED=ON ..
+make
+make install
+```
+
+Make sure EDDL installation artifacts are in "standard" system locations. You
+might need to copy them from the `third_party/eddl/build/install` directory
+created as a result of the EDDL installation process described above. For
+instance:
+
+```
+cd third_party/eddl/build
+cp -rf install/include/eddl /usr/include/
+cp -rf install/include/third_party/eigen/Eigen /usr/include/
+cp install/lib/libeddl.so /usr/lib/
+```
+
+### Enabling GPU acceleration
 
 If EDDL was compiled for GPU, you need to export the `EDDL_WITH_CUDA`
-environment variable before installing, so that `setup.py` will also link the
-cudart", "cublas" and "curand" libraries. Again, these will be expected in
+environment variable **before installing PyEDDL** so that `setup.py` will also link the
+`cudart`, `cublas` and `curand` libraries. Again, these will be expected in
 "standard" system locations, so you might need to create symlinks depending on
 your CUDA toolkit installation. For instance:
 
@@ -135,5 +142,17 @@ export EDDL_WITH_CUDA="true"
 ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcudart.so /usr/lib/
 ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcurand.so /usr/lib/
 ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcublas.so /usr/lib/
+```
+
+### PyEDDL installation
+
+Install PyEDDL as follows:
+
+```
+python3 -m pip install numpy pybind11 pytest
 python3 setup.py install
 ```
+
+Then, you can test your installation by running the PyEDDL tests:
+
+    pytest tests
