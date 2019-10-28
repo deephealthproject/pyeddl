@@ -15,7 +15,8 @@ rm -rf ./bindings/ && mkdir bindings/
 ${binder} \
   --root-module _core \
   --prefix $PWD/bindings/ \
-  --bind "" \
+  --bind eddl \
+  --bind eddlT \
   --config config.cfg \
   --single-file \
   all_includes.hpp \
@@ -24,10 +25,3 @@ ${binder} \
   -I"${eigen_inc}" \
   -I"${this_dir}"/../src \
   -DNDEBUG
-
-# Fix for pybind11 ImportError
-# "overloading a method with both static and instance methods is not supported"
-sed -i 's/def_static("sum_abs"/def_static("static_sum_abs"/' bindings/_core.cpp
-
-# add buffer_protocol annotation
-sed -i -f add_annotation.sed bindings/_core.cpp
