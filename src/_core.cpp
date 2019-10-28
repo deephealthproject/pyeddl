@@ -716,6 +716,7 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 // File: eddl/apis/eddlT.cpp
 #include <eddl/apis/eddlT.h>
 #include <eddl/tensor/tensor.h>
+#include <eddlT_addons.hpp>
 #include <iterator>
 #include <memory>
 #include <stdio.h>
@@ -737,6 +738,8 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 
 void bind_eddl_apis_eddlT(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
+
+	eddlT_addons(M("eddlT"));
 	// eddlT::arange(float, float, float, int) file:eddl/apis/eddlT.h line:29
 	M("eddlT").def("arange", [](float const & a0, float const & a1) -> Tensor * { return eddlT::arange(a0, a1); }, "", pybind11::return_value_policy::automatic, pybind11::arg("start"), pybind11::arg("end"));
 	M("eddlT").def("arange", [](float const & a0, float const & a1, float const & a2) -> Tensor * { return eddlT::arange(a0, a1, a2); }, "", pybind11::return_value_policy::automatic, pybind11::arg("start"), pybind11::arg("end"), pybind11::arg("step"));
@@ -918,6 +921,7 @@ void bind_eddl_apis_eddlT(std::function< pybind11::module &(std::string const &n
 // File: eddl/apis/eddlT_1.cpp
 #include <eddl/apis/eddlT.h>
 #include <eddl/tensor/tensor.h>
+#include <eddlT_addons.hpp>
 #include <iterator>
 #include <memory>
 #include <stdio.h>
