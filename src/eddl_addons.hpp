@@ -20,4 +20,5 @@ void eddl_addons(pybind11::module &m) {
     m.def("GaussianNoise", (class Layer* (*)(class Layer*, float, string)) &eddl::GaussianNoise, "C++: eddl::GaussianNoise(class Layer*, float, string) --> class Layer*", pybind11::arg("parent"), pybind11::arg("stddev"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("load", (void (*)(class Net*, string)) &eddl::load, "C++: eddl::load(class Net*, string) --> void", pybind11::arg("m"), pybind11::arg("fname"));
     m.def("save", (void (*)(class Net*, string)) &eddl::save, "C++: eddl::save(class Net*, string) --> void", pybind11::arg("m"), pybind11::arg("fname"));
+    m.def("predict", (void (*)(class Net*, const vector<Tensor*>, const vector<Tensor*>)) &eddl::predict, "C++: eddl::predict(class Net*, const vector<Tensor*>, const vector<Tensor*>) --> void", pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"));
 }
