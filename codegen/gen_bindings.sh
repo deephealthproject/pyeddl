@@ -25,3 +25,6 @@ ${binder} \
   -I"${eigen_inc}" \
   -I"${this_dir}"/../src \
   -DNDEBUG
+
+# add buffer_protocol annotation
+sed -i -f add_annotation.sed bindings/_core.cpp

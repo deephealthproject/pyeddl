@@ -6,6 +6,7 @@
 #include <functional>
 #include <string>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
@@ -40,12 +41,14 @@ void bind_bits_libio(std::function< pybind11::module &(std::string const &namesp
 #include <sstream> // __str__
 #include <stdio.h>
 #include <string>
+#include <tensor_addons.hpp>
 #include <vector>
 
 #include <pybind11/pybind11.h>
 #include <functional>
 #include <string>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
@@ -58,7 +61,7 @@ void bind_bits_libio(std::function< pybind11::module &(std::string const &namesp
 void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
 	{ // Tensor file:eddl/tensor/tensor.h line:56
-		pybind11::class_<Tensor, std::shared_ptr<Tensor>> cl(M(""), "Tensor", "");
+		pybind11::class_<Tensor, std::shared_ptr<Tensor>> cl(M(""), "Tensor", pybind11::buffer_protocol());
 		cl.def( pybind11::init( [](){ return new Tensor(); } ) );
 		cl.def( pybind11::init( [](Tensor const &o){ return new Tensor(o); } ) );
 		cl.def_readwrite("device", &Tensor::device);
@@ -202,6 +205,8 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def("rand_normal", [](Tensor &o, float const & a0, float const & a1) -> void { return o.rand_normal(a0, a1); }, "", pybind11::arg("m"), pybind11::arg("s"));
 		cl.def("rand_normal", (void (Tensor::*)(float, float, bool)) &Tensor::rand_normal, "C++: Tensor::rand_normal(float, float, bool) --> void", pybind11::arg("m"), pybind11::arg("s"), pybind11::arg("fast_math"));
 		cl.def("rand_binary", (void (Tensor::*)(float)) &Tensor::rand_binary, "C++: Tensor::rand_binary(float) --> void", pybind11::arg("v"));
+
+		tensor_addons(cl);
 	}
 }
 
@@ -227,6 +232,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 #include <functional>
 #include <string>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
@@ -535,6 +541,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 #include <functional>
 #include <string>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
@@ -730,6 +737,7 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 #include <functional>
 #include <string>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
@@ -935,6 +943,7 @@ void bind_eddl_apis_eddlT(std::function< pybind11::module &(std::string const &n
 #include <functional>
 #include <string>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
