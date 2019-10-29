@@ -1,12 +1,16 @@
+"""\
+AE example.
+"""
+
+import argparse
+import sys
+
 import pyeddl._core.eddl as eddl
 import pyeddl._core.eddlT as eddlT
 
 
-def main():
+def main(args):
     eddl.download_mnist()
-
-    epochs = 1
-    batch_size = 1000
 
     in_ = eddl.Input([784])
 
@@ -24,7 +28,7 @@ def main():
         eddl.sgd(0.001, 0.9),
         ["mean_squared_error"],
         ["mean_squared_error"],
-        eddl.CS_CPU(4)
+        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
     )
 
     print(eddl.summary(net))
@@ -32,8 +36,12 @@ def main():
 
     x_train = eddlT.load("trX.bin")
     eddlT.div_(x_train, 255.0)
-    eddl.fit(net, [x_train], [x_train], batch_size, epochs)
+    eddl.fit(net, [x_train], [x_train], args.batch_size, args.epochs)
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--epochs", type=int, metavar="INT", default=10)
+    parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
+    parser.add_argument("--gpu", action="store_true")
+    main(parser.parse_args(sys.argv[1:]))
