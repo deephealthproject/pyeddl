@@ -524,6 +524,7 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 #include <eddl/optimizers/optim.h>
 #include <eddl/regularizers/regularizer.h>
 #include <eddl/tensor/tensor.h>
+#include <eddl_addons.hpp>
 #include <iterator>
 #include <memory>
 #include <stdio.h>
@@ -545,6 +546,8 @@ void bind_eddl_compserv(std::function< pybind11::module &(std::string const &nam
 
 void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
+
+	eddl_addons(M("eddl"));
 	// eddl::Softmax(class Layer *) file:eddl/apis/eddl.h line:49
 	M("eddl").def("Softmax", (class Layer * (*)(class Layer *)) &eddl::Softmax, "C++: eddl::Softmax(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("parent"));
 
