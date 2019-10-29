@@ -18,4 +18,6 @@ void eddl_addons(pybind11::module &m) {
     m.def("Reshape", (class Layer* (*)(class Layer*, const vector<int>&, string)) &eddl::Reshape, "C++: eddl::Reshape(class Layer*, const vector<int>&, string) --> class Layer*", pybind11::arg("parent"), pybind11::arg("shape"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("UpSampling", (class Layer* (*)(class Layer*, const vector<int>&, string, string)) &eddl::UpSampling, "C++: eddl::UpSampling(class Layer*, const vector<int>&, string, string) --> class Layer*", pybind11::arg("parent"), pybind11::arg("size"), pybind11::arg("interpolation") = "nearest", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("GaussianNoise", (class Layer* (*)(class Layer*, float, string)) &eddl::GaussianNoise, "C++: eddl::GaussianNoise(class Layer*, float, string) --> class Layer*", pybind11::arg("parent"), pybind11::arg("stddev"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("load", (void (*)(class Net*, string)) &eddl::load, "C++: eddl::load(class Net*, string) --> void", pybind11::arg("m"), pybind11::arg("fname"));
+    m.def("save", (void (*)(class Net*, string)) &eddl::save, "C++: eddl::save(class Net*, string) --> void", pybind11::arg("m"), pybind11::arg("fname"));
 }
