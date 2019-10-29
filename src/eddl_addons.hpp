@@ -21,4 +21,5 @@ void eddl_addons(pybind11::module &m) {
     m.def("load", (void (*)(class Net*, string)) &eddl::load, "C++: eddl::load(class Net*, string) --> void", pybind11::arg("m"), pybind11::arg("fname"));
     m.def("save", (void (*)(class Net*, string)) &eddl::save, "C++: eddl::save(class Net*, string) --> void", pybind11::arg("m"), pybind11::arg("fname"));
     m.def("predict", (void (*)(class Net*, const vector<Tensor*>, const vector<Tensor*>)) &eddl::predict, "C++: eddl::predict(class Net*, const vector<Tensor*>, const vector<Tensor*>) --> void", pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"));
+    m.def("train_batch", (void (*)(class Net*, vector<Tensor*>, vector<Tensor*>, vector<int>)) &eddl::train_batch, "C++: eddl::train_batch(class Net*, vector<Tensor*>, vector<Tensor*>, vector<int>) --> void", pybind11::arg("net"), pybind11::arg("in"), pybind11::arg("out"), pybind11::arg("indices"));
 }
