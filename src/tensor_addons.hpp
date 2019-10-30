@@ -5,7 +5,7 @@
 template <typename type_, typename... options>
 void tensor_addons(pybind11::class_<type_, options...> &cl) {
     cl.def(pybind11::init<const vector<int>&, int>(),
-           pybind11::arg("shape"), pybind11::arg("dev"),
+           pybind11::arg("shape"), pybind11::arg("dev") = DEV_CPU,
            pybind11::keep_alive<1, 2>());
     cl.def("getShape", &Tensor::getShape);
     // cl.def_static("delta_reduce", &Tensor::delta_reduce, pybind11::arg("A"),
@@ -80,5 +80,5 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
         } else {
             throw std::runtime_error("complex strides not supported");
         }
-    });
+	}, pybind11::arg("buf"), pybind11::arg("dev") = DEV_CPU);
 }
