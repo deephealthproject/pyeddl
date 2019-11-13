@@ -8,6 +8,7 @@ pipeline {
                         docker {
                             label 'docker'
                             image 'simleo/eddl:9e11e44'
+                            args '-u root:root'
                         }
                     }
                     stages {
@@ -37,7 +38,7 @@ pipeline {
                         docker {
                             label 'docker && gpu'
                             image 'simleo/eddl-gpu:9e11e44'
-                            args '--gpus 1'
+                            args '--gpus 1 -u root:root'
                         }
                     }
                     stages {
