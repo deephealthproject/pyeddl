@@ -7,11 +7,6 @@
 
 **PyEDDL** is a Python wrapper for [EDDL](https://github.com/deephealthproject/eddl), the European Distributed Deep Learning library.
 
-It provides:
-
-* Tensor computation (like NumPy) with strong GPU acceleration
-* Deep neural networks
-
 
 ## Quick start
 
