@@ -21,7 +21,6 @@
 See [full installation instructions below](#installation).
 
 
-
 ## Getting started
 
 ```python
