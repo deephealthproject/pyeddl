@@ -23,6 +23,5 @@ Then you can run tests and/or examples on Docker, e.g.:
 
 ```
 docker run --rm -it pyeddl bash
-cd examples
-python3 eddl_mlp.py
+pytest tests
 ```
