@@ -11,9 +11,7 @@ WORKDIR /eddl
 RUN mkdir build && \
     cd build && \
     cmake -D BUILD_TESTS=ON -D EDDL_SHARED=ON .. && \
-    make -j$(grep -c ^processor /proc/cpuinfo)
+    make -j$(grep -c ^processor /proc/cpuinfo) && \
+    make install
 
-RUN cd build && make install && \
-    cp -rf install/include/eddl /usr/local/include/ && \
-    cp -rf install/include/third_party/eigen/Eigen /usr/local/include/ && \
-    cp install/lib/libeddl.so /usr/local/lib
+RUN cp -rf /usr/local/include/eddl/third_party/eigen/Eigen /usr/local/include/

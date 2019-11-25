@@ -1,11 +1,12 @@
 #include <eddl/tensor/tensor.h>
-#include <eddl/compserv.h>
+#include <eddl/net/compserv.h>
 #include <eddl/losses/loss.h>
 #include <eddl/metrics/metric.h>
 #include <eddl/initializers/initializer.h>
 #include <eddl/regularizers/regularizer.h>
 #include <eddl/layers/layer.h>
 #include <eddl/optimizers/optim.h>
-#include <eddl/net.h>
+#include <eddl/net/netloss.h>
+#include <eddl/net/net.h>
 #include <eddl/apis/eddl.h>
 #include <eddl/apis/eddlT.h>
