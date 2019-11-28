@@ -407,7 +407,7 @@ void bind_eddl_net_compserv(std::function< pybind11::module &(std::string const 
 		cl.def("assign", (class Optimizer & (Optimizer::*)(const class Optimizer &)) &Optimizer::operator=, "C++: Optimizer::operator=(const class Optimizer &) --> class Optimizer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
 	{ // Net file: line:41
-		pybind11::class_<Net, std::shared_ptr<Net>> cl(M(""), "Net", "");
+		pybind11::class_<Net, std::unique_ptr<Net, pybind11::nodelete>> cl(M(""), "Net", "");
 		cl.def( pybind11::init( [](Net const &o){ return new Net(o); } ) );
 		cl.def_readwrite("name", &Net::name);
 		cl.def_readwrite("dev", &Net::dev);

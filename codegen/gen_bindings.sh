@@ -28,3 +28,6 @@ ${binder} \
 
 # add buffer_protocol annotation
 sed -i -f add_annotation.sed bindings/_core.cpp
+
+# disable net destructor invocation (prevents segfaults at interpreter exit)
+sed -i -f net_nodelete.sed bindings/_core.cpp
