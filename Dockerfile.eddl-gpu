@@ -9,5 +9,3 @@ RUN mkdir build && \
     cmake -D BUILD_TARGET=GPU -D BUILD_TESTS=ON -D EDDL_SHARED=ON .. && \
     make -j$(grep -c ^processor /proc/cpuinfo) && \
     make install
-
-RUN cp -rf /usr/local/include/eddl/third_party/eigen/Eigen /usr/local/include/

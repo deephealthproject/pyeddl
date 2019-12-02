@@ -35,10 +35,10 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def_readwrite("shape", &Tensor::shape);
 		cl.def_readwrite("stride", &Tensor::stride);
 		cl.def_readwrite("gpu_device", &Tensor::gpu_device);
-		cl.def("ToCPU", [](Tensor &o) -> void { return o.ToCPU(); }, "");
-		cl.def("ToCPU", (void (Tensor::*)(int)) &Tensor::ToCPU, "C++: Tensor::ToCPU(int) --> void", pybind11::arg("dev"));
-		cl.def("ToGPU", [](Tensor &o) -> void { return o.ToGPU(); }, "");
-		cl.def("ToGPU", (void (Tensor::*)(int)) &Tensor::ToGPU, "C++: Tensor::ToGPU(int) --> void", pybind11::arg("dev"));
+		cl.def("toCPU", [](Tensor &o) -> void { return o.toCPU(); }, "");
+		cl.def("toCPU", (void (Tensor::*)(int)) &Tensor::toCPU, "C++: Tensor::toCPU(int) --> void", pybind11::arg("dev"));
+		cl.def("toGPU", [](Tensor &o) -> void { return o.toGPU(); }, "");
+		cl.def("toGPU", (void (Tensor::*)(int)) &Tensor::toGPU, "C++: Tensor::toGPU(int) --> void", pybind11::arg("dev"));
 		cl.def("clone", (class Tensor * (Tensor::*)()) &Tensor::clone, "C++: Tensor::clone() --> class Tensor *", pybind11::return_value_policy::automatic);
 		cl.def("resize", (void (Tensor::*)(int, float *)) &Tensor::resize, "C++: Tensor::resize(int, float *) --> void", pybind11::arg("b"), pybind11::arg("fptr"));
 		cl.def("resize", (void (Tensor::*)(int)) &Tensor::resize, "C++: Tensor::resize(int) --> void", pybind11::arg("b"));
@@ -165,6 +165,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def_static("equal", (int (*)(class Tensor *, class Tensor *, float)) &Tensor::equal, "C++: Tensor::equal(class Tensor *, class Tensor *, float) --> int", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("epsilon"));
 		cl.def_static("copy", (void (*)(class Tensor *, class Tensor *)) &Tensor::copy, "C++: Tensor::copy(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("fill", (void (*)(class Tensor *, int, int, class Tensor *, int, int, int)) &Tensor::fill, "C++: Tensor::fill(class Tensor *, int, int, class Tensor *, int, int, int) --> void", pybind11::arg("A"), pybind11::arg("aini"), pybind11::arg("aend"), pybind11::arg("B"), pybind11::arg("bini"), pybind11::arg("bend"), pybind11::arg("inc"));
+		cl.def_static("tile", (void (*)(class Tensor *, class Tensor *)) &Tensor::tile, "C++: Tensor::tile(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def("rand_uniform", (void (Tensor::*)(float)) &Tensor::rand_uniform, "C++: Tensor::rand_uniform(float) --> void", pybind11::arg("v"));
 		cl.def("rand_signed_uniform", (void (Tensor::*)(float)) &Tensor::rand_signed_uniform, "C++: Tensor::rand_signed_uniform(float) --> void", pybind11::arg("v"));
 		cl.def("rand_normal", [](Tensor &o, float const & a0, float const & a1) -> void { return o.rand_normal(a0, a1); }, "", pybind11::arg("m"), pybind11::arg("s"));
@@ -766,17 +767,17 @@ void bind_eddl_apis_eddlT(std::function< pybind11::module &(std::string const &n
 	M("eddlT").def("eye", [](int const & a0) -> Tensor * { return eddlT::eye(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("size"));
 	M("eddlT").def("eye", (class Tensor * (*)(int, int)) &eddlT::eye, "C++: eddlT::eye(int, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("size"), pybind11::arg("dev"));
 
-	// eddlT::ToCPU_(class Tensor *) file:eddl/apis/eddlT.h line:39
-	M("eddlT").def("ToCPU_", (void (*)(class Tensor *)) &eddlT::ToCPU_, "C++: eddlT::ToCPU_(class Tensor *) --> void", pybind11::arg("A"));
+	// eddlT::toCPU_(class Tensor *) file:eddl/apis/eddlT.h line:39
+	M("eddlT").def("toCPU_", (void (*)(class Tensor *)) &eddlT::toCPU_, "C++: eddlT::toCPU_(class Tensor *) --> void", pybind11::arg("A"));
 
-	// eddlT::ToGPU_(class Tensor *) file:eddl/apis/eddlT.h line:40
-	M("eddlT").def("ToGPU_", (void (*)(class Tensor *)) &eddlT::ToGPU_, "C++: eddlT::ToGPU_(class Tensor *) --> void", pybind11::arg("A"));
+	// eddlT::toGPU_(class Tensor *) file:eddl/apis/eddlT.h line:40
+	M("eddlT").def("toGPU_", (void (*)(class Tensor *)) &eddlT::toGPU_, "C++: eddlT::toGPU_(class Tensor *) --> void", pybind11::arg("A"));
 
-	// eddlT::ToCPU(class Tensor *) file:eddl/apis/eddlT.h line:41
-	M("eddlT").def("ToCPU", (class Tensor * (*)(class Tensor *)) &eddlT::ToCPU, "C++: eddlT::ToCPU(class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
+	// eddlT::toCPU(class Tensor *) file:eddl/apis/eddlT.h line:41
+	M("eddlT").def("toCPU", (class Tensor * (*)(class Tensor *)) &eddlT::toCPU, "C++: eddlT::toCPU(class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
 
-	// eddlT::ToGPU(class Tensor *) file:eddl/apis/eddlT.h line:42
-	M("eddlT").def("ToGPU", (class Tensor * (*)(class Tensor *)) &eddlT::ToGPU, "C++: eddlT::ToGPU(class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
+	// eddlT::toGPU(class Tensor *) file:eddl/apis/eddlT.h line:42
+	M("eddlT").def("toGPU", (class Tensor * (*)(class Tensor *)) &eddlT::toGPU, "C++: eddlT::toGPU(class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
 
 	// eddlT::clone(class Tensor *) file:eddl/apis/eddlT.h line:43
 	M("eddlT").def("clone", (class Tensor * (*)(class Tensor *)) &eddlT::clone, "C++: eddlT::clone(class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
