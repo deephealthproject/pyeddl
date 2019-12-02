@@ -9,18 +9,15 @@ import pyeddl._core.eddl as eddl
 import pyeddl._core.eddlT as eddlT
 
 
+def FMP(layer):
+    return eddl.MaxPool(layer, [2, 2], [1, 1], "same")
+
+
 def Block(layer, filters, kernel_size, strides):
     return eddl.MaxPool(
-        eddl.BatchNormalization(
-            eddl.Activation(
-                eddl.L1(
-                    eddl.Conv(layer, filters, kernel_size, strides),
-                    0.0001
-                ),
-                "relu"
-            )
-        ),
-        [2, 2]
+        eddl.ReLu(
+            eddl.Conv(layer, filters, kernel_size, strides)
+        )
     )
 
 
@@ -32,12 +29,11 @@ def main(args):
     in_ = eddl.Input([784])
     layer = in_
     layer = eddl.Reshape(layer, [1, 28, 28])
-    layer = eddl.UpSampling(layer, [2, 2])
-    layer = eddl.MaxPool(layer, [2, 2])
-    layer = Block(layer, 16, [3, 3], [1, 1])
-    layer = Block(layer, 32, [3, 3], [1, 1])
-    layer = Block(layer, 64, [3, 3], [1, 1])
-    layer = Block(layer, 128, [3, 3], [1, 1])
+    layer = Block(layer, 16, [2, 2], [1, 1])
+    layer = FMP(layer)
+    layer = Block(layer, 32, [2, 2], [1, 1])
+    layer = Block(layer, 64, [2, 2], [1, 1])
+    layer = Block(layer, 128, [2, 2], [1, 1])
     layer = eddl.Reshape(layer, [-1])
     layer = eddl.Activation(eddl.Dense(layer, 64), "relu")
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
@@ -52,20 +48,20 @@ def main(args):
         eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
     )
 
-    print(eddl.summary(net))
+    eddl.summary(net)
 
     x_train = eddlT.load("trX.bin")
     y_train = eddlT.load("trY.bin")
-
     eddlT.div_(x_train, 255.0)
-
-    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
-    eddl.evaluate(net, [x_train], [y_train])
 
     x_test = eddlT.load("tsX.bin")
     y_test = eddlT.load("tsY.bin")
-
     eddlT.div_(x_test, 255.0)
+
+    for i in range(args.epochs):
+        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
+        eddl.evaluate(net, [x_train], [y_train])
+
     eddl.evaluate(net, [x_test], [y_test])
 
 

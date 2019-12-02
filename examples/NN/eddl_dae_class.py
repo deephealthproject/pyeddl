@@ -16,7 +16,7 @@ def main(args):
 
     in_ = eddl.Input([784])
     layer = in_
-    # layer = eddl.GaussianNoise(layer, 0.5)
+    layer = eddl.GaussianNoise(layer, 0.5)
     layer = eddl.Activation(eddl.Dense(layer, 256), "relu")
     layer = eddl.Activation(eddl.Dense(layer, 128), "relu")
     lc = layer = eddl.Activation(eddl.Dense(layer, 64), "relu")
@@ -34,7 +34,7 @@ def main(args):
         eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
     )
 
-    print(eddl.summary(net))
+    eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
     x_train = eddlT.load("trX.bin")

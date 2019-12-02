@@ -29,8 +29,6 @@ def main(args):
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
 
-    eddl.plot(net, "model.pdf")
-
     eddl.build(
         net,
         eddl.sgd(0.01, 0.9),
@@ -39,7 +37,8 @@ def main(args):
         eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
     )
 
-    print(eddl.summary(net))
+    eddl.summary(net)
+    eddl.plot(net, "model.pdf")
 
     x_train = eddlT.load("trX.bin")
     y_train = eddlT.load("trY.bin")
@@ -51,7 +50,8 @@ def main(args):
 
     for i in range(args.epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-        eddl.evaluate(net, [x_test], [y_test])
+
+    eddl.evaluate(net, [x_test], [y_test])
 
 
 if __name__ == "__main__":

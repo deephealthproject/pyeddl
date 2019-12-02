@@ -13,7 +13,6 @@ names=(
     eddl_dae_class
     eddl_load_save
     eddl_mlp
-    eddl_predict
     eddl_train_batch
 )
 

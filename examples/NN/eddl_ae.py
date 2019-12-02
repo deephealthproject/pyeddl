@@ -31,7 +31,7 @@ def main(args):
         eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
     )
 
-    print(eddl.summary(net))
+    eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
     x_train = eddlT.load("trX.bin")

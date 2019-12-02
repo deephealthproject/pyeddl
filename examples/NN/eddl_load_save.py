@@ -30,7 +30,7 @@ def main(args):
         eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
     )
 
-    print(eddl.summary(net))
+    eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
     x_train = eddlT.load("trX.bin")
@@ -38,11 +38,11 @@ def main(args):
 
     eddlT.div_(x_train, 255.0)
 
-    eddl.save(net, "model1.bin")
+    eddl.save(net, "model1.bin", "bin")
 
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
 
-    eddl.load(net, "model1.bin")
+    eddl.load(net, "model1.bin", "bin")
 
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
 

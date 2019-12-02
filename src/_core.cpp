@@ -505,115 +505,6 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 {
 
 	eddl_addons(M("eddl"));
-	// eddl::Softmax(class Layer *) file:eddl/apis/eddl.h line:51
-	M("eddl").def("Softmax", (class Layer * (*)(class Layer *)) &eddl::Softmax, "C++: eddl::Softmax(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("parent"));
-
-	// eddl::Sigmoid(class Layer *) file:eddl/apis/eddl.h line:52
-	M("eddl").def("Sigmoid", (class Layer * (*)(class Layer *)) &eddl::Sigmoid, "C++: eddl::Sigmoid(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("parent"));
-
-	// eddl::ReLu(class Layer *) file:eddl/apis/eddl.h line:53
-	M("eddl").def("ReLu", (class Layer * (*)(class Layer *)) &eddl::ReLu, "C++: eddl::ReLu(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("parent"));
-
-	// eddl::LReLu(class Layer *, float) file:eddl/apis/eddl.h line:54
-	M("eddl").def("LReLu", [](class Layer * a0) -> Layer * { return eddl::LReLu(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("parent"));
-	M("eddl").def("LReLu", (class Layer * (*)(class Layer *, float)) &eddl::LReLu, "C++: eddl::LReLu(class Layer *, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("parent"), pybind11::arg("param"));
-
-	// eddl::Tanh(class Layer *) file:eddl/apis/eddl.h line:55
-	M("eddl").def("Tanh", (class Layer * (*)(class Layer *)) &eddl::Tanh, "C++: eddl::Tanh(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("parent"));
-
-	// eddl::Abs(class Layer *) file:eddl/apis/eddl.h line:133
-	M("eddl").def("Abs", (class Layer * (*)(class Layer *)) &eddl::Abs, "C++: eddl::Abs(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-
-	// eddl::Diff(class Layer *, class Layer *) file:eddl/apis/eddl.h line:135
-	M("eddl").def("Diff", (class Layer * (*)(class Layer *, class Layer *)) &eddl::Diff, "C++: eddl::Diff(class Layer *, class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("l2"));
-
-	// eddl::Diff(class Layer *, float) file:eddl/apis/eddl.h line:137
-	M("eddl").def("Diff", (class Layer * (*)(class Layer *, float)) &eddl::Diff, "C++: eddl::Diff(class Layer *, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("k"));
-
-	// eddl::Diff(float, class Layer *) file:eddl/apis/eddl.h line:139
-	M("eddl").def("Diff", (class Layer * (*)(float, class Layer *)) &eddl::Diff, "C++: eddl::Diff(float, class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("k"), pybind11::arg("l1"));
-
-	// eddl::Div(class Layer *, class Layer *) file:eddl/apis/eddl.h line:141
-	M("eddl").def("Div", (class Layer * (*)(class Layer *, class Layer *)) &eddl::Div, "C++: eddl::Div(class Layer *, class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("l2"));
-
-	// eddl::Div(class Layer *, float) file:eddl/apis/eddl.h line:143
-	M("eddl").def("Div", (class Layer * (*)(class Layer *, float)) &eddl::Div, "C++: eddl::Div(class Layer *, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("k"));
-
-	// eddl::Div(float, class Layer *) file:eddl/apis/eddl.h line:145
-	M("eddl").def("Div", (class Layer * (*)(float, class Layer *)) &eddl::Div, "C++: eddl::Div(float, class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("k"), pybind11::arg("l1"));
-
-	// eddl::Exp(class Layer *) file:eddl/apis/eddl.h line:147
-	M("eddl").def("Exp", (class Layer * (*)(class Layer *)) &eddl::Exp, "C++: eddl::Exp(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-
-	// eddl::Log(class Layer *) file:eddl/apis/eddl.h line:149
-	M("eddl").def("Log", (class Layer * (*)(class Layer *)) &eddl::Log, "C++: eddl::Log(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-
-	// eddl::Log2(class Layer *) file:eddl/apis/eddl.h line:151
-	M("eddl").def("Log2", (class Layer * (*)(class Layer *)) &eddl::Log2, "C++: eddl::Log2(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-
-	// eddl::Log10(class Layer *) file:eddl/apis/eddl.h line:153
-	M("eddl").def("Log10", (class Layer * (*)(class Layer *)) &eddl::Log10, "C++: eddl::Log10(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-
-	// eddl::Mult(class Layer *, class Layer *) file:eddl/apis/eddl.h line:155
-	M("eddl").def("Mult", (class Layer * (*)(class Layer *, class Layer *)) &eddl::Mult, "C++: eddl::Mult(class Layer *, class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("l2"));
-
-	// eddl::Mult(class Layer *, float) file:eddl/apis/eddl.h line:157
-	M("eddl").def("Mult", (class Layer * (*)(class Layer *, float)) &eddl::Mult, "C++: eddl::Mult(class Layer *, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("k"));
-
-	// eddl::Mult(float, class Layer *) file:eddl/apis/eddl.h line:159
-	M("eddl").def("Mult", (class Layer * (*)(float, class Layer *)) &eddl::Mult, "C++: eddl::Mult(float, class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("k"), pybind11::arg("l1"));
-
-	// eddl::Pow(class Layer *, class Layer *) file:eddl/apis/eddl.h line:161
-	M("eddl").def("Pow", (class Layer * (*)(class Layer *, class Layer *)) &eddl::Pow, "C++: eddl::Pow(class Layer *, class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("l2"));
-
-	// eddl::Pow(class Layer *, float) file:eddl/apis/eddl.h line:163
-	M("eddl").def("Pow", (class Layer * (*)(class Layer *, float)) &eddl::Pow, "C++: eddl::Pow(class Layer *, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("k"));
-
-	// eddl::Sqrt(class Layer *) file:eddl/apis/eddl.h line:165
-	M("eddl").def("Sqrt", (class Layer * (*)(class Layer *)) &eddl::Sqrt, "C++: eddl::Sqrt(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-
-	// eddl::Sum(class Layer *, class Layer *) file:eddl/apis/eddl.h line:167
-	M("eddl").def("Sum", (class Layer * (*)(class Layer *, class Layer *)) &eddl::Sum, "C++: eddl::Sum(class Layer *, class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("l2"));
-
-	// eddl::Sum(class Layer *, float) file:eddl/apis/eddl.h line:169
-	M("eddl").def("Sum", (class Layer * (*)(class Layer *, float)) &eddl::Sum, "C++: eddl::Sum(class Layer *, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("k"));
-
-	// eddl::Sum(float, class Layer *) file:eddl/apis/eddl.h line:171
-	M("eddl").def("Sum", (class Layer * (*)(float, class Layer *)) &eddl::Sum, "C++: eddl::Sum(float, class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("k"), pybind11::arg("l1"));
-
-	// eddl::GlorotNormal(class Layer *, int) file:eddl/apis/eddl.h line:221
-	M("eddl").def("GlorotNormal", [](class Layer * a0) -> Layer * { return eddl::GlorotNormal(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-	M("eddl").def("GlorotNormal", (class Layer * (*)(class Layer *, int)) &eddl::GlorotNormal, "C++: eddl::GlorotNormal(class Layer *, int) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("seed"));
-
-	// eddl::GlorotUniform(class Layer *, int) file:eddl/apis/eddl.h line:222
-	M("eddl").def("GlorotUniform", [](class Layer * a0) -> Layer * { return eddl::GlorotUniform(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-	M("eddl").def("GlorotUniform", (class Layer * (*)(class Layer *, int)) &eddl::GlorotUniform, "C++: eddl::GlorotUniform(class Layer *, int) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("seed"));
-
-	// eddl::RandomNormal(class Layer *, float, float, float) file:eddl/apis/eddl.h line:223
-	M("eddl").def("RandomNormal", [](class Layer * a0) -> Layer * { return eddl::RandomNormal(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-	M("eddl").def("RandomNormal", [](class Layer * a0, float const & a1) -> Layer * { return eddl::RandomNormal(a0, a1); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("m"));
-	M("eddl").def("RandomNormal", [](class Layer * a0, float const & a1, float const & a2) -> Layer * { return eddl::RandomNormal(a0, a1, a2); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("m"), pybind11::arg("s"));
-	M("eddl").def("RandomNormal", (class Layer * (*)(class Layer *, float, float, float)) &eddl::RandomNormal, "C++: eddl::RandomNormal(class Layer *, float, float, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("m"), pybind11::arg("s"), pybind11::arg("seed"));
-
-	// eddl::RandomUniform(class Layer *, float, float, float) file:eddl/apis/eddl.h line:224
-	M("eddl").def("RandomUniform", [](class Layer * a0) -> Layer * { return eddl::RandomUniform(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-	M("eddl").def("RandomUniform", [](class Layer * a0, float const & a1) -> Layer * { return eddl::RandomUniform(a0, a1); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("min"));
-	M("eddl").def("RandomUniform", [](class Layer * a0, float const & a1, float const & a2) -> Layer * { return eddl::RandomUniform(a0, a1, a2); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("min"), pybind11::arg("max"));
-	M("eddl").def("RandomUniform", (class Layer * (*)(class Layer *, float, float, float)) &eddl::RandomUniform, "C++: eddl::RandomUniform(class Layer *, float, float, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("min"), pybind11::arg("max"), pybind11::arg("seed"));
-
-	// eddl::Constant(class Layer *, float) file:eddl/apis/eddl.h line:225
-	M("eddl").def("Constant", [](class Layer * a0) -> Layer * { return eddl::Constant(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-	M("eddl").def("Constant", (class Layer * (*)(class Layer *, float)) &eddl::Constant, "C++: eddl::Constant(class Layer *, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("v"));
-
-	// eddl::L2(class Layer *, float) file:eddl/apis/eddl.h line:228
-	M("eddl").def("L2", (class Layer * (*)(class Layer *, float)) &eddl::L2, "C++: eddl::L2(class Layer *, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("l2"));
-
-	// eddl::L1(class Layer *, float) file:eddl/apis/eddl.h line:229
-	M("eddl").def("L1", (class Layer * (*)(class Layer *, float)) &eddl::L1, "C++: eddl::L1(class Layer *, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("l1"));
-
-	// eddl::L1L2(class Layer *, float, float) file:eddl/apis/eddl.h line:230
-	M("eddl").def("L1L2", (class Layer * (*)(class Layer *, float, float)) &eddl::L1L2, "C++: eddl::L1L2(class Layer *, float, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("l1"), pybind11::arg("l2"));
-
 	// eddl::CS_CPU(int) file:eddl/apis/eddl.h line:233
 	M("eddl").def("CS_CPU", []() -> CompServ * { return eddl::CS_CPU(); }, "", pybind11::return_value_policy::automatic);
 	M("eddl").def("CS_CPU", (class CompServ * (*)(int)) &eddl::CS_CPU, "C++: eddl::CS_CPU(int) --> class CompServ *", pybind11::return_value_policy::automatic, pybind11::arg("th"));
@@ -672,40 +563,6 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 	M("eddl").def("toCPU", [](class Net * a0) -> void { return eddl::toCPU(a0); }, "", pybind11::arg("net"));
 	M("eddl").def("toCPU", (void (*)(class Net *, int)) &eddl::toCPU, "C++: eddl::toCPU(class Net *, int) --> void", pybind11::arg("net"), pybind11::arg("t"));
 
-}
-
-
-// File: eddl/apis/eddl_1.cpp
-#include <eddl/apis/eddl.h>
-#include <eddl/layers/layer.h>
-#include <eddl/losses/loss.h>
-#include <eddl/metrics/metric.h>
-#include <eddl/net/compserv.h>
-#include <eddl/optimizers/optim.h>
-#include <eddl/tensor/tensor.h>
-#include <eddl_addons.hpp>
-#include <fstream>
-#include <iterator>
-#include <memory>
-#include <string>
-#include <vector>
-
-#include <pybind11/pybind11.h>
-#include <functional>
-#include <string>
-#include <pybind11/stl.h>
-#include <pybind11/numpy.h>
-
-
-#ifndef BINDER_PYBIND11_TYPE_CASTER
-	#define BINDER_PYBIND11_TYPE_CASTER
-	PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>);
-	PYBIND11_DECLARE_HOLDER_TYPE(T, T*);
-	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
-#endif
-
-void bind_eddl_apis_eddl_1(std::function< pybind11::module &(std::string const &namespace_) > &M)
-{
 	// eddl::summary(class Net *) file:eddl/apis/eddl.h line:291
 	M("eddl").def("summary", (void (*)(class Net *)) &eddl::summary, "C++: eddl::summary(class Net *) --> void", pybind11::arg("m"));
 
@@ -1092,7 +949,6 @@ typedef std::function< pybind11::module & (std::string const &) > ModuleGetter;
 void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_net_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_eddl_apis_eddl_1(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_apis_eddlT(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_apis_eddlT_1(std::function< pybind11::module &(std::string const &namespace_) > &M);
 
@@ -1120,7 +976,6 @@ PYBIND11_MODULE(_core, root_module) {
 	bind_eddl_tensor_tensor(M);
 	bind_eddl_net_compserv(M);
 	bind_eddl_apis_eddl(M);
-	bind_eddl_apis_eddl_1(M);
 	bind_eddl_apis_eddlT(M);
 	bind_eddl_apis_eddlT_1(M);
 
@@ -1131,7 +986,6 @@ PYBIND11_MODULE(_core, root_module) {
 // eddl/tensor/tensor.cpp
 // eddl/net/compserv.cpp
 // eddl/apis/eddl.cpp
-// eddl/apis/eddl_1.cpp
 // eddl/apis/eddlT.cpp
 // eddl/apis/eddlT_1.cpp
 
