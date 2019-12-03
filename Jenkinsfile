@@ -25,7 +25,7 @@ pipeline {
 				echo 'Testing'
 				sh 'pytest tests'
 				sh 'python3 examples/Tensor/eddl_tensor.py'
-				sh 'python3 examples/NN/eddl_ae.py --epochs 1'
+				sh 'python3 examples/NN/other/eddl_ae.py --epochs 1'
                             }
                         }
                         stage('linux_end') {
@@ -63,7 +63,7 @@ pipeline {
 				echo 'Testing'
 				sh 'pytest tests'
 				sh 'python3 examples/Tensor/eddl_tensor.py'
-				sh 'bash examples/NN/run_all_fast.sh'
+				sh 'bash examples/NN/other/run_all_fast.sh'
 			    }
                         }
                         stage('linux_gpu_end') {
