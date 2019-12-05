@@ -86,4 +86,6 @@ void eddl_addons(pybind11::module &m) {
     m.def("detach", (class Layer* (*)(class Layer*)) &eddl::detach, "C++: eddl::detach(class Layer*) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"));
     m.def("detach", (class vector<Layer*> (*)(class vector<Layer*>)) &eddl::detach, "C++: eddl::detach(class vector<Layer*>) --> class vector<Layer*>", pybind11::return_value_policy::reference, pybind11::arg("l"));
     m.def("getTensor", (class Tensor* (*)(class Layer*)) &eddl::getTensor, "C++: eddl::getTensor(class Layer*) --> class Tensor*", pybind11::return_value_policy::reference, pybind11::arg("l"));
+    m.def("Flip", (class Layer* (*)(class Layer*, int, string)) &eddl::Flip, "C++: eddl::Flip(class Layer*, int, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("axis") = 0, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("CropScaleRandom", (class Layer* (*)(class Layer*, vector<float>, string, string)) &eddl::CropScaleRandom, "C++: eddl::CropScaleRandom(class Layer*, vector<float>, string, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("factor"), pybind11::arg("da_mode") = "nearest", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
 }
