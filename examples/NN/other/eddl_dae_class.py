@@ -31,7 +31,7 @@ def main(args):
         eddl.sgd(0.001, 0.9),
         ["mean_squared_error", "soft_cross_entropy"],
         ["mean_squared_error", "categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
+        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
     )
 
     eddl.summary(net)

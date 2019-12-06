@@ -28,7 +28,7 @@ def main(args):
         eddl.sgd(0.001, 0.9),
         ["mean_squared_error"],
         ["mean_squared_error"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
+        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
     )
 
     eddl.summary(net)

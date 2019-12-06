@@ -49,7 +49,7 @@ def main(args):
         sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        CS_GPU([1]) if args.gpu else CS_CPU(4)
+        CS_GPU([1]) if args.gpu else CS_CPU()
     )
 
     print(net.summary())

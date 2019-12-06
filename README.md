@@ -54,7 +54,7 @@ def main():
         eddl.sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_CPU(4)
+        eddl.CS_CPU()
     )
     print(eddl.summary(net))
 
