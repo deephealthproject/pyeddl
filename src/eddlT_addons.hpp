@@ -29,6 +29,10 @@ void eddlT_addons(pybind11::module &m) {
     m.def("getShape", (vector<int> (*)(class Tensor*)) &eddlT::getShape, "C++: eddlT::getShape(class Tensor*) --> vector<int>", pybind11::arg("A"));
     m.def("reshape_", (void (*)(class Tensor*, vector<int>)) &eddlT::reshape_, "C++: eddlT::reshape_(class Tensor*, vector<int>) --> void", pybind11::arg("A"), pybind11::arg("indices"));
     m.def("save", (void (*)(class Tensor*, string, string)) &eddlT::save, "C++: eddlT::save(class Tensor*, string, string) --> void", pybind11::arg("A"), pybind11::arg("fname"), pybind11::arg("format") = "");
+    m.def("zeros", (class Tensor* (*)(const vector<int>&, int)) &eddlT::zeros, "C++: eddlT::zeros(const vector<int>&, int) --> class Tensor*", pybind11::arg("shape"), pybind11::arg("dev") = DEV_CPU);
+    m.def("ones", (class Tensor* (*)(const vector<int>&, int)) &eddlT::ones, "C++: eddlT::ones(const vector<int>&, int) --> class Tensor*", pybind11::arg("shape"), pybind11::arg("dev") = DEV_CPU);
+    m.def("full", (class Tensor* (*)(const vector<int>&, float, int)) &eddlT::full, "C++: eddlT::full(const vector<int>&, float, int) --> class Tensor*", pybind11::arg("shape"), pybind11::arg("value"), pybind11::arg("dev") = DEV_CPU);
+    m.def("set_", (void (*)(class Tensor*, vector<int>, float)) &eddlT::set_, "C++: eddlT::set_(class Tensor*, vector<int>, float) --> void", pybind11::arg("A"), pybind11::arg("indices"), pybind11::arg("value"));
     m.attr("DEV_CPU") = pybind11::int_(DEV_CPU);
     m.attr("DEV_GPU") = pybind11::int_(DEV_GPU);
     m.attr("DEV_FPGA") = pybind11::int_(DEV_FPGA);
