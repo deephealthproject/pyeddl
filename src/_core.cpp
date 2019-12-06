@@ -642,9 +642,6 @@ void bind_eddl_apis_eddlT(std::function< pybind11::module &(std::string const &n
 	// eddlT::fill_(class Tensor *, float) file:eddl/apis/eddlT.h line:48
 	M("eddlT").def("fill_", (void (*)(class Tensor *, float)) &eddlT::fill_, "C++: eddlT::fill_(class Tensor *, float) --> void", pybind11::arg("A"), pybind11::arg("v"));
 
-	// eddlT::getptr(class Tensor *) file:eddl/apis/eddlT.h line:53
-	M("eddlT").def("getptr", (float * (*)(class Tensor *)) &eddlT::getptr, "C++: eddlT::getptr(class Tensor *) --> float *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
-
 	// eddlT::print(class Tensor *) file:eddl/apis/eddlT.h line:56
 	M("eddlT").def("print", (void (*)(class Tensor *)) &eddlT::print, "C++: eddlT::print(class Tensor *) --> void", pybind11::arg("A"));
 
@@ -783,6 +780,9 @@ void bind_eddl_apis_eddlT(std::function< pybind11::module &(std::string const &n
 	// eddlT::mod_(class Tensor *, float) file:eddl/apis/eddlT.h line:133
 	M("eddlT").def("mod_", (void (*)(class Tensor *, float)) &eddlT::mod_, "C++: eddlT::mod_(class Tensor *, float) --> void", pybind11::arg("A"), pybind11::arg("v"));
 
+	// eddlT::mod(class Tensor *, float) file:eddl/apis/eddlT.h line:134
+	M("eddlT").def("mod", (class Tensor * (*)(class Tensor *, float)) &eddlT::mod, "C++: eddlT::mod(class Tensor *, float) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("v"));
+
 }
 
 
@@ -813,9 +813,6 @@ void bind_eddl_apis_eddlT(std::function< pybind11::module &(std::string const &n
 
 void bind_eddl_apis_eddlT_1(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
-	// eddlT::mod(class Tensor *, float) file:eddl/apis/eddlT.h line:134
-	M("eddlT").def("mod", (class Tensor * (*)(class Tensor *, float)) &eddlT::mod, "C++: eddlT::mod(class Tensor *, float) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("v"));
-
 	// eddlT::mult_(class Tensor *, float) file:eddl/apis/eddlT.h line:136
 	M("eddlT").def("mult_", (void (*)(class Tensor *, float)) &eddlT::mult_, "C++: eddlT::mult_(class Tensor *, float) --> void", pybind11::arg("A"), pybind11::arg("v"));
 
