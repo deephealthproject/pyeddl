@@ -41,7 +41,7 @@ def main(args):
         sgd(0.001, 0.9),
         [loss_func("mean_squared_error")],
         [mse],
-        CS_GPU([1]) if args.gpu else CS_CPU(4)
+        CS_GPU([1]) if args.gpu else CS_CPU()
     )
 
     print(net.summary())

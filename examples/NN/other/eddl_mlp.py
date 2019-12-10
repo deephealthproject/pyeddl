@@ -1,5 +1,5 @@
 """\
-PREDICT example.
+MLP example.
 """
 
 import argparse
@@ -15,10 +15,17 @@ def main(args):
     num_classes = 10
 
     in_ = eddl.Input([784])
+
     layer = in_
-    layer = eddl.Activation(eddl.Dense(layer, 1024), "relu")
-    layer = eddl.Activation(eddl.Dense(layer, 1024), "relu")
-    layer = eddl.Activation(eddl.Dense(layer, 1024), "relu")
+    layer = eddl.BatchNormalization(
+        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
+    )
+    layer = eddl.BatchNormalization(
+        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
+    )
+    layer = eddl.BatchNormalization(
+        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
+    )
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
 
@@ -27,26 +34,24 @@ def main(args):
         eddl.sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
+        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
     )
 
-    print(eddl.summary(net))
+    eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
     x_train = eddlT.load("trX.bin")
     y_train = eddlT.load("trY.bin")
     x_test = eddlT.load("tsX.bin")
+    y_test = eddlT.load("tsY.bin")
 
     eddlT.div_(x_train, 255.0)
     eddlT.div_(x_test, 255.0)
 
-    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
+    for i in range(args.epochs):
+        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
 
-    TX = eddlT.create([1, 784])
-    TY = eddlT.create([1, 10])
-    eddl.predict(net, [TX], [TY])
-
-    eddlT.print(TY)
+    eddl.evaluate(net, [x_test], [y_test])
 
 
 if __name__ == "__main__":

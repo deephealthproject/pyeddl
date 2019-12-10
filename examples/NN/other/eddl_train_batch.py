@@ -31,10 +31,11 @@ def main(args):
         eddl.sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
+        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
     )
 
-    print(eddl.summary(net))
+    eddl.summary(net)
+    eddl.plot(net, "model.pdf")
 
     x_train = eddlT.load("trX.bin")
     y_train = eddlT.load("trY.bin")
@@ -46,15 +47,23 @@ def main(args):
 
     num_samples = x_train.shape[0]
     num_batches = num_samples // args.batch_size
+    test_samples = x_test.shape[0]
+    test_batches = test_samples // args.batch_size
+
     eddl.resize_model(net, args.batch_size)
     eddl.set_mode(net, TRMODE)
+
     for i in range(args.epochs):
         for j in range(num_batches):
             print("Epoch %d/%d (batch %d/%d)" %
                   (i + 1, args.epochs, j + 1, num_batches))
             indices = np.random.randint(0, num_samples, args.batch_size)
             eddl.train_batch(net, [x_train], [y_train], indices)
-    eddl.evaluate(net, [x_test], [y_test])
+        for j in range(test_batches):
+            print("Epoch %d/%d (batch %d/%d)" %
+                  (i + 1, args.epochs, j + 1, test_batches))
+            indices = np.random.randint(0, num_samples, args.batch_size)
+            eddl.eval_batch(net, [x_train], [y_train], indices)
 
 
 if __name__ == "__main__":

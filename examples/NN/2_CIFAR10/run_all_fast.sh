@@ -8,13 +8,13 @@ this="${BASH_SOURCE-$0}"
 this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 names=(
-    eddl_ae
-    eddl_conv
-    eddl_dae_class
-    eddl_load_save
-    eddl_mlp
-    eddl_predict
-    eddl_train_batch
+    cifar_conv
+    cifar_conv_da
+    cifar_resnet
+    cifar_resnet50_da_bn
+    cifar_resnet_da_bn
+    cifar_vgg16
+    cifar_vgg16_bn
 )
 
 for n in "${names[@]}"; do

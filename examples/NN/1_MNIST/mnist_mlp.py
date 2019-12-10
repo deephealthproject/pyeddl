@@ -1,5 +1,5 @@
 """\
-AE example.
+Basic MLP for MNIST.
 """
 
 import argparse
@@ -12,31 +12,38 @@ import pyeddl._core.eddlT as eddlT
 def main(args):
     eddl.download_mnist()
 
+    num_classes = 10
+
     in_ = eddl.Input([784])
 
     layer = in_
-    layer = eddl.Activation(eddl.Dense(layer, 256), "relu")
-    layer = eddl.Activation(eddl.Dense(layer, 128), "relu")
-    layer = eddl.Activation(eddl.Dense(layer, 64), "relu")
-    layer = eddl.Activation(eddl.Dense(layer, 128), "relu")
-    layer = eddl.Activation(eddl.Dense(layer, 256), "relu")
-    out = eddl.Dense(layer, 784)
-
+    layer = eddl.ReLu(eddl.Dense(layer, 1024))
+    layer = eddl.ReLu(eddl.Dense(layer, 1024))
+    layer = eddl.ReLu(eddl.Dense(layer, 1024))
+    out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
+
     eddl.build(
         net,
-        eddl.sgd(0.001, 0.9),
-        ["mean_squared_error"],
-        ["mean_squared_error"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
+        eddl.rmsprop(0.01),
+        ["soft_cross_entropy"],
+        ["categorical_accuracy"],
+        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
     )
 
-    print(eddl.summary(net))
+    eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
     x_train = eddlT.load("trX.bin")
+    y_train = eddlT.load("trY.bin")
+    x_test = eddlT.load("tsX.bin")
+    y_test = eddlT.load("tsY.bin")
+
     eddlT.div_(x_train, 255.0)
-    eddl.fit(net, [x_train], [x_train], args.batch_size, args.epochs)
+    eddlT.div_(x_test, 255.0)
+
+    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
+    eddl.evaluate(net, [x_test], [y_test])
 
 
 if __name__ == "__main__":

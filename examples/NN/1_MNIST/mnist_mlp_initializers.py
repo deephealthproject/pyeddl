@@ -1,5 +1,5 @@
 """\
-MLP example.
+Basic MLP for MNIST with initializers.
 """
 
 import argparse
@@ -17,29 +17,22 @@ def main(args):
     in_ = eddl.Input([784])
 
     layer = in_
-    layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
-    )
-    layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
-    )
-    layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
-    )
+    layer = eddl.ReLu(eddl.GlorotNormal(eddl.Dense(layer, 1024)))
+    layer = eddl.ReLu(eddl.GlorotUniform(eddl.Dense(layer, 1024)))
+    layer = eddl.ReLu(eddl.RandomNormal(eddl.Dense(layer, 1024)))
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
-
-    eddl.plot(net, "model.pdf")
 
     eddl.build(
         net,
         eddl.sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(4)
+        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
     )
 
-    print(eddl.summary(net))
+    eddl.summary(net)
+    eddl.plot(net, "model.pdf")
 
     x_train = eddlT.load("trX.bin")
     y_train = eddlT.load("trY.bin")
@@ -49,9 +42,8 @@ def main(args):
     eddlT.div_(x_train, 255.0)
     eddlT.div_(x_test, 255.0)
 
-    for i in range(args.epochs):
-        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-        eddl.evaluate(net, [x_test], [y_test])
+    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
+    eddl.evaluate(net, [x_test], [y_test])
 
 
 if __name__ == "__main__":

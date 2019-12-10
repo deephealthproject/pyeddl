@@ -10,13 +10,13 @@
 
 ## Quick start
 
+The following assumes you have EDDL 0.2.2 already installed in "standard"
+system paths (e.g., `/usr/local/include`, `/usr/local/lib`).
+
     git clone --recurse-submodules https://github.com/deephealthproject/pyeddl.git
     cd pyeddl
     python3 -m pip install numpy pybind11 pytest
-    export EDDL_WITH_CUDA="true"
     python3 setup.py install
-    pytest tests
-    
 
 See [full installation instructions below](#installation).
 
@@ -27,7 +27,6 @@ See [full installation instructions below](#installation).
 import pyeddl._core.eddl as eddl
 import pyeddl._core.eddlT as eddlT
 
-
 def main():
     eddl.download_mnist()
 
@@ -37,15 +36,9 @@ def main():
 
     in_ = eddl.Input([784])
     layer = in_
-    layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
-    )
-    layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
-    )
-    layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
-    )
+    layer = eddl.ReLu(eddl.Dense(layer, 1024))
+    layer = eddl.ReLu(eddl.Dense(layer, 1024))
+    layer = eddl.ReLu(eddl.Dense(layer, 1024))
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
 
@@ -54,9 +47,9 @@ def main():
         eddl.sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_CPU(4)
+        eddl.CS_CPU()
     )
-    print(eddl.summary(net))
+    eddl.summary(net)
 
     x_train = eddlT.load("trX.bin")
     y_train = eddlT.load("trY.bin")
@@ -65,10 +58,8 @@ def main():
     eddlT.div_(x_train, 255.0)
     eddlT.div_(x_test, 255.0)
 
-    for i in range(epochs):
-        eddl.fit(net, [x_train], [y_train], batch_size, 1)
-        eddl.evaluate(net, [x_test], [y_test])
-
+    eddl.fit(net, [x_train], [y_train], batch_size, epochs)
+    eddl.evaluate(net, [x_test], [y_test])
 
 if __name__ == "__main__":
     main()
@@ -103,25 +94,14 @@ make
 make install
 ```
 
-Make sure EDDL installation artifacts are in "standard" system locations. You
-might need to copy them from the `third_party/eddl/build/install` directory
-created as a result of the EDDL installation process described above. For
-instance:
-
-```
-cd third_party/eddl/build
-cp -rf install/include/eddl /usr/include/
-cp -rf install/include/third_party/eigen/Eigen /usr/include/
-cp install/lib/libeddl.so /usr/lib/
-```
 
 ### Enabling GPU acceleration
 
 If EDDL was compiled for GPU, you need to export the `EDDL_WITH_CUDA`
-environment variable **before installing PyEDDL** so that `setup.py` will also link the
-`cudart`, `cublas` and `curand` libraries. Again, these will be expected in
-"standard" system locations, so you might need to create symlinks depending on
-your CUDA toolkit installation. For instance:
+environment variable **before installing PyEDDL** so that `setup.py` will also
+link the `cudart`, `cublas` and `curand` libraries. These will be
+expected in "standard" system locations, so you might need to create symlinks
+depending on your CUDA toolkit installation. For instance:
 
 ```
 export EDDL_WITH_CUDA="true"
@@ -142,3 +122,22 @@ python3 setup.py install
 Then, you can test your installation by running the PyEDDL tests:
 
     pytest tests
+
+
+### Advanced: enabling `newloss`
+
+The `pyeddl._core.eddl.newloss` bindings require EDDL to be patched with the
+`eddl.diff` file. If you wish to enable them, proceed as follows:
+
+```
+cd third_party/eddl
+git apply ../../eddl.diff
+mkdir build
+cd build
+cmake -D EDDL_SHARED=ON ..
+make
+make install
+```
+
+Then uncomment the lines containing the bindings for `newloss` in
+`src/eddl_addons.hpp` and rebuild pyeddl.
