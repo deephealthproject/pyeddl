@@ -21,7 +21,7 @@ for n in "${names[@]}"; do
     python3 "${this_dir}"/${n}.py --gpu --epochs 1
 done
 
-for n in mnist_gan mnist_wgan; do
-    echo -en "\n*** ${n} ***\n"
-    python3 "${this_dir}"/${n}.py --gpu --epochs 1 --num-batches 10
-done
+# for n in mnist_gan mnist_wgan; do
+#     echo -en "\n*** ${n} ***\n"
+#     python3 "${this_dir}"/${n}.py --gpu --epochs 1 --num-batches 10
+# done

@@ -526,7 +526,7 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("compute_loss", (void (Net::*)()) &Net::compute_loss, "C++: Net::compute_loss() --> void");
 		cl.def("clamp", (void (Net::*)(float, float)) &Net::clamp, "C++: Net::clamp(float, float) --> void", pybind11::arg("min"), pybind11::arg("max"));
 	}
-	{ // NetLoss file:eddl/net/netloss.h line:24
+	{ // NetLoss file:eddl/net/netloss.h line:23
 		pybind11::class_<NetLoss, std::shared_ptr<NetLoss>> cl(M(""), "NetLoss", "");
 		cl.def( pybind11::init( [](NetLoss const &o){ return new NetLoss(o); } ) );
 		cl.def_readwrite("name", &NetLoss::name);
@@ -573,65 +573,65 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 {
 
 	eddl_addons(M("eddl"));
-	// eddl::CS_CPU(int) file:eddl/apis/eddl.h line:234
+	// eddl::CS_CPU(int) file:eddl/apis/eddl.h line:233
 	M("eddl").def("CS_CPU", []() -> CompServ * { return eddl::CS_CPU(); }, "", pybind11::return_value_policy::automatic);
 	M("eddl").def("CS_CPU", (class CompServ * (*)(int)) &eddl::CS_CPU, "C++: eddl::CS_CPU(int) --> class CompServ *", pybind11::return_value_policy::automatic, pybind11::arg("th"));
 
-	// eddl::resize_model(class Net *, int) file:eddl/apis/eddl.h line:243
+	// eddl::resize_model(class Net *, int) file:eddl/apis/eddl.h line:242
 	M("eddl").def("resize_model", (void (*)(class Net *, int)) &eddl::resize_model, "C++: eddl::resize_model(class Net *, int) --> void", pybind11::arg("net"), pybind11::arg("batch_size"));
 
-	// eddl::set_mode(class Net *, int) file:eddl/apis/eddl.h line:245
+	// eddl::set_mode(class Net *, int) file:eddl/apis/eddl.h line:244
 	M("eddl").def("set_mode", (void (*)(class Net *, int)) &eddl::set_mode, "C++: eddl::set_mode(class Net *, int) --> void", pybind11::arg("net"), pybind11::arg("mode"));
 
-	// eddl::clamp(class Net *, float, float) file:eddl/apis/eddl.h line:257
+	// eddl::clamp(class Net *, float, float) file:eddl/apis/eddl.h line:256
 	M("eddl").def("clamp", (void (*)(class Net *, float, float)) &eddl::clamp, "C++: eddl::clamp(class Net *, float, float) --> void", pybind11::arg("m"), pybind11::arg("min"), pybind11::arg("max"));
 
-	// eddl::print_loss(class Net *, int) file:eddl/apis/eddl.h line:261
+	// eddl::print_loss(class Net *, int) file:eddl/apis/eddl.h line:260
 	M("eddl").def("print_loss", (void (*)(class Net *, int)) &eddl::print_loss, "C++: eddl::print_loss(class Net *, int) --> void", pybind11::arg("m"), pybind11::arg("batch"));
 
-	// eddl::reset_loss(class Net *) file:eddl/apis/eddl.h line:263
+	// eddl::reset_loss(class Net *) file:eddl/apis/eddl.h line:262
 	M("eddl").def("reset_loss", (void (*)(class Net *)) &eddl::reset_loss, "C++: eddl::reset_loss(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::zeroGrads(class Net *) file:eddl/apis/eddl.h line:264
+	// eddl::zeroGrads(class Net *) file:eddl/apis/eddl.h line:263
 	M("eddl").def("zeroGrads", (void (*)(class Net *)) &eddl::zeroGrads, "C++: eddl::zeroGrads(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::backward(class Net *) file:eddl/apis/eddl.h line:267
+	// eddl::backward(class Net *) file:eddl/apis/eddl.h line:266
 	M("eddl").def("backward", (void (*)(class Net *)) &eddl::backward, "C++: eddl::backward(class Net *) --> void", pybind11::arg("net"));
 
-	// eddl::backward(class NetLoss *) file:eddl/apis/eddl.h line:268
+	// eddl::backward(class NetLoss *) file:eddl/apis/eddl.h line:267
 	M("eddl").def("backward", (void (*)(class NetLoss *)) &eddl::backward, "C++: eddl::backward(class NetLoss *) --> void", pybind11::arg("l"));
 
-	// eddl::compute_loss(class NetLoss *) file:eddl/apis/eddl.h line:270
+	// eddl::compute_loss(class NetLoss *) file:eddl/apis/eddl.h line:269
 	M("eddl").def("compute_loss", (float (*)(class NetLoss *)) &eddl::compute_loss, "C++: eddl::compute_loss(class NetLoss *) --> float", pybind11::arg("L"));
 
-	// eddl::update(class Net *) file:eddl/apis/eddl.h line:272
+	// eddl::update(class Net *) file:eddl/apis/eddl.h line:271
 	M("eddl").def("update", (void (*)(class Net *)) &eddl::update, "C++: eddl::update(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::copyTensor(class Layer *, class Layer *) file:eddl/apis/eddl.h line:274
+	// eddl::copyTensor(class Layer *, class Layer *) file:eddl/apis/eddl.h line:273
 	M("eddl").def("copyTensor", (void (*)(class Layer *, class Layer *)) &eddl::copyTensor, "C++: eddl::copyTensor(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::copyGrad(class Layer *, class Layer *) file:eddl/apis/eddl.h line:275
+	// eddl::copyGrad(class Layer *, class Layer *) file:eddl/apis/eddl.h line:274
 	M("eddl").def("copyGrad", (void (*)(class Layer *, class Layer *)) &eddl::copyGrad, "C++: eddl::copyGrad(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::getGrad(class Layer *) file:eddl/apis/eddl.h line:278
+	// eddl::getGrad(class Layer *) file:eddl/apis/eddl.h line:277
 	M("eddl").def("getGrad", (class Tensor * (*)(class Layer *)) &eddl::getGrad, "C++: eddl::getGrad(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l"));
 
-	// eddl::build(class Net *, class Optimizer *, class CompServ *) file:eddl/apis/eddl.h line:285
+	// eddl::build(class Net *, class Optimizer *, class CompServ *) file:eddl/apis/eddl.h line:284
 	M("eddl").def("build", [](class Net * a0) -> void { return eddl::build(a0); }, "", pybind11::arg("net"));
 	M("eddl").def("build", [](class Net * a0, class Optimizer * a1) -> void { return eddl::build(a0, a1); }, "", pybind11::arg("net"), pybind11::arg("o"));
 	M("eddl").def("build", (void (*)(class Net *, class Optimizer *, class CompServ *)) &eddl::build, "C++: eddl::build(class Net *, class Optimizer *, class CompServ *) --> void", pybind11::arg("net"), pybind11::arg("o"), pybind11::arg("cs"));
 
-	// eddl::toCPU(class Net *, int) file:eddl/apis/eddl.h line:288
+	// eddl::toCPU(class Net *, int) file:eddl/apis/eddl.h line:287
 	M("eddl").def("toCPU", [](class Net * a0) -> void { return eddl::toCPU(a0); }, "", pybind11::arg("net"));
 	M("eddl").def("toCPU", (void (*)(class Net *, int)) &eddl::toCPU, "C++: eddl::toCPU(class Net *, int) --> void", pybind11::arg("net"), pybind11::arg("t"));
 
-	// eddl::summary(class Net *) file:eddl/apis/eddl.h line:292
+	// eddl::summary(class Net *) file:eddl/apis/eddl.h line:291
 	M("eddl").def("summary", (void (*)(class Net *)) &eddl::summary, "C++: eddl::summary(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::download_mnist() file:eddl/apis/eddl.h line:308
+	// eddl::download_mnist() file:eddl/apis/eddl.h line:307
 	M("eddl").def("download_mnist", (void (*)()) &eddl::download_mnist, "C++: eddl::download_mnist() --> void");
 
-	// eddl::download_cifar10() file:eddl/apis/eddl.h line:309
+	// eddl::download_cifar10() file:eddl/apis/eddl.h line:308
 	M("eddl").def("download_cifar10", (void (*)()) &eddl::download_cifar10, "C++: eddl::download_cifar10() --> void");
 
 }
