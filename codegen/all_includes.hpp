@@ -1,4 +1,5 @@
 #include <eddl/tensor/tensor.h>
+#include <eddl/losses/loss.h>
 #include <eddl/net/compserv.h>
 #include <eddl/losses/loss.h>
 #include <eddl/metrics/metric.h>

@@ -177,7 +177,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 }
 
 
-// File: eddl/net/compserv.cpp
+// File: eddl/losses/loss.cpp
 #include <eddl/initializers/initializer.h>
 #include <eddl/layers/layer.h>
 #include <eddl/losses/loss.h>
@@ -208,6 +208,57 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 	PYBIND11_DECLARE_HOLDER_TYPE(T, T*);
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
+
+// Loss file:eddl/losses/loss.h line:22
+struct PyCallBack_Loss : public Loss {
+	using Loss::Loss;
+
+	void delta(class Tensor * a0, class Tensor * a1, class Tensor * a2) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Loss *>(this), "delta");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1, a2);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Loss::delta(a0, a1, a2);
+	}
+	float value(class Tensor * a0, class Tensor * a1) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Loss *>(this), "value");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1);
+			if (pybind11::detail::cast_is_temporary_value_reference<float>::value) {
+				static pybind11::detail::overload_caster_t<float> caster;
+				return pybind11::detail::cast_ref<float>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<float>(std::move(o));
+		}
+		return Loss::value(a0, a1);
+	}
+};
+
+// Metric file:eddl/metrics/metric.h line:23
+struct PyCallBack_Metric : public Metric {
+	using Metric::Metric;
+
+	float value(class Tensor * a0, class Tensor * a1) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Metric *>(this), "value");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1);
+			if (pybind11::detail::cast_is_temporary_value_reference<float>::value) {
+				static pybind11::detail::overload_caster_t<float> caster;
+				return pybind11::detail::cast_ref<float>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<float>(std::move(o));
+		}
+		return Metric::value(a0, a1);
+	}
+};
 
 // Layer file:eddl/layers/layer.h line:32
 struct PyCallBack_Layer : public Layer {
@@ -351,8 +402,17 @@ struct PyCallBack_Optimizer : public Optimizer {
 	}
 };
 
-void bind_eddl_net_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M)
+void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
+	{ // Loss file:eddl/losses/loss.h line:22
+		pybind11::class_<Loss, std::shared_ptr<Loss>, PyCallBack_Loss> cl(M(""), "Loss", "");
+		cl.def( pybind11::init( [](PyCallBack_Loss const &o){ return new PyCallBack_Loss(o); } ) );
+		cl.def( pybind11::init( [](Loss const &o){ return new Loss(o); } ) );
+		cl.def_readwrite("name", &Loss::name);
+		cl.def("delta", (void (Loss::*)(class Tensor *, class Tensor *, class Tensor *)) &Loss::delta, "C++: Loss::delta(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("T"), pybind11::arg("Y"), pybind11::arg("D"));
+		cl.def("value", (float (Loss::*)(class Tensor *, class Tensor *)) &Loss::value, "C++: Loss::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
+		cl.def("assign", (class Loss & (Loss::*)(const class Loss &)) &Loss::operator=, "C++: Loss::operator=(const class Loss &) --> class Loss &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
 	{ // CompServ file:eddl/net/compserv.h line:21
 		pybind11::class_<CompServ, std::shared_ptr<CompServ>> cl(M(""), "CompServ", "");
 		cl.def( pybind11::init( [](CompServ const &o){ return new CompServ(o); } ) );
@@ -361,6 +421,14 @@ void bind_eddl_net_compserv(std::function< pybind11::module &(std::string const 
 		cl.def_readwrite("local_gpus", &CompServ::local_gpus);
 		cl.def_readwrite("local_fpgas", &CompServ::local_fpgas);
 		cl.def_readwrite("lsb", &CompServ::lsb);
+	}
+	{ // Metric file:eddl/metrics/metric.h line:23
+		pybind11::class_<Metric, std::shared_ptr<Metric>, PyCallBack_Metric> cl(M(""), "Metric", "");
+		cl.def( pybind11::init( [](PyCallBack_Metric const &o){ return new PyCallBack_Metric(o); } ) );
+		cl.def( pybind11::init( [](Metric const &o){ return new Metric(o); } ) );
+		cl.def_readwrite("name", &Metric::name);
+		cl.def("value", (float (Metric::*)(class Tensor *, class Tensor *)) &Metric::value, "C++: Metric::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
+		cl.def("assign", (class Metric & (Metric::*)(const class Metric &)) &Metric::operator=, "C++: Metric::operator=(const class Metric &) --> class Metric &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
 	{ // Layer file:eddl/layers/layer.h line:32
 		pybind11::class_<Layer, std::shared_ptr<Layer>, PyCallBack_Layer> cl(M(""), "Layer", "");
@@ -938,7 +1006,7 @@ void bind_eddl_apis_eddlT_1(std::function< pybind11::module &(std::string const 
 typedef std::function< pybind11::module & (std::string const &) > ModuleGetter;
 
 void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const &namespace_) > &M);
-void bind_eddl_net_compserv(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_apis_eddlT(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_apis_eddlT_1(std::function< pybind11::module &(std::string const &namespace_) > &M);
@@ -965,7 +1033,7 @@ PYBIND11_MODULE(_core, root_module) {
 	//pybind11::class_<std::shared_ptr<void>>(M(""), "_encapsulated_data_");
 
 	bind_eddl_tensor_tensor(M);
-	bind_eddl_net_compserv(M);
+	bind_eddl_losses_loss(M);
 	bind_eddl_apis_eddl(M);
 	bind_eddl_apis_eddlT(M);
 	bind_eddl_apis_eddlT_1(M);
@@ -975,7 +1043,7 @@ PYBIND11_MODULE(_core, root_module) {
 // Source list file: /pyeddl/codegen/bindings/_core.sources
 // _core.cpp
 // eddl/tensor/tensor.cpp
-// eddl/net/compserv.cpp
+// eddl/losses/loss.cpp
 // eddl/apis/eddl.cpp
 // eddl/apis/eddlT.cpp
 // eddl/apis/eddlT_1.cpp
