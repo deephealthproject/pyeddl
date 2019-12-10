@@ -7,7 +7,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker'
-                            image 'simleo/eddl:9e11e44'
+                            image 'simleo/eddl:b72e902'
                             args '-u root:root'
                         }
                     }
@@ -39,7 +39,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker && gpu'
-                            image 'simleo/eddl-gpu:9e11e44'
+                            image 'simleo/eddl-gpu:b72e902'
                             args '--gpus 1 -u root:root'
                         }
                     }
@@ -62,8 +62,9 @@ pipeline {
                             steps {
 				echo 'Testing'
 				sh 'pytest tests'
-				sh 'python3 examples/Tensor/eddl_tensor.py'
+				sh 'python3 examples/Tensor/eddl_tensor.py --gpu'
 				sh 'bash examples/NN/other/run_all_fast.sh'
+				sh 'bash examples/NN/1_MNIST/run_all_fast.sh'
 			    }
                         }
                         stage('linux_gpu_end') {
