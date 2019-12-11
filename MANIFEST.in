@@ -1,0 +1,6 @@
+include LICENSE README.md
+
+recursive-include docs *
+recursive-include examples *
+recursive-include src *
+recursive-include tests *

@@ -1,0 +1,4 @@
+setuptools
+pybind11
+numpy
+pytest

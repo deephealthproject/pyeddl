@@ -18,10 +18,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+"""\
+PyEDDL is a Python wrapper for EDDL, the European Distributed Deep
+Learning library.
+"""
+
 import os
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 
 import pybind11
+from pyeddl.version import VERSION
 
 
 EXTRA_COMPILE_ARGS = ['-std=c++11', '-fvisibility=hidden']
@@ -55,6 +61,23 @@ ext = Extension(
 
 setup(
     name="pyeddl",
+    version=VERSION,
+    url="https://github.com/deephealthproject/pyeddl",
+    description="Python wrapper for EDDL",
+    long_description=__doc__,
+    author="Simone Leo",
+    author_email="<simone.leo@crs4.it>",
+    license="MIT",
+    platforms=["Linux"],
+    classifiers=[
+        "Programming Language :: Python :: 3.6",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: POSIX :: Linux",
+        "Topic :: Scientific/Engineering",
+        "Intended Audience :: Science/Research",
+    ],
     packages=["pyeddl"],
-    ext_modules=[ext]
+    ext_modules=[ext],
+    install_requires=["setuptools", "pybind11", "numpy"],
+    zip_safe=False,
 )
