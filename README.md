@@ -124,6 +124,34 @@ Then, you can test your installation by running the PyEDDL tests:
     pytest tests
 
 
+### EDDL installed in an arbitrary directory
+
+The above installation instructions assume EDDL has been installed in standard
+system paths. However, EDDL supports installation in an arbitrary directory,
+for instance:
+
+```
+cd third_party/eddl
+mkdir build
+cd build
+cmake -D EDDL_SHARED=ON -DCMAKE_INSTALL_PREFIX=/home/myuser/eddl ..
+make
+make install
+```
+
+You can tell the PyEDDL setup script about this via the EDDL_DIR environment
+variable:
+
+```
+export EDDL_DIR=/home/myuser/eddl
+python3 setup.py install
+```
+
+In this way, `setup.py` will look for additional include files in
+`/home/myuser/eddl/include` and for additional libraries in
+`/home/myuser/eddl/lib`.
+
+
 ### Advanced: enabling `newloss`
 
 The `pyeddl._core.eddl.newloss` bindings require EDDL to be patched with the
