@@ -7,10 +7,16 @@
 
 **PyEDDL** is a Python wrapper for [EDDL](https://github.com/deephealthproject/eddl), the European Distributed Deep Learning library.
 
+Each PyEDDL version requires a specific EDDL version:
+
+PyEDDL version | EDDL version |
+-------------- | ------------ |
+0.1.0          | 0.2.2        |
+
 
 ## Quick start
 
-The following assumes you have EDDL 0.2.2 already installed in "standard"
+The following assumes you have EDDL already installed in "standard"
 system paths (e.g., `/usr/local/include`, `/usr/local/lib`).
 
     git clone --recurse-submodules https://github.com/deephealthproject/pyeddl.git

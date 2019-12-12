@@ -1,7 +1,33 @@
+# Copyright (c) 2019 CRS4
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""\
+PyEDDL is a Python wrapper for EDDL, the European Distributed Deep
+Learning library.
+"""
+
 import os
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 
 import pybind11
+from pyeddl.version import VERSION
 
 
 EXTRA_COMPILE_ARGS = ['-std=c++11', '-fvisibility=hidden']
@@ -35,6 +61,23 @@ ext = Extension(
 
 setup(
     name="pyeddl",
+    version=VERSION,
+    url="https://github.com/deephealthproject/pyeddl",
+    description="Python wrapper for EDDL",
+    long_description=__doc__,
+    author="Simone Leo",
+    author_email="<simone.leo@crs4.it>",
+    license="MIT",
+    platforms=["Linux"],
+    classifiers=[
+        "Programming Language :: Python :: 3.6",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: POSIX :: Linux",
+        "Topic :: Scientific/Engineering",
+        "Intended Audience :: Science/Research",
+    ],
     packages=["pyeddl"],
-    ext_modules=[ext]
+    ext_modules=[ext],
+    install_requires=["setuptools", "pybind11", "numpy"],
+    zip_safe=False,
 )
