@@ -60,7 +60,7 @@ def main(args):
     x_train = eddlT.load("trX.bin")
     y_train = eddlT.load("trY.bin")
     x_test = eddlT.load("tsX.bin")
-    y_test = eddlT.load("tsY.bin")
+    # y_test = eddlT.load("tsY.bin")
 
     eddlT.div_(x_train, 255.0)
     eddlT.div_(x_test, 255.0)
