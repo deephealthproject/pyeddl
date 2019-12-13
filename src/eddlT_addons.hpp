@@ -25,9 +25,9 @@
 
 void eddlT_addons(pybind11::module &m) {
     using array_t = pybind11::array_t<float, pybind11::array::c_style | pybind11::array::forcecast>;
-    m.def("create", (class Tensor* (*)(const vector<int>&)) &eddlT::create, "C++: eddlT::create(const vector<int>&) --> class Tensor*", pybind11::arg("shape"));
-    m.def("create", (class Tensor* (*)(const vector<int>&, int)) &eddlT::create, "C++: eddlT::create(const vector<int>&, int) --> class Tensor*", pybind11::arg("shape"), pybind11::arg("dev"));
     // replaces Tensor* create(const vector<int> &shape, float *ptr)
+    // needs to come before the array-based one, see
+    // https://github.com/pybind/pybind11/issues/2027
     m.def("create", [](array_t array) -> class Tensor* {
         pybind11::buffer_info info = array.request();
         std::vector<int> shape(info.shape.begin(), info.shape.end());
@@ -35,6 +35,8 @@ void eddlT_addons(pybind11::module &m) {
         std::copy((float*)info.ptr, ((float*)info.ptr) + t->size, t->ptr);
         return t;
     }, "create(array) --> Tensor", pybind11::arg("array"));
+    m.def("create", (class Tensor* (*)(const vector<int>&)) &eddlT::create, "C++: eddlT::create(const vector<int>&) --> class Tensor*", pybind11::arg("shape"));
+    m.def("create", (class Tensor* (*)(const vector<int>&, int)) &eddlT::create, "C++: eddlT::create(const vector<int>&, int) --> class Tensor*", pybind11::arg("shape"), pybind11::arg("dev"));
     // replaces float* getptr(Tensor* A)
     m.def("getdata", [](class Tensor* t) -> array_t {
         pybind11::array_t<float> rval = pybind11::array_t<float>(t->size);
