@@ -40,6 +40,11 @@ def test_tensor_from_array():
     assert t.isCPU()
     b = np.array(t, copy=True)
     assert np.array_equal(a, b)
+    # check creation from 1D array
+    a = np.array([1, 2]).astype(np.float32)
+    t = Tensor(a)
+    b = np.array(t, copy=True)
+    assert np.array_equal(a, b)
 
 
 def test_tensor_array_ops():

@@ -39,6 +39,11 @@ def test_create_getdata():
     a = np.arange(R * C).reshape(R, C)
     t = eddlT.create(a)
     assert t.shape == [R, C]
+    # check creation from 1D array
+    a = np.array([1, 2]).astype(np.float32)
+    t = eddlT.create(a)
+    b = eddlT.getdata(t)
+    assert np.array_equal(b, a)
 
 
 def test_ones():
