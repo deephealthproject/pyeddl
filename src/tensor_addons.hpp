@@ -28,10 +28,16 @@ template <typename type_, typename... options>
 void tensor_addons(pybind11::class_<type_, options...> &cl) {
     using array_t = pybind11::array_t<float, pybind11::array::c_style | pybind11::array::forcecast>;
     cl.def(pybind11::init([](array_t array, int device) {
+        if (device >= DEV_FPGA) {
+            throw std::invalid_argument("device not supported");
+        }
         pybind11::buffer_info info = array.request();
         std::vector<int> shape(info.shape.begin(), info.shape.end());
-        auto t = new Tensor(shape, device);
+        auto t = new Tensor(shape, DEV_CPU);
         std::copy((float*)info.ptr, ((float*)info.ptr) + t->size, t->ptr);
+	if (device >= DEV_GPU) {
+	    t->toGPU();
+	}
         return t;
     }), pybind11::arg("buf"), pybind11::arg("dev") = DEV_CPU);
     cl.def(pybind11::init<const vector<int>&, int>(),
