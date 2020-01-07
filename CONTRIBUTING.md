@@ -8,15 +8,23 @@ resulting files are committed to the repository, and can be regenerated with:
 bash generate_bindings.sh
 ```
 
+Note that the above script uses the eddl Docker image to get the zlib
+includes needed for bindings generation. Therefore, if you don't have it,
+build the eddl image before running `generate_bindings`:
+
+```
+docker build -t eddl -f Dockerfile.eddl .
+```
+
 Regenerating the bindings can be necessary after updating the reference EDDL
 revision or after making changes to the code generation setup (configuration
 and include list). Note that add-ons are often necessary to complete the
 bindings (see `codegen/config.cfg`).
 
-To test the bindings on Docker, build the EDDL and PyEDDL images with:
+To test the bindings on Docker, build the pyeddl image with:
 
 ```
-bash build_docker.sh
+docker build -t pyeddl .
 ```
 
 Then you can run tests and/or examples on Docker, e.g.:

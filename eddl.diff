@@ -1,109 +1,13 @@
-diff --git a/src/apis/eddl.cpp b/src/apis/eddl.cpp
-index ebc4e96..c32e6e8 100644
---- a/src/apis/eddl.cpp
-+++ b/src/apis/eddl.cpp
-@@ -338,13 +338,13 @@ namespace eddl {
-         return nullptr;
-     }
+diff --git a/src/helpers.h b/src/helpers.h
+index e3b983f..6f37f6d 100644
+--- a/src/helpers.h
++++ b/src/helpers.h
+@@ -45,7 +45,7 @@ private:
+     std::vector<std::string>    m_data;
+ };
  
--    loss newloss(Layer* (*f)(vector<Layer *>),vector<Layer *> in,string name)
-+    loss newloss(const std::function<Layer*(vector<Layer*>)>& f, vector<Layer*> in, string name)
-     {
--      return new NetLoss((*f),in,name);
-+      return new NetLoss(f,in,name);
-     }
--    loss newloss(Layer* (*f)(Layer *),Layer *in,string name)
-+    loss newloss(const std::function<Layer*(Layer*)>& f, Layer *in, string name)
-     {
--      return new NetLoss((*f),in,name);
-+      return new NetLoss(f,in,name);
-     }
-     // ---- METRICS ----
-     Metric* getMetric(string type) {
-diff --git a/src/apis/eddl.h b/src/apis/eddl.h
-index 831ba66..3a237c7 100644
---- a/src/apis/eddl.h
-+++ b/src/apis/eddl.h
-@@ -14,6 +14,7 @@
- #include <vector>
- #include <thread>
- #include <pthread.h>
-+#include <functional>
- 
- #include "../net/net.h"
- #include "../net/netloss.h"
-@@ -94,9 +95,9 @@ namespace eddl {
- // ---- LOSSES ----
-     Loss* getLoss(string type);
- 
--    loss newloss(Layer* (*f)(vector<Layer *>),vector<Layer *> in,string name);
--    loss newloss(Layer* (*f)(Layer *),Layer *in,string name);
- 
-+    loss newloss(const std::function<Layer*(vector<Layer*>)>& f, vector<Layer*> in, string name);
-+    loss newloss(const std::function<Layer*(Layer*)>& f, Layer *in, string name);
- 
- 
- 
-diff --git a/src/net/netloss.cpp b/src/net/netloss.cpp
-index f25c98a..b2e7014 100644
---- a/src/net/netloss.cpp
-+++ b/src/net/netloss.cpp
-@@ -16,7 +16,7 @@
- #include "../layers/core/layer_core.h"
- 
- 
--NetLoss::NetLoss(Layer* (*f)(vector<Layer *>),vector<Layer *> in,string name)
-+NetLoss::NetLoss(const std::function<Layer*(vector<Layer*>)>& f, vector<Layer*> in, string name)
+-std::istream& get_next_row(std::istream& str, CSVRow& data, const char &delimiter)
++static std::istream& get_next_row(std::istream& str, CSVRow& data, const char &delimiter)
  {
-  this->name=name;
- 
-@@ -25,7 +25,7 @@ NetLoss::NetLoss(Layer* (*f)(vector<Layer *>),vector<Layer *> in,string name)
-  for(int i=0;i<in.size();i++)
-   ginput.push_back(new LInput(new Tensor(in[i]->output->getShape()),"graph_input"+i,DEV_CPU));
- 
-- fout=(*f)(ginput);
-+ fout=f(ginput);
- 
-  graph=new Net(ginput,{fout});
- 
-@@ -35,7 +35,7 @@ NetLoss::NetLoss(Layer* (*f)(vector<Layer *>),vector<Layer *> in,string name)
- 
- }
- 
--NetLoss::NetLoss(Layer* (*f)(Layer *),Layer * in,string name)
-+NetLoss::NetLoss(const std::function<Layer*(Layer*)>& f, Layer *in, string name)
- {
-  this->name=name;
- 
-@@ -43,7 +43,7 @@ NetLoss::NetLoss(Layer* (*f)(Layer *),Layer * in,string name)
- 
-  ginput.push_back(new LInput(new Tensor(in->output->getShape()),"graph_input",DEV_CPU));
- 
-- fout=(*f)(ginput[0]);
-+ fout=f(ginput[0]);
- 
-  graph=new Net(ginput,{fout});
- 
-diff --git a/src/net/netloss.h b/src/net/netloss.h
-index 887d33c..0d382e0 100644
---- a/src/net/netloss.h
-+++ b/src/net/netloss.h
-@@ -13,6 +13,7 @@
- #include <stdio.h>
- #include <string>
- #include <vector>
-+#include <functional>
- 
- 
- #include "net.h"
-@@ -29,8 +30,8 @@ public:
-     vector <Layer *>ginput;
-     Layer* fout;
- 
--    NetLoss(Layer* (*f)(vector<Layer *>),vector<Layer *> in,string name);
--    NetLoss(Layer* (*f)(Layer *),Layer * in,string name);
-+    NetLoss(const std::function<Layer*(vector<Layer*>)>& f, vector<Layer*> in, string name);
-+    NetLoss(const std::function<Layer*(Layer*)>& f, Layer *in, string name);
-     ~NetLoss();
-     float compute();
- 
+     data.readNextRow(str, delimiter);
+     return str;

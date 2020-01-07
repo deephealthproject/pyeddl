@@ -3,6 +3,9 @@ FROM stal12/cuda10-gcc5
 COPY third_party/eddl /eddl
 WORKDIR /eddl
 
+RUN apt-get -y update && apt-get -y install --no-install-recommends \
+    zlib1g-dev
+
 RUN mkdir build && \
     cd build && \
     ln -s /usr/lib/x86_64-linux-gnu/libcublas.so /usr/local/cuda/lib64/ && \
