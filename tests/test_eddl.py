@@ -157,6 +157,11 @@ def test_normalization_layers():
     eddl.BatchNormalization(in2d, 0.9, 0.001)
     eddl.BatchNormalization(in2d, 0.9, 0.001, True)
     eddl.BatchNormalization(in2d, 0.9, 0.001, True, "foo")
+    eddl.LayerNormalization(in2d)
+    eddl.LayerNormalization(in2d, 0.9)
+    eddl.LayerNormalization(in2d, 0.9, 0.001)
+    eddl.LayerNormalization(in2d, 0.9, 0.001, True)
+    eddl.LayerNormalization(in2d, 0.9, 0.001, True, "foo")
     eddl.Norm(in2d)
     eddl.Norm(in2d, 0.001)
     eddl.Norm(in2d, 0.001, "foo")
@@ -168,6 +173,12 @@ def test_normalization_layers():
     eddl.NormMinMax(in2d, 0.001, "foo")
     eddl.Dropout(in2d, 0.5)
     eddl.Dropout(in2d, 0.5, "foo")
+    in4d = eddl.Input([6, 16, 16])
+    eddl.GroupNormalization(in4d, 3)
+    eddl.GroupNormalization(in4d, 3, 0.9)
+    eddl.GroupNormalization(in4d, 3, 0.9, 0.001)
+    eddl.GroupNormalization(in4d, 3, 0.9, 0.001, True)
+    eddl.GroupNormalization(in4d, 3, 0.9, 0.001, True, "foo")
 
 
 def test_operator_layers():
@@ -193,6 +204,9 @@ def test_operator_layers():
     eddl.Sum(in_1, in_2)
     eddl.Sum(in_1, 1.0)
     eddl.Sum(1.0, in_1)
+    in4d = eddl.Input([3, 16, 16])
+    eddl.Select(in4d, [":", ":8", ":8"])
+    eddl.Permute(in4d, [0, 1, 2])
 
 
 def test_reduction_layers():
@@ -255,6 +269,10 @@ def test_pooling_layers():
     eddl.MaxPool(in4d, [2, 2], [2, 2])
     eddl.MaxPool(in4d, [2, 2], [2, 2], "none")
     eddl.MaxPool(in4d, [2, 2], [2, 2], "none", "foo")
+    eddl.GlobalMaxPool(in4d)
+    eddl.GlobalMaxPool(in4d, "foo")
+    eddl.GlobalAveragePool(in4d)
+    eddl.GlobalAveragePool(in4d, "foo")
 
 
 def test_recurrent_layers():
