@@ -39,16 +39,23 @@ def main(args):
     layer = in_
     layer = eddl.Reshape(layer, [1, 28, 28])
     layer = eddl.ShiftRandom(layer, [-0.1, 0.1], [-0.1, 0.1])
+    # layer = eddl.RotateRandom(layer, [-10, 10])
     layer = eddl.Reshape(layer, [-1])
-    layer = eddl.ReLu(eddl.Dense(layer, 1024))
-    layer = eddl.ReLu(eddl.Dense(layer, 1024))
-    layer = eddl.ReLu(eddl.Dense(layer, 1024))
+    layer = eddl.ReLu(eddl.GaussianNoise(
+        eddl.LayerNormalization(eddl.Dense(layer, 1024)), 0.3
+    ))
+    layer = eddl.ReLu(eddl.GaussianNoise(
+        eddl.LayerNormalization(eddl.Dense(layer, 1024)), 0.3
+    ))
+    layer = eddl.ReLu(eddl.GaussianNoise(
+        eddl.LayerNormalization(eddl.Dense(layer, 1024)), 0.3
+    ))
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
 
     eddl.build(
         net,
-        eddl.rmsprop(0.01, 0.9),
+        eddl.sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
         eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
@@ -65,9 +72,21 @@ def main(args):
     eddlT.div_(x_train, 255.0)
     eddlT.div_(x_test, 255.0)
 
-    for i in range(args.epochs):
-        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-        eddl.evaluate(net, [x_test], [y_test])
+    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
+    eddl.evaluate(net, [x_test], [y_test])
+
+    # LR annealing
+    if args.epochs < 4:
+        return
+    eddl.setlr(net, [0.005, 0.9])
+    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs // 2)
+    eddl.evaluate(net, [x_test], [y_test])
+    eddl.setlr(net, [0.001, 0.9])
+    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs // 2)
+    eddl.evaluate(net, [x_test], [y_test])
+    eddl.setlr(net, [0.0001, 0.9])
+    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs // 4)
+    eddl.evaluate(net, [x_test], [y_test])
 
 
 if __name__ == "__main__":
