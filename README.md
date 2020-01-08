@@ -158,10 +158,10 @@ In this way, `setup.py` will look for additional include files in
 `/home/myuser/eddl/lib`.
 
 
-### Advanced: enabling `newloss`
+### Advanced: patching EDDL
 
-The `pyeddl._core.eddl.newloss` bindings require EDDL to be patched with the
-`eddl.diff` file. If you wish to enable them, proceed as follows:
+Sometimes EDDL needs to be patched in order to work with PyEDDL. To apply the
+patch, proceed as follows:
 
 ```
 cd third_party/eddl
@@ -173,5 +173,4 @@ make
 make install
 ```
 
-Then uncomment the lines containing the bindings for `newloss` in
-`src/eddl_addons.hpp` and rebuild pyeddl.
+Then rebuild pyeddl as shown above.

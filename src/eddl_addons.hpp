@@ -63,8 +63,8 @@ void eddl_addons(pybind11::module &m) {
 
     // --- losses ---
     m.def("getLoss", (class Loss* (*)(string)) &eddl::getLoss, "C++: eddl::getLoss(string) --> class Loss*", pybind11::arg("type"));
-    // m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string) --> class NetLoss*");
-    // m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(Layer*)>&, Layer*, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(Layer*)>&, Layer*, string) --> class NetLoss*");
+    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string) --> class NetLoss*");
+    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(Layer*)>&, Layer*, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(Layer*)>&, Layer*, string) --> class NetLoss*");
 
     // --- metrics ---
     m.def("getMetric", (class Metric* (*)(string)) &eddl::getMetric, "C++: eddl::getMetric(string) --> class Metric*", pybind11::arg("type"));
