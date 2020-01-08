@@ -122,10 +122,10 @@ def main(args):
     output = eddl.getTensor(gout)
     img = eddlT.select(output, 0)
     eddlT.reshape_(img, [1, 1, 28, 28])
-    eddlT.save(img, "img.png", "png")
+    eddlT.save(img, "./img.png", "png")
     img1 = eddlT.select(output, 5)
     eddlT.reshape_(img1, [1, 1, 28, 28])
-    eddlT.save(img1, "img1.png", "png")
+    eddlT.save(img1, "./img1.png", "png")
 
 
 if __name__ == "__main__":
