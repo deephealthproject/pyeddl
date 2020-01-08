@@ -70,7 +70,6 @@ def main(args):
     test_samples = x_test.shape[0]
     test_batches = test_samples // args.batch_size
 
-    eddl.resize_model(net, args.batch_size)
     eddl.set_mode(net, TRMODE)
 
     for i in range(args.epochs):
