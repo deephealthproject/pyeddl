@@ -9,6 +9,7 @@ before_install: pip install flake8
 before_script: flake8 -v .
 
 script:
+  - pushd third_party/eddl && git apply ../../eddl.diff && popd
   - docker build -t eddl -f Dockerfile.eddl .
   - docker build -t pyeddl .
   - docker run --rm pyeddl bash -c "pytest tests"
