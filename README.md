@@ -21,13 +21,8 @@ The following assumes you have EDDL already installed in "standard"
 system paths (e.g., `/usr/local/include`, `/usr/local/lib`). Note that you
 need the shared library (`libeddl.so`).
 
-The easiest way to install pyeddl is via `pip3 install pyeddl`. You can also
-install it from the git repository:
-
-    git clone --recurse-submodules https://github.com/deephealthproject/pyeddl.git
-    cd pyeddl
     python3 -m pip install numpy pybind11 pytest
-    python3 setup.py install
+    python3 -m pip install pyeddl
 
 See [full installation instructions below](#installation).
 
@@ -94,9 +89,12 @@ You can find more examples under `examples`.
 
 Complete EDDL installation instructions are available at
 https://github.com/deephealthproject/eddl. Make sure you build EDDL with
-shared library support. Here is a sample build sequence:
+shared library support. Here is a sample build sequence from the pyeddl git
+repository:
 
 ```
+git clone --recurse-submodules https://github.com/deephealthproject/pyeddl.git
+cd pyeddl
 cd third_party/eddl
 mkdir build
 cd build
@@ -137,14 +135,26 @@ ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcublas.so /usr/lib/
 
 ### PyEDDL installation
 
-Install PyEDDL as follows:
+Install requirements:
 
 ```
 python3 -m pip install numpy pybind11 pytest
+```
+
+Install PyEDDL:
+
+```
+python3 -m pip install pyeddl
+```
+
+Or, from the pyeddl git repository:
+
+```
 python3 setup.py install
 ```
 
-Then, you can test your installation by running the PyEDDL tests:
+Then, you can test your installation by running the PyEDDL tests. From the
+pyeddl git repository:
 
     pytest tests
 
