@@ -27,18 +27,18 @@ import pyeddl._core.eddlT as eddlT
 def test_create_getdata():
     R, C = 3, 4
     t = eddlT.create([R, C])
-    assert t.shape == [R, C]
+    assert eddlT.getShape(t) == [R, C]
     t = eddlT.create([R, C], eddlT.DEV_CPU)
-    assert t.shape == [R, C]
+    assert eddlT.getShape(t) == [R, C]
     a = np.arange(R * C).reshape(R, C).astype(np.float32)
     t = eddlT.create(a)
-    assert t.shape == [R, C]
+    assert eddlT.getShape(t) == [R, C]
     b = eddlT.getdata(t)
     assert np.array_equal(b, a)
     # check automatic type conversion
     a = np.arange(R * C).reshape(R, C)
     t = eddlT.create(a)
-    assert t.shape == [R, C]
+    assert eddlT.getShape(t) == [R, C]
     # check creation from 1D array
     a = np.array([1, 2]).astype(np.float32)
     t = eddlT.create(a)
@@ -113,7 +113,7 @@ def test_eye():
 def test_randn():
     shape = [2, 3]
     t = eddlT.randn(shape)
-    assert t.shape == shape
+    assert eddlT.getShape(t) == shape
 
 
 # --- Copy ---
@@ -146,7 +146,7 @@ def test_select():
     t = eddlT.create(a)
     for i in range(R):
         u = eddlT.select(t, i)
-        assert u.shape == [1, C]
+        assert eddlT.getShape(u) == [1, C]
         b = np.array(u, copy=False)
         assert np.array_equal(b[0], a[i])
 
@@ -166,7 +166,7 @@ def test_copyTensor():
 def test_fill_():
     R, C = 2, 3
     t = eddlT.create([R, C])
-    t.fill_(1.0)
+    eddlT.fill_(t, 1.0)
     a = np.array(t, copy=False)
     assert np.array_equal(a, np.ones((R, C), dtype=np.float32))
 
@@ -197,14 +197,14 @@ def test_reshape_():
 def test_info_print():
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
-    t.info()
-    t.print()
+    eddlT.info(t)
+    eddlT.print(t)
 
 
 def test_getShape():
     shape = [3, 4]
     t = eddlT.create(shape)
-    assert t.getShape() == shape
+    assert eddlT.getShape(t) == shape
 
 
 # --- Serialization ---
