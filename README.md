@@ -12,12 +12,17 @@ Each PyEDDL version requires a specific EDDL version:
 PyEDDL version | EDDL version |
 -------------- | ------------ |
 0.1.0          | 0.2.2        |
+0.2.0          | 0.3          |
 
 
 ## Quick start
 
 The following assumes you have EDDL already installed in "standard"
-system paths (e.g., `/usr/local/include`, `/usr/local/lib`).
+system paths (e.g., `/usr/local/include`, `/usr/local/lib`). Note that you
+need the shared library (`libeddl.so`).
+
+The easiest way to install pyeddl is via `pip3 install pyeddl`. You can also
+install it from the git repository:
 
     git clone --recurse-submodules https://github.com/deephealthproject/pyeddl.git
     cd pyeddl
@@ -100,6 +105,20 @@ make
 make install
 ```
 
+**NOTE:** EDDL version 0.3 is affected by an issue that breaks the building of
+the shared library. To work around this, you can patch the EDDL code with
+`eddl_0.3.patch` (at the top level in the pyeddl git repository):
+
+```
+cd third_party/eddl
+git apply ../../eddl_0.3.patch
+mkdir build
+cd build
+cmake -D EDDL_SHARED=ON ..
+make
+make install
+```
+
 
 ### Enabling GPU acceleration
 
@@ -156,21 +175,3 @@ python3 setup.py install
 In this way, `setup.py` will look for additional include files in
 `/home/myuser/eddl/include` and for additional libraries in
 `/home/myuser/eddl/lib`.
-
-
-### Advanced: patching EDDL
-
-Sometimes EDDL needs to be patched in order to work with PyEDDL. To apply the
-patch, proceed as follows:
-
-```
-cd third_party/eddl
-git apply ../../eddl.diff
-mkdir build
-cd build
-cmake -D EDDL_SHARED=ON ..
-make
-make install
-```
-
-Then rebuild pyeddl as shown above.
