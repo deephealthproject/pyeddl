@@ -15,6 +15,7 @@ names=(
     cifar_resnet_da_bn
     cifar_vgg16
     cifar_vgg16_bn
+    cifar_vgg16_gn
 )
 
 for n in "${names[@]}"; do

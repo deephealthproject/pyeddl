@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-Basic Conv for CIFAR10.
+VGG16 for CIFAR10 with group normalization.
 """
 
 import argparse
@@ -27,6 +27,22 @@ import sys
 
 import pyeddl._core.eddl as eddl
 import pyeddl._core.eddlT as eddlT
+
+
+def Block1(layer, filters):
+    return eddl.ReLu(
+        eddl.GroupNormalization(eddl.Conv(layer, filters, [1, 1], [1, 1]), 4)
+    )
+
+
+def Block3_2(layer, filters):
+    layer = eddl.ReLu(
+        eddl.GroupNormalization(eddl.Conv(layer, filters, [3, 3], [1, 1]), 4)
+    )
+    layer = eddl.ReLu(
+        eddl.GroupNormalization(eddl.Conv(layer, filters, [3, 3], [1, 1]), 4)
+    )
+    return layer
 
 
 def main(args):
@@ -37,21 +53,15 @@ def main(args):
     in_ = eddl.Input([3, 32, 32])
 
     layer = in_
-    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
-        eddl.Conv(layer, 32, [3, 3], [1, 1])
-    )), [2, 2])
-    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
-        eddl.Conv(layer, 64, [3, 3], [1, 1])
-    )), [2, 2])
-    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
-        eddl.Conv(layer, 128, [3, 3], [1, 1])
-    )), [2, 2])
-    # layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
-    #     eddl.Conv(layer, 256, [3, 3], [1, 1])
-    # )), [2, 2])
-    layer = eddl.GlobalMaxPool(layer)
+    layer = eddl.CropScaleRandom(layer, [0.8, 1.0])
+    layer = eddl.Flip(layer, 1)
+    layer = eddl.MaxPool(Block3_2(layer, 64))
+    layer = eddl.MaxPool(Block3_2(layer, 128))
+    layer = eddl.MaxPool(Block1(Block3_2(layer, 256), 256))
+    layer = eddl.MaxPool(Block1(Block3_2(layer, 512), 512))
+    layer = eddl.MaxPool(Block1(Block3_2(layer, 512), 512))
     layer = eddl.Reshape(layer, [-1])
-    layer = eddl.Activation(eddl.Dense(layer, 128), "relu")
+    layer = eddl.ReLu(eddl.BatchNormalization(eddl.Dense(layer, 512)))
 
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
@@ -65,7 +75,7 @@ def main(args):
     )
 
     eddl.summary(net)
-    eddl.plot(net, "model.pdf")
+    eddl.plot(net, "model.pdf", "TB")
 
     x_train = eddlT.load("cifar_trX.bin")
     y_train = eddlT.load("cifar_trY.bin")
@@ -83,6 +93,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--epochs", type=int, metavar="INT", default=10)
-    parser.add_argument("--batch-size", type=int, metavar="INT", default=100)
+    # batch size should be small to test group normalization
+    parser.add_argument("--batch-size", type=int, metavar="INT", default=8)
     parser.add_argument("--gpu", action="store_true")
     main(parser.parse_args(sys.argv[1:]))
