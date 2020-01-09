@@ -888,3 +888,23 @@ def test_trunc():
     u = eddlT.trunc(t)
     b = np.array(u, copy=False)
     assert np.allclose(np.trunc(a), b)
+
+
+# --- Reductions ---
+
+def test_reduce_mean():
+    a = np.arange(12).reshape(3, 4).astype(np.float32)
+    t = eddlT.create(a)
+    for i in 0, 1:
+        r = eddlT.reduce_mean(t, [i])
+        b = np.array(r, copy=False)
+        assert np.allclose(np.mean(a, i), b)
+
+
+def test_reduce_variance():
+    a = np.arange(12).reshape(3, 4).astype(np.float32)
+    t = eddlT.create(a)
+    for i in 0, 1:
+        r = eddlT.reduce_variance(t, [i])
+        b = np.array(r, copy=False)
+        assert np.allclose(np.var(a, i), b)
