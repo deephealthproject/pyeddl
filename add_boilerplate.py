@@ -1,4 +1,4 @@
-# Copyright (c) 2019 CRS4
+# Copyright (c) 2019-2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -79,6 +79,7 @@ def add_boilerplate(boilerplate, fn):
 def main():
     join = os.path.join
     boilerplate = get_boilerplate()
+    add_boilerplate(boilerplate, LICENSE_FN)
     bp_map = {ext: comment(boilerplate, com) for ext, com in COM_MAP.items()}
     for root, dirs, files in os.walk(THIS_DIR):
         dirs[:] = [_ for _ in dirs if not (
