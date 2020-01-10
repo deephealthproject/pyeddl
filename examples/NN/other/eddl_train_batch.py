@@ -1,4 +1,4 @@
-# Copyright (c) 2019 CRS4
+# Copyright (c) 2019-2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,6 @@ def main(args):
     test_samples = x_test.shape[0]
     test_batches = test_samples // args.batch_size
 
-    eddl.resize_model(net, args.batch_size)
     eddl.set_mode(net, TRMODE)
 
     for i in range(args.epochs):

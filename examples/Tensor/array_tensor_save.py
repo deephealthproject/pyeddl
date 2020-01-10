@@ -1,4 +1,4 @@
-# Copyright (c) 2019 CRS4
+# Copyright (c) 2019-2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ import pyeddl._core.eddlT as eddlT
 a = np.arange(6).reshape([2, 3]).astype(np.float32)
 print(a)
 t = eddlT.create(a)
-eddlT.save(t, "a.bin", "bin")
+eddlT.save(t, "./a.bin", "bin")
 t1 = eddlT.load("a.bin", "bin")
 a1 = eddlT.getdata(t1)
 print()

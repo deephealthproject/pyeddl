@@ -12,17 +12,17 @@ Each PyEDDL version requires a specific EDDL version:
 PyEDDL version | EDDL version |
 -------------- | ------------ |
 0.1.0          | 0.2.2        |
+0.2.0          | 0.3          |
 
 
 ## Quick start
 
 The following assumes you have EDDL already installed in "standard"
-system paths (e.g., `/usr/local/include`, `/usr/local/lib`).
+system paths (e.g., `/usr/local/include`, `/usr/local/lib`). Note that you
+need the shared library (`libeddl.so`).
 
-    git clone --recurse-submodules https://github.com/deephealthproject/pyeddl.git
-    cd pyeddl
     python3 -m pip install numpy pybind11 pytest
-    python3 setup.py install
+    python3 -m pip install pyeddl
 
 See [full installation instructions below](#installation).
 
@@ -89,10 +89,27 @@ You can find more examples under `examples`.
 
 Complete EDDL installation instructions are available at
 https://github.com/deephealthproject/eddl. Make sure you build EDDL with
-shared library support. Here is a sample build sequence:
+shared library support. Here is a sample build sequence from the pyeddl git
+repository:
+
+```
+git clone --recurse-submodules https://github.com/deephealthproject/pyeddl.git
+cd pyeddl
+cd third_party/eddl
+mkdir build
+cd build
+cmake -D EDDL_SHARED=ON ..
+make
+make install
+```
+
+**NOTE:** EDDL version 0.3 is affected by an issue that breaks the building of
+the shared library. To work around this, you can patch the EDDL code with
+`eddl_0.3.patch` (at the top level in the pyeddl git repository):
 
 ```
 cd third_party/eddl
+git apply ../../eddl_0.3.patch
 mkdir build
 cd build
 cmake -D EDDL_SHARED=ON ..
@@ -118,14 +135,26 @@ ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcublas.so /usr/lib/
 
 ### PyEDDL installation
 
-Install PyEDDL as follows:
+Install requirements:
 
 ```
 python3 -m pip install numpy pybind11 pytest
+```
+
+Install PyEDDL:
+
+```
+python3 -m pip install pyeddl
+```
+
+Or, from the pyeddl git repository:
+
+```
 python3 setup.py install
 ```
 
-Then, you can test your installation by running the PyEDDL tests:
+Then, you can test your installation by running the PyEDDL tests. From the
+pyeddl git repository:
 
     pytest tests
 
@@ -156,22 +185,3 @@ python3 setup.py install
 In this way, `setup.py` will look for additional include files in
 `/home/myuser/eddl/include` and for additional libraries in
 `/home/myuser/eddl/lib`.
-
-
-### Advanced: enabling `newloss`
-
-The `pyeddl._core.eddl.newloss` bindings require EDDL to be patched with the
-`eddl.diff` file. If you wish to enable them, proceed as follows:
-
-```
-cd third_party/eddl
-git apply ../../eddl.diff
-mkdir build
-cd build
-cmake -D EDDL_SHARED=ON ..
-make
-make install
-```
-
-Then uncomment the lines containing the bindings for `newloss` in
-`src/eddl_addons.hpp` and rebuild pyeddl.

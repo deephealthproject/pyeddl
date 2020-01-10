@@ -1,4 +1,4 @@
-// Copyright (c) 2019 CRS4
+// Copyright (c) 2019-2020 CRS4
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -63,8 +63,8 @@ void eddl_addons(pybind11::module &m) {
 
     // --- losses ---
     m.def("getLoss", (class Loss* (*)(string)) &eddl::getLoss, "C++: eddl::getLoss(string) --> class Loss*", pybind11::arg("type"));
-    // m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string) --> class NetLoss*");
-    // m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(Layer*)>&, Layer*, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(Layer*)>&, Layer*, string) --> class NetLoss*");
+    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string) --> class NetLoss*");
+    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(Layer*)>&, Layer*, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(Layer*)>&, Layer*, string) --> class NetLoss*");
 
     // --- metrics ---
     m.def("getMetric", (class Metric* (*)(string)) &eddl::getMetric, "C++: eddl::getMetric(string) --> class Metric*", pybind11::arg("type"));
@@ -83,6 +83,8 @@ void eddl_addons(pybind11::module &m) {
 
     // --- normalization layers ---
     m.def("BatchNormalization", (class Layer* (*)(class Layer*, float, float, bool, string)) &eddl::BatchNormalization, "C++: eddl::BatchNormalization(class Layer*, float, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("momentum") = 0.9f, pybind11::arg("epsilon") = 0.001f, pybind11::arg("affine") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("LayerNormalization", (class Layer* (*)(class Layer*, float, float, bool, string)) &eddl::LayerNormalization, "C++: eddl::LayerNormalization(class Layer*, float, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("momentum") = 0.9f, pybind11::arg("epsilon") = 0.001f, pybind11::arg("affine") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("GroupNormalization", (class Layer* (*)(class Layer*, int, float, float, bool, string)) &eddl::GroupNormalization, "C++: eddl::GroupNormalization(class Layer*, int, float, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("groups"), pybind11::arg("momentum") = 0.9f, pybind11::arg("epsilon") = 0.001f, pybind11::arg("affine") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Norm", (class Layer* (*)(class Layer*, float, string)) &eddl::Norm, "C++: eddl::Norm(class Layer*, float, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("epsilon") = 0.001f, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("NormMax", (class Layer* (*)(class Layer*, float, string)) &eddl::NormMax, "C++: eddl::NormMax(class Layer*, float, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("epsilon") = 0.001f, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("NormMinMax", (class Layer* (*)(class Layer*, float, string)) &eddl::NormMinMax, "C++: eddl::NormMinMax(class Layer*, float, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("epsilon") = 0.001f, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
@@ -109,6 +111,8 @@ void eddl_addons(pybind11::module &m) {
     m.def("Sum", (class Layer* (*)(class Layer*, class Layer*)) &eddl::Sum, "C++: eddl::Sum(class Layer*, class Layer*) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l1"), pybind11::arg("l2"), pybind11::keep_alive<0, 1>(), pybind11::keep_alive<0, 2>());
     m.def("Sum", (class Layer* (*)(class Layer*, float)) &eddl::Sum, "C++: eddl::Sum(class Layer*, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l1"), pybind11::arg("k"), pybind11::keep_alive<0, 1>());
     m.def("Sum", (class Layer* (*)(float, class Layer*)) &eddl::Sum, "C++: eddl::Sum(float, class Layer*) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("k"), pybind11::arg("l1"), pybind11::keep_alive<0, 2>());
+    m.def("Select", (class Layer* (*)(class Layer*, vector<string>)) &eddl::Select, "C++: eddl::Select(class Layer*, vector<string>) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("indices"), pybind11::keep_alive<0, 1>());
+    m.def("Permute", (class Layer* (*)(class Layer*, vector<int>)) &eddl::Permute, "C++: eddl::Permute(class Layer*, vector<int>) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("dims"), pybind11::keep_alive<0, 1>());
 
     // --- reduction layers ---
     m.def("ReduceMean", (class Layer* (*)(class Layer*, vector<int>, bool)) &eddl::ReduceMean, "C++: eddl::ReduceMean(class Layer*, vector<int>, bool) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("axis") = std::vector<int>({0}), pybind11::arg("keepdims") = false, pybind11::keep_alive<0, 1>());
@@ -122,6 +126,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("UniformGenerator", (class Layer* (*)(float, float, vector<int>)) &eddl::UniformGenerator, "C++: eddl::UniformGenerator(float, float, vector<int>) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("low"), pybind11::arg("high"), pybind11::arg("size"));
 
     // --- optimizers ---
+    m.def("setlr", (void (*)(class Net*, vector<float>)) &eddl::setlr, "C++: eddl::setlr(class Net*, vector<float>) --> void", pybind11::arg("net"), pybind11::arg("p"));
     m.def("adadelta", (class Optimizer* (*)(float, float, float, float)) &eddl::adadelta, "C++: eddl::adadelta(float, float, float, float) --> class Optimizer *", pybind11::return_value_policy::reference, pybind11::arg("lr"), pybind11::arg("rho"), pybind11::arg("epsilon"), pybind11::arg("weight_decay"));
     m.def("adam", (class Optimizer* (*)(float, float, float, float, float, bool)) &eddl::adam, "C++: eddl::adam(float, float, float, float, float, bool) --> class Optimizer *", pybind11::return_value_policy::reference, pybind11::arg("lr") = 0.01, pybind11::arg("beta_1") = 0.9, pybind11::arg("beta_2") = 0.999, pybind11::arg("epsilon")=0.000001, pybind11::arg("weight_decay") = 0, pybind11::arg("amsgrad") = false);
     m.def("adagrad", (class Optimizer* (*)(float, float, float)) &eddl::adagrad, "C++: eddl::adagrad(float, float, float) --> class Optimizer *", pybind11::return_value_policy::reference, pybind11::arg("lr"), pybind11::arg("epsilon"), pybind11::arg("weight_decay"));
@@ -132,8 +137,8 @@ void eddl_addons(pybind11::module &m) {
 
     // --- pooling layers ---
     m.def("AveragePool", (class Layer* (*)(class Layer*, const vector<int>&, const vector<int> &, string, string)) &eddl::AveragePool, "C++: eddl::AveragePool(class Layer*, const vector<int>&, const vector<int> &, string, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("strides") = vector<int>{2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
-    // m.def("GlobalMaxPool", (class Layer* (*)(Layer*, string)) &eddl::GlobalMaxPool, "C++: eddl::GlobalMaxPool(Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
-    // m.def("GlobalAveragePool", (class Layer* (*)(Layer*, string)) &eddl::GlobalAveragePool, "C++: eddl::GlobalAveragePool(Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("GlobalMaxPool", (class Layer* (*)(Layer*, string)) &eddl::GlobalMaxPool, "C++: eddl::GlobalMaxPool(Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("GlobalAveragePool", (class Layer* (*)(Layer*, string)) &eddl::GlobalAveragePool, "C++: eddl::GlobalAveragePool(Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("MaxPool", (class Layer* (*)(class Layer*, const vector<int>&, const vector<int> &, string, string)) &eddl::MaxPool, "C++: eddl::MaxPool(class Layer*, const vector<int>&, const vector<int> &, string, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("strides") = vector<int>{2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
 
     // --- recurrent layers ---
@@ -171,14 +176,15 @@ void eddl_addons(pybind11::module &m) {
     m.def("detach", (class vector<Layer*> (*)(class vector<Layer*>)) &eddl::detach, "C++: eddl::detach(class vector<Layer*>) --> class vector<Layer*>", pybind11::return_value_policy::reference, pybind11::arg("l"));
     m.def("backward", (void (*)(class Net*, vector<Tensor*>)) &eddl::backward, "C++: eddl::backward(class Net*, vector<Tensor*>) --> void", pybind11::arg("m"), pybind11::arg("target"));
     m.def("getTensor", (class Tensor* (*)(class Layer*)) &eddl::getTensor, "C++: eddl::getTensor(class Layer*) --> class Tensor*", pybind11::return_value_policy::reference, pybind11::arg("l"));
+    m.def("getOut", (vector<Layer*> (*)(class Net*)) &eddl::getOut, "C++: eddl::getOut(class Net*) --> vector<Layer*>", pybind11::arg("net"));
 
     // --- model methods ---
     m.def("Model", (class Net* (*)(vector<Layer*>, vector<Layer*>)) &eddl::Model, "C++: eddl::Model(vector<Layer*>, vector<Layer*>) --> class Net*", pybind11::arg("in"), pybind11::arg("out"), pybind11::keep_alive<0, 1>(), pybind11::keep_alive<0, 2>());
     m.def("build", (void (*)(class Net*, class Optimizer*, const vector<string>&, const vector<string>&, class CompServ*)) &eddl::build, "C++: eddl::build(class Net*, class Optimizer*, const vector<string>&, const vector<string>&, class CompServ*) --> void", pybind11::arg("net"), pybind11::arg("o"), pybind11::arg("lo"), pybind11::arg("me"), pybind11::arg("cs") = nullptr, pybind11::keep_alive<1, 2>(), pybind11::keep_alive<1, 5>());
     m.def("toGPU", (void (*)(class Net*, vector<int>, int)) &eddl::toGPU, "C++: eddl::toGPU(class Net*, vector<int>, int) --> void", pybind11::arg("net"), pybind11::arg("g") = std::vector<int>({1}), pybind11::arg("lsb") = 1);
     m.def("setlogfile", (void (*)(class Net*, string)) &eddl::setlogfile, "C++: eddl::setlogfile(class Net*, string) --> void", pybind11::arg("net"), pybind11::arg("fname"));
-    m.def("load", (void (*)(class Net*, const string&, string)) &eddl::load, "C++: eddl::load(class Net*, const string&, string) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("format") = "");
-    m.def("save", (void (*)(class Net*, const string&, string)) &eddl::save, "C++: eddl::save(class Net*, const string&, string) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("format") = "");
+    m.def("load", (void (*)(class Net*, const string&, string)) &eddl::load, "C++: eddl::load(class Net*, const string&, string) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("format") = "bin");
+    m.def("save", (void (*)(class Net*, const string&, string)) &eddl::save, "C++: eddl::save(class Net*, const string&, string) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("format") = "bin");
     m.def("plot", (void (*)(class Net*, string, string)) &eddl::plot, "C++: eddl::plot(class Net*, string, string) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("string") = "LR");
     m.def("fit", (void (*)(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int, int)) &eddl::fit, "C++: eddl::fit(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int, int) --> void", pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"), pybind11::arg("batch"), pybind11::arg("epochs"));
     m.def("evaluate", (void (*)(class Net*, const vector<Tensor*>&, const vector<Tensor*>&)) &eddl::evaluate, "C++: eddl::evaluate(class Net*, const vector<Tensor*>&, const vector<Tensor*>&) --> void", pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"));

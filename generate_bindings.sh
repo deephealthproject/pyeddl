@@ -7,6 +7,8 @@ this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 pushd "${this_dir}"
 rm -rf include && mkdir include
+docker run --rm eddl bash -c 'cat /usr/include/zlib.h' > include/zlib.h
+docker run --rm eddl bash -c 'cat /usr/include/zconf.h' > include/zconf.h
 pushd include
 ln -s ../third_party/eddl/src eddl
 popd

@@ -1,4 +1,4 @@
-# Copyright (c) 2019 CRS4
+# Copyright (c) 2019-2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -18,4 +18,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"

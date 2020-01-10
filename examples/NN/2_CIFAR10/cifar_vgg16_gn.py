@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-LOAD_SAVE example.
+VGG16 for CIFAR10 with group normalization.
 """
 
 import argparse
@@ -29,57 +29,71 @@ import pyeddl._core.eddl as eddl
 import pyeddl._core.eddlT as eddlT
 
 
+def Block1(layer, filters):
+    return eddl.ReLu(
+        eddl.GroupNormalization(eddl.Conv(layer, filters, [1, 1], [1, 1]), 4)
+    )
+
+
+def Block3_2(layer, filters):
+    layer = eddl.ReLu(
+        eddl.GroupNormalization(eddl.Conv(layer, filters, [3, 3], [1, 1]), 4)
+    )
+    layer = eddl.ReLu(
+        eddl.GroupNormalization(eddl.Conv(layer, filters, [3, 3], [1, 1]), 4)
+    )
+    return layer
+
+
 def main(args):
-    eddl.download_mnist()
+    eddl.download_cifar10()
 
     num_classes = 10
 
-    in_ = eddl.Input([784])
+    in_ = eddl.Input([3, 32, 32])
+
     layer = in_
-    layer = eddl.BatchNormalization(eddl.ReLu(eddl.Dense(layer, 1024)))
-    layer = eddl.BatchNormalization(eddl.ReLu(eddl.Dense(layer, 1024)))
-    layer = eddl.BatchNormalization(eddl.ReLu(eddl.Dense(layer, 1024)))
+    layer = eddl.CropScaleRandom(layer, [0.8, 1.0])
+    layer = eddl.Flip(layer, 1)
+    layer = eddl.MaxPool(Block3_2(layer, 64))
+    layer = eddl.MaxPool(Block3_2(layer, 128))
+    layer = eddl.MaxPool(Block1(Block3_2(layer, 256), 256))
+    layer = eddl.MaxPool(Block1(Block3_2(layer, 512), 512))
+    layer = eddl.MaxPool(Block1(Block3_2(layer, 512), 512))
+    layer = eddl.Reshape(layer, [-1])
+    layer = eddl.ReLu(eddl.BatchNormalization(eddl.Dense(layer, 512)))
+
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
 
     eddl.build(
         net,
-        eddl.rmsprop(0.01),
+        eddl.sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
         eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
     )
 
     eddl.summary(net)
-    eddl.plot(net, "model.pdf")
+    eddl.plot(net, "model.pdf", "TB")
 
-    x_train = eddlT.load("trX.bin")
-    y_train = eddlT.load("trY.bin")
-    x_test = eddlT.load("tsX.bin")
-    y_test = eddlT.load("tsY.bin")
-
+    x_train = eddlT.load("cifar_trX.bin")
+    y_train = eddlT.load("cifar_trY.bin")
     eddlT.div_(x_train, 255.0)
 
-    print("saving untrained model")
-    eddl.save(net, "model_untrained.bin")
-    print("training model")
-    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
-    print("saving trained model")
-    eddl.save(net, "model_trained.bin")
+    x_test = eddlT.load("cifar_tsX.bin")
+    y_test = eddlT.load("cifar_tsY.bin")
+    eddlT.div_(x_test, 255.0)
 
-    print("loading untrained model")
-    eddl.load(net, "model_untrained.bin")
-    print("evaluating untrained model")
-    eddl.evaluate(net, [x_test], [y_test])
-    print("loading trained model")
-    eddl.load(net, "model_trained.bin")
-    print("evaluating trained model")
-    eddl.evaluate(net, [x_test], [y_test])
+    for i in range(args.epochs):
+        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
+        eddl.evaluate(net, [x_test], [y_test])
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--epochs", type=int, metavar="INT", default=10)
-    parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
+    # batch size should be small to test group normalization
+    parser.add_argument("--batch-size", type=int, metavar="INT", default=8)
     parser.add_argument("--gpu", action="store_true")
     main(parser.parse_args(sys.argv[1:]))

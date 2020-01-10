@@ -1,4 +1,4 @@
-# Copyright (c) 2019 CRS4
+# Copyright (c) 2019-2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -37,18 +37,19 @@ def main(args):
     in_ = eddl.Input([3, 32, 32])
 
     layer = in_
-    layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 32, [3, 3], [1, 1])), [2, 2]
-    )
-    layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 64, [3, 3], [1, 1])), [2, 2]
-    )
-    layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 128, [3, 3], [1, 1])), [2, 2]
-    )
-    layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 256, [3, 3], [1, 1])), [2, 2]
-    )
+    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+        eddl.Conv(layer, 32, [3, 3], [1, 1])
+    )), [2, 2])
+    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+        eddl.Conv(layer, 64, [3, 3], [1, 1])
+    )), [2, 2])
+    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+        eddl.Conv(layer, 128, [3, 3], [1, 1])
+    )), [2, 2])
+    # layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+    #     eddl.Conv(layer, 256, [3, 3], [1, 1])
+    # )), [2, 2])
+    layer = eddl.GlobalMaxPool(layer)
     layer = eddl.Reshape(layer, [-1])
     layer = eddl.Activation(eddl.Dense(layer, 128), "relu")
 

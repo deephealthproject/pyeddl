@@ -1,3 +1,4 @@
+#include <eddl/descriptors/tensor_descriptors.h>
 #include <eddl/tensor/tensor.h>
 #include <eddl/losses/loss.h>
 #include <eddl/net/compserv.h>

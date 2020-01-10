@@ -1,4 +1,4 @@
-// Copyright (c) 2019 CRS4
+// Copyright (c) 2019-2020 CRS4
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -66,9 +66,6 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
     // 		  pybind11::arg("B"), pybind11::arg("axis"),
     // 		  pybind11::arg("op"), pybind11::arg("C"),
     // 		  pybind11::arg("incC"));
-    cl.def_static("select", &Tensor::select, pybind11::arg("A"),
-		  pybind11::arg("B"), pybind11::arg("sind"),
-		  pybind11::arg("ini"), pybind11::arg("end"));
     cl.def_static("transpose", &Tensor::transpose, pybind11::arg("A"),
 		  pybind11::arg("B"), pybind11::arg("dims"));
     cl.def_static("zeros", &Tensor::zeros, pybind11::arg("shape"),

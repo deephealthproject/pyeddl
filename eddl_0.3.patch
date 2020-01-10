@@ -1,0 +1,13 @@
+diff --git a/src/helpers.h b/src/helpers.h
+index e3b983f..6f37f6d 100644
+--- a/src/helpers.h
++++ b/src/helpers.h
+@@ -45,7 +45,7 @@ private:
+     std::vector<std::string>    m_data;
+ };
+ 
+-std::istream& get_next_row(std::istream& str, CSVRow& data, const char &delimiter)
++static std::istream& get_next_row(std::istream& str, CSVRow& data, const char &delimiter)
+ {
+     data.readNextRow(str, delimiter);
+     return str;
