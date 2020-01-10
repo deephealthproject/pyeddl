@@ -7,7 +7,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker'
-                            image 'simleo/eddl:b72e902'
+                            image 'simleo/eddl:c023a6e'
                             args '-u root:root'
                         }
                     }
@@ -39,7 +39,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker && gpu'
-                            image 'simleo/eddl-gpu:b72e902'
+                            image 'simleo/eddl-gpu:c023a6e'
                             args '--gpus 1 -u root:root'
                         }
                     }
