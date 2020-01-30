@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/deephealthproject/pyeddl/master/docs/logo-pyeddl.png" height="120" width="300">
+  <img src="https://raw.githubusercontent.com/deephealthproject/pyeddl/master/docs/logo.png" height="220" width="185">
 </div>
 
 -----------------
