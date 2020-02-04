@@ -19,6 +19,11 @@ pipeline {
                         }
                         stage('Test') {
                             steps {
+				echo 'Downloading test dataset'
+				sh 'wget -q  https://www.dropbox.com/s/khrb3th2z6owd9t/trX.bin'
+				sh 'wget -q https://www.dropbox.com/s/m82hmmrg46kcugp/trY.bin'
+				sh 'wget -q https://www.dropbox.com/s/7psutd4m4wna2d5/tsX.bin'
+				sh 'wget -q https://www.dropbox.com/s/q0tnbjvaenb4tjs/tsY.bin'
 				echo 'Testing'
 				sh 'pytest tests'
 				sh 'python3 examples/Tensor/eddl_tensor.py'
