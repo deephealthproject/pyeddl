@@ -15,8 +15,8 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
     ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcublas.so /usr/local/lib/
 
 RUN mkdir -p /home/simleo && \
-    groupadd -r -g 1001 simleo && \
-    useradd -lr -u 1001 -g 1001 simleo && \
+    groupadd -r -g 1000 simleo && \
+    useradd -lr -u 1000 -g 1000 simleo && \
     chown -R simleo:simleo /home/simleo
 
 ENV HOME=/home/simleo
