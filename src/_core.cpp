@@ -174,7 +174,9 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def("isGPU", (int (Tensor::*)()) &Tensor::isGPU, "C++: Tensor::isGPU() --> int");
 		cl.def("isFPGA", (int (Tensor::*)()) &Tensor::isFPGA, "C++: Tensor::isFPGA() --> int");
 		cl.def("info", (void (Tensor::*)()) &Tensor::info, "C++: Tensor::info() --> void");
-		cl.def("print", (void (Tensor::*)()) &Tensor::print, "C++: Tensor::print() --> void");
+		cl.def("print", [](Tensor &o) -> void { return o.print(); }, "");
+		cl.def("print", [](Tensor &o, bool const & a0) -> void { return o.print(a0); }, "", pybind11::arg("asInt"));
+		cl.def("print", (void (Tensor::*)(bool, bool)) &Tensor::print, "C++: Tensor::print(bool, bool) --> void", pybind11::arg("asInt"), pybind11::arg("raw"));
 		cl.def_static("isSquared", (bool (*)(class Tensor *)) &Tensor::isSquared, "C++: Tensor::isSquared(class Tensor *) --> bool", pybind11::arg("A"));
 		cl.def_static("moveaxis", (class Tensor * (*)(class Tensor *, int, int)) &Tensor::moveaxis, "C++: Tensor::moveaxis(class Tensor *, int, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("t"), pybind11::arg("source"), pybind11::arg("destination"));
 		cl.def_static("swapaxis", (class Tensor * (*)(class Tensor *, int, int)) &Tensor::swapaxis, "C++: Tensor::swapaxis(class Tensor *, int, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("t"), pybind11::arg("axis1"), pybind11::arg("axis2"));
@@ -322,9 +324,11 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def_static("eqsize", (int (*)(class Tensor *, class Tensor *)) &Tensor::eqsize, "C++: Tensor::eqsize(class Tensor *, class Tensor *) --> int", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("equal2", [](class Tensor * a0, class Tensor * a1) -> int { return Tensor::equal2(a0, a1); }, "", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("equal2", (int (*)(class Tensor *, class Tensor *, float)) &Tensor::equal2, "C++: Tensor::equal2(class Tensor *, class Tensor *, float) --> int", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("epsilon"));
+		cl.def_static("select", (void (*)(class Tensor *, class Tensor *, class SelDescriptor *)) &Tensor::select, "C++: Tensor::select(class Tensor *, class Tensor *, class SelDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
+		cl.def_static("set_select", (void (*)(class Tensor *, class Tensor *, class SelDescriptor *)) &Tensor::set_select, "C++: Tensor::set_select(class Tensor *, class Tensor *, class SelDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
+		cl.def_static("set_select_back", (void (*)(class Tensor *, class Tensor *, class SelDescriptor *)) &Tensor::set_select_back, "C++: Tensor::set_select_back(class Tensor *, class Tensor *, class SelDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
 		cl.def_static("copy", (void (*)(class Tensor *, class Tensor *)) &Tensor::copy, "C++: Tensor::copy(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("fill", (void (*)(class Tensor *, int, int, class Tensor *, int, int, int)) &Tensor::fill, "C++: Tensor::fill(class Tensor *, int, int, class Tensor *, int, int, int) --> void", pybind11::arg("A"), pybind11::arg("aini"), pybind11::arg("aend"), pybind11::arg("B"), pybind11::arg("bini"), pybind11::arg("bend"), pybind11::arg("inc"));
-		cl.def_static("select", (void (*)(class Tensor *, class Tensor *, class SelDescriptor *)) &Tensor::select, "C++: Tensor::select(class Tensor *, class Tensor *, class SelDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
 		cl.def_static("select_back", (void (*)(class Tensor *, class Tensor *, class SelDescriptor *)) &Tensor::select_back, "C++: Tensor::select_back(class Tensor *, class Tensor *, class SelDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
 		cl.def_static("tile", (void (*)(class Tensor *, class Tensor *)) &Tensor::tile, "C++: Tensor::tile(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def("rand_uniform", (void (Tensor::*)(float)) &Tensor::rand_uniform, "C++: Tensor::rand_uniform(float) --> void", pybind11::arg("v"));
@@ -778,56 +782,59 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 	M("eddl").def("CS_CPU", []() -> CompServ * { return eddl::CS_CPU(); }, "", pybind11::return_value_policy::automatic);
 	M("eddl").def("CS_CPU", (class CompServ * (*)(int)) &eddl::CS_CPU, "C++: eddl::CS_CPU(int) --> class CompServ *", pybind11::return_value_policy::automatic, pybind11::arg("th"));
 
-	// eddl::summary(class Net *) file:eddl/apis/eddl.h line:72
-	M("eddl").def("summary", (void (*)(class Net *)) &eddl::summary, "C++: eddl::summary(class Net *) --> void", pybind11::arg("m"));
+	// eddl::summary(class Net *) file:eddl/apis/eddl.h line:78
+	M("eddl").def("summary", (void (*)(class Net *)) &eddl::summary, "Prints a summary representation of your model.\n\n  \n  Model to train\n  \n\n     (void) Prints the model\n\nC++: eddl::summary(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::set_mode(class Net *, int) file:eddl/apis/eddl.h line:103
+	// eddl::set_mode(class Net *, int) file:eddl/apis/eddl.h line:194
 	M("eddl").def("set_mode", (void (*)(class Net *, int)) &eddl::set_mode, "C++: eddl::set_mode(class Net *, int) --> void", pybind11::arg("net"), pybind11::arg("mode"));
 
-	// eddl::reset_loss(class Net *) file:eddl/apis/eddl.h line:104
+	// eddl::reset_loss(class Net *) file:eddl/apis/eddl.h line:195
 	M("eddl").def("reset_loss", (void (*)(class Net *)) &eddl::reset_loss, "C++: eddl::reset_loss(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::zeroGrads(class Net *) file:eddl/apis/eddl.h line:109
+	// eddl::zeroGrads(class Net *) file:eddl/apis/eddl.h line:200
 	M("eddl").def("zeroGrads", (void (*)(class Net *)) &eddl::zeroGrads, "C++: eddl::zeroGrads(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::backward(class Net *) file:eddl/apis/eddl.h line:111
+	// eddl::backward(class Net *) file:eddl/apis/eddl.h line:202
 	M("eddl").def("backward", (void (*)(class Net *)) &eddl::backward, "C++: eddl::backward(class Net *) --> void", pybind11::arg("net"));
 
-	// eddl::backward(class NetLoss *) file:eddl/apis/eddl.h line:112
+	// eddl::backward(class NetLoss *) file:eddl/apis/eddl.h line:203
 	M("eddl").def("backward", (void (*)(class NetLoss *)) &eddl::backward, "C++: eddl::backward(class NetLoss *) --> void", pybind11::arg("l"));
 
-	// eddl::update(class Net *) file:eddl/apis/eddl.h line:113
+	// eddl::update(class Net *) file:eddl/apis/eddl.h line:204
 	M("eddl").def("update", (void (*)(class Net *)) &eddl::update, "C++: eddl::update(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::print_loss(class Net *, int) file:eddl/apis/eddl.h line:114
+	// eddl::print_loss(class Net *, int) file:eddl/apis/eddl.h line:205
 	M("eddl").def("print_loss", (void (*)(class Net *, int)) &eddl::print_loss, "C++: eddl::print_loss(class Net *, int) --> void", pybind11::arg("m"), pybind11::arg("batch"));
 
-	// eddl::clamp(class Net *, float, float) file:eddl/apis/eddl.h line:117
-	M("eddl").def("clamp", (void (*)(class Net *, float, float)) &eddl::clamp, "C++: eddl::clamp(class Net *, float, float) --> void", pybind11::arg("m"), pybind11::arg("min"), pybind11::arg("max"));
+	// eddl::clamp(class Net *, float, float) file:eddl/apis/eddl.h line:216
+	M("eddl").def("clamp", (void (*)(class Net *, float, float)) &eddl::clamp, "Model parameters values clipping.\n\n  \n  Model\n  \n\n  Minimum value\n  \n\n   Maximum value\n  \n\n     (void) Performs model clamp between min and max\n\nC++: eddl::clamp(class Net *, float, float) --> void", pybind11::arg("m"), pybind11::arg("min"), pybind11::arg("max"));
 
-	// eddl::compute_loss(class NetLoss *) file:eddl/apis/eddl.h line:120
+	// eddl::compute_loss(class NetLoss *) file:eddl/apis/eddl.h line:219
 	M("eddl").def("compute_loss", (float (*)(class NetLoss *)) &eddl::compute_loss, "C++: eddl::compute_loss(class NetLoss *) --> float", pybind11::arg("L"));
 
-	// eddl::compute_metric(class NetLoss *) file:eddl/apis/eddl.h line:121
+	// eddl::compute_metric(class NetLoss *) file:eddl/apis/eddl.h line:220
 	M("eddl").def("compute_metric", (float (*)(class NetLoss *)) &eddl::compute_metric, "C++: eddl::compute_metric(class NetLoss *) --> float", pybind11::arg("L"));
 
-	// eddl::set_trainable(class Layer *, bool) file:eddl/apis/eddl.h line:251
+	// eddl::set_trainable(class Layer *, bool) file:eddl/apis/eddl.h line:650
 	M("eddl").def("set_trainable", (void (*)(class Layer *, bool)) &eddl::set_trainable, "C++: eddl::set_trainable(class Layer *, bool) --> void", pybind11::arg("l"), pybind11::arg("val"));
 
-	// eddl::copyTensor(class Layer *, class Layer *) file:eddl/apis/eddl.h line:252
+	// eddl::copyTensor(class Layer *, class Layer *) file:eddl/apis/eddl.h line:651
 	M("eddl").def("copyTensor", (void (*)(class Layer *, class Layer *)) &eddl::copyTensor, "C++: eddl::copyTensor(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::copyGrad(class Layer *, class Layer *) file:eddl/apis/eddl.h line:253
+	// eddl::copyGrad(class Layer *, class Layer *) file:eddl/apis/eddl.h line:652
 	M("eddl").def("copyGrad", (void (*)(class Layer *, class Layer *)) &eddl::copyGrad, "C++: eddl::copyGrad(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::getGrad(class Layer *) file:eddl/apis/eddl.h line:256
+	// eddl::getGrad(class Layer *) file:eddl/apis/eddl.h line:655
 	M("eddl").def("getGrad", (class Tensor * (*)(class Layer *)) &eddl::getGrad, "C++: eddl::getGrad(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l"));
 
-	// eddl::download_mnist() file:eddl/apis/eddl.h line:281
-	M("eddl").def("download_mnist", (void (*)()) &eddl::download_mnist, "C++: eddl::download_mnist() --> void");
+	// eddl::download_mnist() file:eddl/apis/eddl.h line:723
+	M("eddl").def("download_mnist", (void (*)()) &eddl::download_mnist, "Downloads MNIST Dataset.\n\n  \n   http://yann.lecun.com/exdb/mnist/\n\n  \n     (void) The binary files of MNIST\n\nC++: eddl::download_mnist() --> void");
 
-	// eddl::download_cifar10() file:eddl/apis/eddl.h line:282
-	M("eddl").def("download_cifar10", (void (*)()) &eddl::download_cifar10, "C++: eddl::download_cifar10() --> void");
+	// eddl::download_cifar10() file:eddl/apis/eddl.h line:731
+	M("eddl").def("download_cifar10", (void (*)()) &eddl::download_cifar10, "Downloads CIFAR-10 Dataset.\n\n  \n   https://www.cs.toronto.edu/~kriz/cifar.html\n\n  \n     (void) The binary files of CIFAR-10\n\nC++: eddl::download_cifar10() --> void");
+
+	// eddl::download_drive() file:eddl/apis/eddl.h line:732
+	M("eddl").def("download_drive", (void (*)()) &eddl::download_drive, "C++: eddl::download_drive() --> void");
 
 }
 
