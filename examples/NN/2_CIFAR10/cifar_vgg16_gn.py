@@ -53,7 +53,7 @@ def main(args):
     in_ = eddl.Input([3, 32, 32])
 
     layer = in_
-    layer = eddl.CropScaleRandom(layer, [0.8, 1.0])
+    layer = eddl.RandomCropScale(layer, [0.8, 1.0])
     layer = eddl.Flip(layer, 1)
     layer = eddl.MaxPool(Block3_2(layer, 64))
     layer = eddl.MaxPool(Block3_2(layer, 128))
