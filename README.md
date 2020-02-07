@@ -13,6 +13,7 @@ PyEDDL version | EDDL version |
 -------------- | ------------ |
 0.1.0          | 0.2.2        |
 0.2.0          | 0.3          |
+0.3.0          | 0.3.1        |
 
 
 ## Quick start
@@ -103,9 +104,9 @@ make
 make install
 ```
 
-**NOTE:** EDDL version 0.3 is affected by an issue that breaks the building of
-the shared library. To work around this, you can patch the EDDL code with
-`eddl_0.3.patch` (at the top level in the pyeddl git repository):
+**NOTE:** EDDL versions 0.3 and 0.3.1 are affected by an issue that breaks the
+building of the shared library. To work around this, you can patch the EDDL
+code with `eddl_0.3.patch` (at the top level in the pyeddl git repository):
 
 ```
 cd third_party/eddl
