@@ -56,6 +56,7 @@ def test_core_layers():
     eddl.UpSampling(in4d, [2, 2], "nearest", "foo")
     eddl.Reshape(in2d, [1, 4, 4])
     eddl.Reshape(in2d, [1, 4, 4], "foo")
+    # Transpose seems broken upstream ("Dimensions do not match" msg)
     # eddl.Transpose(in2d)
     # eddl.Transpose(in2d, "foo")
 
@@ -204,9 +205,9 @@ def test_operator_layers():
     eddl.Sum(in_1, in_2)
     eddl.Sum(in_1, 1.0)
     eddl.Sum(1.0, in_1)
-    # in4d = eddl.Input([3, 16, 16])
-    # eddl.Select(in4d, [":", ":8", ":8"])
-    # eddl.Permute(in4d, [0, 1, 2])
+    in4d = eddl.Input([3, 16, 16])
+    eddl.Select(in4d, [":", ":8", ":8"])
+    eddl.Permute(in4d, [0, 1, 2])
 
 
 def test_reduction_layers():
