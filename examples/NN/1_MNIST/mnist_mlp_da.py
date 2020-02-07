@@ -39,7 +39,7 @@ def main(args):
     layer = in_
     layer = eddl.Reshape(layer, [1, 28, 28])
     layer = eddl.RandomShift(layer, [-0.1, 0.1], [-0.1, 0.1])
-    # layer = eddl.RandomRotation(layer, [-10, 10])
+    layer = eddl.RandomRotation(layer, [-10, 10])
     layer = eddl.Reshape(layer, [-1])
     layer = eddl.ReLu(eddl.GaussianNoise(
         eddl.LayerNormalization(eddl.Dense(layer, 1024)), 0.3

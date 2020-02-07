@@ -171,7 +171,9 @@ void eddl_addons(pybind11::module &m) {
     // --- fine-grained methods ---
     m.def("random_indices", (vector<int> (*)(int, int)) &eddl::random_indices, "C++: eddl::random_indices(int, int) --> vector<int>", pybind11::arg("batch_size"), pybind11::arg("num_samples"));
     m.def("train_batch", (void (*)(class Net*, vector<Tensor*>, vector<Tensor*>, vector<int>)) &eddl::train_batch, "C++: eddl::train_batch(class Net*, vector<Tensor*>, vector<Tensor*>, vector<int>) --> void", pybind11::arg("net"), pybind11::arg("in"), pybind11::arg("out"), pybind11::arg("indices"));
+    m.def("train_batch", (void (*)(class Net*, vector<Tensor*>, vector<Tensor*>)) &eddl::train_batch, "C++: eddl::train_batch(class Net*, vector<Tensor*>, vector<Tensor*>) --> void", pybind11::arg("net"), pybind11::arg("in"), pybind11::arg("out"));
     m.def("eval_batch", (void (*)(class Net*, vector<Tensor*>, vector<Tensor*>, vector<int>)) &eddl::eval_batch, "C++: eddl::eval_batch(class Net*, vector<Tensor*>, vector<Tensor*>, vector<int>) --> void", pybind11::arg("net"), pybind11::arg("in"), pybind11::arg("out"), pybind11::arg("indices"));
+    m.def("eval_batch", (void (*)(class Net*, vector<Tensor*>, vector<Tensor*>)) &eddl::eval_batch, "C++: eddl::eval_batch(class Net*, vector<Tensor*>, vector<Tensor*>) --> void", pybind11::arg("net"), pybind11::arg("in"), pybind11::arg("out"));
     m.def("next_batch", (void (*)(vector<Tensor*>, vector<Tensor*>)) &eddl::next_batch, "C++: eddl::next_batch(vector<Tensor*>, vector<Tensor*>) --> void", pybind11::arg("in"), pybind11::arg("out"));
     m.def("forward", (vector<Layer*> (*)(class Net*, vector<Layer*>)) &eddl::forward, "C++: eddl::forward(class Net*, vector<Layer*>) --> vector<Layer*>", pybind11::arg("m"), pybind11::arg("in"));
     m.def("forward", (vector<Layer*> (*)(class Net*, vector<Tensor*>)) &eddl::forward, "C++: eddl::forward(class Net*, vector<Tensor*>) --> vector<Layer*>", pybind11::arg("m"), pybind11::arg("in"));
@@ -193,4 +195,14 @@ void eddl_addons(pybind11::module &m) {
     m.def("plot", (void (*)(class Net*, string, string)) &eddl::plot, "C++: eddl::plot(class Net*, string, string) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("string") = "LR");
     m.def("fit", (void (*)(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int, int)) &eddl::fit, "C++: eddl::fit(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int, int) --> void", pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"), pybind11::arg("batch"), pybind11::arg("epochs"));
     m.def("evaluate", (void (*)(class Net*, const vector<Tensor*>&, const vector<Tensor*>&)) &eddl::evaluate, "C++: eddl::evaluate(class Net*, const vector<Tensor*>&, const vector<Tensor*>&) --> void", pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"));
+
+    // not implemented upstream:
+    //   Affine
+    //   ColorJitter
+    //   Grayscale
+    //   Normalize
+    //   Pad
+    //   RandomAffine
+    //   RandomCenteredCrop
+    //   RandomGrayscale
 }
