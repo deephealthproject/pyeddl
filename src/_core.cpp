@@ -357,6 +357,8 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 #include <ios>
 #include <iterator>
 #include <memory>
+#include <metric_addons.hpp>
+#include <net_addons.hpp>
 #include <sstream> // __str__
 #include <string>
 #include <vector>
@@ -615,12 +617,14 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def_readwrite("lsb", &CompServ::lsb);
 	}
 	{ // Metric file:eddl/metrics/metric.h line:23
-		pybind11::class_<Metric, std::shared_ptr<Metric>, PyCallBack_Metric> cl(M(""), "Metric", "");
+		pybind11::class_<Metric, std::unique_ptr<Metric, pybind11::nodelete>, PyCallBack_Metric> cl(M(""), "Metric", "");
 		cl.def( pybind11::init( [](PyCallBack_Metric const &o){ return new PyCallBack_Metric(o); } ) );
 		cl.def( pybind11::init( [](Metric const &o){ return new Metric(o); } ) );
 		cl.def_readwrite("name", &Metric::name);
 		cl.def("value", (float (Metric::*)(class Tensor *, class Tensor *)) &Metric::value, "C++: Metric::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class Metric & (Metric::*)(const class Metric &)) &Metric::operator=, "C++: Metric::operator=(const class Metric &) --> class Metric &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		metric_addons(cl);
 	}
 	{ // Layer file:eddl/layers/layer.h line:32
 		pybind11::class_<Layer, std::shared_ptr<Layer>, PyCallBack_Layer> cl(M(""), "Layer", "");
@@ -720,6 +724,8 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("update", (void (Net::*)()) &Net::update, "C++: Net::update() --> void");
 		cl.def("compute_loss", (void (Net::*)()) &Net::compute_loss, "C++: Net::compute_loss() --> void");
 		cl.def("clamp", (void (Net::*)(float, float)) &Net::clamp, "C++: Net::clamp(float, float) --> void", pybind11::arg("min"), pybind11::arg("max"));
+
+		net_addons(cl);
 	}
 	{ // NetLoss file:eddl/net/netloss.h line:24
 		pybind11::class_<NetLoss, std::shared_ptr<NetLoss>> cl(M(""), "NetLoss", "");

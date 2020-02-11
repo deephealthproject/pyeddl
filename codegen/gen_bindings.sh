@@ -28,3 +28,6 @@ ${binder} \
 
 # add buffer_protocol annotation
 sed -i -f add_annotation.sed bindings/_core.cpp
+
+# set nodelete option
+sed -i 's/shared_ptr<Metric/unique_ptr<Metric, pybind11::nodelete/' bindings/_core.cpp
