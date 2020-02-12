@@ -119,7 +119,7 @@ def test_randn():
 # --- Copy ---
 
 def test_cpu_gpu():
-    # these are no-ops if EDDL is not compiled for GPU
+    # toGPU and toCPU are no-ops if EDDL is not compiled for GPU
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
     eddlT.toGPU_(t)
@@ -130,6 +130,12 @@ def test_cpu_gpu():
     t = eddlT.toCPU(u)
     b = np.array(t, copy=False)
     assert np.array_equal(b, a)
+    # check getdata from GPU tensor
+    t = eddlT.create([2, 3], eddlT.DEV_CPU)
+    t.fill_(2)
+    eddlT.toGPU_(t)
+    a = eddlT.getdata(t)
+    assert np.alltrue(a == 2)
 
 
 def test_clone():

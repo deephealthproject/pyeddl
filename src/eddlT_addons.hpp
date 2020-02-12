@@ -39,11 +39,19 @@ void eddlT_addons(pybind11::module &m) {
     m.def("create", (class Tensor* (*)(const vector<int>&, int)) &eddlT::create, "C++: eddlT::create(const vector<int>&, int) --> class Tensor*", pybind11::arg("shape"), pybind11::arg("dev"));
     // replaces float* getptr(Tensor* A)
     m.def("getdata", [](class Tensor* t) -> array_t {
+        bool del = false;
+        if (!t->isCPU()) {
+            t = eddlT::toCPU(t);
+            del = true;
+        }
         pybind11::array_t<float> rval = pybind11::array_t<float>(t->size);
         pybind11::buffer_info info = rval.request();
         float* ptr = (float*)info.ptr;
         std::copy(t->ptr, t->ptr+t->size, ptr);
         rval.resize(t->shape);
+        if (del) {
+            delete t;
+        }
         return rval;
     }, "getdata(Tensor) --> array", pybind11::arg("tensor"));
     m.def("randn", (class Tensor* (*)(const vector<int>&, int)) &eddlT::randn, "C++: eddlT::randn(const vector<int>&, int) --> class Tensor*", pybind11::arg("shape"), pybind11::arg("dev") = DEV_CPU);

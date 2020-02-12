@@ -40,10 +40,8 @@ class CategoricalAccuracy(Metric):
         Metric.__init__(self, "py_categorical_accuracy")
 
     def value(self, t, y):
-        t = eddlT.toCPU(t)
-        y = eddlT.toCPU(y)
-        a = np.array(t, copy=False)
-        b = np.array(y, copy=False)
+        a = eddlT.getdata(t)
+        b = eddlT.getdata(y)
         return (np.argmax(a, axis=-1) == np.argmax(b, axis=-1)).sum()
 
 
