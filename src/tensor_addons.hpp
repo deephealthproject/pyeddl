@@ -22,6 +22,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
+#include <iostream>
 
 
 template <typename type_, typename... options>
@@ -59,6 +60,10 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
     cl.def_static("permute", &Tensor::permute,
 		  pybind11::arg("t"), pybind11::arg("dims"));
     cl.def_buffer([](Tensor &t) -> pybind11::buffer_info {
+        if (!t.isCPU()) {
+            std::cerr << "WARNING: converting tensor to CPU" << std::endl;
+            t.toCPU();
+        }
         std::vector<ssize_t> strides(t.ndim);
         ssize_t S = sizeof(float);
         for (int i = t.ndim - 1; i >=0; --i) {
