@@ -356,6 +356,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 #include <fstream>
 #include <ios>
 #include <iterator>
+#include <loss_addons.hpp>
 #include <memory>
 #include <metric_addons.hpp>
 #include <net_addons.hpp>
@@ -599,13 +600,15 @@ struct PyCallBack_Optimizer : public Optimizer {
 void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
 	{ // Loss file:eddl/losses/loss.h line:22
-		pybind11::class_<Loss, std::shared_ptr<Loss>, PyCallBack_Loss> cl(M(""), "Loss", "");
+		pybind11::class_<Loss, std::unique_ptr<Loss, pybind11::nodelete>, PyCallBack_Loss> cl(M(""), "Loss", "");
 		cl.def( pybind11::init( [](PyCallBack_Loss const &o){ return new PyCallBack_Loss(o); } ) );
 		cl.def( pybind11::init( [](Loss const &o){ return new Loss(o); } ) );
 		cl.def_readwrite("name", &Loss::name);
 		cl.def("delta", (void (Loss::*)(class Tensor *, class Tensor *, class Tensor *)) &Loss::delta, "C++: Loss::delta(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("T"), pybind11::arg("Y"), pybind11::arg("D"));
 		cl.def("value", (float (Loss::*)(class Tensor *, class Tensor *)) &Loss::value, "C++: Loss::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
 		cl.def("assign", (class Loss & (Loss::*)(const class Loss &)) &Loss::operator=, "C++: Loss::operator=(const class Loss &) --> class Loss &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		loss_addons(cl);
 	}
 	{ // CompServ file:eddl/net/compserv.h line:21
 		pybind11::class_<CompServ, std::shared_ptr<CompServ>> cl(M(""), "CompServ", "");

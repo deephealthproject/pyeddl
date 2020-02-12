@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-AE example with Python metric.
+AE example with Python loss and metric.
 """
 
 import argparse
@@ -27,13 +27,28 @@ import sys
 
 import pyeddl._core.eddl as eddl
 import pyeddl._core.eddlT as eddlT
-from pyeddl._core import Metric
+from pyeddl._core import Loss, Metric
 
 
-class MSE(Metric):
+class MSELoss(Loss):
 
     def __init__(self):
-        super(MSE, self).__init__("py_mean_squared_error")
+        Loss.__init__(self, "py_mean_squared_error")
+
+    def delta(self, t, y, d):
+        eddlT.copyTensor(eddlT.sub(y, t), d)
+        eddlT.div_(d, eddlT.getShape(t)[0])
+
+    def value(self, t, y):
+        aux = eddlT.add(t, eddlT.neg(y))
+        aux = eddlT.mult(aux, aux)
+        return aux.sum() / eddlT.getShape(t)[0]
+
+
+class MSEMetric(Metric):
+
+    def __init__(self):
+        Metric.__init__(self, "py_mean_squared_error")
 
     def value(self, t, y):
         aux = eddlT.add(t, eddlT.neg(y))
@@ -55,12 +70,12 @@ def main(args):
     out = eddl.Dense(layer, 784)
 
     net = eddl.Model([in_], [out])
-    mse = MSE()
-
+    mse_loss = MSELoss()
+    mse_metric = MSEMetric()
     net.build(
         eddl.sgd(0.001, 0.9),
-        [eddl.getLoss("mean_squared_error")],
-        [mse],
+        [mse_loss],
+        [mse_metric],
         eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
     )
 
