@@ -14,6 +14,6 @@ WORKDIR /eddl
 
 RUN mkdir build && \
     cd build && \
-    cmake -D BUILD_SHARED_LIB=ON .. && \
+    cmake -D BUILD_SHARED_LIB=ON -D BUILD_EXAMPLES=ON .. && \
     make -j$(grep -c ^processor /proc/cpuinfo) && \
     make install

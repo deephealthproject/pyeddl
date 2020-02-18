@@ -6,9 +6,21 @@ WORKDIR /eddl
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     zlib1g-dev
 
+RUN wget -q https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz && \
+    tar xf eigen-3.3.7.tar.gz && \
+    cd eigen-3.3.7 && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    make install
+
+
+ENV CPATH="/usr/local/include/eigen3:${CPATH}"
+
+
 RUN mkdir build && \
     cd build && \
     ln -s /usr/lib/x86_64-linux-gnu/libcublas.so /usr/local/cuda/lib64/ && \
-    cmake -D BUILD_TARGET=GPU -D BUILD_TESTS=ON -D EDDL_SHARED=ON .. && \
+    cmake -D BUILD_TARGET=GPU -D BUILD_EXAMPLES=ON -D BUILD_SHARED_LIB=ON .. && \
     make -j$(grep -c ^processor /proc/cpuinfo) && \
     make install
