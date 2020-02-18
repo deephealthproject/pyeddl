@@ -891,25 +891,25 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 	// eddl::compute_metric(class NetLoss *) file:eddl/apis/eddl.h line:295
 	M("eddl").def("compute_metric", (float (*)(class NetLoss *)) &eddl::compute_metric, "C++: eddl::compute_metric(class NetLoss *) --> float", pybind11::arg("L"));
 
-	// eddl::set_trainable(class Layer *, bool) file:eddl/apis/eddl.h line:1040
+	// eddl::set_trainable(class Layer *, bool) file:eddl/apis/eddl.h line:1049
 	M("eddl").def("set_trainable", (void (*)(class Layer *, bool)) &eddl::set_trainable, "C++: eddl::set_trainable(class Layer *, bool) --> void", pybind11::arg("l"), pybind11::arg("val"));
 
-	// eddl::copyTensor(class Layer *, class Layer *) file:eddl/apis/eddl.h line:1041
+	// eddl::copyTensor(class Layer *, class Layer *) file:eddl/apis/eddl.h line:1050
 	M("eddl").def("copyTensor", (void (*)(class Layer *, class Layer *)) &eddl::copyTensor, "C++: eddl::copyTensor(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::copyGrad(class Layer *, class Layer *) file:eddl/apis/eddl.h line:1042
+	// eddl::copyGrad(class Layer *, class Layer *) file:eddl/apis/eddl.h line:1051
 	M("eddl").def("copyGrad", (void (*)(class Layer *, class Layer *)) &eddl::copyGrad, "C++: eddl::copyGrad(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::getGrad(class Layer *) file:eddl/apis/eddl.h line:1045
+	// eddl::getGrad(class Layer *) file:eddl/apis/eddl.h line:1054
 	M("eddl").def("getGrad", (class Tensor * (*)(class Layer *)) &eddl::getGrad, "C++: eddl::getGrad(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l"));
 
-	// eddl::download_mnist() file:eddl/apis/eddl.h line:1113
+	// eddl::download_mnist() file:eddl/apis/eddl.h line:1122
 	M("eddl").def("download_mnist", (void (*)()) &eddl::download_mnist, "Downloads MNIST Dataset.\n\n  \n   http://yann.lecun.com/exdb/mnist/\n\n  \n     (void) The binary files of MNIST\n\nC++: eddl::download_mnist() --> void");
 
-	// eddl::download_cifar10() file:eddl/apis/eddl.h line:1121
+	// eddl::download_cifar10() file:eddl/apis/eddl.h line:1130
 	M("eddl").def("download_cifar10", (void (*)()) &eddl::download_cifar10, "Downloads CIFAR-10 Dataset.\n\n  \n   https://www.cs.toronto.edu/~kriz/cifar.html\n\n  \n     (void) The binary files of CIFAR-10\n\nC++: eddl::download_cifar10() --> void");
 
-	// eddl::download_drive() file:eddl/apis/eddl.h line:1129
+	// eddl::download_drive() file:eddl/apis/eddl.h line:1138
 	M("eddl").def("download_drive", (void (*)()) &eddl::download_drive, "Downloads DRIVE Dataset.\n\n  \n   https://drive.grand-challenge.org/\n\n  \n     (void) The numpy files of DRIVE\n\nC++: eddl::download_drive() --> void");
 
 }
