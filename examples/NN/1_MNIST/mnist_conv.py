@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 CRS4
+# Copyright (c) 2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-LOAD_SAVE example.
+MNIST CONV example.
 """
 
 import argparse
@@ -36,9 +36,20 @@ def main(args):
 
     in_ = eddl.Input([784])
     layer = in_
-    layer = eddl.BatchNormalization(eddl.ReLu(eddl.Dense(layer, 1024)))
-    layer = eddl.BatchNormalization(eddl.ReLu(eddl.Dense(layer, 1024)))
-    layer = eddl.BatchNormalization(eddl.ReLu(eddl.Dense(layer, 1024)))
+    layer = eddl.Reshape(layer, [1, 28, 28])
+    layer = eddl.MaxPool(
+        eddl.ReLu(eddl.Conv(layer, 32, [3, 3], [1, 1])), [2, 2]
+    )
+    layer = eddl.MaxPool(
+        eddl.ReLu(eddl.Conv(layer, 64, [3, 3], [1, 1])), [2, 2]
+    )
+    layer = eddl.MaxPool(
+        eddl.ReLu(eddl.Conv(layer, 128, [3, 3], [1, 1])), [2, 2]
+    )
+    layer = eddl.MaxPool(
+        eddl.ReLu(eddl.Conv(layer, 256, [3, 3], [1, 1])), [2, 2]
+    )
+    layer = eddl.Reshape(layer, [-1])
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
 
@@ -51,29 +62,15 @@ def main(args):
     )
 
     eddl.summary(net)
-    eddl.plot(net, "model.pdf")
 
     x_train = eddlT.load("trX.bin")
     y_train = eddlT.load("trY.bin")
     x_test = eddlT.load("tsX.bin")
     y_test = eddlT.load("tsY.bin")
-
     eddlT.div_(x_train, 255.0)
+    eddlT.div_(x_test, 255.0)
 
-    print("saving untrained model")
-    eddl.save(net, "model_untrained.bin")
-    print("training model")
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
-    print("saving trained model")
-    eddl.save(net, "model_trained.bin")
-
-    print("loading untrained model")
-    eddl.load(net, "model_untrained.bin")
-    print("evaluating untrained model")
-    eddl.evaluate(net, [x_test], [y_test])
-    print("loading trained model")
-    eddl.load(net, "model_trained.bin")
-    print("evaluating trained model")
     eddl.evaluate(net, [x_test], [y_test])
 
 

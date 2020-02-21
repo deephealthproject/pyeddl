@@ -808,6 +808,73 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("clone", (class Optimizer * (Optimizer::*)()) &Optimizer::clone, "C++: Optimizer::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
 		cl.def("assign", (class Optimizer & (Optimizer::*)(const class Optimizer &)) &Optimizer::operator=, "C++: Optimizer::operator=(const class Optimizer &) --> class Optimizer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
+	{ // Net file: line:41
+		pybind11::class_<Net, std::shared_ptr<Net>> cl(M(""), "Net", "");
+		cl.def( pybind11::init( [](Net const &o){ return new Net(o); } ) );
+		cl.def_readwrite("name", &Net::name);
+		cl.def_readwrite("dev", &Net::dev);
+		cl.def_readwrite("batch_size", &Net::batch_size);
+		cl.def_readwrite("tr_batches", &Net::tr_batches);
+		cl.def_readwrite("inferenced_samples", &Net::inferenced_samples);
+		cl.def_readwrite("trmode", &Net::trmode);
+		cl.def_readwrite("mem_level", &Net::mem_level);
+		cl.def_readwrite("verbosity_level", &Net::verbosity_level);
+		cl.def_readwrite("devsel", &Net::devsel);
+		cl.def_readwrite("layers", &Net::layers);
+		cl.def_readwrite("lin", &Net::lin);
+		cl.def_readwrite("lout", &Net::lout);
+		cl.def_readwrite("vfts", &Net::vfts);
+		cl.def_readwrite("vbts", &Net::vbts);
+		cl.def_readwrite("netinput", &Net::netinput);
+		cl.def_readwrite("losses", &Net::losses);
+		cl.def_readwrite("metrics", &Net::metrics);
+		cl.def_readwrite("fiterr", &Net::fiterr);
+		cl.def_readwrite("total_loss", &Net::total_loss);
+		cl.def_readwrite("total_metric", &Net::total_metric);
+		cl.def_readwrite("snets", &Net::snets);
+		cl.def("toCPU", (void (Net::*)(int)) &Net::toCPU, "C++: Net::toCPU(int) --> void", pybind11::arg("t"));
+		cl.def("fts", (void (Net::*)()) &Net::fts, "C++: Net::fts() --> void");
+		cl.def("bts", (void (Net::*)()) &Net::bts, "C++: Net::bts() --> void");
+		cl.def("split", (void (Net::*)(int, int)) &Net::split, "C++: Net::split(int, int) --> void", pybind11::arg("c"), pybind11::arg("todev"));
+		cl.def("inNet", (int (Net::*)(class Layer *)) &Net::inNet, "C++: Net::inNet(class Layer *) --> int", pybind11::arg("l"));
+		cl.def("walk", (void (Net::*)(class Layer *)) &Net::walk, "C++: Net::walk(class Layer *) --> void", pybind11::arg("l"));
+		cl.def("walk_back", (void (Net::*)(class Layer *)) &Net::walk_back, "C++: Net::walk_back(class Layer *) --> void", pybind11::arg("l"));
+		cl.def("resize", (void (Net::*)(int)) &Net::resize, "C++: Net::resize(int) --> void", pybind11::arg("batch"));
+		cl.def("enable_distributed", (void (Net::*)()) &Net::enable_distributed, "C++: Net::enable_distributed() --> void");
+		cl.def("setmode", (void (Net::*)(int)) &Net::setmode, "C++: Net::setmode(int) --> void", pybind11::arg("m"));
+		cl.def("do_initialize", (void (Net::*)()) &Net::do_initialize, "C++: Net::do_initialize() --> void");
+		cl.def("do_reset", (void (Net::*)()) &Net::do_reset, "C++: Net::do_reset() --> void");
+		cl.def("do_reset_grads", (void (Net::*)()) &Net::do_reset_grads, "C++: Net::do_reset_grads() --> void");
+		cl.def("do_forward", (void (Net::*)()) &Net::do_forward, "C++: Net::do_forward() --> void");
+		cl.def("do_delta", (void (Net::*)()) &Net::do_delta, "C++: Net::do_delta() --> void");
+		cl.def("do_compute_loss", (void (Net::*)()) &Net::do_compute_loss, "C++: Net::do_compute_loss() --> void");
+		cl.def("do_backward", (void (Net::*)()) &Net::do_backward, "C++: Net::do_backward() --> void");
+		cl.def("do_applygrads", (void (Net::*)()) &Net::do_applygrads, "C++: Net::do_applygrads() --> void");
+		cl.def("reset_accumulated_gradients", (void (Net::*)()) &Net::reset_accumulated_gradients, "C++: Net::reset_accumulated_gradients() --> void");
+		cl.def("apply_accumulated_gradients", (void (Net::*)()) &Net::apply_accumulated_gradients, "C++: Net::apply_accumulated_gradients() --> void");
+		cl.def("sync_weights", (void (Net::*)()) &Net::sync_weights, "C++: Net::sync_weights() --> void");
+		cl.def("forward", (void (Net::*)()) &Net::forward, "C++: Net::forward() --> void");
+		cl.def("reset_loss", (void (Net::*)()) &Net::reset_loss, "C++: Net::reset_loss() --> void");
+		cl.def("print_loss", (void (Net::*)(int)) &Net::print_loss, "C++: Net::print_loss(int) --> void", pybind11::arg("b"));
+		cl.def("backward", (void (Net::*)()) &Net::backward, "C++: Net::backward() --> void");
+		cl.def("delta", (void (Net::*)()) &Net::delta, "C++: Net::delta() --> void");
+		cl.def("reset", (void (Net::*)()) &Net::reset, "C++: Net::reset() --> void");
+		cl.def("reset_grads", (void (Net::*)()) &Net::reset_grads, "C++: Net::reset_grads() --> void");
+		cl.def("update", (void (Net::*)()) &Net::update, "C++: Net::update() --> void");
+		cl.def("compute_loss", (void (Net::*)()) &Net::compute_loss, "C++: Net::compute_loss() --> void");
+		cl.def("clamp", (void (Net::*)(float, float)) &Net::clamp, "C++: Net::clamp(float, float) --> void", pybind11::arg("min"), pybind11::arg("max"));
+
+		net_addons(cl);
+	}
+	{ // NetLoss file:eddl/net/netloss.h line:24
+		pybind11::class_<NetLoss, std::shared_ptr<NetLoss>> cl(M(""), "NetLoss", "");
+		cl.def( pybind11::init( [](NetLoss const &o){ return new NetLoss(o); } ) );
+		cl.def_readwrite("name", &NetLoss::name);
+		cl.def_readwrite("value", &NetLoss::value);
+		cl.def_readwrite("input", &NetLoss::input);
+		cl.def_readwrite("ginput", &NetLoss::ginput);
+		cl.def("compute", (float (NetLoss::*)()) &NetLoss::compute, "C++: NetLoss::compute() --> float");
+	}
 }
 
 

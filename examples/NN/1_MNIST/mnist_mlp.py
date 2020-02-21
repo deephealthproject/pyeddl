@@ -37,10 +37,10 @@ def main(args):
     in_ = eddl.Input([784])
 
     layer = in_
-    layer = eddl.ReLu(eddl.Dense(layer, 1024))
-    layer = eddl.ReLu(eddl.Dense(layer, 1024))
-    layer = eddl.ReLu(eddl.Dense(layer, 1024))
-    out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
+    layer = eddl.LeakyReLu(eddl.Dense(layer, 1024))
+    layer = eddl.LeakyReLu(eddl.Dense(layer, 1024))
+    layer = eddl.LeakyReLu(eddl.Dense(layer, 1024))
+    out = eddl.Softmax(eddl.Dense(layer, num_classes))
     net = eddl.Model([in_], [out])
 
     eddl.build(
