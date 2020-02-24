@@ -187,6 +187,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def_static("moveaxis", (class Tensor * (*)(class Tensor *, int, int)) &Tensor::moveaxis, "C++: Tensor::moveaxis(class Tensor *, int, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("t"), pybind11::arg("source"), pybind11::arg("destination"));
 		cl.def_static("swapaxis", (class Tensor * (*)(class Tensor *, int, int)) &Tensor::swapaxis, "C++: Tensor::swapaxis(class Tensor *, int, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("t"), pybind11::arg("axis1"), pybind11::arg("axis2"));
 		cl.def("fill_", (void (Tensor::*)(float)) &Tensor::fill_, "C++: Tensor::fill_(float) --> void", pybind11::arg("v"));
+		cl.def_static("flatten", (class Tensor * (*)(class Tensor *)) &Tensor::flatten, "C++: Tensor::flatten(class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
 		cl.def("squeeze_", (void (Tensor::*)()) &Tensor::squeeze_, "C++: Tensor::squeeze_() --> void");
 		cl.def_static("squeeze", (class Tensor * (*)(class Tensor *)) &Tensor::squeeze, "C++: Tensor::squeeze(class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
 		cl.def("unsqueeze_", (void (Tensor::*)()) &Tensor::unsqueeze_, "C++: Tensor::unsqueeze_() --> void");
