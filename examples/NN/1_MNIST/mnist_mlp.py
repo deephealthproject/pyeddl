@@ -48,7 +48,7 @@ def main(args):
         eddl.rmsprop(0.01),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
+        eddl.CS_GPU([1], "low_mem") if args.gpu else eddl.CS_CPU(-1, "low_mem")
     )
 
     eddl.summary(net)
