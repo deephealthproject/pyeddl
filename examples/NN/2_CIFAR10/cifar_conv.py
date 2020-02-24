@@ -29,6 +29,11 @@ import pyeddl._core.eddl as eddl
 import pyeddl._core.eddlT as eddlT
 
 
+def Normalization(layer):
+    # return eddl.BatchNormalization(Layer)
+    return layer
+
+
 def main(args):
     eddl.download_cifar10()
 
@@ -37,20 +42,20 @@ def main(args):
     in_ = eddl.Input([3, 32, 32])
 
     layer = in_
-    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+    layer = eddl.MaxPool(eddl.ReLu(Normalization(
         eddl.Conv(layer, 32, [3, 3], [1, 1])
     )), [2, 2])
-    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+    layer = eddl.MaxPool(eddl.ReLu(Normalization(
         eddl.Conv(layer, 64, [3, 3], [1, 1])
     )), [2, 2])
-    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+    layer = eddl.MaxPool(eddl.ReLu(Normalization(
         eddl.Conv(layer, 128, [3, 3], [1, 1])
     )), [2, 2])
-    # layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+    # layer = eddl.MaxPool(eddl.ReLu(Normalization(
     #     eddl.Conv(layer, 256, [3, 3], [1, 1])
     # )), [2, 2])
     layer = eddl.GlobalMaxPool(layer)
-    layer = eddl.Reshape(layer, [-1])
+    layer = eddl.Flatten(layer)
     layer = eddl.Activation(eddl.Dense(layer, 128), "relu")
 
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
@@ -61,7 +66,7 @@ def main(args):
         eddl.sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
+        eddl.CS_GPU([1], "low_mem") if args.gpu else eddl.CS_CPU(-1, "low_mem")
     )
 
     eddl.summary(net)
