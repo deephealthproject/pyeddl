@@ -21,6 +21,7 @@
 #pragma once
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
+#include <eddl/serialization/onnx/eddl_onnx.h>
 
 // Use return_value_policy::reference for objects that get deleted on the C++
 // side. In particular, layers and optimizers are deleted by the Net destructor
@@ -220,4 +221,8 @@ void eddl_addons(pybind11::module &m) {
     //   RandomAffine
     //   RandomCenteredCrop
     //   RandomGrayscale
+
+    // --- serialization ---
+    m.def("save_net_to_onnx_file", (void (*)(class Net*, string)) &eddl::save_net_to_onnx_file, "C++: eddl::save_net_to_onnx_file(class Net *, string) --> void", pybind11::arg("net"), pybind11::arg("path"));
+    m.def("import_net_from_onnx_file", (class Net* (*)(string)) &eddl::import_net_from_onnx_file, "C++: eddl::import_net_from_onnx_file(string) --> class Net*", pybind11::arg("path"));
 }

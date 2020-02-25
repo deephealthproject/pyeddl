@@ -12,8 +12,16 @@ ENV CPATH="/usr/include/eigen3:${CPATH}"
 COPY third_party/eddl /eddl
 WORKDIR /eddl
 
+RUN wget -q https://github.com/protocolbuffers/protobuf/releases/download/v3.11.4/protobuf-all-3.11.4.tar.gz && \
+    tar xf protobuf-all-3.11.4.tar.gz && \
+    cd protobuf-3.11.4/ && \
+    ./configure && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig
+
 RUN mkdir build && \
     cd build && \
-    cmake -D BUILD_SHARED_LIB=ON .. && \
+    cmake -D BUILD_SHARED_LIB=ON -D BUILD_PROTOBUF=ON .. && \
     make -j$(grep -c ^processor /proc/cpuinfo) && \
     make install

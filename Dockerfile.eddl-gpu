@@ -4,8 +4,13 @@ COPY third_party/eddl /eddl
 WORKDIR /eddl
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
-    zlib1g-dev
+    zlib1g-dev \
+    libprotobuf-dev \
+    protobuf-compiler \
+    protobuf-c-compiler
 
+# Eigen version installed by APT is too old to work properly with CUDA
+# https://devtalk.nvidia.com/default/topic/1026622/nvcc-can-t-compile-code-that-uses-eigen/
 RUN wget -q https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz && \
     tar xf eigen-3.3.7.tar.gz && \
     cd eigen-3.3.7 && \
@@ -14,6 +19,14 @@ RUN wget -q https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz
     cmake .. && \
     make install
 
+RUN wget -q https://github.com/protocolbuffers/protobuf/releases/download/v3.11.4/protobuf-all-3.11.4.tar.gz && \
+    tar xf protobuf-all-3.11.4.tar.gz && \
+    cd protobuf-3.11.4/ && \
+    ./configure && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig
+
 
 ENV CPATH="/usr/local/include/eigen3:${CPATH}"
 
@@ -21,6 +34,6 @@ ENV CPATH="/usr/local/include/eigen3:${CPATH}"
 RUN mkdir build && \
     cd build && \
     ln -s /usr/lib/x86_64-linux-gnu/libcublas.so /usr/local/cuda/lib64/ && \
-    cmake -D BUILD_TARGET=GPU -D BUILD_EXAMPLES=ON -D BUILD_SHARED_LIB=ON .. && \
+    cmake -D BUILD_TARGET=GPU -D BUILD_EXAMPLES=ON -D BUILD_SHARED_LIB=ON -D BUILD_PROTOBUF=ON .. && \
     make -j$(grep -c ^processor /proc/cpuinfo) && \
     make install
