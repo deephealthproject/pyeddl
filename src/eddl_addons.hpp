@@ -225,4 +225,12 @@ void eddl_addons(pybind11::module &m) {
     // --- serialization ---
     m.def("save_net_to_onnx_file", (void (*)(class Net*, string)) &eddl::save_net_to_onnx_file, "C++: eddl::save_net_to_onnx_file(class Net *, string) --> void", pybind11::arg("net"), pybind11::arg("path"));
     m.def("import_net_from_onnx_file", (class Net* (*)(string)) &eddl::import_net_from_onnx_file, "C++: eddl::import_net_from_onnx_file(string) --> class Net*", pybind11::arg("path"));
+    m.def("serialize_net_to_onnx_string", [](Net* net, bool gradients) -> pybind11::bytes {
+      string* s = eddl::serialize_net_to_onnx_string(net, gradients);
+      return pybind11::bytes(*s);
+    }, pybind11::arg("net"), pybind11::arg("gradients"));
+    m.def("import_net_from_onnx_string", [](pybind11::bytes model_string) -> Net* {
+      string s = string(model_string);
+      return eddl::import_net_from_onnx_string(&s, s.size());
+    }, pybind11::arg("model_string"));
 }
