@@ -7,7 +7,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker'
-                            image 'simleo/pyeddl-base:01ef395'
+                            image 'simleo/pyeddl-base:61e0456e'
                             args '-u 1000:1000'
                         }
                     }
@@ -27,8 +27,8 @@ pipeline {
 				sh 'wget -q https://www.dropbox.com/s/q0tnbjvaenb4tjs/tsY.bin'
 				echo 'Testing'
 				sh 'pytest tests'
-				sh 'python3 examples/Tensor/eddl_tensor.py'
-				sh 'python3 examples/NN/other/eddl_ae.py --epochs 1'
+				sh 'python3 examples/Tensor/array_tensor_save.py'
+				sh 'python3 examples/NN/1_MNIST/mnist_auto_encoder.py --epochs 1'
                             }
                         }
                         stage('linux_end') {
@@ -47,7 +47,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker && gpu'
-                            image 'simleo/pyeddl-gpu-base:01ef395'
+                            image 'simleo/pyeddl-gpu-base:61e0456e'
                             args '--gpus 1 -u 1000:1000'
                         }
                     }
@@ -65,9 +65,10 @@ pipeline {
                             steps {
 				echo 'Testing'
 				sh 'pytest tests'
-				sh 'python3 examples/Tensor/eddl_tensor.py --gpu'
-				sh 'bash examples/NN/other/run_all_fast.sh'
+				sh 'python3 examples/Tensor/array_tensor_save.py'
 				sh 'bash examples/NN/1_MNIST/run_all_fast.sh'
+				sh 'bash examples/NN/py_loss_metric/run_all_fast.sh'
+				sh 'bash examples/onnx/run_all_fast.sh'
 			    }
                         }
                         stage('linux_gpu_end') {

@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 CRS4
+# Copyright (c) 2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,10 +19,11 @@
 # SOFTWARE.
 
 """\
-LOAD_SAVE example.
+Import model from file in ONNX format.
 """
 
 import argparse
+import os
 import sys
 
 import pyeddl._core.eddl as eddl
@@ -30,56 +31,40 @@ import pyeddl._core.eddlT as eddlT
 
 
 def main(args):
+    if not os.path.isfile(args.input):
+        raise RuntimeError("input file '%s' not found" % args.input)
+
     eddl.download_mnist()
 
-    num_classes = 10
-
-    in_ = eddl.Input([784])
-    layer = in_
-    layer = eddl.BatchNormalization(eddl.ReLu(eddl.Dense(layer, 1024)))
-    layer = eddl.BatchNormalization(eddl.ReLu(eddl.Dense(layer, 1024)))
-    layer = eddl.BatchNormalization(eddl.ReLu(eddl.Dense(layer, 1024)))
-    out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
-    net = eddl.Model([in_], [out])
+    print("importing net from", args.input)
+    net = eddl.import_net_from_onnx_file(args.input)
+    print("output size =", len(net.lout))
 
     eddl.build(
         net,
         eddl.rmsprop(0.01),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
+        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(),
+        False  # do not initialize weights to random values
     )
 
+    net.resize(args.batch_size)  # resize manually since we don't use "fit"
     eddl.summary(net)
-    eddl.plot(net, "model.pdf")
 
-    x_train = eddlT.load("trX.bin")
-    y_train = eddlT.load("trY.bin")
     x_test = eddlT.load("tsX.bin")
     y_test = eddlT.load("tsY.bin")
 
-    eddlT.div_(x_train, 255.0)
+    eddlT.div_(x_test, 255.0)
 
-    print("saving untrained model")
-    eddl.save(net, "model_untrained.bin")
-    print("training model")
-    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
-    print("saving trained model")
-    eddl.save(net, "model_trained.bin")
-
-    print("loading untrained model")
-    eddl.load(net, "model_untrained.bin")
-    print("evaluating untrained model")
-    eddl.evaluate(net, [x_test], [y_test])
-    print("loading trained model")
-    eddl.load(net, "model_trained.bin")
-    print("evaluating trained model")
     eddl.evaluate(net, [x_test], [y_test])
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--epochs", type=int, metavar="INT", default=10)
     parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
     parser.add_argument("--gpu", action="store_true")
+    parser.add_argument("--input", metavar="STRING",
+                        default="trained_model.onnx",
+                        help="input path of the serialized model")
     main(parser.parse_args(sys.argv[1:]))

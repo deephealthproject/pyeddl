@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 CRS4
+# Copyright (c) 2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-MLP example.
+Save model to file in ONNX format.
 """
 
 import argparse
@@ -37,28 +37,23 @@ def main(args):
     in_ = eddl.Input([784])
 
     layer = in_
-    layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
-    )
-    layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
-    )
-    layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
-    )
+    layer = eddl.Reshape(layer, [-1])
+    layer = eddl.ReLu(eddl.Dense(layer, 1024))
+    layer = eddl.ReLu(eddl.Dense(layer, 1024))
+    layer = eddl.ReLu(eddl.Dense(layer, 1024))
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
 
     eddl.build(
         net,
-        eddl.sgd(0.01, 0.9),
+        eddl.rmsprop(0.01),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
+        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(),
+        True  # initialize weights to random values
     )
 
     eddl.summary(net)
-    eddl.plot(net, "model.pdf")
 
     x_train = eddlT.load("trX.bin")
     y_train = eddlT.load("trY.bin")
@@ -68,10 +63,11 @@ def main(args):
     eddlT.div_(x_train, 255.0)
     eddlT.div_(x_test, 255.0)
 
-    for i in range(args.epochs):
-        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-
+    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
     eddl.evaluate(net, [x_test], [y_test])
+
+    eddl.save_net_to_onnx_file(net, args.output)
+    print("saved net to", args.output)
 
 
 if __name__ == "__main__":
@@ -79,4 +75,7 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, metavar="INT", default=10)
     parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
     parser.add_argument("--gpu", action="store_true")
+    parser.add_argument("--output", metavar="STRING",
+                        default="trained_model.onnx",
+                        help="output path for the serialized model")
     main(parser.parse_args(sys.argv[1:]))

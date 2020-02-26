@@ -30,6 +30,11 @@ import pybind11
 from pyeddl.version import VERSION
 
 
+def to_bool(s):
+    s = s.lower()
+    return s != "off" and s != "false"
+
+
 EXTRA_COMPILE_ARGS = ['-std=c++11', '-fvisibility=hidden']
 LIBRARIES = ["eddl"]
 if "EDDL_WITH_CUDA" in os.environ:
@@ -46,6 +51,11 @@ if EDDL_DIR:
     INCLUDE_DIRS.extend([os.path.join(EDDL_DIR, "include")])
     LIBRARY_DIRS.extend([os.path.join(EDDL_DIR, "lib")])
     RUNTIME_LIBRARY_DIRS.extend([os.path.join(EDDL_DIR, "lib")])
+
+# optional modules, on by default. Set env var to "OFF" or "FALSE" to disable
+EDDL_WITH_PROTOBUF = to_bool(os.getenv("EDDL_WITH_PROTOBUF", "ON"))
+if EDDL_WITH_PROTOBUF:
+    EXTRA_COMPILE_ARGS.append('-DEDDL_WITH_PROTOBUF')
 
 
 ext = Extension(

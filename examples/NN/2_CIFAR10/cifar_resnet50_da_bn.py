@@ -54,7 +54,8 @@ def main(args):
 
     layer = in_
     layer = eddl.RandomCropScale(layer, [0.8, 1.0])
-    layer = eddl.Flip(layer, 1)
+    layer = eddl.RandomFlip(layer, 1)
+    layer = eddl.RandomCutout(layer, [0.1, 0.3], [0.1, 0.3])
     layer = eddl.ReLu(BG(eddl.Conv(layer, 64, [3, 3], [1, 1])))
     for i in range(3):
         layer = ResBlock(layer, 64, i == 0)
@@ -72,10 +73,12 @@ def main(args):
 
     eddl.build(
         net,
-        eddl.sgd(0.01, 0.9),
+        eddl.adam(0.001),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
+        eddl.CS_GPU([1], "full_mem") if args.gpu else eddl.CS_CPU(
+            -1, "full_mem"
+        )
     )
 
     eddl.summary(net)

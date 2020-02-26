@@ -54,7 +54,7 @@ def main(args):
 
     layer = in_
     layer = eddl.RandomCropScale(layer, [0.8, 1.0])
-    layer = eddl.Flip(layer, 1)
+    layer = eddl.RandomFlip(layer, 1)
     layer = eddl.MaxPool(Block3_2(layer, 64))
     layer = eddl.MaxPool(Block3_2(layer, 128))
     layer = eddl.MaxPool(Block1(Block3_2(layer, 256), 256))
@@ -71,7 +71,7 @@ def main(args):
         eddl.sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
+        eddl.CS_GPU([1], "low_mem") if args.gpu else eddl.CS_CPU(-1, "low_mem")
     )
 
     eddl.summary(net)

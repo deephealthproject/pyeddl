@@ -32,52 +32,55 @@ import pyeddl._core.eddlT as eddlT
 from pyeddl._core import Tensor
 
 
+USE_CONCAT = 1
+
+
 def UNetWithPadding(layer):
     x = layer
     depth = 32
 
-    x = eddl.LReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
-    x = eddl.LReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
+    x = eddl.LeakyReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
+    x = eddl.LeakyReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
     x2 = eddl.MaxPool(x, [2, 2], [2, 2])
-    x2 = eddl.LReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
-    x2 = eddl.LReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
+    x2 = eddl.LeakyReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
+    x2 = eddl.LeakyReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
     x3 = eddl.MaxPool(x2, [2, 2], [2, 2])
-    x3 = eddl.LReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
-    x3 = eddl.LReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
+    x3 = eddl.LeakyReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
+    x3 = eddl.LeakyReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
     x4 = eddl.MaxPool(x3, [2, 2], [2, 2])
-    x4 = eddl.LReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
-    x4 = eddl.LReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
+    x4 = eddl.LeakyReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
+    x4 = eddl.LeakyReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
     x5 = eddl.MaxPool(x4, [2, 2], [2, 2])
-    x5 = eddl.LReLu(eddl.Conv(x5, 8*depth, [3, 3], [1, 1], "same"))
-    x5 = eddl.LReLu(eddl.Conv(x5, 8*depth, [3, 3], [1, 1], "same"))
+    x5 = eddl.LeakyReLu(eddl.Conv(x5, 8*depth, [3, 3], [1, 1], "same"))
+    x5 = eddl.LeakyReLu(eddl.Conv(x5, 8*depth, [3, 3], [1, 1], "same"))
     x5 = eddl.Conv(
         eddl.UpSampling(x5, [2, 2]), 8*depth, [2, 2], [1, 1], "same"
     )
 
-    x4 = eddl.Concat([x4, x5], "my_concat_1")
-    x4 = eddl.LReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
-    x4 = eddl.LReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
+    x4 = eddl.Concat([x4, x5]) if USE_CONCAT else eddl.Sum([x4, x5])
+    x4 = eddl.LeakyReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
+    x4 = eddl.LeakyReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
     x4 = eddl.Conv(
         eddl.UpSampling(x4, [2, 2]), 4*depth, [2, 2], [1, 1], "same"
     )
 
-    x3 = eddl.Concat([x3, x4], "my_concat_2")
-    x3 = eddl.LReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
-    x3 = eddl.LReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
+    x3 = eddl.Concat([x3, x4]) if USE_CONCAT else eddl.Sum([x3, x4])
+    x3 = eddl.LeakyReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
+    x3 = eddl.LeakyReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
     x3 = eddl.Conv(
         eddl.UpSampling(x3, [2, 2]), 2*depth, [2, 2], [1, 1], "same"
     )
 
-    x2 = eddl.Concat([x2, x3], "my_concat_3")
-    x2 = eddl.LReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
-    x2 = eddl.LReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
+    x2 = eddl.Concat([x2, x3]) if USE_CONCAT else eddl.Sum([x2, x3])
+    x2 = eddl.LeakyReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
+    x2 = eddl.LeakyReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
     x2 = eddl.Conv(
         eddl.UpSampling(x2, [2, 2]), depth, [2, 2], [1, 1], "same"
     )
 
-    x = eddl.Concat([x, x2], "my_concat_4")
-    x = eddl.LReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
-    x = eddl.LReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
+    x = eddl.Concat([x, x2]) if USE_CONCAT else eddl.Sum([x, x2])
+    x = eddl.LeakyReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
+    x = eddl.LeakyReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
     x = eddl.Conv(x, 1, [1, 1])
 
     return x
@@ -99,7 +102,7 @@ def main(args):
     danet = eddl.Model([in_1, in_2], [])
     eddl.build(danet)
     if args.gpu:
-        eddl.toGPU(danet, [1])
+        eddl.toGPU(danet, "low_mem")
     eddl.summary(danet)
 
     # SegNet
@@ -110,11 +113,9 @@ def main(args):
         segnet,
         eddl.adam(0.00001),  # Optimizer
         ["mse"],  # Losses
-        ["mse"]  # Metrics
+        ["mse"],  # Metrics
+        eddl.CS_GPU([1], "low_mem") if args.gpu else eddl.CS_CPU(-1, "low_mem")
     )
-
-    if args.gpu:
-        eddl.toGPU(segnet, [1], 100)  # sync weights every 100 batches
     eddl.summary(segnet)
 
     print("Reading training data")
@@ -148,6 +149,7 @@ def main(args):
             if i == args.epochs - 1:
                 yout = eddlT.select(eddl.getTensor(out), 0)
                 eddlT.save(yout, "./out_%d.jpg" % j)
+            print()
 
 
 if __name__ == "__main__":

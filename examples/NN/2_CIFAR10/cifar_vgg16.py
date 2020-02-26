@@ -30,12 +30,18 @@ import pyeddl._core.eddlT as eddlT
 
 
 def Block1(layer, filters):
-    return eddl.ReLu(eddl.Conv(layer, filters, [1, 1], [1, 1]))
+    return eddl.ReLu(eddl.BatchNormalization(
+        eddl.Conv(layer, filters, [1, 1], [1, 1])
+    ))
 
 
 def Block3_2(layer, filters):
-    layer = eddl.ReLu(eddl.Conv(layer, filters, [3, 3], [1, 1]))
-    layer = eddl.ReLu(eddl.Conv(layer, filters, [3, 3], [1, 1]))
+    layer = eddl.ReLu(eddl.BatchNormalization(
+        eddl.Conv(layer, filters, [3, 3], [1, 1])
+    ))
+    layer = eddl.ReLu(eddl.BatchNormalization(
+        eddl.Conv(layer, filters, [3, 3], [1, 1])
+    ))
     return layer
 
 
@@ -47,6 +53,11 @@ def main(args):
     in_ = eddl.Input([3, 32, 32])
 
     layer = in_
+
+    layer = eddl.RandomCropScale(layer, [0.8, 1.0])
+    layer = eddl.RandomFlip(layer, 1)
+    layer = eddl.RandomCutout(layer, [0.1, 0.3], [0.1, 0.3])
+
     layer = eddl.MaxPool(Block3_2(layer, 64))
     layer = eddl.MaxPool(Block3_2(layer, 128))
     layer = eddl.MaxPool(Block1(Block3_2(layer, 256), 256))
@@ -60,10 +71,12 @@ def main(args):
 
     eddl.build(
         net,
-        eddl.sgd(0.01, 0.9),
+        eddl.sgd(0.001, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
+        eddl.CS_GPU([1], "full_mem") if args.gpu else eddl.CS_CPU(
+            -1, "full_mem"
+        )
     )
 
     eddl.setlogfile(net, "vgg16")

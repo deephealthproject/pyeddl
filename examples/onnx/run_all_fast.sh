@@ -8,15 +8,14 @@ this="${BASH_SOURCE-$0}"
 this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 names=(
-    eddl_ae
-    eddl_conv
-    eddl_dae_class
-    eddl_load_save
-    eddl_mlp
-    eddl_train_batch
+    to_from_string
+    save_net_to_file
 )
 
 for n in "${names[@]}"; do
     echo -en "\n*** ${n} ***\n"
     python3 "${this_dir}"/${n}.py --gpu --epochs 1
 done
+
+echo -en "\n*** import_net_from_file ***\n"
+python3 "${this_dir}"/import_net_from_file.py --gpu

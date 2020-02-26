@@ -160,6 +160,17 @@ pyeddl git repository:
     pytest tests
 
 
+### Disabling unwanted modules
+
+By default, PyEDDL assumes a complete EDDL installation, including optional
+modules, and builds bindings for all of them. You can disable support for
+specific modules via environment variables. For instance, suppose you
+installed EDDL without protobuf support: by default, PyEDDL will try to build
+the bindings for protobuf-specific EDDL tools. To avoid this, set the
+`EDDL_WITH_PROTOBUF` environment variable to `OFF` (or `FALSE`) before
+building PyEDDL.
+
+
 ### EDDL installed in an arbitrary directory
 
 The above installation instructions assume EDDL has been installed in standard

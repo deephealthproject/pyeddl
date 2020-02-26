@@ -9,7 +9,6 @@ this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 binder=${BINDER_EXE:-/binder/build/llvm-5.0.0/build_5.0.0*/bin/binder}
 
 eddl_inc=${EDDL_INCLUDE:-"${this_dir}"/../third_party/eddl/src}
-eigen_inc=${EIGEN_INCLUDE:-"${this_dir}"/../third_party/eddl/third_party/eigen}
 
 rm -rf ./bindings/ && mkdir bindings/
 ${binder} \
@@ -22,7 +21,6 @@ ${binder} \
   all_includes.hpp \
   -- -std=c++11 \
   -I"${eddl_inc}" \
-  -I"${eigen_inc}" \
   -I"${this_dir}"/../src \
   -DNDEBUG
 

@@ -35,9 +35,10 @@ class MSELoss(Loss):
         eddlT.div_(d, eddlT.getShape(t)[0])
 
     def value(self, t, y):
+        size = t.size / eddlT.getShape(t)[0]
         aux = eddlT.add(t, eddlT.neg(y))
         aux = eddlT.mult(aux, aux)
-        return aux.sum() / eddlT.getShape(t)[0]
+        return aux.sum() / size
 
 
 class MSEMetric(Metric):
@@ -46,9 +47,10 @@ class MSEMetric(Metric):
         Metric.__init__(self, "py_mean_squared_error")
 
     def value(self, t, y):
+        size = t.size / eddlT.getShape(t)[0]
         aux = eddlT.add(t, eddlT.neg(y))
         aux = eddlT.mult(aux, aux)
-        return aux.sum() / eddlT.getShape(t)[0]
+        return aux.sum() / size
 
 
 class CategoricalAccuracy(Metric):

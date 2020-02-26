@@ -4,13 +4,24 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
     build-essential \
     ca-certificates \
     wget \
-    zlib1g-dev
+    zlib1g-dev \
+    libeigen3-dev
+
+ENV CPATH="/usr/include/eigen3:${CPATH}"
 
 COPY third_party/eddl /eddl
 WORKDIR /eddl
 
+RUN wget -q https://github.com/protocolbuffers/protobuf/releases/download/v3.11.4/protobuf-all-3.11.4.tar.gz && \
+    tar xf protobuf-all-3.11.4.tar.gz && \
+    cd protobuf-3.11.4/ && \
+    ./configure && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig
+
 RUN mkdir build && \
     cd build && \
-    cmake -D BUILD_TESTS=ON -D EDDL_SHARED=ON .. && \
+    cmake -D BUILD_SHARED_LIB=ON -D BUILD_PROTOBUF=ON .. && \
     make -j$(grep -c ^processor /proc/cpuinfo) && \
     make install
