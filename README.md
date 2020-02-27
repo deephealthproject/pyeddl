@@ -100,10 +100,23 @@ cd pyeddl
 cd third_party/eddl
 mkdir build
 cd build
-cmake -D EDDL_SHARED=ON ..
+cmake -D BUILD_SHARED_LIB=ON -D BUILD_PROTOBUF=ON ..
 make
 make install
 ```
+
+**NOTE:** recent (>=0.4) versions of EDDL do not include Eigen as a git
+submodule anymore, so it must be installed as a dependency. For instance,
+`apt-get install libeigen3-dev`. Also note that EDDL code includes Eigen
+headers like in this example: `#include <Eigen/Dense>`, e.g., with `Eigen` as
+the root directory. However, Eigen installations usually have the header
+rooted at `eigen3` (for instance, the apt installation places them in
+`/usr/include/eigen3`). To work around this you can either add a symlink or
+set `CPATH`, e.g., `export CPATH="/usr/include/eigen3:${CPATH}"`. Finally, the
+current version of Eigen installed by apt has [issues with
+CUDA](https://devtalk.nvidia.com/default/topic/1026622/nvcc-can-t-compile-code-that-uses-eigen). If
+you are compiling for GPU, install a recent version of Eigen from source. See
+`Dockerfile.eddl` and `Dockerfile.eddl-gpu` for more details.
 
 **NOTE:** EDDL versions 0.3 and 0.3.1 are affected by an issue that breaks the
 building of the shared library. To work around this, you can patch the EDDL
@@ -114,7 +127,7 @@ cd third_party/eddl
 git apply ../../eddl_0.3.patch
 mkdir build
 cd build
-cmake -D EDDL_SHARED=ON ..
+cmake -D BUILD_SHARED_LIB=ON -D BUILD_PROTOBUF=ON ..
 make
 make install
 ```
@@ -182,7 +195,7 @@ for instance:
 cd third_party/eddl
 mkdir build
 cd build
-cmake -D EDDL_SHARED=ON -DCMAKE_INSTALL_PREFIX=/home/myuser/eddl ..
+cmake -D BUILD_SHARED_LIB=ON -D BUILD_PROTOBUF=ON -DCMAKE_INSTALL_PREFIX=/home/myuser/eddl ..
 make
 make install
 ```
