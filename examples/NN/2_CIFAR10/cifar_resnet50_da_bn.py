@@ -30,19 +30,33 @@ import pyeddl._core.eddlT as eddlT
 
 
 def BG(layer):
-    return eddl.GaussianNoise(eddl.BatchNormalization(layer), 0.3)
+    # return eddl.GaussianNoise(eddl.BatchNormalization(layer), 0.3)
+    return eddl.BatchNormalization(layer)
 
 
-def ResBlock(layer, filters, half):
+def ResBlock(layer, filters, half, expand=0):
     in_ = layer
+    layer = eddl.ReLu(BG(eddl.Conv(
+        layer, filters, [1, 1], [1, 1], "same", False
+    )))
     strides = [2, 2] if half else [1, 1]
-    layer = eddl.ReLu(BG(eddl.Conv(layer, filters, [1, 1], strides)))
-    layer = eddl.ReLu(BG(eddl.Conv(layer, filters, [3, 3], [1, 1])))
-    layer = eddl.ReLu(BG(eddl.Conv(layer, 4*filters, [1, 1], [1, 1])))
+    layer = eddl.ReLu(BG(eddl.Conv(
+        layer, filters, [3, 3], strides, "same", False
+    )))
+    layer = eddl.ReLu(BG(eddl.Conv(
+        layer, 4*filters, [1, 1], [1, 1], "same", False
+    )))
     if (half):
-        return eddl.Sum(BG(eddl.Conv(in_, 4*filters, [1, 1], [2, 2])), layer)
+        return eddl.ReLu(eddl.Sum(BG(eddl.Conv(
+            in_, 4*filters, [1, 1], [2, 2], "same", False
+        )), layer))
     else:
-        return eddl.Sum(layer, in_)
+        if expand:
+            return eddl.ReLu(eddl.Sum(BG(eddl.Conv(
+                in_, 4*filters, [1, 1], [1, 1], "same", False)), layer
+            ))
+        else:
+            return eddl.ReLu(eddl.Sum(in_, layer))
 
 
 def main(args):
@@ -54,26 +68,26 @@ def main(args):
 
     layer = in_
     layer = eddl.RandomCropScale(layer, [0.8, 1.0])
-    layer = eddl.RandomFlip(layer, 1)
-    layer = eddl.RandomCutout(layer, [0.1, 0.3], [0.1, 0.3])
-    layer = eddl.ReLu(BG(eddl.Conv(layer, 64, [3, 3], [1, 1])))
+    layer = eddl.RandomHorizontalFlip(layer)
+    # layer = eddl.RandomCutout(layer, [0.1, 0.3], [0.1, 0.3])
+    layer = eddl.ReLu(BG(eddl.Conv(layer, 64, [3, 3], [1, 1], "same", False)))
     for i in range(3):
-        layer = ResBlock(layer, 64, i == 0)
+        layer = ResBlock(layer, 64, 0, i == 0)
     for i in range(4):
         layer = ResBlock(layer, 128, i == 0)
     for i in range(6):
         layer = ResBlock(layer, 256, i == 0)
     for i in range(3):
-        layer = ResBlock(layer, 256, i == 0)
+        layer = ResBlock(layer, 512, i == 0)
+    layer = eddl.MaxPool(layer, [4, 4])
     layer = eddl.Reshape(layer, [-1])
-    layer = eddl.ReLu(BG(eddl.Dense(layer, 512)))
 
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
 
     eddl.build(
         net,
-        eddl.adam(0.001),
+        eddl.sgd(0.001, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
         eddl.CS_GPU([1], "full_mem") if args.gpu else eddl.CS_CPU(
@@ -92,9 +106,13 @@ def main(args):
     y_test = eddlT.load("cifar_tsY.bin")
     eddlT.div_(x_test, 255.0)
 
-    for i in range(args.epochs):
-        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-        eddl.evaluate(net, [x_test], [y_test])
+    lr = 0.01
+    for j in range(3):
+        lr /= 10.0
+        eddl.setlr(net, [lr, 0.9])
+        for i in range(args.epochs):
+            eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
+            eddl.evaluate(net, [x_test], [y_test])
 
 
 if __name__ == "__main__":

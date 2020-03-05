@@ -30,18 +30,18 @@ import pyeddl._core.eddlT as eddlT
 
 
 def Block1(layer, filters):
-    return eddl.ReLu(
-        eddl.BatchNormalization(eddl.Conv(layer, filters, [1, 1], [1, 1]))
-    )
+    return eddl.ReLu(eddl.BatchNormalization(eddl.Conv(
+        layer, filters, [1, 1], [1, 1], "same", False
+    )))
 
 
 def Block3_2(layer, filters):
-    layer = eddl.ReLu(
-        eddl.BatchNormalization(eddl.Conv(layer, filters, [3, 3], [1, 1]))
-    )
-    layer = eddl.ReLu(
-        eddl.BatchNormalization(eddl.Conv(layer, filters, [3, 3], [1, 1]))
-    )
+    layer = eddl.ReLu(eddl.BatchNormalization(eddl.Conv(
+        layer, filters, [3, 3], [1, 1], "same", False
+    )))
+    layer = eddl.ReLu(eddl.BatchNormalization(eddl.Conv(
+        layer, filters, [3, 3], [1, 1], "same", False
+    )))
     return layer
 
 
