@@ -76,6 +76,27 @@ if __name__ == "__main__":
 You can find more examples under `examples`.
 
 
+## Loading NumPy data into EDDL tensors
+
+To load NumPy data into tensors, load them as arrays with `numpy.load` and
+then use `eddlT.create` to convert the arrays into tensors:
+
+```python
+from urllib.request import urlretrieve
+import numpy as np
+import pyeddl._core.eddlT as eddlT
+
+urlretrieve("https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz", "mnist.npz")
+with np.load("mnist.npz") as f:
+    x_train, y_train = f['x_train'], f['y_train']
+    x_test, y_test = f['x_test'], f['y_test']
+t_x_train = eddlT.create(x_train.astype(np.float32))
+...
+```
+
+See `examples/Tensor/array_tensor_save.py` for a full example.
+
+
 ## Installation
 
 ### Requirements
