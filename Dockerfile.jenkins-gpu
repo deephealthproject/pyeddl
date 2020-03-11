@@ -14,11 +14,12 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
     ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcurand.so /usr/local/lib/ && \
     ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcublas.so /usr/local/lib/
 
-RUN mkdir -p /home/simleo && \
-    groupadd -r -g 1000 simleo && \
-    useradd -lr -u 1000 -g 1000 simleo && \
-    chown -R simleo:simleo /home/simleo
+RUN mkdir -p /home/jenkins_1000 && \
+    groupadd -r -g 1000 jenkins_1000 && \
+    useradd -lr -u 1000 -g 1000 jenkins_1000 && \
+    chown -R jenkins_1000:jenkins_1000 /home/jenkins_1000
 
-ENV HOME=/home/simleo
-
-USER simleo
+RUN mkdir -p /home/jenkins_1001 && \
+    groupadd -r -g 1001 jenkins_1001 && \
+    useradd -lr -u 1001 -g 1001 jenkins_1001 && \
+    chown -R jenkins_1001:jenkins_1001 /home/jenkins_1001
