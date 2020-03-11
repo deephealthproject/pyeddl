@@ -8,7 +8,6 @@ pipeline {
                         docker {
                             label 'docker'
                             image 'simleo/pyeddl-base:01d19448'
-                            args '-u 1000:1000'
                         }
                     }
                     stages {
@@ -48,7 +47,7 @@ pipeline {
                         docker {
                             label 'docker && gpu'
                             image 'simleo/pyeddl-gpu-base:01d19448'
-                            args '--gpus 1 -u 1000:1000'
+                            args '--gpus 1'
                         }
                     }
                     stages {
