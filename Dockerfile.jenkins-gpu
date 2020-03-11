@@ -23,7 +23,3 @@ RUN mkdir -p /home/jenkins_1001 && \
     groupadd -r -g 1001 jenkins_1001 && \
     useradd -lr -u 1001 -g 1001 jenkins_1001 && \
     chown -R jenkins_1001:jenkins_1001 /home/jenkins_1001
-
-ENV HOME=/home/jenkins_1000
-
-USER jenkins_1000
