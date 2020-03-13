@@ -38,17 +38,16 @@ def main(args):
 
     layer = in_
     layer = eddl.Reshape(layer, [1, 28, 28])
-    layer = eddl.RandomShift(layer, [-0.1, 0.1], [-0.1, 0.1])
-    layer = eddl.RandomRotation(layer, [-10, 10])
+    layer = eddl.RandomCropScale(layer, [0.9, 1.0])
     layer = eddl.Reshape(layer, [-1])
     layer = eddl.ReLu(eddl.GaussianNoise(
-        eddl.LayerNormalization(eddl.Dense(layer, 1024)), 0.3
+        eddl.BatchNormalization(eddl.Dense(layer, 1024)), 0.3
     ))
     layer = eddl.ReLu(eddl.GaussianNoise(
-        eddl.LayerNormalization(eddl.Dense(layer, 1024)), 0.3
+        eddl.BatchNormalization(eddl.Dense(layer, 1024)), 0.3
     ))
     layer = eddl.ReLu(eddl.GaussianNoise(
-        eddl.LayerNormalization(eddl.Dense(layer, 1024)), 0.3
+        eddl.BatchNormalization(eddl.Dense(layer, 1024)), 0.3
     ))
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
