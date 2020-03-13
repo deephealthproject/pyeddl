@@ -299,13 +299,12 @@ def test_optimizers():
 
 
 def test_pooling_layers():
-    # -- LAveragePool not implemented yet --
     in4d = eddl.Input([3, 16, 16])
-    # eddl.AveragePool(in4d)
-    # eddl.AveragePool(in4d, [2, 2])
-    # eddl.AveragePool(in4d, [2, 2], [2, 2])
-    # eddl.AveragePool(in4d, [2, 2], [2, 2], "none")
-    # eddl.AveragePool(in4d, [2, 2], [2, 2], "none", "foo")
+    eddl.AveragePool(in4d)
+    eddl.AveragePool(in4d, [2, 2])
+    eddl.AveragePool(in4d, [2, 2], [2, 2])
+    eddl.AveragePool(in4d, [2, 2], [2, 2], "none")
+    eddl.AveragePool(in4d, [2, 2], [2, 2], "none", "foo")
     eddl.MaxPool(in4d)
     eddl.MaxPool(in4d, [2, 2])
     eddl.MaxPool(in4d, [2, 2], [2, 2])
@@ -313,8 +312,8 @@ def test_pooling_layers():
     eddl.MaxPool(in4d, [2, 2], [2, 2], "none", "foo")
     eddl.GlobalMaxPool(in4d)
     eddl.GlobalMaxPool(in4d, "foo")
-    # eddl.GlobalAveragePool(in4d)
-    # eddl.GlobalAveragePool(in4d, "foo")
+    eddl.GlobalAveragePool(in4d)
+    eddl.GlobalAveragePool(in4d, "foo")
 
 
 def test_recurrent_layers():
