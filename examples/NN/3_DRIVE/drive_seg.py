@@ -27,8 +27,8 @@ https://drive.grand-challenge.org/DRIVE
 import argparse
 import sys
 
-import pyeddl._core.eddl as eddl
-import pyeddl._core.eddlT as eddlT
+import pyeddl.eddl as eddl
+import pyeddl.eddlT as eddlT
 from pyeddl._core import Tensor
 
 
@@ -102,7 +102,7 @@ def main(args):
     danet = eddl.Model([in_1, in_2], [])
     eddl.build(danet)
     if args.gpu:
-        eddl.toGPU(danet, "low_mem")
+        eddl.toGPU(danet, mem="low_mem")
     eddl.summary(danet)
 
     # SegNet
@@ -114,7 +114,7 @@ def main(args):
         eddl.adam(0.00001),  # Optimizer
         ["mse"],  # Losses
         ["mse"],  # Metrics
-        eddl.CS_GPU([1], "low_mem") if args.gpu else eddl.CS_CPU(-1, "low_mem")
+        eddl.CS_GPU() if args.gpu else eddl.CS_CPU()
     )
     eddl.summary(segnet)
 

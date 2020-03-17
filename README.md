@@ -33,8 +33,8 @@ See [full installation instructions below](#installation).
 ## Getting started
 
 ```python
-import pyeddl._core.eddl as eddl
-import pyeddl._core.eddlT as eddlT
+import pyeddl.eddl as eddl
+import pyeddl.eddlT as eddlT
 
 def main():
     eddl.download_mnist()
@@ -85,7 +85,7 @@ then use `eddlT.create` to convert the arrays into tensors:
 ```python
 from urllib.request import urlretrieve
 import numpy as np
-import pyeddl._core.eddlT as eddlT
+import pyeddl.eddlT as eddlT
 
 urlretrieve("https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz", "mnist.npz")
 with np.load("mnist.npz") as f:

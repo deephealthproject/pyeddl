@@ -18,10 +18,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import pyeddl._core.eddl as eddl
+import pytest
+import pyeddl._core.eddl as eddl_core
+import pyeddl.eddl as eddl_py
 
 
-def test_core_layers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_core_layers(eddl):
     in2d = eddl.Input([16])
     in4d = eddl.Input([3, 16, 16])
     eddl.Activation(in2d, "relu")
@@ -87,7 +90,8 @@ def test_core_layers():
     # eddl.Transpose(in2d, "foo")
 
 
-def test_transformations():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_transformations(eddl):
     in2d = eddl.Input([16])
     eddl.Shift(in2d, [1, 1])
     eddl.Shift(in2d, [1, 1], "nearest")
@@ -126,7 +130,8 @@ def test_transformations():
     eddl.Cutout(in2d, [0, 0], [3, 3], 0.0, "foo")
 
 
-def test_data_augmentation():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_data_augmentation(eddl):
     in2d = eddl.Input([16])
     eddl.RandomShift(in2d, [1.0, 1.0], [2.0, 2.0])
     eddl.RandomShift(in2d, [1.0, 1.0], [2.0, 2.0], "nearest")
@@ -157,15 +162,18 @@ def test_data_augmentation():
     eddl.RandomCutout(in2d, [1.0, 1.0], [1.0, 1.0], 0.0, "foo")
 
 
-def test_losses():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_losses(eddl):
     eddl.getLoss("mse")
 
 
-def test_metrics():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_metrics(eddl):
     eddl.getMetric("mse")
 
 
-def test_merge_layers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_merge_layers(eddl):
     in_1 = eddl.Input([16])
     in_2 = eddl.Input([16])
     eddl.Add([in_1, in_2])
@@ -185,13 +193,15 @@ def test_merge_layers():
     eddl.Subtract([in_1, in_2], "foo")
 
 
-def test_noise_layers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_noise_layers(eddl):
     in2d = eddl.Input([16])
     eddl.GaussianNoise(in2d, 1.1)
     eddl.GaussianNoise(in2d, 1.1, "foo")
 
 
-def test_normalization_layers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_normalization_layers(eddl):
     in2d = eddl.Input([16])
     eddl.BatchNormalization(in2d)
     eddl.BatchNormalization(in2d, 0.9)
@@ -222,7 +232,8 @@ def test_normalization_layers():
     eddl.GroupNormalization(in4d, 3, 0.9, 0.001, True, "foo")
 
 
-def test_operator_layers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_operator_layers(eddl):
     in_1 = eddl.Input([16])
     in_2 = eddl.Input([16])
     eddl.Abs(in_1)
@@ -250,7 +261,8 @@ def test_operator_layers():
     eddl.Permute(in4d, [0, 1, 2])
 
 
-def test_reduction_layers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_reduction_layers(eddl):
     in2d = eddl.Input([16])
     eddl.ReduceMean(in2d)
     eddl.ReduceMean(in2d, [0])
@@ -269,12 +281,14 @@ def test_reduction_layers():
     eddl.ReduceMin(in2d, [0], False)
 
 
-def test_generator_layers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_generator_layers(eddl):
     eddl.GaussGenerator(0.0, 1.0, [10])
     eddl.UniformGenerator(0.0, 5.0, [10])
 
 
-def test_optimizers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_optimizers(eddl):
     eddl.adadelta(0.01, 0.9, 0.0001, 0.0)
     eddl.adam()
     eddl.adam(0.01)
@@ -298,7 +312,8 @@ def test_optimizers():
     eddl.sgd(0.01, 0.0, 0.0, False)
 
 
-def test_pooling_layers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_pooling_layers(eddl):
     in4d = eddl.Input([3, 16, 16])
     eddl.AveragePool(in4d)
     eddl.AveragePool(in4d, [2, 2])
@@ -316,7 +331,8 @@ def test_pooling_layers():
     eddl.GlobalAveragePool(in4d, "foo")
 
 
-def test_recurrent_layers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_recurrent_layers(eddl):
     in2d = eddl.Input([16])
     eddl.RNN(in2d, 1, 1)
     eddl.RNN(in2d, 1, 1, True)
@@ -330,7 +346,8 @@ def test_recurrent_layers():
     eddl.LSTM(in2d, 1, 1, True, 0.0, False, "foo")
 
 
-def test_initializers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_initializers(eddl):
     in2d = eddl.Input([16])
     eddl.GlorotNormal(in2d)
     eddl.GlorotNormal(in2d, 1234)
@@ -348,14 +365,16 @@ def test_initializers():
     eddl.Constant(in2d, 0.1)
 
 
-def test_regularizers():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_regularizers(eddl):
     in2d = eddl.Input([16])
     eddl.L2(in2d, 0.001)
     eddl.L1(in2d, 0.001)
     eddl.L1L2(in2d, 0.001, 0.001)
 
 
-def test_computing_services():
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_computing_services(eddl):
     eddl.CS_CPU()
     eddl.CS_CPU(1)
     eddl.CS_GPU([1])

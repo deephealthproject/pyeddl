@@ -26,8 +26,8 @@ import argparse
 import sys
 
 import numpy as np
-import pyeddl._core.eddl as eddl
-import pyeddl._core.eddlT as eddlT
+import pyeddl.eddl as eddl
+import pyeddl.eddlT as eddlT
 from pyeddl._core import Metric
 
 

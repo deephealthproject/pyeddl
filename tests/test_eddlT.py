@@ -18,13 +18,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import pytest
 import numpy as np
-import pyeddl._core.eddlT as eddlT
+import pyeddl._core.eddlT as eddlT_core
+import pyeddl.eddlT as eddlT_py
 
 
 # --- Creation ---
 
-def test_create_getdata():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_create_getdata(eddlT):
     R, C = 3, 4
     t = eddlT.create([R, C])
     assert eddlT.getShape(t) == [R, C]
@@ -46,7 +49,8 @@ def test_create_getdata():
     assert np.array_equal(b, a)
 
 
-def test_ones():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_ones(eddlT):
     shape = [2, 3]
     t = eddlT.ones(shape)
     a = np.array(t, copy=False)
@@ -54,7 +58,8 @@ def test_ones():
     assert np.array_equal(a, b)
 
 
-def test_zeros():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_zeros(eddlT):
     shape = [2, 3]
     t = eddlT.zeros(shape)
     a = np.array(t, copy=False)
@@ -62,7 +67,8 @@ def test_zeros():
     assert np.array_equal(a, b)
 
 
-def test_full():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_full(eddlT):
     shape = [2, 3]
     value = 42
     t = eddlT.full(shape, value)
@@ -71,7 +77,8 @@ def test_full():
     assert np.array_equal(a, b)
 
 
-def test_arange():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_arange(eddlT):
     start, stop, step = 0, 2, .33
     t = eddlT.arange(start, stop, step)
     a = np.array(t, copy=False)
@@ -79,7 +86,8 @@ def test_arange():
     assert np.allclose(a, b)
 
 
-def test_range():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_range(eddlT):
     start, stop, step = 0, 2, .33
     t = eddlT.range(start, stop, step)
     a = np.array(t, copy=False)
@@ -87,7 +95,8 @@ def test_range():
     assert np.allclose(a, b)
 
 
-def test_linspace():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_linspace(eddlT):
     start, stop, num = 0, 2, 7
     t = eddlT.linspace(start, stop, num)
     a = np.array(t, copy=False)
@@ -95,7 +104,8 @@ def test_linspace():
     assert np.allclose(a, b)
 
 
-def test_logspace():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_logspace(eddlT):
     start, stop, num, base = 0.1, 1.0, 5, 10.0
     t = eddlT.logspace(start, stop, num, base)
     a = np.array(t, copy=False)
@@ -103,14 +113,16 @@ def test_logspace():
     assert np.allclose(a, b)
 
 
-def test_eye():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_eye(eddlT):
     size = 3
     t = eddlT.eye(size)
     a = np.array(t, copy=False)
     assert np.array_equal(a.diagonal(), np.ones(size, dtype=np.float32))
 
 
-def test_randn():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_randn(eddlT):
     shape = [2, 3]
     t = eddlT.randn(shape)
     assert eddlT.getShape(t) == shape
@@ -118,7 +130,8 @@ def test_randn():
 
 # --- Copy ---
 
-def test_cpu_gpu():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_cpu_gpu(eddlT):
     # toGPU and toCPU are no-ops if EDDL is not compiled for GPU
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
@@ -138,7 +151,8 @@ def test_cpu_gpu():
     assert np.alltrue(a == 2)
 
 
-def test_clone():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_clone(eddlT):
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
     u = eddlT.clone(t)
@@ -146,7 +160,8 @@ def test_clone():
     assert np.array_equal(b, a)
 
 
-def test_select():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_select(eddlT):
     R, C = 3, 4
     a = np.arange(R * C).reshape(R, C).astype(np.float32)
     t = eddlT.create(a)
@@ -157,7 +172,8 @@ def test_select():
         assert np.array_equal(b[0], a[i])
 
 
-def test_copyTensor():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_copyTensor(eddlT):
     R, C = 3, 4
     a = np.arange(R * C).reshape(R, C).astype(np.float32)
     t = eddlT.create(a)
@@ -169,7 +185,8 @@ def test_copyTensor():
 
 # --- Core inplace ---
 
-def test_fill_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_fill_(eddlT):
     R, C = 2, 3
     t = eddlT.create([R, C])
     eddlT.fill_(t, 1.0)
@@ -177,7 +194,8 @@ def test_fill_():
     assert np.array_equal(a, np.ones((R, C), dtype=np.float32))
 
 
-def test_set_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_set_(eddlT):
     R, C = 3, 4
     a = np.arange(R * C).reshape(R, C).astype(np.float32)
     n = 100.0
@@ -188,7 +206,8 @@ def test_set_():
     assert np.array_equal(b, a)
 
 
-def test_reshape_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_reshape_(eddlT):
     R, C = 3, 4
     a = np.arange(R * C).reshape(R, C).astype(np.float32)
     t = eddlT.create(a)
@@ -200,14 +219,16 @@ def test_reshape_():
 
 # --- Other ---
 
-def test_info_print():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_info_print(eddlT):
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
     eddlT.info(t)
     eddlT.print(t)
 
 
-def test_getShape():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_getShape(eddlT):
     shape = [3, 4]
     t = eddlT.create(shape)
     assert eddlT.getShape(t) == shape
@@ -215,7 +236,8 @@ def test_getShape():
 
 # --- Serialization ---
 
-def test_load_save(tmp_path):
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_load_save(eddlT, tmp_path):
     fn = str(tmp_path / "tensor.bin")
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
@@ -227,7 +249,8 @@ def test_load_save(tmp_path):
 
 # --- Math ---
 
-def test_abs_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_abs_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.abs_(t)
@@ -235,7 +258,8 @@ def test_abs_():
     assert np.allclose(np.abs(a), b)
 
 
-def test_abs():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_abs(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.abs(t)
@@ -243,7 +267,8 @@ def test_abs():
     assert np.allclose(np.abs(a), b)
 
 
-def test_acos_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_acos_(eddlT):
     t = eddlT.range(-1, 1, .5)
     a = np.array(t, copy=True)
     eddlT.acos_(t)
@@ -251,7 +276,8 @@ def test_acos_():
     assert np.allclose(np.arccos(a), b)
 
 
-def test_acos():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_acos(eddlT):
     t = eddlT.range(-1, 1, .5)
     a = np.array(t, copy=False)
     u = eddlT.acos(t)
@@ -259,7 +285,8 @@ def test_acos():
     assert np.allclose(np.arccos(a), b)
 
 
-def test_add_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_add_(eddlT):
     # add scalar to tensor
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
@@ -276,7 +303,8 @@ def test_add_():
     assert np.allclose(b, a + c)
 
 
-def test_add():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_add(eddlT):
     # tensor = tensor + scalar
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
@@ -292,7 +320,8 @@ def test_add():
     assert np.allclose(b, a + a + n)
 
 
-def test_asin_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_asin_(eddlT):
     t = eddlT.range(-1, 1, .5)
     a = np.array(t, copy=True)
     eddlT.asin_(t)
@@ -300,7 +329,8 @@ def test_asin_():
     assert np.allclose(np.arcsin(a), b)
 
 
-def test_asin():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_asin(eddlT):
     t = eddlT.range(-1, 1, .5)
     a = np.array(t, copy=False)
     u = eddlT.asin(t)
@@ -308,7 +338,8 @@ def test_asin():
     assert np.allclose(np.arcsin(a), b)
 
 
-def test_atan_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_atan_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.atan_(t)
@@ -316,7 +347,8 @@ def test_atan_():
     assert np.allclose(np.arctan(a), b)
 
 
-def test_atan():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_atan(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.atan(t)
@@ -324,7 +356,8 @@ def test_atan():
     assert np.allclose(np.arctan(a), b)
 
 
-def test_ceil_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_ceil_(eddlT):
     t = eddlT.range(-2.0, 2.0, 0.25)
     a = np.array(t, copy=True)
     eddlT.ceil_(t)
@@ -332,7 +365,8 @@ def test_ceil_():
     assert np.allclose(np.ceil(a), b)
 
 
-def test_ceil():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_ceil(eddlT):
     t = eddlT.range(-2.0, 2.0, 0.25)
     a = np.array(t, copy=False)
     u = eddlT.ceil(t)
@@ -340,7 +374,8 @@ def test_ceil():
     assert np.allclose(np.ceil(a), b)
 
 
-def test_clamp_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_clamp_(eddlT):
     low, high = -1, 1
     t = eddlT.range(-2.0, 2.0, 0.25)
     a = np.array(t, copy=True)
@@ -349,7 +384,8 @@ def test_clamp_():
     assert np.allclose(np.clip(a, low, high), b)
 
 
-def test_clamp():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_clamp(eddlT):
     low, high = -1, 1
     t = eddlT.range(-2.0, 2.0, 0.25)
     a = np.array(t, copy=False)
@@ -358,7 +394,8 @@ def test_clamp():
     assert np.allclose(np.clip(a, low, high), b)
 
 
-def test_clampmax_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_clampmax_(eddlT):
     high = 1
     t = eddlT.range(-2.0, 2.0, 0.25)
     a = np.array(t, copy=True)
@@ -367,7 +404,8 @@ def test_clampmax_():
     assert np.allclose(np.clip(a, None, high), b)
 
 
-def test_clampmax():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_clampmax(eddlT):
     high = 1
     t = eddlT.range(-2.0, 2.0, 0.25)
     a = np.array(t, copy=False)
@@ -376,7 +414,8 @@ def test_clampmax():
     assert np.allclose(np.clip(a, None, high), b)
 
 
-def test_clampmin_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_clampmin_(eddlT):
     low = -1
     t = eddlT.range(-2.0, 2.0, 0.25)
     a = np.array(t, copy=True)
@@ -385,7 +424,8 @@ def test_clampmin_():
     assert np.allclose(np.clip(a, low, None), b)
 
 
-def test_clampmin():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_clampmin(eddlT):
     low = -1
     t = eddlT.range(-2.0, 2.0, 0.25)
     a = np.array(t, copy=False)
@@ -394,7 +434,8 @@ def test_clampmin():
     assert np.allclose(np.clip(a, low, None), b)
 
 
-def test_cos_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_cos_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.cos_(t)
@@ -402,7 +443,8 @@ def test_cos_():
     assert np.allclose(np.cos(a), b)
 
 
-def test_cos():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_cos(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.cos(t)
@@ -410,7 +452,8 @@ def test_cos():
     assert np.allclose(np.cos(a), b)
 
 
-def test_cosh_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_cosh_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.cosh_(t)
@@ -418,7 +461,8 @@ def test_cosh_():
     assert np.allclose(np.cosh(a), b)
 
 
-def test_cosh():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_cosh(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.cosh(t)
@@ -426,7 +470,8 @@ def test_cosh():
     assert np.allclose(np.cosh(a), b)
 
 
-def test_div_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_div_(eddlT):
     # divide scalar by tensor
     a = np.arange(2, 8).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
@@ -443,7 +488,8 @@ def test_div_():
     assert np.allclose(b, a / c)
 
 
-def test_div():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_div(eddlT):
     # tensor = tensor / scalar
     a = np.arange(2, 8).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
@@ -459,7 +505,8 @@ def test_div():
     assert np.allclose(b, a / (a + n))
 
 
-def test_exp_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_exp_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.exp_(t)
@@ -467,7 +514,8 @@ def test_exp_():
     assert np.allclose(np.exp(a), b)
 
 
-def test_exp():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_exp(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.exp(t)
@@ -475,7 +523,8 @@ def test_exp():
     assert np.allclose(np.exp(a), b)
 
 
-def test_floor_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_floor_(eddlT):
     t = eddlT.range(-2.0, 2.0, 0.25)
     a = np.array(t, copy=True)
     eddlT.floor_(t)
@@ -483,7 +532,8 @@ def test_floor_():
     assert np.allclose(np.floor(a), b)
 
 
-def test_floor():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_floor(eddlT):
     t = eddlT.range(-2.0, 2.0, 0.25)
     a = np.array(t, copy=False)
     u = eddlT.floor(t)
@@ -491,7 +541,8 @@ def test_floor():
     assert np.allclose(np.floor(a), b)
 
 
-def test_inc_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_inc_(eddlT):
     a = np.arange(2, 8).reshape(2, 3).astype(np.float32)
     n = 2
     t = eddlT.create(a)
@@ -501,7 +552,8 @@ def test_inc_():
     assert np.allclose(b, a + a + n)
 
 
-def test_log_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_log_(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=True)
     eddlT.log_(t)
@@ -509,7 +561,8 @@ def test_log_():
     assert np.allclose(np.log(a), b)
 
 
-def test_log():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_log(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=False)
     u = eddlT.log(t)
@@ -517,7 +570,8 @@ def test_log():
     assert np.allclose(np.log(a), b)
 
 
-def test_log2_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_log2_(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=True)
     eddlT.log2_(t)
@@ -525,7 +579,8 @@ def test_log2_():
     assert np.allclose(np.log2(a), b)
 
 
-def test_log2():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_log2(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=False)
     u = eddlT.log2(t)
@@ -533,7 +588,8 @@ def test_log2():
     assert np.allclose(np.log2(a), b)
 
 
-def test_log10_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_log10_(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=True)
     eddlT.log10_(t)
@@ -541,7 +597,8 @@ def test_log10_():
     assert np.allclose(np.log10(a), b)
 
 
-def test_log10():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_log10(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=False)
     u = eddlT.log10(t)
@@ -549,7 +606,8 @@ def test_log10():
     assert np.allclose(np.log10(a), b)
 
 
-def test_logn_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_logn_(eddlT):
     base = 3
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=True)
@@ -558,7 +616,8 @@ def test_logn_():
     assert np.allclose(np.log(a) / np.log(base), b)
 
 
-def test_logn():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_logn(eddlT):
     base = 3
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=False)
@@ -567,14 +626,16 @@ def test_logn():
     assert np.allclose(np.log(a) / np.log(base), b)
 
 
-def test_max_min():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_max_min(eddlT):
     start, stop = -4, 3
     t = eddlT.range(start, stop, 1)
     assert eddlT.max(t) == stop
     assert eddlT.min(t) == start
 
 
-def test_mod_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_mod_(eddlT):
     n = 2
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=True)
@@ -583,7 +644,8 @@ def test_mod_():
     assert np.allclose(np.mod(a, n), b)
 
 
-def test_mod():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_mod(eddlT):
     n = 2
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=False)
@@ -592,7 +654,8 @@ def test_mod():
     assert np.allclose(np.mod(a, n), b)
 
 
-def test_mult_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_mult_(eddlT):
     # multiply scalar by tensor
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
@@ -609,7 +672,8 @@ def test_mult_():
     assert np.allclose(b, a * c)
 
 
-def test_mult():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_mult(eddlT):
     # tensor = tensor * scalar
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
@@ -625,7 +689,8 @@ def test_mult():
     assert np.allclose(b, a * (a + n))
 
 
-def test_mult2D():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_mult2D(eddlT):
     a = np.arange(2, 8).reshape(2, 3).astype(np.float32)
     b = np.arange(1, 13).reshape(3, 4).astype(np.float32)
     t = eddlT.create(a)
@@ -635,7 +700,8 @@ def test_mult2D():
     assert np.allclose(c, a @ b)
 
 
-def test_normalize_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_normalize_(eddlT):
     m, M = -1, 1
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
@@ -645,7 +711,8 @@ def test_normalize_():
     assert np.allclose(r * (a - a.min()) + m, b)
 
 
-def test_normalize():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_normalize(eddlT):
     m, M = -1, 1
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
@@ -655,7 +722,8 @@ def test_normalize():
     assert np.allclose(r * (a - a.min()) + m, b)
 
 
-def test_neg_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_neg_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.neg_(t)
@@ -663,7 +731,8 @@ def test_neg_():
     assert np.allclose(-a, b)
 
 
-def test_neg():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_neg(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.neg(t)
@@ -671,7 +740,8 @@ def test_neg():
     assert np.allclose(-a, b)
 
 
-def test_reciprocal_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_reciprocal_(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=True)
     eddlT.reciprocal_(t)
@@ -679,7 +749,8 @@ def test_reciprocal_():
     assert np.allclose(np.reciprocal(a), b)
 
 
-def test_reciprocal():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_reciprocal(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=False)
     u = eddlT.reciprocal(t)
@@ -687,7 +758,8 @@ def test_reciprocal():
     assert np.allclose(np.reciprocal(a), b)
 
 
-def test_round_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_round_(eddlT):
     t = eddlT.range(-2.0, 2.0, 0.4)
     a = np.array(t, copy=True)
     eddlT.round_(t)
@@ -695,7 +767,8 @@ def test_round_():
     assert np.allclose(np.round(a), b)
 
 
-def test_round():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_round(eddlT):
     t = eddlT.range(-2.0, 2.0, 0.4)
     a = np.array(t, copy=False)
     u = eddlT.round(t)
@@ -703,7 +776,8 @@ def test_round():
     assert np.allclose(np.round(a), b)
 
 
-def test_rsqrt_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_rsqrt_(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=True)
     eddlT.rsqrt_(t)
@@ -711,7 +785,8 @@ def test_rsqrt_():
     assert np.allclose(1 / np.sqrt(a), b)
 
 
-def test_rsqrt():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_rsqrt(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=False)
     u = eddlT.rsqrt(t)
@@ -719,7 +794,8 @@ def test_rsqrt():
     assert np.allclose(1 / np.sqrt(a), b)
 
 
-def test_sigmoid_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sigmoid_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.sigmoid_(t)
@@ -727,7 +803,8 @@ def test_sigmoid_():
     assert np.allclose(1 / (1 + np.exp(-a)), b)
 
 
-def test_sigmoid():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sigmoid(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.sigmoid(t)
@@ -735,7 +812,8 @@ def test_sigmoid():
     assert np.allclose(1 / (1 + np.exp(-a)), b)
 
 
-def test_sign_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sign_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.sign_(t)
@@ -743,7 +821,8 @@ def test_sign_():
     assert np.allclose(np.sign(a), b)
 
 
-def test_sign():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sign(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.sign(t)
@@ -751,7 +830,8 @@ def test_sign():
     assert np.allclose(np.sign(a), b)
 
 
-def test_sin_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sin_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.sin_(t)
@@ -759,7 +839,8 @@ def test_sin_():
     assert np.allclose(np.sin(a), b)
 
 
-def test_sin():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sin(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.sin(t)
@@ -767,7 +848,8 @@ def test_sin():
     assert np.allclose(np.sin(a), b)
 
 
-def test_sinh_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sinh_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.sinh_(t)
@@ -775,7 +857,8 @@ def test_sinh_():
     assert np.allclose(np.sinh(a), b)
 
 
-def test_sinh():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sinh(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.sinh(t)
@@ -783,7 +866,8 @@ def test_sinh():
     assert np.allclose(np.sinh(a), b)
 
 
-def test_sqr_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sqr_(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=True)
     eddlT.sqr_(t)
@@ -791,7 +875,8 @@ def test_sqr_():
     assert np.allclose(np.square(a), b)
 
 
-def test_sqr():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sqr(eddlT):
     t = eddlT.range(-5, 5, 1)
     a = np.array(t, copy=False)
     u = eddlT.sqr(t)
@@ -799,7 +884,8 @@ def test_sqr():
     assert np.allclose(np.square(a), b)
 
 
-def test_sqrt_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sqrt_(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=True)
     eddlT.sqrt_(t)
@@ -807,7 +893,8 @@ def test_sqrt_():
     assert np.allclose(np.sqrt(a), b)
 
 
-def test_sqrt():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sqrt(eddlT):
     t = eddlT.range(1, 10, 1)
     a = np.array(t, copy=False)
     u = eddlT.sqrt(t)
@@ -815,7 +902,8 @@ def test_sqrt():
     assert np.allclose(np.sqrt(a), b)
 
 
-def test_sub_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sub_(eddlT):
     # subtract scalar from tensor
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
@@ -832,7 +920,8 @@ def test_sub_():
     assert np.allclose(b, a - c)
 
 
-def test_sub():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_sub(eddlT):
     # tensor = tensor - scalar
     a = np.arange(6).reshape(2, 3).astype(np.float32)
     t = eddlT.create(a)
@@ -848,7 +937,8 @@ def test_sub():
     assert np.allclose(b, a - (a / n))
 
 
-def test_tan_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_tan_(eddlT):
     t = eddlT.range(-1, 1, .2)
     a = np.array(t, copy=True)
     eddlT.tan_(t)
@@ -856,7 +946,8 @@ def test_tan_():
     assert np.allclose(np.tan(a), b)
 
 
-def test_tan():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_tan(eddlT):
     t = eddlT.range(-1, 1, .2)
     a = np.array(t, copy=False)
     u = eddlT.tan(t)
@@ -864,7 +955,8 @@ def test_tan():
     assert np.allclose(np.tan(a), b)
 
 
-def test_tanh_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_tanh_(eddlT):
     t = eddlT.range(-1, 1, .2)
     a = np.array(t, copy=True)
     eddlT.tanh_(t)
@@ -872,7 +964,8 @@ def test_tanh_():
     assert np.allclose(np.tanh(a), b)
 
 
-def test_tanh():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_tanh(eddlT):
     t = eddlT.range(-1, 1, .2)
     a = np.array(t, copy=False)
     u = eddlT.tanh(t)
@@ -880,7 +973,8 @@ def test_tanh():
     assert np.allclose(np.tanh(a), b)
 
 
-def test_trunc_():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_trunc_(eddlT):
     t = eddlT.range(-2.0, 2.0, 0.4)
     a = np.array(t, copy=True)
     eddlT.trunc_(t)
@@ -888,7 +982,8 @@ def test_trunc_():
     assert np.allclose(np.trunc(a), b)
 
 
-def test_trunc():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_trunc(eddlT):
     t = eddlT.range(-2.0, 2.0, 0.4)
     a = np.array(t, copy=False)
     u = eddlT.trunc(t)
@@ -898,7 +993,8 @@ def test_trunc():
 
 # --- Reductions ---
 
-def test_reduce_mean():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_reduce_mean(eddlT):
     a = np.arange(12).reshape(3, 4).astype(np.float32)
     t = eddlT.create(a)
     for i in 0, 1:
@@ -907,7 +1003,8 @@ def test_reduce_mean():
         assert np.allclose(np.mean(a, i), b)
 
 
-def test_reduce_variance():
+@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+def test_reduce_variance(eddlT):
     a = np.arange(12).reshape(3, 4).astype(np.float32)
     t = eddlT.create(a)
     for i in 0, 1:
