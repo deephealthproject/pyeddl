@@ -25,7 +25,7 @@ Basic MLP for MNIST with data augmentation.
 import argparse
 import sys
 
-import pyeddl._core.eddl as eddl
+import pyeddl.eddl as eddl
 import pyeddl._core.eddlT as eddlT
 
 
@@ -57,7 +57,7 @@ def main(args):
         eddl.sgd(0.01, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1], "low_mem") if args.gpu else eddl.CS_CPU(-1, "low_mem")
+        eddl.CS_GPU() if args.gpu else eddl.CS_CPU()
     )
 
     eddl.summary(net)

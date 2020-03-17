@@ -25,7 +25,7 @@ AE example with Python loss and metric.
 import argparse
 import sys
 
-import pyeddl._core.eddl as eddl
+import pyeddl.eddl as eddl
 import pyeddl._core.eddlT as eddlT
 from pyeddl._core import Loss, Metric
 

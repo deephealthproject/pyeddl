@@ -25,7 +25,7 @@ Save model to file in ONNX format.
 import argparse
 import sys
 
-import pyeddl._core.eddl as eddl
+import pyeddl.eddl as eddl
 import pyeddl._core.eddlT as eddlT
 
 

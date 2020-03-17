@@ -25,7 +25,7 @@ VGG16 for CIFAR10.
 import argparse
 import sys
 
-import pyeddl._core.eddl as eddl
+import pyeddl.eddl as eddl
 import pyeddl._core.eddlT as eddlT
 
 
@@ -74,8 +74,8 @@ def main(args):
         eddl.sgd(0.001, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1], "full_mem") if args.gpu else eddl.CS_CPU(
-            -1, "full_mem"
+        eddl.CS_GPU(mem="full_mem") if args.gpu else eddl.CS_CPU(
+            mem="full_mem"
         )
     )
 
