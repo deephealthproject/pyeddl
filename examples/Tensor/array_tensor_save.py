@@ -22,7 +22,7 @@ import os
 from urllib.request import urlretrieve
 
 import numpy as np
-import pyeddl._core.eddlT as eddlT
+import pyeddl.eddlT as eddlT
 
 # Convert array to tensor and save to "bin" format
 a = np.arange(6).reshape([2, 3]).astype(np.float32)

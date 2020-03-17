@@ -27,7 +27,7 @@ import sys
 
 import numpy as np
 import pyeddl.eddl as eddl
-import pyeddl._core.eddlT as eddlT
+import pyeddl.eddlT as eddlT
 from pyeddl._core import Metric
 
 

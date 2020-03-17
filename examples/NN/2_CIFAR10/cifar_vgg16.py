@@ -26,7 +26,7 @@ import argparse
 import sys
 
 import pyeddl.eddl as eddl
-import pyeddl._core.eddlT as eddlT
+import pyeddl.eddlT as eddlT
 
 
 def Block1(layer, filters):
