@@ -34,6 +34,6 @@ ENV CPATH="/usr/local/include/eigen3:${CPATH}"
 RUN mkdir build && \
     cd build && \
     ln -s /usr/lib/x86_64-linux-gnu/libcublas.so /usr/local/cuda/lib64/ && \
-    cmake -D BUILD_TARGET=GPU -D BUILD_EXAMPLES=ON -D BUILD_SHARED_LIB=ON -D BUILD_PROTOBUF=ON .. && \
+    cmake -D BUILD_TARGET=GPU -D BUILD_EXAMPLES=ON -D BUILD_SHARED_LIB=ON -D BUILD_PROTOBUF=ON -D BUILD_TESTS=OFF .. && \
     make -j$(grep -c ^processor /proc/cpuinfo) && \
     make install

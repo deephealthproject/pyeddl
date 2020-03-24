@@ -181,8 +181,8 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def("isFPGA", (int (Tensor::*)()) &Tensor::isFPGA, "Check if the tensor is in FPGA.\n\n  \n int\n\nC++: Tensor::isFPGA() --> int");
 		cl.def("info", (void (Tensor::*)()) &Tensor::info, "Print shape, device and size information.\n\n  \n    void\n\nC++: Tensor::info() --> void");
 		cl.def("print", [](Tensor &o) -> void { return o.print(); }, "");
-		cl.def("print", [](Tensor &o, bool const & a0) -> void { return o.print(a0); }, "", pybind11::arg("asInt"));
-		cl.def("print", (void (Tensor::*)(bool, bool)) &Tensor::print, "Print the tensor values.\n\n  \n    void\n\nC++: Tensor::print(bool, bool) --> void", pybind11::arg("asInt"), pybind11::arg("raw"));
+		cl.def("print", [](Tensor &o, int const & a0) -> void { return o.print(a0); }, "", pybind11::arg("precision"));
+		cl.def("print", (void (Tensor::*)(int, bool)) &Tensor::print, "Print the tensor values.\n\n  \n    void\n\nC++: Tensor::print(int, bool) --> void", pybind11::arg("precision"), pybind11::arg("raw"));
 		cl.def_static("isSquared", (bool (*)(class Tensor *)) &Tensor::isSquared, "Check if all dimensions in the tensor are the same.\n\n  \n   Tensor\n  \n\n    bool\n\nC++: Tensor::isSquared(class Tensor *) --> bool", pybind11::arg("A"));
 		cl.def_static("moveaxis", (class Tensor * (*)(class Tensor *, int, int)) &Tensor::moveaxis, "C++: Tensor::moveaxis(class Tensor *, int, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("t"), pybind11::arg("source"), pybind11::arg("destination"));
 		cl.def_static("swapaxis", (class Tensor * (*)(class Tensor *, int, int)) &Tensor::swapaxis, "C++: Tensor::swapaxis(class Tensor *, int, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("t"), pybind11::arg("axis1"), pybind11::arg("axis2"));
