@@ -38,16 +38,20 @@ def main(args):
     layer = in_
     layer = eddl.Reshape(layer, [1, 28, 28])
     layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 32, [3, 3], [1, 1])), [2, 2]
+        eddl.ReLu(eddl.Conv(layer, 32, [3, 3], [1, 1])),
+        [3, 3], [1, 1], "same"
     )
     layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 64, [3, 3], [1, 1])), [2, 2]
+        eddl.ReLu(eddl.Conv(layer, 64, [3, 3], [1, 1])),
+        [2, 2], [2, 2], "same"
     )
     layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 128, [3, 3], [1, 1])), [2, 2]
+        eddl.ReLu(eddl.Conv(layer, 128, [3, 3], [1, 1])),
+        [3, 3], [2, 2], "none"
     )
     layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 256, [3, 3], [1, 1])), [2, 2]
+        eddl.ReLu(eddl.Conv(layer, 256, [3, 3], [1, 1])),
+        [2, 2], [2, 2], "none"
     )
     layer = eddl.Reshape(layer, [-1])
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
