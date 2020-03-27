@@ -16,6 +16,7 @@ PyEDDL version | EDDL version |
 0.3.0          | 0.3.1        |
 0.4.0          | 0.4.2        |
 0.5.0          | 0.4.3        |
+0.6.0          | 0.4.4        |
 
 
 ## Quick start
