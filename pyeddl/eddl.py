@@ -27,6 +27,13 @@ _eddl = _core.eddl
 # = Creation =
 
 def Model(in_, out):
+    """\
+    Instantiates a model.
+
+    :param in: list of input layers, typically [:func:`.Input`]
+    :param out: list of ouput layers.
+    :return: Model instance
+    """
     return _eddl.Model(in_, out)
 
 
