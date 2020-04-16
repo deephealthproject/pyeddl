@@ -28,16 +28,27 @@ _eddl = _core.eddl
 
 def Model(in_, out):
     """\
-    Instantiates a model.
+    Create a model.
 
-    :param in: list of input layers, typically [:func:`.Input`]
-    :param out: list of ouput layers.
-    :return: Model instance
+    :param in_: list of input layers, typically from [:func:`.Input`]
+    :param out: list of ouput layers
+    :return: model instance
     """
     return _eddl.Model(in_, out)
 
 
 def build(net, o=None, lo=None, me=None, cs=None, init_weights=True):
+    """\
+    Tell the model which optimizer, losses, metrics and computing service to
+    use.
+
+    :param net: model
+    :param o: optimizer
+    :param lo: list of losses
+    :param me: list of metrics
+    :param cs: computing service
+    :return: None
+    """
     # core module has multiple overloads for this:
     #  1. build(net, o=None, cs=None, init_weigths=True)
     #  2. build(net, o, lo, me, cs=None, init_weights=True)
@@ -53,6 +64,14 @@ def build(net, o=None, lo=None, me=None, cs=None, init_weights=True):
 # = Computing services =
 
 def toGPU(net, g=None, lsb=None, mem=None):
+    """\
+    Assign model operations to the GPU.
+
+    :param net: model
+    :param g: list of gpu ids to allocate
+    :param lsb: number of batches to sync model weights
+    :return: None
+    """
     # core module has multiple overloads for this:
     #  1. toGPU(net, g, lsb)
     #  2. toGPU(net, g, mem)
@@ -72,83 +91,264 @@ def toGPU(net, g=None, lsb=None, mem=None):
 
 
 def toCPU(net, t=None):
+    """\
+    Assign model operations to the CPU.
+
+    :param net: model
+    :param t: number of CPU threads
+    :return: None
+    """
     if t is None:
         return _eddl.toCPU(net)
     return _eddl.toCPU(net, t)
 
 
 def CS_CPU(th=-1, mem="low_mem"):
+    """\
+    Create a computing service that executes the code in the CPU.
+
+    :param th: number of threads to use (-1 = all available threads)
+    :param mem: memory consumption of the model: "full_mem", "mid_mem" or
+      "low_mem"
+    :return: computing service
+    """
     return _eddl.CS_CPU(th, mem)
 
 
 def CS_GPU(g=[1], lsb=1, mem="low_mem"):
+    """\
+    Create a computing service that executes the code in the GPU.
+
+    :param g: list of integers to set which GPUs will be used (1=on, 0=off)
+    :param lsb: (multi-gpu setting) number of batches to run before
+      synchronizing the weights of the different GPUs
+    :param mem: memory consumption of the model: "full_mem", "mid_mem" or
+      "low_mem"
+    :return: computing service
+    """
     return _eddl.CS_GPU(g, lsb, mem)
 
 
 def CS_FGPA(f, lsb=1):
+    """\
+    Create a computing service that executes the code in the FPGA.
+
+    :param f: list of integers to set which FPGAs will be used (1=on, 0=off)
+    :param lsb: (multi-fpga setting) number of batches to run before
+      synchronizing the weights of the different FPGAs
+    :return: computing service
+    """
     return _eddl.CS_FGPA(f, lsb)
 
 
 def CS_COMPSS(filename):
+    """\
+    Create a computing service that executes the code in the COMPSs framework.
+
+    :param filename: file with the setup specification
+    :return: computing service
+    """
     return _eddl.CS_COMPSS(filename)
 
 
 # = Info and logs =
 
 def setlogfile(net, fname):
+    """\
+    Save the training outputs of a model to a file.
+
+    :param net: model
+    :param fname: name of the log file
+    :return: None
+    """
     return _eddl.setlogfile(net, fname)
 
 
 def summary(m):
+    """\
+    Print a summary representation of the model.
+
+    :param m: model
+    :return: None
+    """
     return _eddl.summary(m)
 
 
 def plot(m, fname, string="LR"):
+    """\
+    Plot a representation of the model.
+
+    :param m: model to plot
+    :param fname: name of the file where the plot should be saved
+    :return: None
+    """
     return _eddl.plot(m, fname, string)
 
 
 # = Serialization =
 
 def load(m, fname, format="bin"):
+    """\
+    Load weights to reinstantiate the model.
+
+    :param m: model
+    :param fname: name of the file containing the model weights
+    :return: None
+    """
     return _eddl.load(m, fname, format)
 
 
 def save(m, fname, format="bin"):
+    """\
+    Save model weights to a file.
+
+    :param m: model
+    :param fname: name of the file where model weights should be saved
+    :return: None
+    """
     return _eddl.save(m, fname, format)
 
 
 # = Optimizer =
 
 def setlr(net, p):
+    """\
+    Change the learning rate and hyperparameters of the model optimizer.
+
+    :param net: model
+    :param p: list with the learning rate and hyperparameters of the model
+    :return: None
+    """
     return _eddl.setlr(net, p)
 
 
 def adadelta(lr, rho, epsilon, weight_decay):
+    """\
+    Adadelta optimizer.
+
+    Adadelta is a more robust extension of Adagrad that adapts learning rates
+    based on a moving window of gradient updates, instead of accumulating all
+    past gradients. This way, Adadelta continues learning even when many
+    updates have been done. See: https://arxiv.org/abs/1212.5701.
+
+    :param lr: learning rate
+    :param rho: smoothing constant
+    :param epsilon: term added to the denominator to improve numerical
+      stability
+    :param weight_decay: weight decay (L2 penalty)
+    :return: Adadelta optimizer
+    """
     return _eddl.adadelta(lr, rho, epsilon, weight_decay)
 
 
 def adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=0.000001, weight_decay=0,
          amsgrad=False):
+    """\
+    Adam optimizer.
+
+    Default parameters follow those provided in the original paper
+    (see: https://arxiv.org/abs/1412.6980v8).
+
+    :param lr: learning rate
+    :param beta_1: coefficient for computing running averages of gradient
+      and its square
+    :param beta_2: coefficient for computing running averages of gradient
+      and its square
+    :param epsilon: term added to the denominator to improve numerical
+      stability
+    :param weight_decay: weight decay (L2 penalty)
+    :param amsgrad: whether to apply the AMSGrad variant of this algorithm
+      from the paper "On the Convergence of Adam and Beyond"
+    :return: Adam optimizer
+    """
     return _eddl.adam(lr, beta_1, beta_2, epsilon, weight_decay, amsgrad)
 
 
 def adagrad(lr, epsilon, weight_decay):
+    """\
+    Adagrad optimizer.
+
+    Adagrad is an optimizer with parameter-specific learning rates, which are
+    adapted relative to how frequently a parameter gets updated during
+    training. The more updates a parameter receives, the smaller the learning
+    rate. See: http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf
+
+    :param lr: learning rate
+    :param epsilon: term added to the denominator to improve numerical
+      stability
+    :param weight_decay: weight decay (L2 penalty)
+    :return: Adagrad optimizer
+    """
     return _eddl.adagrad(lr, epsilon, weight_decay)
 
 
 def adamax(lr, beta_1, beta_2, epsilon, weight_decay):
+    """\
+    Adamax optimizer.
+
+    A variant of Adam based on the infinity norm.
+
+    :param lr: learning rate
+    :param beta_1: coefficient for computing running averages of gradient
+      and its square
+    :param beta_2: coefficient for computing running averages of gradient
+      and its square
+    :param epsilon: term added to the denominator to improve numerical
+      stability
+    :param weight_decay: weight decay (L2 penalty)
+    :return: Adamax optimizer
+    """
     return _eddl.adamax(lr, beta_1, beta_2, epsilon, weight_decay)
 
 
 def nadam(lr, beta_1, beta_2, epsilon, schedule_decay):
+    """\
+    Nadam optimizer.
+
+    :param lr: learning rate
+    :param beta_1: coefficients for computing running averages of gradient
+      and its square
+    :param beta_2: coefficients for computing running averages of gradient
+      and its square
+    :param epsilon: term added to the denominator to improve numerical
+      stability
+    :param schedule_decay: weight decay (L2 penalty)
+    :return: Nadam optimizer
+    """
     return _eddl.nadam(lr, beta_1, beta_2, epsilon, schedule_decay)
 
 
 def rmsprop(lr=0.01, rho=0.9, epsilon=0.00001, weight_decay=0.0):
+    """\
+    RMSProp optimizer.
+
+    It is recommended to leave the parameters of this optimizer at their
+    default values (except for the learning rate, which can be freely tuned).
+    See:
+    http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf
+
+    :param lr: learning rate
+    :param rho: smoothing constant
+    :param epsilon: term added to the denominator to improve numerical
+      stability
+    :param weight_decay: weight decay (L2 penalty)
+    :return: RMSProp optimizer
+    """
     return _eddl.rmsprop(lr, rho, epsilon, weight_decay)
 
 
 def sgd(lr=0.01, momentum=0.0, weight_decay=0.0, nesterov=False):
+    """\
+    Stochastic gradient descent optimizer.
+
+    Includes support for momentum, learning rate decay, and Nesterov momentum.
+
+    :param lr: learning rate
+    :param momentum: momentum factor
+    :param weight_decay: value to apply to the activation function
+    :param nesterov: whether to apply Nesterov momentum
+    :return: SGD optimizer
+    """
     return _eddl.sgd(lr, momentum, weight_decay, nesterov)
 
 
