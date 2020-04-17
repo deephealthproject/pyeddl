@@ -5,3 +5,4 @@
 
 .. automodule:: pyeddl.eddl
    :members:
+   :undoc-members:

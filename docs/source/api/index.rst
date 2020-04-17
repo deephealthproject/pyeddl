@@ -5,3 +5,4 @@
    :caption: API Docs:
 
    eddl
+   eddlT
