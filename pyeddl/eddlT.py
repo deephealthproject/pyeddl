@@ -815,7 +815,7 @@ def logn(A, n):
 
 def max(A):
     """\
-    Return the maximum value of A.
+    Return the maximum value of the input tensor.
 
     :param A: a tensor
     :return: scalar
@@ -825,7 +825,7 @@ def max(A):
 
 def min(A):
     """\
-    Return the minimum value of A.
+    Return the minimum value of the input tensor.
 
     :param A: a tensor
     :return: scalar
@@ -900,7 +900,7 @@ def mult2D(A, B):
 
 def neg_(A):
     """\
-    Negates all elements in A.
+    Negate all elements in the input tensor.
 
     Modifies the input tensor.
 
@@ -912,7 +912,7 @@ def neg_(A):
 
 def neg(A):
     """\
-    Negates all elements in A.
+    Negate all elements in the input tensor.
 
     Returns a new tensor.
 
@@ -923,124 +923,370 @@ def neg(A):
 
 
 def normalize_(A, min, max):
+    """\
+    Normalize tensor values to the ``[min, max]`` range.
+
+    ``v' = r * (v - A_min) + min; r = (max - min) / (A_max - A_min)``
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.normalize_(A, min, max)
 
 
 def normalize(A, min, max):
+    """\
+    Normalize tensor values to the ``[min, max]`` range.
+
+    ``v' = r * (v - A_min) + min; r = (max - min) / (A_max - A_min)``
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.normalize(A, min, max)
 
 
 def reciprocal_(A):
+    """\
+    Compute the element-wise reciprocal of the input tensor.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.reciprocal_(A)
 
 
 def reciprocal(A):
+    """\
+    Compute the element-wise reciprocal of the input tensor.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.reciprocal(A)
 
 
 def round_(A):
+    """\
+    Round tensor values to the nearest integer.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.round_(A)
 
 
 def round(A):
+    """\
+    Round tensor values to the nearest integer.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.round(A)
 
 
 def rsqrt_(A):
+    """\
+    Compute the element-wise reciprocal of the square root of the input tensor.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.rsqrt_(A)
 
 
 def rsqrt(A):
+    """\
+    Compute the element-wise reciprocal of the square root of the input tensor.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.rsqrt(A)
 
 
 def sigmoid_(A):
+    """\
+    Compute the element-wise sigmoid of the input tensor.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.sigmoid_(A)
 
 
 def sigmoid(A):
+    """\
+    Compute the element-wise sigmoid of the input tensor.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.sigmoid(A)
 
 
 def sign_(A):
+    """\
+    Compute the element-wise sign (-1 if x < 0, 0 if x == 0, 1 if x > 0)
+    of the input tensor.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.sign_(A)
 
 
 def sign(A):
+    """\
+    Compute the element-wise sign (-1 if x < 0, 0 if x == 0, 1 if x > 0)
+    of the input tensor.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.sign(A)
 
 
 def sin_(A):
+    """\
+    Compute the element-wise sine of the input tensor.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.sin_(A)
 
 
 def sin(A):
+    """\
+    Compute the element-wise sine of the input tensor.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.sin(A)
 
 
 def sinh_(A):
+    """\
+    Compute the element-wise hyperbolic sine of the input tensor.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.sinh_(A)
 
 
 def sinh(A):
+    """\
+    Compute the element-wise hyperbolic sine of the input tensor.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.sinh(A)
 
 
 def sqr_(A):
+    """\
+    Compute the element-wise square of the input tensor.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.sqr_(A)
 
 
 def sqr(A):
+    """\
+    Compute the element-wise square of the input tensor.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.sqr(A)
 
 
 def sqrt_(A):
+    """\
+    Compute the element-wise square root of the input tensor.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.sqrt_(A)
 
 
 def sqrt(A):
+    """\
+    Compute the element-wise square root of the input tensor.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.sqrt(A)
 
 
 def sub_(A, B):
+    """\
+    Subtracts ``B`` from ``A``.
+
+    Modifies the ``A`` tensor.
+
+    :param A: a tensor
+    :param B: a tensor or scalar
+    :return: None
+    """
     # B can be either a tensor or a float
     return _eddlT.sub_(A, B)
 
 
 def sub(A, B):
+    """\
+    Subtracts ``B`` from ``A``.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :param B: a tensor or scalar
+    :return: Tensor
+    """
     # B can be either a tensor or a float
     return _eddlT.sub(A, B)
 
 
 def tan_(A):
+    """\
+    Compute the element-wise tangent of the input tensor.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.tan_(A)
 
 
 def tan(A):
+    """\
+    Compute the element-wise tangent of the input tensor.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.tan(A)
 
 
 def tanh_(A):
+    """\
+    Compute the element-wise hyperbolic tangent of the input tensor.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.tanh_(A)
 
 
 def tanh(A):
+    """\
+    Compute the element-wise hyperbolic tangent of the input tensor.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.tanh(A)
 
 
 def trunc_(A):
+    """\
+    Truncate (discard the fractional part) the input tensor, element-wise.
+
+    Modifies the input tensor.
+
+    :param A: a tensor
+    :return: None
+    """
     return _eddlT.trunc_(A)
 
 
 def trunc(A):
+    """\
+    Truncate (discard the fractional part) the input tensor, element-wise.
+
+    Returns a new tensor.
+
+    :param A: a tensor
+    :return: Tensor
+    """
     return _eddlT.trunc(A)
 
 
 # == Reductions ==
 
 def reduce_mean(A, axis):
+    """\
+    Compute the arithmetic mean along the specified axis.
+
+    :param A: a tensor
+    :param axis: axis (list of int) along which the mean is to be computed
+    :return: Tensor
+    """
     return _eddlT.reduce_mean(A, axis)
 
 
 def reduce_variance(A, axis):
+    """\
+    Compute the variance along the specified axis.
+
+    :param A: a tensor
+    :param axis: axis (list of int) along which the variance is to be computed
+    :return: Tensor
+    """
     return _eddlT.reduce_variance(A, axis)
