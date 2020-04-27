@@ -20,23 +20,10 @@
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
 
-// TensorDescriptor file:eddl/descriptors/tensor_descriptors.h line:24
+// TensorDescriptor file:eddl/descriptors/tensor_descriptors.h line:22
 struct PyCallBack_TensorDescriptor : public TensorDescriptor {
 	using TensorDescriptor::TensorDescriptor;
 
-	void build() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const TensorDescriptor *>(this), "build");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return TensorDescriptor::build();
-	}
 	void resize(int a0) override { 
 		pybind11::gil_scoped_acquire gil;
 		pybind11::function overload = pybind11::get_overload(static_cast<const TensorDescriptor *>(this), "resize");
@@ -52,7 +39,7 @@ struct PyCallBack_TensorDescriptor : public TensorDescriptor {
 	}
 };
 
-// SelDescriptor file:eddl/descriptors/tensor_descriptors.h line:41
+// SelDescriptor file:eddl/descriptors/tensor_descriptors.h line:39
 struct PyCallBack_SelDescriptor : public SelDescriptor {
 	using SelDescriptor::SelDescriptor;
 
@@ -82,24 +69,11 @@ struct PyCallBack_SelDescriptor : public SelDescriptor {
 		}
 		return SelDescriptor::build_indices();
 	}
-	void build() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const SelDescriptor *>(this), "build");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return TensorDescriptor::build();
-	}
 };
 
 void bind_eddl_descriptors_tensor_descriptors(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
-	{ // TensorDescriptor file:eddl/descriptors/tensor_descriptors.h line:24
+	{ // TensorDescriptor file:eddl/descriptors/tensor_descriptors.h line:22
 		pybind11::class_<TensorDescriptor, std::shared_ptr<TensorDescriptor>, PyCallBack_TensorDescriptor> cl(M(""), "TensorDescriptor", "");
 		cl.def( pybind11::init( [](){ return new TensorDescriptor(); }, [](){ return new PyCallBack_TensorDescriptor(); } ), "doc");
 		cl.def( pybind11::init<int>(), pybind11::arg("dev") );
@@ -107,12 +81,11 @@ void bind_eddl_descriptors_tensor_descriptors(std::function< pybind11::module &(
 		cl.def( pybind11::init( [](PyCallBack_TensorDescriptor const &o){ return new PyCallBack_TensorDescriptor(o); } ) );
 		cl.def( pybind11::init( [](TensorDescriptor const &o){ return new TensorDescriptor(o); } ) );
 		cl.def_readwrite("device", &TensorDescriptor::device);
-		cl.def("build", (void (TensorDescriptor::*)()) &TensorDescriptor::build, "C++: TensorDescriptor::build() --> void");
 		cl.def("resize", (void (TensorDescriptor::*)(int)) &TensorDescriptor::resize, "C++: TensorDescriptor::resize(int) --> void", pybind11::arg("b"));
 		cl.def("free_memory", (void (TensorDescriptor::*)()) &TensorDescriptor::free_memory, "C++: TensorDescriptor::free_memory() --> void");
 		cl.def("assign", (class TensorDescriptor & (TensorDescriptor::*)(const class TensorDescriptor &)) &TensorDescriptor::operator=, "C++: TensorDescriptor::operator=(const class TensorDescriptor &) --> class TensorDescriptor &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // SelDescriptor file:eddl/descriptors/tensor_descriptors.h line:41
+	{ // SelDescriptor file:eddl/descriptors/tensor_descriptors.h line:39
 		pybind11::class_<SelDescriptor, std::shared_ptr<SelDescriptor>, PyCallBack_SelDescriptor, TensorDescriptor> cl(M(""), "SelDescriptor", "");
 		cl.def( pybind11::init<int>(), pybind11::arg("dev") );
 
@@ -423,6 +396,19 @@ struct PyCallBack_Loss : public Loss {
 		}
 		return Loss::value(a0, a1);
 	}
+	class Loss * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Loss *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Loss *>::value) {
+				static pybind11::detail::overload_caster_t<class Loss *> caster;
+				return pybind11::detail::cast_ref<class Loss *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Loss *>(std::move(o));
+		}
+		return Loss::clone();
+	}
 };
 
 // Metric file:eddl/metrics/metric.h line:23
@@ -441,6 +427,19 @@ struct PyCallBack_Metric : public Metric {
 			else return pybind11::detail::cast_safe<float>(std::move(o));
 		}
 		return Metric::value(a0, a1);
+	}
+	class Metric * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Metric *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Metric *>::value) {
+				static pybind11::detail::overload_caster_t<class Metric *> caster;
+				return pybind11::detail::cast_ref<class Metric *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Metric *>(std::move(o));
+		}
+		return Metric::clone();
 	}
 };
 
@@ -751,11 +750,12 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def_readwrite("name", &Loss::name);
 		cl.def("delta", (void (Loss::*)(class Tensor *, class Tensor *, class Tensor *)) &Loss::delta, "C++: Loss::delta(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("T"), pybind11::arg("Y"), pybind11::arg("D"));
 		cl.def("value", (float (Loss::*)(class Tensor *, class Tensor *)) &Loss::value, "C++: Loss::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
+		cl.def("clone", (class Loss * (Loss::*)()) &Loss::clone, "C++: Loss::clone() --> class Loss *", pybind11::return_value_policy::automatic);
 		cl.def("assign", (class Loss & (Loss::*)(const class Loss &)) &Loss::operator=, "C++: Loss::operator=(const class Loss &) --> class Loss &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 
 		loss_addons(cl);
 	}
-	{ // CompServ file:eddl/net/compserv.h line:21
+	{ // CompServ file:eddl/net/compserv.h line:20
 		pybind11::class_<CompServ, std::shared_ptr<CompServ>> cl(M(""), "CompServ", "");
 		cl.def( pybind11::init( [](CompServ const &o){ return new CompServ(o); } ) );
 		cl.def_readwrite("type", &CompServ::type);
@@ -771,6 +771,7 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def( pybind11::init( [](Metric const &o){ return new Metric(o); } ) );
 		cl.def_readwrite("name", &Metric::name);
 		cl.def("value", (float (Metric::*)(class Tensor *, class Tensor *)) &Metric::value, "C++: Metric::value(class Tensor *, class Tensor *) --> float", pybind11::arg("T"), pybind11::arg("Y"));
+		cl.def("clone", (class Metric * (Metric::*)()) &Metric::clone, "C++: Metric::clone() --> class Metric *", pybind11::return_value_policy::automatic);
 		cl.def("assign", (class Metric & (Metric::*)(const class Metric &)) &Metric::operator=, "C++: Metric::operator=(const class Metric &) --> class Metric &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 
 		metric_addons(cl);
@@ -782,6 +783,8 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def_readwrite("name", &Layer::name);
 		cl.def_readwrite("trainable", &Layer::trainable);
 		cl.def_readwrite("mem_level", &Layer::mem_level);
+		cl.def_readwrite("isrecurrent", &Layer::isrecurrent);
+		cl.def_readwrite("isshared", &Layer::isshared);
 		cl.def_readwrite("params", &Layer::params);
 		cl.def_readwrite("gradients", &Layer::gradients);
 		cl.def_readwrite("acc_gradients", &Layer::acc_gradients);
@@ -848,6 +851,8 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def_readwrite("trmode", &Net::trmode);
 		cl.def_readwrite("mem_level", &Net::mem_level);
 		cl.def_readwrite("verbosity_level", &Net::verbosity_level);
+		cl.def_readwrite("onnx_pretrained", &Net::onnx_pretrained);
+		cl.def_readwrite("isrecurrent", &Net::isrecurrent);
 		cl.def_readwrite("devsel", &Net::devsel);
 		cl.def_readwrite("layers", &Net::layers);
 		cl.def_readwrite("lin", &Net::lin);
@@ -865,6 +870,8 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("fts", (void (Net::*)()) &Net::fts, "C++: Net::fts() --> void");
 		cl.def("bts", (void (Net::*)()) &Net::bts, "C++: Net::bts() --> void");
 		cl.def("split", (void (Net::*)(int, int)) &Net::split, "C++: Net::split(int, int) --> void", pybind11::arg("c"), pybind11::arg("todev"));
+		cl.def("unroll", (class Net * (Net::*)(int, int, bool, bool)) &Net::unroll, "C++: Net::unroll(int, int, bool, bool) --> class Net *", pybind11::return_value_policy::automatic, pybind11::arg("inl"), pybind11::arg("outl"), pybind11::arg("seq"), pybind11::arg("areg"));
+		cl.def("build_rnet", (void (Net::*)(int, int)) &Net::build_rnet, "C++: Net::build_rnet(int, int) --> void", pybind11::arg("inl"), pybind11::arg("outl"));
 		cl.def("inNet", (int (Net::*)(class Layer *)) &Net::inNet, "C++: Net::inNet(class Layer *) --> int", pybind11::arg("l"));
 		cl.def("walk", (void (Net::*)(class Layer *)) &Net::walk, "C++: Net::walk(class Layer *) --> void", pybind11::arg("l"));
 		cl.def("walk_back", (void (Net::*)(class Layer *)) &Net::walk_back, "C++: Net::walk_back(class Layer *) --> void", pybind11::arg("l"));

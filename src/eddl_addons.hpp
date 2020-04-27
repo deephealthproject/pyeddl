@@ -99,9 +99,9 @@ void eddl_addons(pybind11::module &m) {
     m.def("GaussianNoise", (class Layer* (*)(class Layer*, float, string)) &eddl::GaussianNoise, "C++: eddl::GaussianNoise(class Layer*, float, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("stddev"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
 
     // --- normalization layers ---
-    m.def("BatchNormalization", (class Layer* (*)(class Layer*, float, float, bool, string)) &eddl::BatchNormalization, "C++: eddl::BatchNormalization(class Layer*, float, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("momentum") = 0.9f, pybind11::arg("epsilon") = 0.001f, pybind11::arg("affine") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
-    m.def("LayerNormalization", (class Layer* (*)(class Layer*, float, float, bool, string)) &eddl::LayerNormalization, "C++: eddl::LayerNormalization(class Layer*, float, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("momentum") = 0.9f, pybind11::arg("epsilon") = 0.001f, pybind11::arg("affine") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
-    m.def("GroupNormalization", (class Layer* (*)(class Layer*, int, float, float, bool, string)) &eddl::GroupNormalization, "C++: eddl::GroupNormalization(class Layer*, int, float, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("groups"), pybind11::arg("momentum") = 0.9f, pybind11::arg("epsilon") = 0.001f, pybind11::arg("affine") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("BatchNormalization", (class Layer* (*)(class Layer*, float, float, bool, string)) &eddl::BatchNormalization, "C++: eddl::BatchNormalization(class Layer*, float, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("momentum") = 0.9f, pybind11::arg("epsilon") = 0.00001f, pybind11::arg("affine") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("LayerNormalization", (class Layer* (*)(class Layer*, float, bool, string)) &eddl::LayerNormalization, "C++: eddl::LayerNormalization(class Layer*, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("epsilon") = 0.00001f, pybind11::arg("affine") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("GroupNormalization", (class Layer* (*)(class Layer*, int, float, bool, string)) &eddl::GroupNormalization, "C++: eddl::GroupNormalization(class Layer*, int, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("groups"), pybind11::arg("epsilon") = 0.001f, pybind11::arg("affine") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Norm", (class Layer* (*)(class Layer*, float, string)) &eddl::Norm, "C++: eddl::Norm(class Layer*, float, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("epsilon") = 0.001f, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("NormMax", (class Layer* (*)(class Layer*, float, string)) &eddl::NormMax, "C++: eddl::NormMax(class Layer*, float, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("epsilon") = 0.001f, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("NormMinMax", (class Layer* (*)(class Layer*, float, string)) &eddl::NormMinMax, "C++: eddl::NormMinMax(class Layer*, float, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("epsilon") = 0.001f, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
@@ -159,7 +159,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("MaxPool", (class Layer* (*)(class Layer*, const vector<int>&, const vector<int> &, string, string)) &eddl::MaxPool, "C++: eddl::MaxPool(class Layer*, const vector<int>&, const vector<int> &, string, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("strides") = vector<int>{2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
 
     // --- recurrent layers ---
-    m.def("RNN", (class Layer* (*)(class Layer*, int, int, bool, float, bool, string)) &eddl::RNN, "C++: eddl::RNN(class Layer*, int, int, bool, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("num_layers"), pybind11::arg("use_bias") = true, pybind11::arg("dropout") = 0.0f, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("RNN", (class Layer* (*)(class Layer*, int, int, bool, float, bool, string)) &eddl::RNN, "C++: eddl::RNN(class Layer*, int, int, bool, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("num_layers") = 1, pybind11::arg("use_bias") = true, pybind11::arg("dropout") = 0.0f, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("LSTM", (class Layer* (*)(class Layer*, int, int, bool, float, bool, string)) &eddl::LSTM, "C++: eddl::LSTM(class Layer*, int, int, bool, float, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("num_layers"), pybind11::arg("use_bias") = true, pybind11::arg("dropout") = 0.0f, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
 
     // --- initializers ---
@@ -226,15 +226,15 @@ void eddl_addons(pybind11::module &m) {
 
 #ifdef EDDL_WITH_PROTOBUF
     // --- serialization ---
-    m.def("save_net_to_onnx_file", (void (*)(class Net*, string)) &eddl::save_net_to_onnx_file, "C++: eddl::save_net_to_onnx_file(class Net *, string) --> void", pybind11::arg("net"), pybind11::arg("path"));
-    m.def("import_net_from_onnx_file", (class Net* (*)(string)) &eddl::import_net_from_onnx_file, "C++: eddl::import_net_from_onnx_file(string) --> class Net*", pybind11::arg("path"));
+    m.def("save_net_to_onnx_file", (void (*)(class Net*, string)) &save_net_to_onnx_file, "C++: eddl::save_net_to_onnx_file(class Net *, string) --> void", pybind11::arg("net"), pybind11::arg("path"));
+    m.def("import_net_from_onnx_file", (class Net* (*)(string)) &import_net_from_onnx_file, "C++: eddl::import_net_from_onnx_file(string) --> class Net*", pybind11::arg("path"));
     m.def("serialize_net_to_onnx_string", [](Net* net, bool gradients) -> pybind11::bytes {
-      string* s = eddl::serialize_net_to_onnx_string(net, gradients);
+      string* s = serialize_net_to_onnx_string(net, gradients);
       return pybind11::bytes(*s);
     }, pybind11::arg("net"), pybind11::arg("gradients"));
     m.def("import_net_from_onnx_string", [](pybind11::bytes model_string) -> Net* {
       string s = string(model_string);
-      return eddl::import_net_from_onnx_string(&s, s.size());
+      return import_net_from_onnx_string(&s, s.size());
     }, pybind11::arg("model_string"));
 #endif
 }
