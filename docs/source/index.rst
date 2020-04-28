@@ -10,6 +10,7 @@ Learning library.
    :caption: Contents:
 
    installation
+   getting_started
    api/index
 
 
