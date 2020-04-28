@@ -1261,7 +1261,7 @@ def GaussianNoise(parent, stddev, name=""):
 
 # = Normalization =
 
-def BatchNormalization(parent, momentum=0.9, epsilon=0.001, affine=True,
+def BatchNormalization(parent, momentum=0.9, epsilon=0.00001, affine=True,
                        name=""):
     """\
     Batch normalization layer.
@@ -1281,8 +1281,7 @@ def BatchNormalization(parent, momentum=0.9, epsilon=0.001, affine=True,
     return _eddl.BatchNormalization(parent, momentum, epsilon, affine, name)
 
 
-def LayerNormalization(parent, momentum=0.9, epsilon=0.001, affine=True,
-                       name=""):
+def LayerNormalization(parent, epsilon=0.00001, affine=True, name=""):
     """\
     Layer normalization layer.
 
@@ -1295,11 +1294,10 @@ def LayerNormalization(parent, momentum=0.9, epsilon=0.001, affine=True,
     :param name: name of the output layer
     :return: LayerNorm layer
     """
-    return _eddl.LayerNormalization(parent, momentum, epsilon, affine, name)
+    return _eddl.LayerNormalization(parent, epsilon, affine, name)
 
 
-def GroupNormalization(parent, groups, momentum=0.9, epsilon=0.001,
-                       affine=True, name=""):
+def GroupNormalization(parent, groups, epsilon=0.001, affine=True, name=""):
     """\
     Group normalization layer.
 
@@ -1315,8 +1313,7 @@ def GroupNormalization(parent, groups, momentum=0.9, epsilon=0.001,
     :param name: name of the output layer
     :return: GroupNorm layer
     """
-    return _eddl.GroupNormalization(parent, groups, momentum, epsilon, affine,
-                                    name)
+    return _eddl.GroupNormalization(parent, groups, epsilon, affine, name)
 
 
 def Norm(parent, epsilon=0.001, name=""):
@@ -1565,7 +1562,7 @@ def MaxPool(parent, pool_size=[2, 2], strides=[2, 2], padding="none", name=""):
 
 # = Recurrent layers =
 
-def RNN(parent, units, num_layers, use_bias=True, dropout=0.0,
+def RNN(parent, units, num_layers=1, use_bias=True, dropout=0.0,
         bidirectional=False, name=""):
     """\
     Fully-connected RNN where the output is to be fed back to input.

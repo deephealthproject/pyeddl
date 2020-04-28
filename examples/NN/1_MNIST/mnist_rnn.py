@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 CRS4
+# Copyright (c) 2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-VGG16 for CIFAR10 with batch normalization.
+MNIST RNN example.
 """
 
 import argparse
@@ -27,76 +27,56 @@ import sys
 
 import pyeddl.eddl as eddl
 import pyeddl.eddlT as eddlT
-
-
-def Normalization(layer):
-    return eddl.BatchNormalization(layer)
-
-
-def Block1(layer, filters):
-    return eddl.ReLu(Normalization(eddl.Conv(
-        layer, filters, [1, 1], [1, 1], "same", False
-    )))
-
-
-def Block3_2(layer, filters):
-    layer = eddl.ReLu(Normalization(eddl.Conv(
-        layer, filters, [3, 3], [1, 1], "same", False
-    )))
-    layer = eddl.ReLu(Normalization(eddl.Conv(
-        layer, filters, [3, 3], [1, 1], "same", False
-    )))
-    return layer
+from pyeddl._core import Tensor
 
 
 def main(args):
-    eddl.download_cifar10()
+    eddl.download_mnist()
 
     num_classes = 10
 
-    in_ = eddl.Input([3, 32, 32])
+    in_ = eddl.Input([28])
 
     layer = in_
-    layer = eddl.RandomCropScale(layer, [0.8, 1.0])
-    layer = eddl.RandomFlip(layer, 1)
-    layer = eddl.MaxPool(Block3_2(layer, 64))
-    layer = eddl.MaxPool(Block3_2(layer, 128))
-    layer = eddl.MaxPool(Block1(Block3_2(layer, 256), 256))
-    layer = eddl.MaxPool(Block1(Block3_2(layer, 512), 512))
-    layer = eddl.MaxPool(Block1(Block3_2(layer, 512), 512))
-    layer = eddl.Reshape(layer, [-1])
-    layer = eddl.ReLu(eddl.Dense(layer, 512))
-
+    layer = eddl.LeakyReLu(eddl.Dense(layer, 32))
+    layer = eddl.LeakyReLu(eddl.RNN(layer, 32))
+    layer = eddl.LeakyReLu(eddl.Dense(layer, 32))
     out = eddl.Softmax(eddl.Dense(layer, num_classes))
     net = eddl.Model([in_], [out])
 
     eddl.build(
         net,
-        eddl.sgd(0.001, 0.9),
+        eddl.rmsprop(0.001),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
         eddl.CS_GPU() if args.gpu else eddl.CS_CPU()
     )
 
     eddl.summary(net)
-    eddl.plot(net, "model.pdf", "TB")
+    eddl.plot(net, "model.pdf")
 
-    x_train = eddlT.load("cifar_trX.bin")
-    y_train = eddlT.load("cifar_trY.bin")
-    eddlT.div_(x_train, 255.0)
+    x_train = eddlT.load("trX.bin")
+    y_train = eddlT.load("trY.bin")
+    x_test = eddlT.load("tsX.bin")
+    y_test = eddlT.load("tsY.bin")
 
-    x_test = eddlT.load("cifar_tsX.bin")
-    y_test = eddlT.load("cifar_tsY.bin")
-    eddlT.div_(x_test, 255.0)
+    eddlT.reshape_(x_train, [60000, 28, 28])
+    x_trainp = Tensor.permute(x_train, [1, 0, 2])
+
+    eddlT.reshape_(x_test, [10000, 28, 28])
+    x_testp = Tensor.permute(x_test, [1, 0, 2])
+
+    eddlT.div_(x_trainp, 255.0)
+    eddlT.div_(x_testp, 255.0)
 
     for i in range(args.epochs):
-        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-        eddl.evaluate(net, [x_test], [y_test])
+        eddl.fit(net, [x_trainp], [y_train], args.batch_size, 1)
+        eddl.evaluate(net, [x_testp], [y_test])
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--epochs", type=int, metavar="INT", default=10)
-    parser.add_argument("--batch-size", type=int, metavar="INT", default=100)
+    parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
     parser.add_argument("--gpu", action="store_true")
     main(parser.parse_args(sys.argv[1:]))

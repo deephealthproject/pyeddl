@@ -11,7 +11,7 @@ docker run --rm eddl bash -c 'cat /usr/include/zlib.h' > include/zlib.h
 docker run --rm eddl bash -c 'cat /usr/include/zconf.h' > include/zconf.h
 docker run --rm eddl bash -c "tar -c -C /usr/include/eigen3 Eigen" | tar -x -C include
 pushd include
-ln -s ../third_party/eddl/src eddl
+ln -s ../third_party/eddl/include/eddl .
 popd
 popd
 

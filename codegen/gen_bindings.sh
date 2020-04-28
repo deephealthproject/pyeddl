@@ -8,7 +8,7 @@ this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 # this refers to the crs4/binder docker container
 binder=${BINDER_EXE:-/binder/build/llvm-5.0.0/build_5.0.0*/bin/binder}
 
-eddl_inc=${EDDL_INCLUDE:-"${this_dir}"/../third_party/eddl/src}
+eddl_inc=${EDDL_INCLUDE:-"${this_dir}"/../third_party/eddl/include}
 
 rm -rf ./bindings/ && mkdir bindings/
 ${binder} \
