@@ -15,6 +15,7 @@ names=(
     mnist_mlp
     mnist_mlp_regularizers
     mnist_mlp_train_batch
+    mnist_rnn
 )
 
 for n in "${names[@]}"; do
