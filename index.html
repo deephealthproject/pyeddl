@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="api/index.html" /> 
+    <link rel="next" title="Installation" href="installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -81,6 +81,8 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/eddl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/eddlT.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddlT</span></code> — eddlT API</a></li>
 </ul>
@@ -149,13 +151,45 @@
             
   <div class="section" id="welcome-to-pyeddl-s-documentation">
 <h1>Welcome to PyEDDL’s documentation!<a class="headerlink" href="#welcome-to-pyeddl-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>PyEDDL is a Python wrapper for <a class="reference external" href="https://deephealthproject.github.io/eddl/index.html">EDDL</a>, the European
-Distributed Deep Learning library.</p>
+<p>PyEDDL is a Python wrapper for <a class="reference external" href="https://github.com/deephealthproject/eddl">EDDL</a>, the European Distributed Deep
+Learning library.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/eddl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/eddlT.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddlT</span></code> — eddlT API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-eddl-dependencies">Install EDDL dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-eddl">Install EDDL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-pyeddl">Install PyEDDL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#disabling-unwanted-modules">Disabling unwanted modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#eddl-installed-in-an-arbitrary-directory">EDDL installed in an arbitrary directory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#creating-and-manipulating-tensors">Creating and manipulating tensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#to-from-numpy-conversions">To/from NumPy conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#training-a-mlp-network">Training a MLP network</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/eddl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/eddl.html#model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddl.html#layers">Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddl.html#initializers">Initializers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddl.html#regularizers">Regularizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddl.html#datasets">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddl.html#onnx-support">ONNX support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/eddlT.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddlT</span></code> — eddlT API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/eddlT.html#creation-ops">Creation ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddlT.html#copy-data">Copy data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddlT.html#core-inplace">Core inplace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddlT.html#get-data">Get data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddlT.html#serialization">Serialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddlT.html#math-ops">Math ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddlT.html#reduction">Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/eddlT.html#other-functions">Other functions</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -163,8 +197,6 @@ Distributed Deep Learning library.</p>
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 </div>
 
@@ -176,7 +208,7 @@ Distributed Deep Learning library.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="api/index.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

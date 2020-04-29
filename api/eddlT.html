@@ -81,8 +81,20 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="eddl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddlT</span></code> — eddlT API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddlT</span></code> — eddlT API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creation-ops">Creation ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#copy-data">Copy data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#core-inplace">Core inplace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-data">Get data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#serialization">Serialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#math-ops">Math ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reduction">Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-functions">Other functions</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -149,8 +161,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pyeddl.eddlT">
-<span id="pyeddl-eddlt-eddlt-api"></span><span id="eddlt"></span><h1><a class="reference internal" href="#module-pyeddl.eddlT" title="pyeddl.eddlT"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddlT</span></code></a> — eddlT API<a class="headerlink" href="#module-pyeddl.eddlT" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pyeddl-eddlt-eddlt-api">
+<span id="eddlt"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddlT</span></code> — eddlT API<a class="headerlink" href="#pyeddl-eddlt-eddlt-api" title="Permalink to this headline">¶</a></h1>
 <dl class="py data">
 <dt id="pyeddl.eddlT.DEV_CPU">
 <code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">DEV_CPU</code><em class="property"> = 0</em><a class="headerlink" href="#pyeddl.eddlT.DEV_CPU" title="Permalink to this definition">¶</a></dt>
@@ -163,11 +175,227 @@
 <dd><p>A constant representing the GPU device</p>
 </dd></dl>
 
+<div class="section" id="creation-ops">
+<h2>Creation ops<a class="headerlink" href="#creation-ops" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="pyeddl.eddlT.abs">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">abs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.abs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise absolute value of the input tensor.</p>
-<p>Returns a new tensor.</p>
+<dt id="pyeddl.eddlT.create">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an uninitialized tensor of the specified shape.</p>
+<p>Can also be used to create a tensor from a NumPy array: <code class="docutils literal notranslate"><span class="pre">create(array)</span></code>
+(device must be None). In this case the tensor will be initialized with
+values, shape, etc. from the array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.zeros">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">zeros</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.zeros" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a tensor of the specified shape and fill it with zeros.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.ones">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">ones</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.ones" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a tensor of the specified shape and fill it with ones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.full">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">full</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.full" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a tensor of the specified shape and fill it with <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+<li><p><strong>value</strong> – value to fill the tensor with</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.arange">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">arange</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">step</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.arange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a 1D tensor with evenly spaced values within a given interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – start of interval</p></li>
+<li><p><strong>end</strong> – end of interval</p></li>
+<li><p><strong>step</strong> – spacing between values</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.range">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">step</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a 1D tensor with evenly spaced values within a given interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – start of interval</p></li>
+<li><p><strong>end</strong> – end of interval</p></li>
+<li><p><strong>step</strong> – spacing between values</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.linspace">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">linspace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">steps</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.linspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a 1D tensor with evenly spaced values within a given interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – starting value</p></li>
+<li><p><strong>end</strong> – end value</p></li>
+<li><p><strong>steps</strong> – number of samples to generate</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.logspace">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">logspace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">steps</span></em>, <em class="sig-param"><span class="n">base</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.logspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a 1D tensor with evenly spaced values on a log scale.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – <code class="docutils literal notranslate"><span class="pre">base</span> <span class="pre">**</span> <span class="pre">start</span></code> is the starting value</p></li>
+<li><p><strong>end</strong> – <code class="docutils literal notranslate"><span class="pre">base</span> <span class="pre">**</span> <span class="pre">end</span></code> is the final value of the sequence</p></li>
+<li><p><strong>steps</strong> – number of samples to generate</p></li>
+<li><p><strong>base</strong> – the base of the log space</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.eye">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">eye</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">size</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.eye" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">size</span></code> tensor with ones on the diagonal and zeros
+elsewhere.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> – size of the (square) tensor to create</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.randn">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">randn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.randn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a tensor with normally distributed random values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="copy-data">
+<h2>Copy data<a class="headerlink" href="#copy-data" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pyeddl.eddlT.toCPU_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">toCPU_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.toCPU_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change tensor device to CPU.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.toGPU_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">toGPU_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.toGPU_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change tensor device to GPU.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.toCPU">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">toCPU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.toCPU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a clone of the input tensor, with device set to CPU.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>A</strong> – a tensor</p>
@@ -178,6 +406,182 @@
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pyeddl.eddlT.toGPU">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">toGPU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.toGPU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a clone of the input tensor, with device set to GPU.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.clone">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">clone</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a clone of the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.select">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">i</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the i-th element (along the first axis) from a tensor and return it.</p>
+<p>Note that the returned tensor has the same shape as the input one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>i</strong> – element index</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.copyTensor">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">copyTensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.copyTensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy data from <code class="docutils literal notranslate"><span class="pre">A</span></code> to <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>B</strong> – a tensor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="core-inplace">
+<h2>Core inplace<a class="headerlink" href="#core-inplace" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pyeddl.eddlT.fill_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">fill_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.fill_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill a tensor with the specified value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>v</strong> – a scalar value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.set_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">set_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">indices</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.set_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the tensor value to <code class="docutils literal notranslate"><span class="pre">value</span></code> at the specified indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>indices</strong> – a list of indices</p></li>
+<li><p><strong>value</strong> – a scalar value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.reshape_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">reshape_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">indices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.reshape_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the tensor’s shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>indices</strong> – the new shape</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="get-data">
+<h2>Get data<a class="headerlink" href="#get-data" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pyeddl.eddlT.getdata">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">getdata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.getdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a tensor to a NumPy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a NumPy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="serialization">
+<h2>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pyeddl.eddlT.load">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a tensor from a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> – name of the file to load the tensor from</p></li>
+<li><p><strong>format</strong> – file format (e.g., “bin”, “jpg”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.save">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a tensor to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>fname</strong> – name of the file to save the tensor to</p></li>
+<li><p><strong>format</strong> – file format (e.g., “bin”, “jpg”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="math-ops">
+<h2>Math ops<a class="headerlink" href="#math-ops" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="pyeddl.eddlT.abs_">
 <code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">abs_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.abs_" title="Permalink to this definition">¶</a></dt>
@@ -194,9 +598,9 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.acos">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">acos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.acos" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise inverse cosine of the input tensor.</p>
+<dt id="pyeddl.eddlT.abs">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">abs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.abs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise absolute value of the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -224,16 +628,13 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.add">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.add" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds <code class="docutils literal notranslate"><span class="pre">B</span></code> to <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
+<dt id="pyeddl.eddlT.acos">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">acos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.acos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise inverse cosine of the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>B</strong> – a tensor or scalar</p></li>
-</ul>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor</p>
@@ -260,32 +661,16 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.arange">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">arange</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">step</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.arange" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a 1D tensor with evenly spaced values within a given interval.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> – start of interval</p></li>
-<li><p><strong>end</strong> – end of interval</p></li>
-<li><p><strong>step</strong> – spacing between values</p></li>
-<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.asin">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">asin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.asin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise inverse sine of the input tensor.</p>
+<dt id="pyeddl.eddlT.add">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds <code class="docutils literal notranslate"><span class="pre">B</span></code> to <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>B</strong> – a tensor or scalar</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor</p>
@@ -309,9 +694,9 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.atan">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">atan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.atan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise inverse tangent of the input tensor.</p>
+<dt id="pyeddl.eddlT.asin">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">asin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.asin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise inverse sine of the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -339,10 +724,9 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.ceil">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">ceil</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.ceil" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise ceiling (smallest integer i such that i &gt;= x)
-of the input tensor.</p>
+<dt id="pyeddl.eddlT.atan">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">atan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.atan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise inverse tangent of the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -371,17 +755,14 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.clamp">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">clamp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">min</span></em>, <em class="sig-param"><span class="n">max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.clamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Limit the tensor’s values between min and max.</p>
+<dt id="pyeddl.eddlT.ceil">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">ceil</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.ceil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise ceiling (smallest integer i such that i &gt;= x)
+of the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>min</strong> – minimum value</p></li>
-<li><p><strong>max</strong> – maximum value</p></li>
-</ul>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor</p>
@@ -409,14 +790,15 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.clampmax">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">clampmax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.clampmax" title="Permalink to this definition">¶</a></dt>
-<dd><p>Limit the tensor’s values to a maximum value.</p>
+<dt id="pyeddl.eddlT.clamp">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">clamp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">min</span></em>, <em class="sig-param"><span class="n">max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.clamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Limit the tensor’s values between min and max.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>min</strong> – minimum value</p></li>
 <li><p><strong>max</strong> – maximum value</p></li>
 </ul>
 </dd>
@@ -445,15 +827,15 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.clampmin">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">clampmin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">min</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.clampmin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Limit the tensor’s values to a minimum value.</p>
+<dt id="pyeddl.eddlT.clampmax">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">clampmax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.clampmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Limit the tensor’s values to a maximum value.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>min</strong> – minimum value</p></li>
+<li><p><strong>max</strong> – maximum value</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -481,44 +863,16 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.clone">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">clone</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.clone" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a clone of the input tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.copyTensor">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">copyTensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.copyTensor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Copy data from <code class="docutils literal notranslate"><span class="pre">A</span></code> to <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
+<dt id="pyeddl.eddlT.clampmin">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">clampmin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">min</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.clampmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Limit the tensor’s values to a minimum value.</p>
+<p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>B</strong> – a tensor</p></li>
+<li><p><strong>min</strong> – minimum value</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.cos">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">cos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.cos" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise cosine of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor</p>
@@ -542,9 +896,9 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.cosh">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">cosh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.cosh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise hyperbolic cosine of the input tensor.</p>
+<dt id="pyeddl.eddlT.cos">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">cos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.cos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise cosine of the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -572,36 +926,13 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.create">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an uninitialized tensor of the specified shape.</p>
-<p>Can also be used to create a tensor from a NumPy array: <code class="docutils literal notranslate"><span class="pre">create(array)</span></code>
-(device must be None). In this case the tensor will be initialized with
-values, shape, etc. from the array.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
-<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.div">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">div</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.div" title="Permalink to this definition">¶</a></dt>
-<dd><p>Divides <code class="docutils literal notranslate"><span class="pre">A</span></code> by <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
+<dt id="pyeddl.eddlT.cosh">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">cosh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.cosh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise hyperbolic cosine of the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>B</strong> – a tensor or scalar</p></li>
-</ul>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor</p>
@@ -628,13 +959,16 @@ values, shape, etc. from the array.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.exp">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">exp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.exp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise exponential of the input tensor.</p>
+<dt id="pyeddl.eddlT.div">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">div</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.div" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divides <code class="docutils literal notranslate"><span class="pre">A</span></code> by <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>B</strong> – a tensor or scalar</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor</p>
@@ -658,45 +992,9 @@ values, shape, etc. from the array.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.eye">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">eye</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">size</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.eye" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">size</span></code> tensor with ones on the diagonal and zeros
-elsewhere.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>size</strong> – size of the (square) tensor to create</p></li>
-<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.fill_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">fill_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.fill_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fill a tensor with the specified value.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>v</strong> – a scalar value</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.floor">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">floor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.floor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise floor (largest integer i such that i &lt;= x)
-of the input tensor.</p>
+<dt id="pyeddl.eddlT.exp">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">exp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise exponential of the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -725,47 +1023,17 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.full">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">full</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.full" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a tensor of the specified shape and fill it with <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
+<dt id="pyeddl.eddlT.floor">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">floor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.floor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise floor (largest integer i such that i &lt;= x)
+of the input tensor.</p>
+<p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
-<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
-<li><p><strong>value</strong> – value to fill the tensor with</p></li>
-</ul>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.getShape">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">getShape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.getShape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the tensor’s shape.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the tensor’s shape (a list of integers)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.getdata">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">getdata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.getdata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a tensor to a NumPy array.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a NumPy array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -789,89 +1057,9 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.info">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print info on the tensor (shape, strides, …).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.linspace">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">linspace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">steps</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.linspace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a 1D tensor with evenly spaced values within a given interval.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> – starting value</p></li>
-<li><p><strong>end</strong> – end value</p></li>
-<li><p><strong>steps</strong> – number of samples to generate</p></li>
-<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.load">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load a tensor from a file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fname</strong> – name of the file to load the tensor from</p></li>
-<li><p><strong>format</strong> – file format (e.g., “bin”, “jpg”)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.log">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.log" title="Permalink to this definition">¶</a></dt>
+<dt id="pyeddl.eddlT.log_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">log_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.log_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the element-wise natural logarithm of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.log10">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">log10</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.log10" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise base-10 logarithm of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.log10_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">log10_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.log10_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise base-10 logarithm of the input tensor.</p>
 <p>Modifies the input tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -884,9 +1072,9 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.log2">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">log2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.log2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise base-2 logarithm of the input tensor.</p>
+<dt id="pyeddl.eddlT.log">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise natural logarithm of the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -914,9 +1102,24 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.log_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">log_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.log_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise natural logarithm of the input tensor.</p>
+<dt id="pyeddl.eddlT.log2">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">log2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.log2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise base-2 logarithm of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.log10_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">log10_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.log10_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise base-10 logarithm of the input tensor.</p>
 <p>Modifies the input tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -929,16 +1132,13 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.logn">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">logn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.logn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise base-n logarithm of the input tensor.</p>
+<dt id="pyeddl.eddlT.log10">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">log10</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.log10" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise base-10 logarithm of the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>n</strong> – logarithm base</p></li>
-</ul>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor</p>
@@ -965,17 +1165,15 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.logspace">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">logspace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">steps</span></em>, <em class="sig-param"><span class="n">base</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.logspace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a 1D tensor with evenly spaced values on a log scale.</p>
+<dt id="pyeddl.eddlT.logn">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">logn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.logn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise base-n logarithm of the input tensor.</p>
+<p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> – <code class="docutils literal notranslate"><span class="pre">base</span> <span class="pre">**</span> <span class="pre">start</span></code> is the starting value</p></li>
-<li><p><strong>end</strong> – <code class="docutils literal notranslate"><span class="pre">base</span> <span class="pre">**</span> <span class="pre">end</span></code> is the final value of the sequence</p></li>
-<li><p><strong>steps</strong> – number of samples to generate</p></li>
-<li><p><strong>base</strong> – the base of the log space</p></li>
-<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>n</strong> – logarithm base</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1013,6 +1211,24 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="pyeddl.eddlT.mod_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">mod_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.mod_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise reminder of the <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">/</span> <span class="pre">v</span></code> division.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>v</strong> – a scalar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pyeddl.eddlT.mod">
 <code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">mod</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.mod" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the element-wise reminder of the <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">/</span> <span class="pre">v</span></code> division.</p>
@@ -1031,15 +1247,15 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.mod_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">mod_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.mod_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise reminder of the <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">/</span> <span class="pre">v</span></code> division.</p>
-<p>Modifies the input tensor.</p>
+<dt id="pyeddl.eddlT.mult_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">mult_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.mult_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplies <code class="docutils literal notranslate"><span class="pre">A</span></code> by <code class="docutils literal notranslate"><span class="pre">B</span></code>, element-wise.</p>
+<p>Modifies the <code class="docutils literal notranslate"><span class="pre">A</span></code> tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>v</strong> – a scalar</p></li>
+<li><p><strong>B</strong> – a tensor or scalar</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1084,39 +1300,6 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.mult_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">mult_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.mult_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Multiplies <code class="docutils literal notranslate"><span class="pre">A</span></code> by <code class="docutils literal notranslate"><span class="pre">B</span></code>, element-wise.</p>
-<p>Modifies the <code class="docutils literal notranslate"><span class="pre">A</span></code> tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>B</strong> – a tensor or scalar</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.neg">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">neg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.neg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Negate all elements in the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt id="pyeddl.eddlT.neg_">
 <code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">neg_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.neg_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Negate all elements in the input tensor.</p>
@@ -1132,10 +1315,9 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.normalize">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">normalize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">min</span></em>, <em class="sig-param"><span class="n">max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.normalize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Normalize tensor values to the <code class="docutils literal notranslate"><span class="pre">[min,</span> <span class="pre">max]</span></code> range.</p>
-<p><code class="docutils literal notranslate"><span class="pre">v'</span> <span class="pre">=</span> <span class="pre">r</span> <span class="pre">*</span> <span class="pre">(v</span> <span class="pre">-</span> <span class="pre">A_min)</span> <span class="pre">+</span> <span class="pre">min;</span> <span class="pre">r</span> <span class="pre">=</span> <span class="pre">(max</span> <span class="pre">-</span> <span class="pre">min)</span> <span class="pre">/</span> <span class="pre">(A_max</span> <span class="pre">-</span> <span class="pre">A_min)</span></code></p>
+<dt id="pyeddl.eddlT.neg">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">neg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.neg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Negate all elements in the input tensor.</p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1164,76 +1346,10 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.ones">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">ones</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.ones" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a tensor of the specified shape and fill it with ones.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
-<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.print">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">print</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.print" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print the tensor’s values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.randn">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">randn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.randn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a tensor with normally distributed random values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
-<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.range">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">step</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.range" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a 1D tensor with evenly spaced values within a given interval.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> – start of interval</p></li>
-<li><p><strong>end</strong> – end of interval</p></li>
-<li><p><strong>step</strong> – spacing between values</p></li>
-<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.reciprocal">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">reciprocal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.reciprocal" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise reciprocal of the input tensor.</p>
+<dt id="pyeddl.eddlT.normalize">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">normalize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">min</span></em>, <em class="sig-param"><span class="n">max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize tensor values to the <code class="docutils literal notranslate"><span class="pre">[min,</span> <span class="pre">max]</span></code> range.</p>
+<p><code class="docutils literal notranslate"><span class="pre">v'</span> <span class="pre">=</span> <span class="pre">r</span> <span class="pre">*</span> <span class="pre">(v</span> <span class="pre">-</span> <span class="pre">A_min)</span> <span class="pre">+</span> <span class="pre">min;</span> <span class="pre">r</span> <span class="pre">=</span> <span class="pre">(max</span> <span class="pre">-</span> <span class="pre">min)</span> <span class="pre">/</span> <span class="pre">(A_max</span> <span class="pre">-</span> <span class="pre">A_min)</span></code></p>
 <p>Returns a new tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1260,6 +1376,392 @@ of the input tensor.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pyeddl.eddlT.reciprocal">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">reciprocal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.reciprocal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise reciprocal of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.round_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">round_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.round_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Round tensor values to the nearest integer.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.round">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">round</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Round tensor values to the nearest integer.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.rsqrt_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">rsqrt_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.rsqrt_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise reciprocal of the square root of the input tensor.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.rsqrt">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">rsqrt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.rsqrt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise reciprocal of the square root of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sigmoid_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sigmoid_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sigmoid_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise sigmoid of the input tensor.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sigmoid">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sigmoid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sigmoid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise sigmoid of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sign_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sign_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sign_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise sign (-1 if x &lt; 0, 0 if x == 0, 1 if x &gt; 0)
+of the input tensor.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sign">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sign</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise sign (-1 if x &lt; 0, 0 if x == 0, 1 if x &gt; 0)
+of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sin_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sin_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sin_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise sine of the input tensor.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sin">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise sine of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sinh_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sinh_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sinh_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise hyperbolic sine of the input tensor.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sinh">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sinh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sinh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise hyperbolic sine of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sqr_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sqr_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sqr_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise square of the input tensor.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sqr">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sqr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sqr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise square of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sqrt_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sqrt_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sqrt_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise square root of the input tensor.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sqrt">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sqrt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sqrt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise square root of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sub_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sub_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sub_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtracts <code class="docutils literal notranslate"><span class="pre">B</span></code> from <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
+<p>Modifies the <code class="docutils literal notranslate"><span class="pre">A</span></code> tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>B</strong> – a tensor or scalar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.sub">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sub</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtracts <code class="docutils literal notranslate"><span class="pre">B</span></code> from <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – a tensor</p></li>
+<li><p><strong>B</strong> – a tensor or scalar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.tan_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">tan_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.tan_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise tangent of the input tensor.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.tan">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">tan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.tan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise tangent of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.tanh_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">tanh_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.tanh_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise hyperbolic tangent of the input tensor.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.tanh">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">tanh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.tanh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the element-wise hyperbolic tangent of the input tensor.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.trunc_">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">trunc_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.trunc_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Truncate (discard the fractional part) the input tensor, element-wise.</p>
+<p>Modifies the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddlT.trunc">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">trunc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.trunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Truncate (discard the fractional part) the input tensor, element-wise.</p>
+<p>Returns a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="reduction">
+<h2>Reduction<a class="headerlink" href="#reduction" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="pyeddl.eddlT.reduce_mean">
 <code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">reduce_mean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">axis</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.reduce_mean" title="Permalink to this definition">¶</a></dt>
@@ -1294,43 +1796,13 @@ of the input tensor.</p>
 </dl>
 </dd></dl>
 
+</div>
+<div class="section" id="other-functions">
+<h2>Other functions<a class="headerlink" href="#other-functions" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="pyeddl.eddlT.reshape_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">reshape_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">indices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.reshape_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the tensor’s shape.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>indices</strong> – the new shape</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.round">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">round</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.round" title="Permalink to this definition">¶</a></dt>
-<dd><p>Round tensor values to the nearest integer.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.round_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">round_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.round_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Round tensor values to the nearest integer.</p>
-<p>Modifies the input tensor.</p>
+<dt id="pyeddl.eddlT.print">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">print</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the tensor’s values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>A</strong> – a tensor</p>
@@ -1342,25 +1814,9 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.rsqrt">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">rsqrt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.rsqrt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise reciprocal of the square root of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.rsqrt_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">rsqrt_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.rsqrt_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise reciprocal of the square root of the input tensor.</p>
-<p>Modifies the input tensor.</p>
+<dt id="pyeddl.eddlT.info">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print info on the tensor (shape, strides, …).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>A</strong> – a tensor</p>
@@ -1372,440 +1828,20 @@ of the input tensor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddlT.save">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a tensor to a file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>fname</strong> – name of the file to save the tensor to</p></li>
-<li><p><strong>format</strong> – file format (e.g., “bin”, “jpg”)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.select">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">i</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.select" title="Permalink to this definition">¶</a></dt>
-<dd><p>Select the i-th element (along the first axis) from a tensor and return it.</p>
-<p>Note that the returned tensor has the same shape as the input one.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>i</strong> – element index</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.set_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">set_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">indices</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.set_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the tensor value to <code class="docutils literal notranslate"><span class="pre">value</span></code> at the specified indices.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>indices</strong> – a list of indices</p></li>
-<li><p><strong>value</strong> – a scalar value</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sigmoid">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sigmoid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sigmoid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise sigmoid of the input tensor.</p>
-<p>Returns a new tensor.</p>
+<dt id="pyeddl.eddlT.getShape">
+<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">getShape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.getShape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the tensor’s shape.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>A</strong> – a tensor</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
+<dd class="field-even"><p>the tensor’s shape (a list of integers)</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt id="pyeddl.eddlT.sigmoid_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sigmoid_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sigmoid_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise sigmoid of the input tensor.</p>
-<p>Modifies the input tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sign">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sign</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sign" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise sign (-1 if x &lt; 0, 0 if x == 0, 1 if x &gt; 0)
-of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sign_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sign_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sign_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise sign (-1 if x &lt; 0, 0 if x == 0, 1 if x &gt; 0)
-of the input tensor.</p>
-<p>Modifies the input tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sin">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise sine of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sin_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sin_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sin_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise sine of the input tensor.</p>
-<p>Modifies the input tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sinh">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sinh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sinh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise hyperbolic sine of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sinh_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sinh_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sinh_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise hyperbolic sine of the input tensor.</p>
-<p>Modifies the input tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sqr">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sqr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sqr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise square of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sqr_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sqr_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sqr_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise square of the input tensor.</p>
-<p>Modifies the input tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sqrt">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sqrt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sqrt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise square root of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sqrt_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sqrt_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sqrt_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise square root of the input tensor.</p>
-<p>Modifies the input tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sub">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sub</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sub" title="Permalink to this definition">¶</a></dt>
-<dd><p>Subtracts <code class="docutils literal notranslate"><span class="pre">B</span></code> from <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>B</strong> – a tensor or scalar</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.sub_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">sub_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.sub_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Subtracts <code class="docutils literal notranslate"><span class="pre">B</span></code> from <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
-<p>Modifies the <code class="docutils literal notranslate"><span class="pre">A</span></code> tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – a tensor</p></li>
-<li><p><strong>B</strong> – a tensor or scalar</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.tan">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">tan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.tan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise tangent of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.tan_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">tan_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.tan_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise tangent of the input tensor.</p>
-<p>Modifies the input tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.tanh">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">tanh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.tanh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise hyperbolic tangent of the input tensor.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.tanh_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">tanh_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.tanh_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the element-wise hyperbolic tangent of the input tensor.</p>
-<p>Modifies the input tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.toCPU">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">toCPU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.toCPU" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a clone of the input tensor, with device set to CPU.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.toCPU_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">toCPU_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.toCPU_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change tensor device to CPU.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.toGPU">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">toGPU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.toGPU" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a clone of the input tensor, with device set to GPU.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.toGPU_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">toGPU_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.toGPU_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change tensor device to GPU.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.trunc">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">trunc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.trunc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Truncate (discard the fractional part) the input tensor, element-wise.</p>
-<p>Returns a new tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.trunc_">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">trunc_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.trunc_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Truncate (discard the fractional part) the input tensor, element-wise.</p>
-<p>Modifies the input tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>A</strong> – a tensor</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddlT.zeros">
-<code class="sig-prename descclassname">pyeddl.eddlT.</code><code class="sig-name descname">zeros</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddlT.zeros" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a tensor of the specified shape and fill it with zeros.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
-<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.eddlT.DEV_CPU" title="pyeddl.eddlT.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.eddlT.DEV_GPU" title="pyeddl.eddlT.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
+</div>
 </div>
 
 
