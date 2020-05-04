@@ -5,6 +5,9 @@ PyEDDL is a Python wrapper for `EDDL
 <https://github.com/deephealthproject/eddl>`_, the European Distributed Deep
 Learning library.
 
+The source code for PyEDDL is available on the `GitHub repo
+<https://github.com/deephealthproject/pyeddl>`_.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
