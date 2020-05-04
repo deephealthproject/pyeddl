@@ -121,7 +121,7 @@ with pip. The following table shows the required EDDL version for each PyEDDL
 version:
 
 +----------------+--------------+
-| PyECVL version | ECVL version |
+| PyEDDL version | EDDL version |
 +================+==============+
 | 0.1.0          | 0.2.2        |
 +----------------+--------------+
