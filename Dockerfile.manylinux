@@ -1,15 +1,14 @@
 FROM eddl-manylinux
 
-ENV PYBIN=/opt/python/cp36-cp36m/bin
 ENV CPATH="/eddl/build/cmake/third_party/eigen/include/eigen3:${CPATH}"
 
-RUN "${PYBIN}/pip" install numpy pybind11 pytest
-
-# Run git submodule update [--init] --recursive first
 COPY . /pyeddl
 WORKDIR /
 
-RUN "${PYBIN}/pip" wheel /pyeddl/ -w wheels && \
-    auditwheel repair wheels/pyeddl-0.6.0-cp36-cp36m-linux_x86_64.whl --plat manylinux2010_x86_64 -w /pyeddl/wheels/ && \
-    "${PYBIN}/pip" install pyeddl --no-index -f /pyeddl/wheels && \
-    "${PYBIN}/pytest" /pyeddl/tests
+RUN for py in cp36-cp36m cp37-cp37m cp38-cp38; do \
+      /opt/python/${py}/bin/pip install numpy pybind11 pytest && \
+      /opt/python/${py}/bin/pip wheel /pyeddl/ -w wheels && \
+      auditwheel repair wheels/pyeddl-*-${py}-linux_x86_64.whl --plat manylinux2010_x86_64 -w /pyeddl/wheels/ && \
+      /opt/python/${py}/bin/pip install pyeddl --no-index -f /pyeddl/wheels && \
+      /opt/python/${py}/bin/pytest /pyeddl/tests; \
+    done
