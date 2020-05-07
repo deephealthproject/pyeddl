@@ -130,25 +130,29 @@ def test_randn(eddlT):
 
 # --- Copy ---
 
-@pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
-def test_cpu_gpu(eddlT):
-    # toGPU and toCPU are no-ops if EDDL is not compiled for GPU
-    a = np.arange(6).reshape(2, 3).astype(np.float32)
-    t = eddlT.create(a)
-    eddlT.toGPU_(t)
-    eddlT.toCPU_(t)
-    b = np.array(t, copy=False)
-    assert np.array_equal(b, a)
-    u = eddlT.toGPU(t)
-    t = eddlT.toCPU(u)
-    b = np.array(t, copy=False)
-    assert np.array_equal(b, a)
-    # check getdata from GPU tensor
-    t = eddlT.create([2, 3], eddlT.DEV_CPU)
-    t.fill_(2)
-    eddlT.toGPU_(t)
-    a = eddlT.getdata(t)
-    assert np.alltrue(a == 2)
+# toGPU_ fails if EDDL is compiled for GPU but no CUDA devices are
+# detected (CUDA error 100) or there are driver issues (CUDA error 35).
+# To conditionally skip this we probably  need some support from EDDL
+
+# @pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])
+# def test_cpu_gpu(eddlT):
+#     # toGPU and toCPU are no-ops if EDDL is not compiled for GPU
+#     a = np.arange(6).reshape(2, 3).astype(np.float32)
+#     t = eddlT.create(a)
+#     eddlT.toGPU_(t)
+#     eddlT.toCPU_(t)
+#     b = np.array(t, copy=False)
+#     assert np.array_equal(b, a)
+#     u = eddlT.toGPU(t)
+#     t = eddlT.toCPU(u)
+#     b = np.array(t, copy=False)
+#     assert np.array_equal(b, a)
+#     # check getdata from GPU tensor
+#     t = eddlT.create([2, 3], eddlT.DEV_CPU)
+#     t.fill_(2)
+#     eddlT.toGPU_(t)
+#     a = eddlT.getdata(t)
+#     assert np.alltrue(a == 2)
 
 
 @pytest.mark.parametrize("eddlT", [eddlT_core, eddlT_py])

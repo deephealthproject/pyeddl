@@ -1,0 +1,10 @@
+FROM quay.io/pypa/manylinux2010_x86_64
+
+RUN yum -y install wget && \
+    wget -q http://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers/cuda-repo-rhel6-10-1-local-10.1.105-418.39-1.0-1.x86_64.rpm && \
+    rpm -i cuda-repo-rhel6-10-1-local-10.1.105-418.39-1.0-1.x86_64.rpm && \
+    yum clean all && \
+    yum -y install cuda && \
+    rm -f cuda-repo-rhel6-10-1-local-10.1.105-418.39-1.0-1.x86_64.rpm
+
+ENV PATH="/usr/local/cuda/bin:${PATH}"
