@@ -4,9 +4,7 @@ Getting Started
 ===============
 
 This section contains some PyEDDL coding examples. Refer to the :ref:`API docs
-<api>` for additional details. You can find more examples in the ``examples``
-directory of the `GitHub repo <https://github.com/deephealthproject/pyeddl>`_.
-
+<api>` for additional details.
 
 Creating and manipulating tensors
 ---------------------------------
@@ -114,3 +112,12 @@ Training a MLP network
 
     if __name__ == "__main__":
         main()
+
+
+Additional examples
+----------------------
+
+You can find more examples of varying complexity in the ``examples``
+directory of the `GitHub repo <https://github.com/deephealthproject/pyeddl/tree/master/examples>`_.
+
+The PyEDDLL examples are Python version of the examples included in the EDDLL (see `intermediate examples <https://deephealthproject.github.io/eddl/usage/intermediate.html>`_ and `advanced examples <https://deephealthproject.github.io/eddl/usage/advanced.html>`_).
