@@ -183,7 +183,13 @@ platforms and Python versions. Currently these support:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyeddl</span>
 </pre></div>
 </div>
-<p>If the above command picks up the source distribution, then a binary one is
+<p><strong>Note:</strong> if your pip is too old it will fail to pick up the binary wheel and
+revert to the source package (e.g., Ubuntu 18 packages pip version 9, which
+is too old). If in doubt, upgrade pip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span>
+</pre></div>
+</div>
+<p>If pip still picks up the source distribution, then a binary one is
 not available for your system. In this case, or if you want to install from
 source for any other reason (e.g., for GPU support), read on.</p>
 </div>
