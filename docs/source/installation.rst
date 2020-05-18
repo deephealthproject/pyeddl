@@ -26,7 +26,13 @@ If a binary wheel is available for your system, you can install PyEDDL
 
     pip install pyeddl
 
-If the above command picks up the source distribution, then a binary one is
+**Note:** if your pip is too old it will fail to pick up the binary wheel and
+revert to the source package (e.g., Ubuntu 18 packages pip version 9, which
+is too old). If in doubt, upgrade pip::
+
+    pip install --upgrade pip
+
+If pip still picks up the source distribution, then a binary one is
 not available for your system. In this case, or if you want to install from
 source for any other reason (e.g., for GPU support), read on.
 
