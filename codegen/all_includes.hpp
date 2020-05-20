@@ -11,4 +11,3 @@
 #include <eddl/net/netloss.h>
 #include <eddl/net/net.h>
 #include <eddl/apis/eddl.h>
-#include <eddl/apis/eddlT.h>

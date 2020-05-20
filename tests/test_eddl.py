@@ -376,8 +376,11 @@ def test_regularizers(eddl):
 def test_computing_services(eddl):
     eddl.CS_CPU()
     eddl.CS_CPU(1)
+    eddl.CS_CPU(1, "low_mem")
+    eddl.CS_GPU()
     eddl.CS_GPU([1])
     eddl.CS_GPU([1], 1)
+    eddl.CS_GPU([1], 1, "low_mem")
     eddl.CS_FGPA([1])
     eddl.CS_FGPA([1], 1)
     eddl.CS_COMPSS("foo.xml")
