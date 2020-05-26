@@ -51,3 +51,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+If you're interested in contributing to the development, see the
+[contributing](CONTRIBUTING.md) docs. They contain information on how to
+generate the automated part of the bindings, build binary wheels, etc.
