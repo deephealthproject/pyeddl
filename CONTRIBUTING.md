@@ -33,3 +33,17 @@ Then you can run tests and/or examples on Docker, e.g.:
 docker run --rm -it pyeddl bash
 pytest tests
 ```
+
+
+## How to build the manylinux wheels
+
+A Docker setup is in place to build manylinux binary wheels for PyEDDL. See
+the `build_manylinux_wheels.sh` and `build_manylinux_wheels_gpu.sh` scripts in
+the repository root directory. The scripts copy the generated wheels to
+`/tmp/wheels` on the host. You can test them with:
+
+```
+python3 -m pip install pyeddl -f /tmp/wheels/
+```
+
+Note that the GPU wheels are built for CUDA 10.1.
