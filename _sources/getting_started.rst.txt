@@ -118,7 +118,9 @@ Training a MLP network
 Additional examples
 -------------------
 
-You can find more examples of varying complexity in the ``examples``
-directory of the `GitHub repo <https://github.com/deephealthproject/pyeddl/tree/master/examples>`_.
-
-The PyEDDL examples are Python versions of the examples included in the EDDL (see `intermediate examples <https://deephealthproject.github.io/eddl/usage/intermediate.html>`_ and `advanced examples <https://deephealthproject.github.io/eddl/usage/advanced.html>`_).
+The MLP training above is just one example of neural network training with
+PyEDDL. Many more examples are available in the `examples directory of the
+GitHub repository
+<https://github.com/deephealthproject/pyeddl/tree/master/examples>`_. These
+examples are Python portings of the `C++ EDDL examples
+<https://github.com/deephealthproject/eddl/tree/master/examples>`_.
