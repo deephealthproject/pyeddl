@@ -18,5 +18,5 @@ deploy:
   user: "${CI_USER}"
   password: "${CI_PASS}"
   on:
-    repo: simleo/pyeddl
+    repo: deephealthproject/pyeddl
     tags: true
