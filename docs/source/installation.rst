@@ -14,12 +14,11 @@ Installation
 Binary installation with pip
 ----------------------------
 
-Since PyEDDL version 0.7.0, we started uploading binary wheels for some
-platforms and Python versions. Currently these support:
+Recent PyEDDL versions offer binary wheels for some platforms and Python
+versions. Currently these support:
 
 * Linux (x86_64)
 * Python 3.6, 3.7, 3.8
-* EDDL/PyEDDL *not* compiled for GPU, with ONNX support
 
 If a binary wheel is available for your system, you can install PyEDDL
 *without* installing EDDL first, by simply running::
@@ -34,7 +33,7 @@ is too old). If in doubt, upgrade pip::
 
 If pip still picks up the source distribution, then a binary one is
 not available for your system. In this case, or if you want to install from
-source for any other reason (e.g., for GPU support), read on.
+source for any other reason, read on.
 
 
 Installation from source
