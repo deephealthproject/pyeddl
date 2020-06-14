@@ -10,36 +10,6 @@ Installation
     ready-to-use containers for the DeepHealth components, including
     PyEDDL. If you want to install PyEDDL manually instead, read on.
 
-
-Binary installation with pip
-----------------------------
-
-Since PyEDDL version 0.7.0, we started uploading binary wheels for some
-platforms and Python versions. Currently these support:
-
-* Linux (x86_64)
-* Python 3.6, 3.7, 3.8
-* EDDL/PyEDDL *not* compiled for GPU, with ONNX support
-
-If a binary wheel is available for your system, you can install PyEDDL
-*without* installing EDDL first, by simply running::
-
-    pip install pyeddl
-
-**Note:** if your pip is too old it will fail to pick up the binary wheel and
-revert to the source package (e.g., Ubuntu 18 packages pip version 9, which
-is too old). If in doubt, upgrade pip::
-
-    pip install --upgrade pip
-
-If pip still picks up the source distribution, then a binary one is
-not available for your system. In this case, or if you want to install from
-source for any other reason (e.g., for GPU support), read on.
-
-
-Installation from source
-------------------------
-
 To install PyEDDL, you need to install EDDL first. Installation instructions
 for EDDL are available as part of the `EDDL docs
 <https://deephealthproject.github.io/eddl/>`_. However, here we provide
@@ -60,7 +30,7 @@ EDDL installation included. We use Ubuntu Linux as an example platform.
 
 
 Install EDDL dependencies
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 
 EDDL needs the development versions of the zlib and Eigen3 libraries. To
 enable ONNX I/O, you also need to install Google protobuf. On Ubuntu, for
@@ -96,7 +66,7 @@ Eigen3
 
 
 Install EDDL
-^^^^^^^^^^^^
+------------
 
 Clone the PyEDDL GitHub repo::
 
@@ -125,7 +95,7 @@ To compile for **GPU**, add ``-D BUILD_TARGET=GPU`` to the cmake flags.
 
 
 Install PyEDDL
-^^^^^^^^^^^^^^
+--------------
 
 You need the development version of python3 and pip. On Ubuntu, install
 ``python3-dev`` and ``python3-pip``.
@@ -172,9 +142,6 @@ To install, run::
 
   python3 -m pip install pyeddl
 
-Note that if you want to explicitly exclude the installation of a binary
-package, you need to pass the ``--no-binary :all:`` option to pip.
-
 If EDDL was compiled for **GPU**, you need to export the ``EDDL_WITH_CUDA``
 environment variable **before installing PyEDDL** so that ``setup.py`` will
 also link the ``cudart``, ``cublas`` and ``curand`` libraries. These will be
@@ -188,7 +155,7 @@ depending on your CUDA toolkit installation. For instance::
 
 
 Disabling unwanted modules
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------
 
 By default, PyEDDL assumes a complete EDDL installation, including optional
 modules, and builds bindings for all of them. You can disable support for
@@ -200,7 +167,7 @@ before building PyEDDL.
 
 
 EDDL installed in an arbitrary directory
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------------
 
 The above installation instructions assume installation in standard system
 paths (such as ``/usr/local/include``, ``/usr/local/lib``). However, EDDL can
