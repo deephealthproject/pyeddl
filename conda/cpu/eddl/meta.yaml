@@ -16,10 +16,10 @@ build:
 
 requirements:
   build:
-    - {{ compiler('cxx') }}
-  host:
     - make
     - cmake
+    - {{ compiler('cxx') }}
+  host:
     - eigen
     - zlib
     - protobuf 3.11.4
