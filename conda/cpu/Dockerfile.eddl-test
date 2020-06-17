@@ -10,3 +10,5 @@ COPY dhealth /dhealth
 RUN conda index /dhealth/ && \
     conda create -y -n eddl-test && \
     conda install -y -n eddl-test -c file://dhealth eddl-cpu
+
+COPY test.sh /test.sh
