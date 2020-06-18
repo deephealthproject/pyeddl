@@ -5,10 +5,8 @@ RUN conda update conda && \
     conda update conda-build
 
 # dhealth/linux-64 must contain the eddl-cpu conda package
-COPY dhealth /dhealth
+COPY dhealth /channels/dhealth
+RUN conda index /channels/dhealth/
 
-RUN conda index /dhealth/ && \
-    conda create -y -n eddl-test && \
-    conda install -y -n eddl-test -c file://dhealth eddl-cpu
-
-COPY test_eddl.sh /test.sh
+COPY pyeddl /pyeddl
+RUN conda build -c file://channels/dhealth pyeddl
