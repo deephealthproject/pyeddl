@@ -22,11 +22,11 @@ requirements:
   host:
     - eigen
     - zlib
-    - protobuf 3.11.4
+    - protobuf 3.11
   run:
     - eigen
     - zlib
-    - protobuf 3.11.4
+    - {{ pin_compatible('protobuf', max_pin='x.x') }}
     - graphviz
     - wget
 
