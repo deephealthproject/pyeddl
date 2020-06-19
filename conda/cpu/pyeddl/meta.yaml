@@ -19,7 +19,7 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - pybind11
-    - eddl-cpu
+    - eddl-cpu ==0.5.4a0
     - eigen
     - numpy
     - pip
@@ -27,7 +27,7 @@ requirements:
     - python
     - setuptools
   run:
-    - eddl-cpu
+    - eddl-cpu ==0.5.4a0
     - numpy
     - python
 
