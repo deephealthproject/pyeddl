@@ -21,4 +21,4 @@ test-eddl: eddl-conda-test
 test-pyeddl: pyeddl-conda-test
 	docker run --rm pyeddl-conda-test bash test.sh
 
-.PHONY: eddl-conda eddl-conda-test pyeddl-conda pyeddl-conda-test test-eddl
+.PHONY: eddl-conda eddl-conda-test pyeddl-conda pyeddl-conda-test test-eddl test-pyeddl

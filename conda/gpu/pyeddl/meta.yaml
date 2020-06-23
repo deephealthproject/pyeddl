@@ -1,4 +1,4 @@
-{% set name = "pyeddl-cpu" %}
+{% set name = "pyeddl-gpu" %}
 {% set version = "0.7.0" %}
 {% set sha256 = "dfacc88fdfd421aa1ecc0e8404a0821e17f262a9e8eb5b76818d253af90202dc" %}
 
@@ -18,17 +18,19 @@ requirements:
   build:
     - {{ compiler('cxx') }}
   host:
-    - eddl-cpu ==0.5.4a0
+    - cudatoolkit 10.1*
+    - eddl-gpu ==0.5.4a0
     - eigen
     - numpy
     - pip
     - pybind11
-    - python
+    - python 3.6*
     - setuptools
   run:
-    - eddl-cpu ==0.5.4a0
+    - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
+    - eddl-gpu ==0.5.4a0
     - numpy
-    - python
+    - {{ pin_compatible('python', max_pin='x.x') }}
 
 about:
   home: https://github.com/deephealthproject/pyeddl
