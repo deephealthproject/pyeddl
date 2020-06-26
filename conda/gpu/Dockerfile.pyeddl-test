@@ -5,9 +5,9 @@ ENV PATH="/opt/conda/bin:${PATH}"
 RUN apt-get -y update && apt-get -y install wget && \
     wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     bash Miniconda3-latest-Linux-x86_64.sh -b -f -p /opt/conda && \
-    conda update conda && \
-    conda install conda-build && \
-    conda update conda-build
+    conda update -y conda && \
+    conda install -y conda-build && \
+    conda update -y conda-build
 
 # dhealth/linux-64 must contain the eddl-gpu and pyeddl-gpu conda packages
 COPY dhealth /channels/dhealth
