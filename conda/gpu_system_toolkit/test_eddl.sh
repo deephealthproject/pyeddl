@@ -30,11 +30,10 @@ int main() {
 }
 EOF
 
-conda install -y gxx_linux-64==7.3.0
-x86_64-conda_cos6-linux-gnu-g++ -I/opt/conda/envs/test/include -I/opt/conda/envs/test/include/eigen3 -L /opt/conda/envs/test/lib example.cpp -o example -std=c++11 -leddl -pthread
+# conda install -y gxx_linux-64==7.3.0
+# x86_64-conda_cos6-linux-gnu-g++ -I/opt/conda/envs/test/include -I/opt/conda/envs/test/include/eigen3 -L /opt/conda/envs/test/lib example.cpp -o example -std=c++11 -leddl -pthread
 
-# apt-get -y install --no-install-recommends g++
-# g++ -I/opt/conda/envs/test/include -I/opt/conda/envs/test/include/eigen3 -L /opt/conda/envs/test/lib example.cpp -o example -std=c++11 -leddl -pthread
-# export LD_LIBRARY_PATH="/opt/conda/envs/test/lib:${LD_LIBRARY_PATH}"
-
+apt-get -y install --no-install-recommends g++
+g++ -I/opt/conda/envs/test/include -I/opt/conda/envs/test/include/eigen3 -L /opt/conda/envs/test/lib example.cpp -o example -std=c++11 -leddl -pthread
+export LD_LIBRARY_PATH="/opt/conda/envs/test/lib:${LD_LIBRARY_PATH}"
 ./example

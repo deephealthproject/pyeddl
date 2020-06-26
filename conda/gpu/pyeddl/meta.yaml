@@ -20,7 +20,7 @@ requirements:
   host:
     - cudatoolkit 10.1*
     - eddl-gpu ==0.5.4a0
-    - eigen
+    - eigen >=3.3.7
     - numpy
     - pip
     - pybind11

@@ -21,13 +21,13 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - cudatoolkit 10.1*
+    - cudatoolkit-dev 10.1
     - eigen >=3.3.7
     - zlib
     - protobuf 3.11
   run:
-    - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
-    - eigen >=3.3.7
+    - cudatoolkit >=10.1,<10.2a0
+    - {{ pin_compatible('eigen', max_pin='x.x') }}
     - zlib
     - {{ pin_compatible('protobuf', max_pin='x.x') }}
     - graphviz
