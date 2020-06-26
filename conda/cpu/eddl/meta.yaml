@@ -18,16 +18,16 @@ requirements:
   build:
     - make
     - cmake
+    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - eigen
-    - zlib
-    - protobuf 3.11
+    - eigen >=3.3.7
+    - zlib 1.2*
+    - protobuf 3.11*
   run:
-    - eigen
-    - zlib
+    - {{ pin_compatible('eigen', max_pin='x.x') }}
+    - {{ pin_compatible('zlib', max_pin='x.x') }}
     - {{ pin_compatible('protobuf', max_pin='x.x') }}
-    - graphviz
     - wget
 
 about:

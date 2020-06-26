@@ -19,16 +19,16 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - eddl-cpu ==0.5.4a0
-    - eigen
+    - eigen >=3.3.7
     - numpy
     - pip
     - pybind11
-    - python
+    - python 3.6*
     - setuptools
   run:
     - eddl-cpu ==0.5.4a0
     - numpy
-    - python
+    - {{ pin_compatible('python', max_pin='x.x') }}
 
 about:
   home: https://github.com/deephealthproject/pyeddl
