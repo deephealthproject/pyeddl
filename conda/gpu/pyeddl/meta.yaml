@@ -36,4 +36,5 @@ about:
   home: https://github.com/deephealthproject/pyeddl
   license: MIT
   license_family: MIT
+  license_file: LICENSE
   summary: Python wrapper for the EDDL library

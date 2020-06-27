@@ -36,4 +36,5 @@ about:
   home: https://github.com/deephealthproject/eddl
   license: MIT
   license_family: MIT
+  license_file: LICENSE
   summary: European Distributed Deep Learning Library
