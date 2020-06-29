@@ -24,13 +24,13 @@ requirements:
     - numpy
     - pip
     - pybind11
-    - python 3.6*
+    - python {{ py_ver }}
     - setuptools
   run:
     - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
     - eddl-gpu ==0.5.4a0
     - numpy
-    - {{ pin_compatible('python', max_pin='x.x') }}
+    - python {{ py_ver }}
 
 about:
   home: https://github.com/deephealthproject/pyeddl

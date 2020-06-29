@@ -13,8 +13,10 @@ RUN apt-get -y update && apt-get -y install wget && \
 COPY dhealth /channels/dhealth
 
 RUN conda index /channels/dhealth/ && \
-    conda create -y -n test && \
-    conda install -y -n test -c file://channels/dhealth pyeddl-gpu && \
+    for v in 3.6 3.7 3.8; do \
+      conda create -y -n test${v} python=${v} && \
+      conda install -y -n test${v} -c file://channels/dhealth pyeddl-gpu; \
+    done && \
     conda init bash
 
 # expects pyeddl tests in "tests"
