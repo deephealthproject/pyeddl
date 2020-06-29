@@ -5,10 +5,17 @@ Installation
 
 .. note::
 
-    We recommend using the `DeepHealth Docker images
-    <https://github.com/deephealthproject/docker-libs>`_, which provide
-    ready-to-use containers for the DeepHealth components, including
-    PyEDDL. If you want to install PyEDDL manually instead, read on.
+    An alternative to manual installation is to use the `DeepHealth Docker
+    images <https://github.com/deephealthproject/docker-libs>`_, which provide
+    ready-to-use containers for the DeepHealth components, including PyEDDL.
+
+The easiest way to install PyEDDL is via `Conda
+<https://docs.conda.io/en/latest/>`_::
+
+  conda install -c dhealth pyeddl-cpu  # cpu-only version
+  conda install -c dhealth pyeddl-gpu  # gpu-enabled version
+
+If you prefer to build and install from source instead, read on.
 
 To install PyEDDL, you need to install EDDL first. Installation instructions
 for EDDL are available as part of the `EDDL docs
