@@ -1,0 +1,38 @@
+{% set name = "pyeddl-cpu" %}
+{% set version = "0.7.0" %}
+{% set sha256 = "dfacc88fdfd421aa1ecc0e8404a0821e17f262a9e8eb5b76818d253af90202dc" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  fn: {{ name }}-{{ version }}.tar.gz
+  url: https://github.com/deephealthproject/pyeddl/archive/{{ version }}.tar.gz
+  sha256: {{ sha256 }}
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+  host:
+    - eddl-cpu ==0.5.4a0
+    - eigen >=3.3.7
+    - numpy
+    - pip
+    - pybind11
+    - python {{ py_ver }}
+    - setuptools
+  run:
+    - eddl-cpu ==0.5.4a0
+    - numpy
+    - python {{ py_ver }}
+
+about:
+  home: https://github.com/deephealthproject/pyeddl
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Python wrapper for the EDDL library

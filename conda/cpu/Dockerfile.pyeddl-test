@@ -1,0 +1,18 @@
+FROM continuumio/miniconda3
+
+RUN conda update -y conda && \
+    conda install -y conda-build && \
+    conda update -y conda-build
+
+# dhealth/linux-64 must contain the eddl-cpu and pyeddl-cpu conda packages
+COPY dhealth /channels/dhealth
+
+RUN conda index /channels/dhealth/ && \
+    for v in 3.6 3.7 3.8; do \
+      conda create -y -n test${v} python=${v} && \
+      conda install -y -n test${v} -c file://channels/dhealth pyeddl-cpu; \
+    done
+
+# expects pyeddl tests in "tests"
+COPY tests /tests
+COPY test_pyeddl.sh /test.sh
