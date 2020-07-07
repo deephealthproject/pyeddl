@@ -247,4 +247,9 @@ void eddl_addons(pybind11::module &m) {
       return import_net_from_onnx_string(&s, s.size());
     }, pybind11::arg("model_string"));
 #endif
+
+    // --- constants ---
+    m.attr("DEV_CPU") = pybind11::int_(DEV_CPU);
+    m.attr("DEV_GPU") = pybind11::int_(DEV_GPU);
+    m.attr("DEV_FPGA") = pybind11::int_(DEV_FPGA);
 }

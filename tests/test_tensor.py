@@ -18,26 +18,44 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import pytest
 import numpy as np
-from pyeddl._core import Tensor
+from pyeddl._core import Tensor as CoreTensor
+from pyeddl.tensor import Tensor as PyTensor
+from pyeddl._core.eddl import DEV_CPU
 
 
-def test_array_from_tensor():
+# --- Creation ---
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_create(Tensor):
     shape = [2, 3]
     t = Tensor(shape)
     assert t.shape == shape
     assert t.isCPU()
+    t = Tensor(shape, DEV_CPU)
+    assert t.shape == shape
+    assert t.isCPU()
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_array_from_tensor(Tensor):
+    shape = [2, 3]
+    t = Tensor(shape)
     t.fill_(1.0)
     a = np.array(t, copy=False)
     b = np.ones(shape, dtype=np.float32)
     assert np.array_equal(a, b)
+    c = np.array(t, copy=True)
+    assert np.array_equal(c, b)
 
 
-def test_tensor_from_array():
-    a = np.arange(6).reshape([2, 3]).astype(np.float32)
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_tensor_from_array(Tensor):
+    R, C = 2, 3
+    a = np.arange(6).reshape([R, C]).astype(np.float32)
     t = Tensor(a)
-    assert t.shape == list(a.shape)
-    assert t.isCPU()
+    assert t.shape == [R, C]
     b = np.array(t, copy=True)
     assert np.array_equal(a, b)
     # check creation from 1D array
@@ -45,9 +63,21 @@ def test_tensor_from_array():
     t = Tensor(a)
     b = np.array(t, copy=True)
     assert np.array_equal(a, b)
+    # check automatic type conversion
+    a = np.array([[1, 2], [3, 4]])
+    t = Tensor(a)
+    b = np.array(t, copy=True).astype(a.dtype)
+    assert np.array_equal(a, b)
+    # check fromarray
+    if Tensor is PyTensor:
+        a = np.array([1, 2]).astype(np.float32)
+        t = Tensor.fromarray(a)
+        b = np.array(t, copy=True)
+        assert np.array_equal(a, b)
 
 
-def test_tensor_array_ops():
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_tensor_array_ops(Tensor):
     a = np.arange(6).reshape([2, 3]).astype(np.float32)
     incr = 2.0
     b = a + incr
@@ -57,9 +87,90 @@ def test_tensor_array_ops():
     assert np.array_equal(a, b)
 
 
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_ones(Tensor):
+    shape = [2, 3]
+    t = Tensor.ones(shape)
+    a = np.array(t, copy=False)
+    b = np.ones(shape, dtype=np.float32)
+    assert np.array_equal(a, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_zeros(Tensor):
+    shape = [2, 3]
+    t = Tensor.zeros(shape)
+    a = np.array(t, copy=False)
+    b = np.zeros(shape, dtype=np.float32)
+    assert np.array_equal(a, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_full(Tensor):
+    shape = [2, 3]
+    value = 42
+    t = Tensor.full(shape, value)
+    a = np.array(t, copy=False)
+    b = np.full(shape, value, dtype=np.float32)
+    assert np.array_equal(a, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_arange(Tensor):
+    start, stop, step = 0, 2, .33
+    t = Tensor.arange(start, stop, step)
+    a = np.array(t, copy=False)
+    b = np.arange(start, stop, step, dtype=np.float32)
+    assert np.allclose(a, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_range(Tensor):
+    start, stop, step = 0, 2, .33
+    t = Tensor.range(start, stop, step)
+    a = np.array(t, copy=False)
+    b = np.arange(start, stop, step, dtype=np.float32)
+    assert np.allclose(a, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_linspace(Tensor):
+    start, stop, num = 0, 2, 7
+    t = Tensor.linspace(start, stop, num)
+    a = np.array(t, copy=False)
+    b = np.linspace(start, stop, num, dtype=np.float32)
+    assert np.allclose(a, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_logspace(Tensor):
+    start, stop, num, base = 0.1, 1.0, 5, 10.0
+    t = Tensor.logspace(start, stop, num, base)
+    a = np.array(t, copy=False)
+    b = np.logspace(start, stop, num, dtype=np.float32)
+    assert np.allclose(a, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_eye(Tensor):
+    size = 3
+    t = Tensor.eye(size)
+    a = np.array(t, copy=False)
+    assert np.array_equal(a.diagonal(), np.ones(size, dtype=np.float32))
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_randn(Tensor):
+    shape = [2, 3]
+    t = Tensor.randn(shape)
+    assert Tensor.getShape(t) == shape
+
+
+# --- Legacy math ops, core only for now ---
+
 def test_pow_():
     n = 2
-    t = Tensor.range(-5, 5, 1)
+    t = CoreTensor.range(-5, 5, 1)
     a = np.array(t, copy=True)
     t.pow_(n)
     b = np.array(t, copy=False)
@@ -68,7 +179,7 @@ def test_pow_():
 
 def test_remainder_():
     n = 2
-    t = Tensor.range(1, 10, 1)
+    t = CoreTensor.range(1, 10, 1)
     a = np.array(t, copy=True)
     t.remainder_(n)
     b = np.array(t, copy=False)
@@ -76,12 +187,12 @@ def test_remainder_():
 
 
 def test_sum():
-    t = Tensor.range(1, 10, 1)
+    t = CoreTensor.range(1, 10, 1)
     a = np.array(t, copy=True)
     assert np.sum(a) == t.sum()
 
 
 # def test_sum_abs():
-#     t = Tensor.range(1, 10, 1)
+#     t = CoreTensor.range(1, 10, 1)
 #     a = np.array(t, copy=True)
 #     assert np.sum(np.abs(a)) == t.sum_abs()
