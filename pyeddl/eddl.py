@@ -803,7 +803,7 @@ def Dense(parent, ndim, use_bias=True, name=""):
     return _eddl.Dense(parent, ndim, use_bias, name)
 
 
-def Dropout(parent, rate, iw, name=""):
+def Dropout(parent, rate, iw=True, name=""):
     """\
     Apply dropout to a layer.
 
