@@ -166,6 +166,60 @@ def test_randn(Tensor):
     assert Tensor.getShape(t) == shape
 
 
+# --- Copy ---
+
+# toGPU fails if EDDL is compiled for GPU but no CUDA devices are
+# detected (CUDA error 100) or there are driver issues (CUDA error 35).
+# To conditionally skip this we probably  need some support from EDDL
+
+# @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+# def test_cpu_gpu(Tensor):
+#     # toGPU and toCPU are no-ops if EDDL is not compiled for GPU
+#     a = np.arange(6).reshape(2, 3).astype(np.float32)
+#     t = Tensor(a)
+#     t.toGPU()
+#     t.toCPU()
+#     b = np.array(t, copy=False)
+#     assert np.array_equal(b, a)
+#     # check conversion from GPU tensor
+#     t = Tensor([2, 3], DEV_CPU)
+#     t.fill_(2)
+#     t.toGPU()
+#     a = np.array(t, copy=False)
+#     assert np.alltrue(a == 2)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_clone(Tensor):
+    a = np.arange(6).reshape(2, 3).astype(np.float32)
+    t = Tensor(a)
+    u = t.clone()
+    b = np.array(u, copy=False)
+    assert np.array_equal(b, a)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_select(Tensor):
+    R, C = 3, 4
+    a = np.arange(R * C).reshape(R, C).astype(np.float32)
+    t = Tensor(a)
+    u = t.select(["1:3", "2"])
+    b = np.array(u, copy=False)
+    # numpy selection converts to row vector in this case
+    assert np.array_equal(b, a[1:3, 2][:, np.newaxis])
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_copy(Tensor):
+    R, C = 3, 4
+    a = np.arange(R * C).reshape(R, C).astype(np.float32)
+    t = Tensor(a)
+    u = Tensor([R, C])
+    Tensor.copy(t, u)
+    b = np.array(u, copy=False)
+    assert np.array_equal(b, a)
+
+
 # --- Legacy math ops, core only for now ---
 
 def test_pow_():

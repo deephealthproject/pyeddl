@@ -69,7 +69,6 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.zeros(shape, dev)
 
-
     @staticmethod
     def ones(shape, dev=DEV_CPU):
         """\
@@ -80,7 +79,6 @@ class Tensor(_core.Tensor):
         :return: Tensor
         """
         return _core.Tensor.ones(shape, dev)
-
 
     @staticmethod
     def full(shape, value, dev=DEV_CPU):
@@ -93,7 +91,6 @@ class Tensor(_core.Tensor):
         :return: Tensor
         """
         return _core.Tensor.full(shape, value, dev)
-
 
     @staticmethod
     def arange(start, end, step, dev=DEV_CPU):
@@ -108,7 +105,6 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.arange(start, end, step, dev)
 
-
     @staticmethod
     def range(start, end, step, dev=DEV_CPU):
         """\
@@ -122,7 +118,6 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.range(start, end, step, dev)
 
-
     @staticmethod
     def linspace(start, end, steps, dev=DEV_CPU):
         """\
@@ -135,7 +130,6 @@ class Tensor(_core.Tensor):
         :return: Tensor
         """
         return _core.Tensor.linspace(start, end, steps, dev)
-
 
     @staticmethod
     def logspace(start, end, steps, base, dev=DEV_CPU):
@@ -151,7 +145,6 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.logspace(start, end, steps, base, dev)
 
-
     @staticmethod
     def eye(size, dev=DEV_CPU):
         """\
@@ -164,7 +157,6 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.eye(size, dev)
 
-
     @staticmethod
     def randn(shape, dev=DEV_CPU):
         """\
@@ -175,3 +167,51 @@ class Tensor(_core.Tensor):
         :return: Tensor
         """
         return _core.Tensor.randn(shape, dev)
+
+    # == Copy data ==
+
+    def toCPU(self):
+        """\
+        Clone the tensor to the CPU.
+
+        :return: None
+        """
+        return _core.Tensor.toCPU(self)
+
+    def toGPU(self):
+        """\
+        Clone the tensor to the GPU.
+
+        :return: None
+        """
+        return _core.Tensor.toGPU(self)
+
+    def clone(self):
+        """\
+        Return a clone of the tensor (same device).
+
+        :return: Tensor
+        """
+        return _core.Tensor.clone(self)
+
+    def select(self, indices):
+        """\
+        Perform NumPy-like slicing on the tensor.
+
+        :param indices: list of strings representing the indices to be
+          selected. These indices must follow a NumPy-like syntax. For
+          instance: ``["1:3", "2"]``.
+        :return: Tensor
+        """
+        return _core.Tensor.select(self, indices)
+
+    @staticmethod
+    def copy(A, B):
+        """\
+        Copy data from tensor ``A`` to tensor ``B``.
+
+        :param A: a tensor
+        :param B: a tensor
+        :return: None
+        """
+        return _core.Tensor.copy(A, B)
