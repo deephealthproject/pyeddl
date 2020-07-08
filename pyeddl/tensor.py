@@ -40,12 +40,18 @@ class Tensor(_core.Tensor):
 
         The tensor will be initialized with values, shape, etc. from the array.
 
+        The data type is automatically converted to float32, with one
+        exception: due to the way pybind11 overloads are picked, if the input
+        array is 1D, it must be of type float32. See
+        http://github.com/deephealthproject/pyeddl/issues/10.
+
         :param array: NumPy array
         :param dev: device to use: :data:`DEV_CPU` or :data:`DEV_GPU`
         :return: Tensor
         """
         return _core.Tensor(array, dev)
 
+    # also works if shape is a numpy array (works like fromarray)
     def __init__(self, shape, dev=DEV_CPU):
         """\
         Create an uninitialized tensor.
@@ -215,3 +221,38 @@ class Tensor(_core.Tensor):
         :return: None
         """
         return _core.Tensor.copy(A, B)
+
+    # == Other functions ==
+
+    def reshape_(self, new_shape):
+        """\
+        Change the tensor's shape.
+
+        :param new_shape: the new shape (list of integers)
+        :return: None
+        """
+        return _core.Tensor.reshape_(self, new_shape)
+
+    def print(self):
+        """\
+        Print the tensor's values.
+
+        :return: None
+        """
+        return _core.Tensor.print(self)
+
+    def info(self):
+        """\
+        Print info on the tensor (shape, strides, ...).
+
+        :return: None
+        """
+        return _core.Tensor.info(self)
+
+    def getShape(self):
+        """\
+        Return the tensor's shape.
+
+        :return: the tensor's shape (a list of integers)
+        """
+        return _core.Tensor.getShape(self)

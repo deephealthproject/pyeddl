@@ -220,33 +220,29 @@ def test_copy(Tensor):
     assert np.array_equal(b, a)
 
 
-# --- Legacy math ops, core only for now ---
+# --- Other ---
 
-def test_pow_():
-    n = 2
-    t = CoreTensor.range(-5, 5, 1)
-    a = np.array(t, copy=True)
-    t.pow_(n)
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_reshape_(Tensor):
+    R, C = 3, 4
+    a = np.arange(R * C).reshape(R, C).astype(np.float32)
+    t = Tensor(a)
+    t.reshape_([C, R])
     b = np.array(t, copy=False)
-    assert np.allclose(np.power(a, n), b)
+    c = a.reshape(C, R)
+    assert np.array_equal(b, c)
 
 
-def test_remainder_():
-    n = 2
-    t = CoreTensor.range(1, 10, 1)
-    a = np.array(t, copy=True)
-    t.remainder_(n)
-    b = np.array(t, copy=False)
-    assert np.allclose(a // n, b)
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_info_print(Tensor):
+    a = np.arange(6).reshape(2, 3).astype(np.float32)
+    t = Tensor(a)
+    t.info()
+    t.print()
 
 
-def test_sum():
-    t = CoreTensor.range(1, 10, 1)
-    a = np.array(t, copy=True)
-    assert np.sum(a) == t.sum()
-
-
-# def test_sum_abs():
-#     t = CoreTensor.range(1, 10, 1)
-#     a = np.array(t, copy=True)
-#     assert np.sum(np.abs(a)) == t.sum_abs()
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_getShape(Tensor):
+    shape = [3, 4]
+    t = Tensor(shape)
+    assert t.getShape() == shape
