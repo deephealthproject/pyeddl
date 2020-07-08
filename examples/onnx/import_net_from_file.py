@@ -27,7 +27,7 @@ import os
 import sys
 
 import pyeddl.eddl as eddl
-import pyeddl.eddlT as eddlT
+from pyeddl.tensor import Tensor
 
 
 def main(args):
@@ -52,8 +52,8 @@ def main(args):
     net.resize(args.batch_size)  # resize manually since we don't use "fit"
     eddl.summary(net)
 
-    x_test = eddlT.load("tsX.bin")
-    y_test = eddlT.load("tsY.bin")
+    x_test = Tensor.load("mnist_tsX.bin")
+    y_test = Tensor.load("mnist_tsY.bin")
 
     eddlT.div_(x_test, 255.0)
 

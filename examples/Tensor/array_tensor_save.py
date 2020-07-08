@@ -22,14 +22,14 @@ import os
 from urllib.request import urlretrieve
 
 import numpy as np
-import pyeddl.eddlT as eddlT
+from pyeddl.tensor import Tensor
 
 # Convert array to tensor and save to "bin" format
 a = np.arange(6).reshape([2, 3]).astype(np.float32)
 print(a)
 t = eddlT.create(a)
 eddlT.save(t, "./a.bin", "bin")
-t1 = eddlT.load("a.bin", "bin")
+t1 = Tensor.load("a.bin", "bin")
 a1 = eddlT.getdata(t1)
 print(a1)
 

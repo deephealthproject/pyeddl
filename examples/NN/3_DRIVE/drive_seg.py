@@ -28,7 +28,7 @@ import argparse
 import sys
 
 import pyeddl.eddl as eddl
-import pyeddl.eddlT as eddlT
+from pyeddl.tensor import Tensor
 from pyeddl._core import Tensor
 
 

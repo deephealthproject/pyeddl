@@ -26,7 +26,7 @@ import argparse
 import sys
 
 import pyeddl.eddl as eddl
-import pyeddl.eddlT as eddlT
+from pyeddl.tensor import Tensor
 from pyeddl._core import Loss, Metric
 
 
@@ -82,7 +82,7 @@ def main(args):
     eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
-    x_train = eddlT.load("trX.bin")
+    x_train = Tensor.load("mnist_trX.bin")
     eddlT.div_(x_train, 255.0)
     eddl.fit(net, [x_train], [x_train], args.batch_size, args.epochs)
 

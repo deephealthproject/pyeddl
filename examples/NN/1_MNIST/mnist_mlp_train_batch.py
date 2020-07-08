@@ -27,7 +27,7 @@ import sys
 
 import numpy as np
 import pyeddl.eddl as eddl
-import pyeddl.eddlT as eddlT
+from pyeddl.tensor import Tensor
 
 
 def main(args):
@@ -55,15 +55,15 @@ def main(args):
     eddl.plot(net, "model.pdf")
     eddl.setlogfile(net, "mnist")
 
-    x_train = eddlT.load("trX.bin")
-    y_train = eddlT.load("trY.bin")
-    x_test = eddlT.load("tsX.bin")
-    y_test = eddlT.load("tsY.bin")
+    x_train = Tensor.load("mnist_trX.bin")
+    y_train = Tensor.load("mnist_trY.bin")
+    x_test = Tensor.load("mnist_tsX.bin")
+    y_test = Tensor.load("mnist_tsY.bin")
 
-    eddlT.div_(x_train, 255.0)
-    eddlT.div_(x_test, 255.0)
+    x_train.div_(255.0)
+    x_test.div_(255.0)
 
-    s = eddlT.getShape(x_train)
+    s = x_train.shape
     num_batches = s[0] // args.batch_size
     for i in range(args.epochs):
         eddl.reset_loss(net)
@@ -74,7 +74,7 @@ def main(args):
             eddl.print_loss(net, j)
             print()
 
-    s = eddlT.getShape(x_test)
+    s = x_test.shape
     num_batches = s[0] // args.batch_size
     for j in range(num_batches):
         indices = np.arange(j * args.batch_size,

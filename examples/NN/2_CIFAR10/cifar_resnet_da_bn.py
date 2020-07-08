@@ -26,7 +26,7 @@ import argparse
 import sys
 
 import pyeddl.eddl as eddl
-import pyeddl.eddlT as eddlT
+from pyeddl.tensor import Tensor
 
 
 def BG(layer):
@@ -81,12 +81,12 @@ def main(args):
     eddl.summary(net)
     eddl.plot(net, "model.pdf", "TB")
 
-    x_train = eddlT.load("cifar_trX.bin")
-    y_train = eddlT.load("cifar_trY.bin")
+    x_train = Tensor.load("cifar_mnist_trX.bin")
+    y_train = Tensor.load("cifar_mnist_trY.bin")
     eddlT.div_(x_train, 255.0)
 
-    x_test = eddlT.load("cifar_tsX.bin")
-    y_test = eddlT.load("cifar_tsY.bin")
+    x_test = Tensor.load("cifar_mnist_tsX.bin")
+    y_test = Tensor.load("cifar_mnist_tsY.bin")
     eddlT.div_(x_test, 255.0)
 
     for i in range(args.epochs):
