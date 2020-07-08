@@ -56,6 +56,11 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
 		  pybind11::arg("B"), pybind11::arg("dims"));
     cl.def_static("zeros", &Tensor::zeros, pybind11::arg("shape"),
 		  pybind11::arg("dev") = DEV_CPU);
+    cl.def("save", &Tensor::save,
+	   pybind11::arg("filename"), pybind11::arg("format") = "");
+    cl.def_static("load", [](const string& filename, string format) {
+	    return Tensor::load(filename, format);
+	}, pybind11::arg("filename"), pybind11::arg("format") = "");
     cl.def_static("load_uint8_t", &Tensor::load<uint8_t>,
 		  pybind11::arg("filename"), pybind11::arg("format") = "");
     cl.def_static("permute", &Tensor::permute,

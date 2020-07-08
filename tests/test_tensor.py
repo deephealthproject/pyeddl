@@ -220,6 +220,19 @@ def test_copy(Tensor):
     assert np.array_equal(b, a)
 
 
+# --- Serialization ---
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_load_save(Tensor, tmp_path):
+    fn = str(tmp_path / "tensor.bin")
+    a = np.arange(6).reshape(2, 3).astype(np.float32)
+    t = Tensor(a)
+    t.save(fn, "bin")
+    u = Tensor.load(fn, "bin")
+    b = np.array(u, copy=False)
+    assert np.array_equal(b, a)
+
+
 # --- Other ---
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])

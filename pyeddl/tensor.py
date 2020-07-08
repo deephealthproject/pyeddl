@@ -222,6 +222,29 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.copy(A, B)
 
+    # == Serialization ==
+
+    @staticmethod
+    def load(fname, format=""):
+        """\
+        Load a tensor from a file.
+
+        :param fname: name of the file to load the tensor from
+        :param format: file format (e.g., "bin", "jpg")
+        :return: Tensor
+        """
+        return _core.Tensor.load(fname, format)
+
+    def save(self, fname, format=""):
+        """\
+        Save the tensor to a file.
+
+        :param fname: name of the file to save the tensor to
+        :param format: file format (e.g., "bin", "jpg")
+        :return: None
+        """
+        return _core.Tensor.save(self, fname, format)
+
     # == Other functions ==
 
     def reshape_(self, new_shape):
