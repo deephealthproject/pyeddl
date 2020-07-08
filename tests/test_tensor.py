@@ -157,6 +157,9 @@ def test_eye(Tensor):
     t = Tensor.eye(size)
     a = np.array(t, copy=False)
     assert np.array_equal(a.diagonal(), np.ones(size, dtype=np.float32))
+    u = Tensor.eye(size, 1)
+    b = np.array(u, copy=False)
+    assert(np.array_equal(b, np.eye(size, k=1)))
 
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])

@@ -152,7 +152,7 @@ class Tensor(_core.Tensor):
         return _core.Tensor.logspace(start, end, steps, base, dev)
 
     @staticmethod
-    def eye(size, dev=DEV_CPU):
+    def eye(size, offset=0, dev=DEV_CPU):
         """\
         Create a ``size x size`` tensor with ones on the diagonal and zeros
         elsewhere.
@@ -161,7 +161,7 @@ class Tensor(_core.Tensor):
         :param dev: device to use: :data:`DEV_CPU` or :data:`DEV_GPU`
         :return: Tensor
         """
-        return _core.Tensor.eye(size, dev)
+        return _core.Tensor.eye(size, offset, dev)
 
     @staticmethod
     def randn(shape, dev=DEV_CPU):
