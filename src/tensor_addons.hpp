@@ -56,6 +56,14 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
 		  pybind11::arg("B"), pybind11::arg("dims"));
     cl.def_static("zeros", &Tensor::zeros, pybind11::arg("shape"),
 		  pybind11::arg("dev") = DEV_CPU);
+    cl.def_static("add", [](Tensor* A, float v) {
+	    Tensor* B = A->clone();
+	    B->add_(v);
+	    return B;
+	}, pybind11::arg("A"), pybind11::arg("v"));
+    cl.def("div_", [](Tensor* t, Tensor* A) {
+	    Tensor::el_div(t, A, t, 0);
+	}, pybind11::arg("A"));
     cl.def("save", &Tensor::save,
 	   pybind11::arg("filename"), pybind11::arg("format") = "");
     cl.def_static("load", [](const string& filename, string format) {

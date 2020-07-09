@@ -245,6 +245,462 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.save(self, fname, format)
 
+    # == Math ==
+
+    def abs_(self):
+        """\
+        Compute the element-wise absolute value of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.abs_(self)
+
+    @staticmethod
+    def abs(A):
+        """\
+        Compute the element-wise absolute value of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.abs(A)
+
+    def acos_(self):
+        """\
+        Compute the element-wise inverse cosine of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.acos_(self)
+
+    @staticmethod
+    def acos(A):
+        """\
+        Compute the element-wise inverse cosine of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.acos(A)
+
+    def add_(self, other):
+        """\
+        Adds ``other`` to the tensor.
+
+        Modifies the tensor.
+
+        :param other: a tensor or scalar
+        :return: None
+        """
+        return _core.Tensor.add_(self, other)
+
+    @staticmethod
+    def add(A, B):
+        """\
+        Adds ``B`` to ``A``.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :param B: a tensor or scalar
+        :return: Tensor
+        """
+        return _core.Tensor.add(A, B)
+
+    def asin_(self):
+        """\
+        Compute the element-wise inverse sine of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.asin_(self)
+
+    @staticmethod
+    def asin(A):
+        """\
+        Compute the element-wise inverse sine of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.asin(A)
+
+    def atan_(self):
+        """\
+        Compute the element-wise inverse tangent of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.atan_(self)
+
+    @staticmethod
+    def atan(A):
+        """\
+        Compute the element-wise inverse tangent of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.atan(A)
+
+    def ceil_(self):
+        """\
+        Compute the element-wise ceiling (smallest integer i such that i >= x)
+        of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.ceil_(self)
+
+    @staticmethod
+    def ceil(A):
+        """\
+        Compute the element-wise ceiling (smallest integer i such that i >= x)
+        of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.ceil(A)
+
+    def clamp_(self, min, max):
+        """\
+        Limit the tensor's values between min and max.
+
+        Modifies the tensor.
+
+        :param min: minimum value
+        :param max: maximum value
+        :return: None
+        """
+        return _core.Tensor.clamp_(self, min, max)
+
+    @staticmethod
+    def clamp(A, min, max):
+        """\
+        Limit the input tensor's values between min and max.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :param min: minimum value
+        :param max: maximum value
+        :return: Tensor
+        """
+        return _core.Tensor.clamp(A, min, max)
+
+    def clampmax_(self, max):
+        """\
+        Limit the tensor's values to a maximum value.
+
+        Modifies the tensor.
+
+        :param max: maximum value
+        :return: None
+        """
+        return _core.Tensor.clampmax_(self, max)
+
+    @staticmethod
+    def clampmax(A, max):
+        """\
+        Limit the input tensor's values to a maximum value.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :param max: maximum value
+        :return: Tensor
+        """
+        return _core.Tensor.clampmax(A, max)
+
+    def clampmin_(self, min):
+        """\
+        Limit the tensor's values to a minimum value.
+
+        Modifies the tensor.
+
+        :param min: minimum value
+        :return: None
+        """
+        return _core.Tensor.clampmin_(self, min)
+
+    @staticmethod
+    def clampmin(A, min):
+        """\
+        Limit the input tensor's values to a minimum value.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :param min: minimum value
+        :return: Tensor
+        """
+        return _core.Tensor.clampmin(A, min)
+
+    def cos_(self):
+        """\
+        Compute the element-wise cosine of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.cos_(self)
+
+    @staticmethod
+    def cos(A):
+        """\
+        Compute the element-wise cosine of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.cos(A)
+
+    def cosh_(self):
+        """\
+        Compute the element-wise hyperbolic cosine of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.cosh_(self)
+
+    @staticmethod
+    def cosh(A):
+        """\
+        Compute the element-wise hyperbolic cosine of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.cosh(A)
+
+    def div_(self, other):
+        """\
+        Divides the tensor by ``other``.
+
+        Modifies the tensor.
+
+        :param other: a tensor or scalar
+        :return: None
+        """
+        return _core.Tensor.div_(self, other)
+
+    @staticmethod
+    def div(A, B):
+        """\
+        Divides ``A`` by ``B``.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :param B: a tensor or scalar
+        :return: Tensor
+        """
+        return _core.Tensor.div(A, B)
+
+    def exp_(self):
+        """\
+        Compute the element-wise exponential of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.exp_(self)
+
+    @staticmethod
+    def exp(A):
+        """\
+        Compute the element-wise exponential of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.exp(A)
+
+    def floor_(self):
+        """\
+        Compute the element-wise floor (largest integer i such that i <= x)
+        of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.floor_(self)
+
+    @staticmethod
+    def floor(A):
+        """\
+        Compute the element-wise floor (largest integer i such that i <= x)
+        of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.floor(A)
+
+    def log_(self):
+        """\
+        Compute the element-wise natural logarithm of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.log_(self)
+
+    @staticmethod
+    def log(A):
+        """\
+        Compute the element-wise natural logarithm of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.log(A)
+
+    def log2_(self):
+        """\
+        Compute the element-wise base-2 logarithm of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.log2_(self)
+
+    @staticmethod
+    def log2(A):
+        """\
+        Compute the element-wise base-2 logarithm of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.log2(A)
+
+    def log10_(self):
+        """\
+        Compute the element-wise base-10 logarithm of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.log10_(self)
+
+    @staticmethod
+    def log10(A):
+        """\
+        Compute the element-wise base-10 logarithm of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.log10(A)
+
+    def logn_(self, n):
+        """\
+        Compute the element-wise base-n logarithm of the tensor.
+
+        Modifies the tensor.
+
+        :param n: logarithm base
+        :return: None
+        """
+        return _core.Tensor.logn_(self, n)
+
+    @staticmethod
+    def logn(A, n):
+        """\
+        Compute the element-wise base-n logarithm of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :param n: logarithm base
+        :return: Tensor
+        """
+        return _core.Tensor.logn(A, n)
+
+    def max(self):
+        """\
+        Return the maximum value of the tensor.
+
+        :return: scalar
+        """
+        return _core.Tensor.max(self)
+
+    def min(self):
+        """\
+        Return the minimum value of the tensor.
+
+        :return: scalar
+        """
+        return _core.Tensor.min(self)
+
+    def mod_(self, v):
+        """\
+        Compute the element-wise reminder of the ``A / v`` division.
+
+        Modifies the tensor.
+
+        :param v: a scalar
+        :return: None
+        """
+        return _core.Tensor.mod_(self, v)
+
+    @staticmethod
+    def mod(A, v):
+        """\
+        Compute the element-wise reminder of the ``A / v`` division.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :param v: a scalar
+        :return: Tensor
+        """
+        return _core.Tensor.mod(A, v)
+
     # == Other functions ==
 
     def fill_(self, v):
