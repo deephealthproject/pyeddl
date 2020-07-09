@@ -55,7 +55,7 @@ def main(args):
     x_test = Tensor.load("mnist_tsX.bin")
     y_test = Tensor.load("mnist_tsY.bin")
 
-    eddlT.div_(x_test, 255.0)
+    x_test.div_(255.0)
 
     eddl.evaluate(net, [x_test], [y_test])
 

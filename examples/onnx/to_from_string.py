@@ -61,8 +61,8 @@ def main(args):
     x_test = Tensor.load("mnist_tsX.bin")
     y_test = Tensor.load("mnist_tsY.bin")
 
-    eddlT.div_(x_train, 255.0)
-    eddlT.div_(x_test, 255.0)
+    x_train.div_(255.0)
+    x_test.div_(255.0)
 
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
     print("evaluating before import")
