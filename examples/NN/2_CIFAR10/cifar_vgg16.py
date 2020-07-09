@@ -31,16 +31,16 @@ from pyeddl.tensor import Tensor
 
 def Block1(layer, filters):
     return eddl.ReLu(eddl.BatchNormalization(
-        eddl.Conv(layer, filters, [1, 1], [1, 1])
+        eddl.Conv(layer, filters, [1, 1], [1, 1]), True
     ))
 
 
 def Block3_2(layer, filters):
     layer = eddl.ReLu(eddl.BatchNormalization(
-        eddl.Conv(layer, filters, [3, 3], [1, 1])
+        eddl.Conv(layer, filters, [3, 3], [1, 1]), True
     ))
     layer = eddl.ReLu(eddl.BatchNormalization(
-        eddl.Conv(layer, filters, [3, 3], [1, 1])
+        eddl.Conv(layer, filters, [3, 3], [1, 1]), True
     ))
     return layer
 
@@ -83,13 +83,19 @@ def main(args):
     eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
-    x_train = Tensor.load("cifar_mnist_trX.bin")
-    y_train = Tensor.load("cifar_mnist_trY.bin")
-    eddlT.div_(x_train, 255.0)
+    x_train = Tensor.load("cifar_trX.bin")
+    y_train = Tensor.load("cifar_trY.bin")
+    x_train.div_(255.0)
 
-    x_test = Tensor.load("cifar_mnist_tsX.bin")
-    y_test = Tensor.load("cifar_mnist_tsY.bin")
-    eddlT.div_(x_test, 255.0)
+    x_test = Tensor.load("cifar_tsX.bin")
+    y_test = Tensor.load("cifar_tsY.bin")
+    x_test.div_(255.0)
+
+    if args.small:
+        x_train = x_train.select([":5000"])
+        y_train = y_train.select([":5000"])
+        x_test = x_test.select([":1000"])
+        y_test = y_test.select([":1000"])
 
     for i in range(args.epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
@@ -101,4 +107,5 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, metavar="INT", default=10)
     parser.add_argument("--batch-size", type=int, metavar="INT", default=100)
     parser.add_argument("--gpu", action="store_true")
+    parser.add_argument("--small", action="store_true")
     main(parser.parse_args(sys.argv[1:]))

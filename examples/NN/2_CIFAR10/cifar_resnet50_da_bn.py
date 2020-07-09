@@ -30,8 +30,8 @@ from pyeddl.tensor import Tensor
 
 
 def BG(layer):
-    # return eddl.GaussianNoise(eddl.BatchNormalization(layer), 0.3)
-    return eddl.BatchNormalization(layer)
+    # return eddl.GaussianNoise(eddl.BatchNormalization(layer, True), 0.3)
+    return eddl.BatchNormalization(layer, True)
 
 
 def ResBlock(layer, filters, half, expand=0):
@@ -97,13 +97,20 @@ def main(args):
     eddl.summary(net)
     eddl.plot(net, "model.pdf", "TB")
 
-    x_train = Tensor.load("cifar_mnist_trX.bin")
-    y_train = Tensor.load("cifar_mnist_trY.bin")
-    eddlT.div_(x_train, 255.0)
+    x_train = Tensor.load("cifar_trX.bin")
+    y_train = Tensor.load("cifar_trY.bin")
+    x_train.div_(255.0)
 
-    x_test = Tensor.load("cifar_mnist_tsX.bin")
-    y_test = Tensor.load("cifar_mnist_tsY.bin")
-    eddlT.div_(x_test, 255.0)
+    x_test = Tensor.load("cifar_tsX.bin")
+    y_test = Tensor.load("cifar_tsY.bin")
+    x_test.div_(255.0)
+
+    if args.small:
+        # this is slow, make it really small
+        x_train = x_train.select([":500"])
+        y_train = y_train.select([":500"])
+        x_test = x_test.select([":100"])
+        y_test = y_test.select([":100"])
 
     lr = 0.01
     for j in range(3):
@@ -119,4 +126,5 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, metavar="INT", default=10)
     parser.add_argument("--batch-size", type=int, metavar="INT", default=32)
     parser.add_argument("--gpu", action="store_true")
+    parser.add_argument("--small", action="store_true")
     main(parser.parse_args(sys.argv[1:]))
