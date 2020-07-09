@@ -701,6 +701,381 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.mod(A, v)
 
+    def mult_(self, other):
+        """\
+        Multiplies the tensor by ``other``, element-wise.
+
+        Modifies the tensor.
+
+        :param other: a tensor or scalar
+        :return: None
+        """
+        return _core.Tensor.mult_(self, other)
+
+    @staticmethod
+    def mult(A, B):
+        """\
+        Multiplies ``A`` by ``B``, element-wise.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :param B: a tensor or scalar
+        :return: Tensor
+        """
+        return _core.Tensor.mult(A, B)
+
+    @staticmethod
+    def mult2D(A, B):
+        """\
+        Computes the matrix product of ``A`` and ``B``.
+
+        :param A: a tensor
+        :param B: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.mult2D(A, B)
+
+    def neg_(self):
+        """\
+        Negate all elements in the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.neg_(self)
+
+    @staticmethod
+    def neg(A):
+        """\
+        Negate all elements in the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.neg(A)
+
+    def normalize_(self, min, max):
+        """\
+        Normalize tensor values to the ``[min, max]`` range.
+
+        ``v' = r * (v - A_min) + min; r = (max - min) / (A_max - A_min)``
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.normalize_(self, min, max)
+
+    @staticmethod
+    def normalize(A, min, max):
+        """\
+        Normalize input tensor values to the ``[min, max]`` range.
+
+        ``v' = r * (v - A_min) + min; r = (max - min) / (A_max - A_min)``
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.normalize(A, min, max)
+
+    def reciprocal_(self):
+        """\
+        Compute the element-wise reciprocal of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.reciprocal_(self)
+
+    @staticmethod
+    def reciprocal(A):
+        """\
+        Compute the element-wise reciprocal of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.reciprocal(A)
+
+    def round_(self):
+        """\
+        Round tensor values to the nearest integer.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.round_(self)
+
+    @staticmethod
+    def round(A):
+        """\
+        Round input tensor values to the nearest integer.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.round(A)
+
+    def rsqrt_(self):
+        """\
+        Compute the element-wise reciprocal of the square root of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.rsqrt_(self)
+
+    @staticmethod
+    def rsqrt(A):
+        """\
+        Compute the element-wise reciprocal of the square root of the input
+        tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.rsqrt(A)
+
+    def sigmoid_(self):
+        """\
+        Compute the element-wise sigmoid of the tensor.
+
+        Modifies the tensor.
+
+        :param A: a tensor
+        :return: None
+        """
+        return _core.Tensor.sigmoid_(self)
+
+    @staticmethod
+    def sigmoid(A):
+        """\
+        Compute the element-wise sigmoid of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.sigmoid(A)
+
+    def sign_(self):
+        """\
+        Compute the element-wise sign (-1 if x < 0, 0 if x == 0, 1 if x > 0)
+        of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.sign_(self)
+
+    @staticmethod
+    def sign(A):
+        """\
+        Compute the element-wise sign (-1 if x < 0, 0 if x == 0, 1 if x > 0)
+        of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.sign(A)
+
+    def sin_(self):
+        """\
+        Compute the element-wise sine of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.sin_(self)
+
+    @staticmethod
+    def sin(A):
+        """\
+        Compute the element-wise sine of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.sin(A)
+
+    def sinh_(self):
+        """\
+        Compute the element-wise hyperbolic sine of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.sinh_(self)
+
+    @staticmethod
+    def sinh(A):
+        """\
+        Compute the element-wise hyperbolic sine of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.sinh(A)
+
+    def sqr_(self):
+        """\
+        Compute the element-wise square of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.sqr_(self)
+
+    @staticmethod
+    def sqr(A):
+        """\
+        Compute the element-wise square of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.sqr(A)
+
+    def sqrt_(self):
+        """\
+        Compute the element-wise square root of the tensor.
+
+        Modifies the input tensor.
+
+        :return: None
+        """
+        return _core.Tensor.sqrt_(self)
+
+    @staticmethod
+    def sqrt(A):
+        """\
+        Compute the element-wise square root of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.sqrt(A)
+
+    def sub_(self, other):
+        """\
+        Subtracts ``other`` from the tensor.
+
+        Modifies the tensor.
+
+        :param other: a tensor or scalar
+        :return: None
+        """
+        return _core.Tensor.sub_(self, other)
+
+    @staticmethod
+    def sub(A, B):
+        """\
+        Subtracts ``B`` from ``A``.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :param B: a tensor or scalar
+        :return: Tensor
+        """
+        return _core.Tensor.sub(A, B)
+
+    def tan_(self):
+        """\
+        Compute the element-wise tangent of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.tan_(self)
+
+    @staticmethod
+    def tan(A):
+        """\
+        Compute the element-wise tangent of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.tan(A)
+
+    def tanh_(self):
+        """\
+        Compute the element-wise hyperbolic tangent of the tensor.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.tanh_(self)
+
+    @staticmethod
+    def tanh(A):
+        """\
+        Compute the element-wise hyperbolic tangent of the input tensor.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.tanh(A)
+
+    def trunc_(self):
+        """\
+        Truncate (discard the fractional part) the tensor, element-wise.
+
+        Modifies the tensor.
+
+        :return: None
+        """
+        return _core.Tensor.trunc_(self)
+
+    @staticmethod
+    def trunc(A):
+        """\
+        Truncate (discard the fractional part) the input tensor, element-wise.
+
+        Returns a new tensor.
+
+        :param A: a tensor
+        :return: Tensor
+        """
+        return _core.Tensor.trunc(A)
+
     # == Other functions ==
 
     def fill_(self, v):

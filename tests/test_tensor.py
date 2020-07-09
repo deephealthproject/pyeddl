@@ -276,10 +276,10 @@ def test_acos(Tensor):
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
 def test_add_(Tensor):
-    # add scalar to tensor
     a = np.arange(6).reshape(2, 3).astype(np.float32)
-    t = Tensor(a)
     n = 2
+    # add scalar to tensor
+    t = Tensor(a)
     t.add_(n)
     b = np.array(t, copy=False)
     assert np.allclose(a + n, b)
@@ -630,6 +630,343 @@ def test_mod(Tensor):
     u = Tensor.mod(t, n)
     b = np.array(u, copy=False)
     assert np.allclose(np.mod(a, n), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_mult_(Tensor):
+    a = np.arange(6).reshape(2, 3).astype(np.float32)
+    n = 2
+    # multiply scalar by tensor
+    t = Tensor(a)
+    t.mult_(n)
+    b = np.array(t, copy=False)
+    assert np.allclose(a * n, b)
+    # multiply tensor by tensor
+    t = Tensor(a)
+    c = 2 + a
+    u = Tensor(c)
+    t.mult_(u)
+    b = np.array(t, copy=False)
+    assert np.allclose(b, a * c)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_mult(Tensor):
+    a = np.arange(6).reshape(2, 3).astype(np.float32)
+    n = 2
+    # tensor = tensor * scalar
+    t = Tensor(a)
+    u = Tensor.mult(t, n)
+    b = np.array(u, copy=False)
+    assert np.allclose(a * n, b)
+    # tensor = tensor * tensor
+    t = Tensor(a)
+    u = Tensor(a + n)
+    v = Tensor.mult(t, u)
+    b = np.array(v, copy=False)
+    assert np.allclose(b, a * (a + n))
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_mult2D(Tensor):
+    a = np.arange(2, 8).reshape(2, 3).astype(np.float32)
+    b = np.arange(1, 13).reshape(3, 4).astype(np.float32)
+    t = Tensor(a)
+    u = Tensor(b)
+    v = Tensor.mult2D(t, u)
+    c = np.array(v, copy=False)
+    assert np.allclose(c, a @ b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_normalize_(Tensor):
+    m, M = -1, 1
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=True)
+    t.normalize_(m, M)
+    b = np.array(t, copy=False)
+    r = (M - m) / (a.max() - a.min())
+    assert np.allclose(r * (a - a.min()) + m, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_normalize(Tensor):
+    m, M = -1, 1
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=False)
+    u = Tensor.normalize(t, m, M)
+    b = np.array(u, copy=False)
+    r = (M - m) / (a.max() - a.min())
+    assert np.allclose(r * (a - a.min()) + m, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_neg_(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=True)
+    t.neg_()
+    b = np.array(t, copy=False)
+    assert np.allclose(-a, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_neg(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=False)
+    u = Tensor.neg(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(-a, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_reciprocal_(Tensor):
+    t = Tensor.range(1, 10, 1)
+    a = np.array(t, copy=True)
+    t.reciprocal_()
+    b = np.array(t, copy=False)
+    assert np.allclose(np.reciprocal(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_reciprocal(Tensor):
+    t = Tensor.range(1, 10, 1)
+    a = np.array(t, copy=False)
+    u = Tensor.reciprocal(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(np.reciprocal(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_round_(Tensor):
+    t = Tensor.range(-2.0, 2.0, 0.4)
+    a = np.array(t, copy=True)
+    t.round_()
+    b = np.array(t, copy=False)
+    assert np.allclose(np.round(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_round(Tensor):
+    t = Tensor.range(-2.0, 2.0, 0.4)
+    a = np.array(t, copy=False)
+    u = Tensor.round(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(np.round(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_rsqrt_(Tensor):
+    t = Tensor.range(1, 10, 1)
+    a = np.array(t, copy=True)
+    t.rsqrt_()
+    b = np.array(t, copy=False)
+    assert np.allclose(1 / np.sqrt(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_rsqrt(Tensor):
+    t = Tensor.range(1, 10, 1)
+    a = np.array(t, copy=False)
+    u = Tensor.rsqrt(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(1 / np.sqrt(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sigmoid_(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=True)
+    t.sigmoid_()
+    b = np.array(t, copy=False)
+    assert np.allclose(1 / (1 + np.exp(-a)), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sigmoid(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=False)
+    u = Tensor.sigmoid(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(1 / (1 + np.exp(-a)), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sign_(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=True)
+    t.sign_()
+    b = np.array(t, copy=False)
+    assert np.allclose(np.sign(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sign(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=False)
+    u = Tensor.sign(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(np.sign(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sin_(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=True)
+    t.sin_()
+    b = np.array(t, copy=False)
+    assert np.allclose(np.sin(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sin(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=False)
+    u = Tensor.sin(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(np.sin(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sinh_(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=True)
+    t.sinh_()
+    b = np.array(t, copy=False)
+    assert np.allclose(np.sinh(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sinh(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=False)
+    u = Tensor.sinh(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(np.sinh(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sqr_(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=True)
+    t.sqr_()
+    b = np.array(t, copy=False)
+    assert np.allclose(np.square(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sqr(Tensor):
+    t = Tensor.range(-5, 5, 1)
+    a = np.array(t, copy=False)
+    u = Tensor.sqr(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(np.square(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sqrt_(Tensor):
+    t = Tensor.range(1, 10, 1)
+    a = np.array(t, copy=True)
+    t.sqrt_()
+    b = np.array(t, copy=False)
+    assert np.allclose(np.sqrt(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sqrt(Tensor):
+    t = Tensor.range(1, 10, 1)
+    a = np.array(t, copy=False)
+    u = Tensor.sqrt(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(np.sqrt(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sub_(Tensor):
+    a = np.arange(6).reshape(2, 3).astype(np.float32)
+    n = 2
+    # subtract scalar from tensor
+    t = Tensor(a)
+    t.sub_(n)
+    b = np.array(t, copy=False)
+    assert np.allclose(a - n, b)
+    # subtract tensor from tensor
+    t = Tensor(a)
+    c = 2 * a
+    u = Tensor(c)
+    t.sub_(u)
+    b = np.array(t, copy=False)
+    assert np.allclose(b, a - c)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_sub(Tensor):
+    a = np.arange(6).reshape(2, 3).astype(np.float32)
+    n = 2
+    # tensor = tensor - scalar
+    t = Tensor(a)
+    u = Tensor.sub(t, n)
+    b = np.array(u, copy=False)
+    assert np.allclose(a - n, b)
+    # tensor = tensor - tensor
+    t = Tensor(a)
+    u = Tensor(a / n)
+    v = Tensor.sub(t, u)
+    b = np.array(v, copy=False)
+    assert np.allclose(b, a - (a / n))
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_tan_(Tensor):
+    t = Tensor.range(-1, 1, .2)
+    a = np.array(t, copy=True)
+    t.tan_()
+    b = np.array(t, copy=False)
+    assert np.allclose(np.tan(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_tan(Tensor):
+    t = Tensor.range(-1, 1, .2)
+    a = np.array(t, copy=False)
+    u = Tensor.tan(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(np.tan(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_tanh_(Tensor):
+    t = Tensor.range(-1, 1, .2)
+    a = np.array(t, copy=True)
+    t.tanh_()
+    b = np.array(t, copy=False)
+    assert np.allclose(np.tanh(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_tanh(Tensor):
+    t = Tensor.range(-1, 1, .2)
+    a = np.array(t, copy=False)
+    u = Tensor.tanh(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(np.tanh(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_trunc_(Tensor):
+    t = Tensor.range(-2.0, 2.0, 0.4)
+    a = np.array(t, copy=True)
+    t.trunc_()
+    b = np.array(t, copy=False)
+    assert np.allclose(np.trunc(a), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_trunc(Tensor):
+    t = Tensor.range(-2.0, 2.0, 0.4)
+    a = np.array(t, copy=False)
+    u = Tensor.trunc(t)
+    b = np.array(u, copy=False)
+    assert np.allclose(np.trunc(a), b)
 
 
 # --- Other ---
