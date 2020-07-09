@@ -31,16 +31,12 @@ class MSELoss(Loss):
         Loss.__init__(self, "py_mean_squared_error")
 
     def delta(self, t, y, d):
-        t_a = np.array(t, copy=False)
-        y_a = np.array(y, copy=False)
-        u = Tensor((y_a - t_a) / t.shape[0])
-        Tensor.copy(u, d)
+        Tensor.copy(Tensor.sub(y, t), d)
+        d.div_(t.shape[0])
 
     def value(self, t, y):
-        t_a = np.array(t, copy=False)
-        y_a = np.array(y, copy=False)
         size = t.size / t.shape[0]
-        return np.sum(np.square(t_a - y_a)) / size
+        return (Tensor.sqr(Tensor.sub(t, y))).sum() / size
 
 
 class MSEMetric(Metric):
@@ -49,10 +45,8 @@ class MSEMetric(Metric):
         Metric.__init__(self, "py_mean_squared_error")
 
     def value(self, t, y):
-        t_a = np.array(t, copy=False)
-        y_a = np.array(y, copy=False)
         size = t.size / t.shape[0]
-        return np.sum(np.square(t_a - y_a)) / size
+        return (Tensor.sqr(Tensor.sub(t, y))).sum() / size
 
 
 class CategoricalAccuracy(Metric):

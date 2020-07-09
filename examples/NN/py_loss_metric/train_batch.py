@@ -40,8 +40,12 @@ class CategoricalAccuracy(Metric):
         Metric.__init__(self, "py_categorical_accuracy")
 
     def value(self, t, y):
-        a = eddlT.getdata(t)
-        b = eddlT.getdata(y)
+        tc = t.clone()
+        tc.toCPU()
+        yc = y.clone()
+        yc.toCPU()
+        a = np.array(tc, copy=False)
+        b = np.array(yc, copy=False)
         return (np.argmax(a, axis=-1) == np.argmax(b, axis=-1)).sum()
 
 
@@ -74,8 +78,8 @@ def main(args):
     x_test = Tensor.load("mnist_tsX.bin")
     # y_test = Tensor.load("mnist_tsY.bin")
 
-    eddlT.div_(x_train, 255.0)
-    eddlT.div_(x_test, 255.0)
+    x_train.div_(255.0)
+    x_test.div_(255.0)
 
     num_samples = x_train.shape[0]
     num_batches = num_samples // args.batch_size

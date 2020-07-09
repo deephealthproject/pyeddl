@@ -37,8 +37,12 @@ class CategoricalAccuracy(Metric):
         Metric.__init__(self, "py_categorical_accuracy")
 
     def value(self, t, y):
-        a = eddlT.getdata(t)
-        b = eddlT.getdata(y)
+        tc = t.clone()
+        tc.toCPU()
+        yc = y.clone()
+        yc.toCPU()
+        a = np.array(tc, copy=False)
+        b = np.array(yc, copy=False)
         return (np.argmax(a, axis=-1) == np.argmax(b, axis=-1)).sum()
 
 
@@ -51,13 +55,13 @@ def main(args):
 
     layer = in_
     layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
+        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu"), True
     )
     layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
+        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu"), True
     )
     layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
+        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu"), True
     )
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
@@ -78,8 +82,8 @@ def main(args):
     x_test = Tensor.load("mnist_tsX.bin")
     y_test = Tensor.load("mnist_tsY.bin")
 
-    eddlT.div_(x_train, 255.0)
-    eddlT.div_(x_test, 255.0)
+    x_train.div_(255.0)
+    x_test.div_(255.0)
 
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
 

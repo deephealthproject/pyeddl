@@ -36,13 +36,12 @@ class MSELoss(Loss):
         Loss.__init__(self, "py_mean_squared_error")
 
     def delta(self, t, y, d):
-        eddlT.copyTensor(eddlT.sub(y, t), d)
-        eddlT.div_(d, eddlT.getShape(t)[0])
+        Tensor.copy(Tensor.sub(y, t), d)
+        d.div_(t.shape[0])
 
     def value(self, t, y):
-        aux = eddlT.add(t, eddlT.neg(y))
-        aux = eddlT.mult(aux, aux)
-        return aux.sum() / eddlT.getShape(t)[0]
+        size = t.size / t.shape[0]
+        return (Tensor.sqr(Tensor.sub(t, y))).sum() / size
 
 
 class MSEMetric(Metric):
@@ -51,9 +50,8 @@ class MSEMetric(Metric):
         Metric.__init__(self, "py_mean_squared_error")
 
     def value(self, t, y):
-        aux = eddlT.add(t, eddlT.neg(y))
-        aux = eddlT.mult(aux, aux)
-        return aux.sum() / eddlT.getShape(t)[0]
+        size = t.size / t.shape[0]
+        return (Tensor.sqr(Tensor.sub(t, y))).sum() / size
 
 
 def main(args):
@@ -83,7 +81,7 @@ def main(args):
     eddl.plot(net, "model.pdf")
 
     x_train = Tensor.load("mnist_trX.bin")
-    eddlT.div_(x_train, 255.0)
+    x_train.div_(255.0)
     eddl.fit(net, [x_train], [x_train], args.batch_size, args.epochs)
 
 
