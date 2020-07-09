@@ -66,6 +66,7 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
     cl.def_static("permute", &Tensor::permute,
 		  pybind11::arg("t"), pybind11::arg("dims"));
     cl.def("reshape_", (void (Tensor::*)(const vector<int>&)) &Tensor::reshape_, "C++: Tensor::reshape_(const vector<int>&) --> void", pybind11::arg("new_shape"));
+    cl.def("set_", (void (Tensor::*)(vector<int>, float)) &Tensor::set_, "C++: Tensor::set_(vector<int>, float) --> void", pybind11::arg("indices"), pybind11::arg("value"));
     cl.def_buffer([](Tensor &t) -> pybind11::buffer_info {
         if (!t.isCPU()) {
             std::cerr << "WARNING: converting tensor to CPU" << std::endl;

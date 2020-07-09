@@ -239,6 +239,29 @@ def test_load_save(Tensor, tmp_path):
 # --- Other ---
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_fill_(Tensor):
+    shape = [2, 3]
+    value = 42
+    t = Tensor(shape)
+    t.fill_(value)
+    a = np.array(t, copy=False)
+    b = np.full(shape, value, dtype=np.float32)
+    assert np.array_equal(a, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_set_(Tensor):
+    R, C = 3, 4
+    a = np.arange(R * C).reshape(R, C).astype(np.float32)
+    n = 100.0
+    t = Tensor(a)
+    t.set_([1, 2], n)
+    b = np.array(t, copy=False)
+    a[1, 2] = n
+    assert np.array_equal(b, a)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
 def test_reshape_(Tensor):
     R, C = 3, 4
     a = np.arange(R * C).reshape(R, C).astype(np.float32)

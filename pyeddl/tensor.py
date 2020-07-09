@@ -247,6 +247,25 @@ class Tensor(_core.Tensor):
 
     # == Other functions ==
 
+    def fill_(self, v):
+        """\
+        Fill the tensor with the specified value.
+
+        :param v: a scalar value
+        :return: None
+        """
+        return _core.Tensor.fill_(self, v)
+
+    def set_(self, indices, value):
+        """\
+        Set the tensor value to ``value`` at the specified indices.
+
+        :param indices: a list of indices
+        :param value: a scalar value
+        :return: None
+        """
+        return _core.Tensor.set_(self, indices, value)
+
     def reshape_(self, new_shape):
         """\
         Change the tensor's shape.
