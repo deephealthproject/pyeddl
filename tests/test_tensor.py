@@ -48,6 +48,8 @@ def test_array_from_tensor(Tensor):
     assert np.array_equal(a, b)
     c = np.array(t, copy=True)
     assert np.array_equal(c, b)
+    d = t.getdata()
+    assert np.array_equal(d, b)
 
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
@@ -184,11 +186,11 @@ def test_randn(Tensor):
 #     t.toCPU()
 #     b = np.array(t, copy=False)
 #     assert np.array_equal(b, a)
-#     # check conversion from GPU tensor
+#     # check getdata from GPU tensor
 #     t = Tensor([2, 3], DEV_CPU)
 #     t.fill_(2)
 #     t.toGPU()
-#     a = np.array(t, copy=False)
+#     a = t.getdata()
 #     assert np.alltrue(a == 2)
 
 

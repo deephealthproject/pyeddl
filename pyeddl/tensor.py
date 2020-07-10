@@ -62,6 +62,14 @@ class Tensor(_core.Tensor):
         """
         _core.Tensor.__init__(self, shape, dev)
 
+    def getdata(self):
+        """\
+        Get the tensor's data as a NumPy array.
+
+        :return: a NumPy array
+        """
+        return _core.Tensor.getdata(self)
+
     # == Creation ==
 
     @staticmethod

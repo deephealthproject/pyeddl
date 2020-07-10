@@ -30,7 +30,7 @@ print(a)
 t = Tensor.fromarray(a)
 t.save("./a.bin", "bin")
 t1 = Tensor.load("a.bin", "bin")
-a1 = np.array(t1)
+a1 = t1.getdata()
 print(a1)
 
 print()

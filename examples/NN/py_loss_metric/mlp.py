@@ -37,12 +37,8 @@ class CategoricalAccuracy(Metric):
         Metric.__init__(self, "py_categorical_accuracy")
 
     def value(self, t, y):
-        tc = t.clone()
-        tc.toCPU()
-        yc = y.clone()
-        yc.toCPU()
-        a = np.array(tc, copy=False)
-        b = np.array(yc, copy=False)
+        a = t.getdata()
+        b = y.getdata()
         return (np.argmax(a, axis=-1) == np.argmax(b, axis=-1)).sum()
 
 
