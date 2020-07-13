@@ -27,7 +27,7 @@ import sys
 
 import numpy as np
 import pyeddl.eddl as eddl
-import pyeddl.eddlT as eddlT
+from pyeddl.tensor import Tensor
 from pyeddl._core import Metric
 
 
@@ -37,8 +37,8 @@ class CategoricalAccuracy(Metric):
         Metric.__init__(self, "py_categorical_accuracy")
 
     def value(self, t, y):
-        a = eddlT.getdata(t)
-        b = eddlT.getdata(y)
+        a = t.getdata()
+        b = y.getdata()
         return (np.argmax(a, axis=-1) == np.argmax(b, axis=-1)).sum()
 
 
@@ -51,13 +51,13 @@ def main(args):
 
     layer = in_
     layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
+        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu"), True
     )
     layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
+        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu"), True
     )
     layer = eddl.BatchNormalization(
-        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu")
+        eddl.Activation(eddl.L2(eddl.Dense(layer, 1024), 0.0001), "relu"), True
     )
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
@@ -73,13 +73,13 @@ def main(args):
     eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
-    x_train = eddlT.load("trX.bin")
-    y_train = eddlT.load("trY.bin")
-    x_test = eddlT.load("tsX.bin")
-    y_test = eddlT.load("tsY.bin")
+    x_train = Tensor.load("mnist_trX.bin")
+    y_train = Tensor.load("mnist_trY.bin")
+    x_test = Tensor.load("mnist_tsX.bin")
+    y_test = Tensor.load("mnist_tsY.bin")
 
-    eddlT.div_(x_train, 255.0)
-    eddlT.div_(x_test, 255.0)
+    x_train.div_(255.0)
+    x_test.div_(255.0)
 
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
 

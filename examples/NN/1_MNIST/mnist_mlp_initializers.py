@@ -26,7 +26,7 @@ import argparse
 import sys
 
 import pyeddl.eddl as eddl
-import pyeddl.eddlT as eddlT
+from pyeddl.tensor import Tensor
 
 
 def main(args):
@@ -54,13 +54,13 @@ def main(args):
     eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
-    x_train = eddlT.load("trX.bin")
-    y_train = eddlT.load("trY.bin")
-    x_test = eddlT.load("tsX.bin")
-    y_test = eddlT.load("tsY.bin")
+    x_train = Tensor.load("mnist_trX.bin")
+    y_train = Tensor.load("mnist_trY.bin")
+    x_test = Tensor.load("mnist_tsX.bin")
+    y_test = Tensor.load("mnist_tsY.bin")
 
-    eddlT.div_(x_train, 255.0)
-    eddlT.div_(x_test, 255.0)
+    x_train.div_(255.0)
+    x_test.div_(255.0)
 
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
     eddl.evaluate(net, [x_test], [y_test])

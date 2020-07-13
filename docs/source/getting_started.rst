@@ -14,18 +14,28 @@ Create an uninitialized tensor with a given shape:
 
 .. code-block:: python
 
-    import pyeddl.eddlT as eddlT
+    from pyeddl.tensor import Tensor
     shape = [3, 4]
-    t = eddlT.create(shape)
+    t = Tensor(shape)
+
+By default, the tensor stores its data on the CPU. If you are using a
+GPU-enabled version of PyEDDL/EDDL, you can create a GPU tensor (i.e., with
+data stored on the GPU):
+
+.. code-block:: python
+
+    from pyeddl.tensor import Tensor, DEV_GPU
+    shape = [3, 4]
+    t = Tensor(shape, DEV_GPU)
 
 Create a tensor with evenly spaced values and compute the element-wise cosine:
 
 .. code-block:: python
 
     import math
-    import pyeddl.eddlT as eddlT
-    t = eddlT.linspace(0, math.pi, 8)
-    cos_t = eddlT.cos(t)
+    from pyeddl.tensor import Tensor
+    t = Tensor.linspace(0, math.pi, 8)
+    cos_t = Tensor.cos(t)
 
 
 To/from NumPy conversions
@@ -35,23 +45,39 @@ Create a tensor with data initialized from a NumPy array:
 
 .. code-block:: python
 
-    import pyeddl.eddlT as eddlT
+    from pyeddl.tensor import Tensor
     import numpy as np
     a = np.arange(12).reshape(3, 4).astype(np.float32)
-    t = eddlT.create(a)
+    t = Tensor.fromarray(a)
+    t.print()
+    t.info()
 
-Convert a tensor to a NumPy array:
+Get tensor data as a NumPy array:
 
 .. code-block:: python
 
-    import pyeddl.eddlT as eddlT
+    from pyeddl.tensor import Tensor
     import numpy as np
-    t = eddlT.ones([3, 4])  # [3, 4] tensor filled with ones
-    a = np.array(t)
+    t = Tensor.ones([3, 4])  # [3, 4] tensor filled with ones
+    a = t.getdata()
 
-You can also do ``a = np.array(t, copy=False)`` to view the tensor data as an
-array without copying the data. Another way to get the tensor data as an array
-(with copy) is ``a = eddlT.getdata(t)``.
+Note that ``getdata`` performs a copy of the tensor's data. If ``t`` is a CPU
+tensor, you can also do ``a = np.array(t, copy=False)`` to view the tensor's
+data as an array without any copying being done. In this case, any
+modification of ``a`` is reflected in ``t``:
+
+.. code-block:: python
+
+    from pyeddl.tensor import Tensor
+    import numpy as np
+    t = Tensor.ones([3, 4])
+    a = np.array(t, copy=False)
+    t.print()
+    a[1, 1:3] = 2
+    t.print()
+
+However, this is only possible for CPU tensors (NumPy does not support other
+devices).
 
 Load NumPy data into EDDL tensors:
 
@@ -59,15 +85,15 @@ Load NumPy data into EDDL tensors:
 
     from urllib.request import urlretrieve
     import numpy as np
-    import pyeddl.eddlT as eddlT
+    from pyeddl.tensor import Tensor
     urlretrieve("https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz", "mnist.npz")
     with np.load("mnist.npz") as f:
         x_train, y_train = f['x_train'], f['y_train']
         x_test, y_test = f['x_test'], f['y_test']
-    t_x_train = eddlT.create(x_train.astype(np.float32))
-    t_y_train = eddlT.create(y_train.astype(np.float32))
-    t_x_test = eddlT.create(x_test.astype(np.float32))
-    t_y_test = eddlT.create(y_test.astype(np.float32))
+    t_x_train = Tensor.fromarray(x_train.astype(np.float32))
+    t_y_train = Tensor.fromarray(y_train.astype(np.float32))
+    t_x_test = Tensor.fromarray(x_test.astype(np.float32))
+    t_y_test = Tensor.fromarray(y_test.astype(np.float32))
 
 
 Training a MLP network
@@ -76,7 +102,7 @@ Training a MLP network
 .. code-block:: python
 
     import pyeddl.eddl as eddl
-    import pyeddl.eddlT as eddlT
+    from pyeddl.tensor import Tensor
 
     def main():
         eddl.download_mnist()
@@ -101,12 +127,12 @@ Training a MLP network
             eddl.CS_CPU()
         )
 
-        x_train = eddlT.load("trX.bin")
-        y_train = eddlT.load("trY.bin")
-        x_test = eddlT.load("tsX.bin")
-        y_test = eddlT.load("tsY.bin")
-        eddlT.div_(x_train, 255.0)
-        eddlT.div_(x_test, 255.0)
+        x_train = Tensor.load("mnist_trX.bin")
+        y_train = Tensor.load("mnist_trY.bin")
+        x_test = Tensor.load("mnist_tsX.bin")
+        y_test = Tensor.load("mnist_tsY.bin")
+        x_train.div_(255.0)
+        x_test.div_(255.0)
 
         eddl.fit(net, [x_train], [y_train], batch_size, epochs)
         eddl.evaluate(net, [x_test], [y_test])

@@ -28,8 +28,7 @@ import argparse
 import sys
 
 import pyeddl.eddl as eddl
-import pyeddl.eddlT as eddlT
-from pyeddl._core import Tensor
+from pyeddl.tensor import Tensor
 
 
 USE_CONCAT = 1
@@ -119,19 +118,19 @@ def main(args):
     eddl.summary(segnet)
 
     print("Reading training data")
-    x_train_f = Tensor.load_uint8_t("drive_x.npy")
+    x_train_f = Tensor.load_uint8_t("drive_trX.npy")
     x_train = Tensor.permute(x_train_f, [0, 3, 1, 2])
     x_train.info()
-    eddlT.div_(x_train, 255.0)
+    x_train.div_(255.0)
 
     print("Reading test data")
-    y_train = Tensor.load_uint8_t("drive_y.npy")
+    y_train = Tensor.load_uint8_t("drive_trY.npy")
     y_train.info()
-    eddlT.reshape_(y_train, [20, 1, 584, 584])
-    eddlT.div_(y_train, 255.0)
+    y_train.reshape_([20, 1, 584, 584])
+    y_train.div_(255.0)
 
-    xbatch = eddlT.create([args.batch_size, 3, 584, 584])
-    ybatch = eddlT.create([args.batch_size, 1, 584, 584])
+    xbatch = Tensor([args.batch_size, 3, 584, 584])
+    ybatch = Tensor([args.batch_size, 1, 584, 584])
 
     print("Starting training")
     for i in range(args.epochs):
@@ -141,14 +140,14 @@ def main(args):
             eddl.next_batch([x_train, y_train], [xbatch, ybatch])
             # DA net
             eddl.forward(danet, [xbatch, ybatch])
-            xbatch_da = eddl.getTensor(img)
-            ybatch_da = eddl.getTensor(mask)
+            xbatch_da = eddl.getOutput(img)
+            ybatch_da = eddl.getOutput(mask)
             # SegNet
             eddl.train_batch(segnet, [xbatch_da], [ybatch_da])
             eddl.print_loss(segnet, j)
             if i == args.epochs - 1:
-                yout = eddlT.select(eddl.getTensor(out), 0)
-                eddlT.save(yout, "./out_%d.jpg" % j)
+                yout = eddl.getOutput(out).select(["0"])
+                yout.save("./out_%d.jpg" % j)
             print()
 
 

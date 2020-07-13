@@ -22,15 +22,15 @@ import os
 from urllib.request import urlretrieve
 
 import numpy as np
-import pyeddl.eddlT as eddlT
+from pyeddl.tensor import Tensor
 
 # Convert array to tensor and save to "bin" format
 a = np.arange(6).reshape([2, 3]).astype(np.float32)
 print(a)
-t = eddlT.create(a)
-eddlT.save(t, "./a.bin", "bin")
-t1 = eddlT.load("a.bin", "bin")
-a1 = eddlT.getdata(t1)
+t = Tensor.fromarray(a)
+t.save("./a.bin", "bin")
+t1 = Tensor.load("a.bin", "bin")
+a1 = t1.getdata()
 print(a1)
 
 print()
@@ -45,9 +45,9 @@ print("loading", FNAME)
 with np.load(FNAME) as f:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test = f['x_test'], f['y_test']
-t_x_train = eddlT.create(x_train.astype(np.float32))
-t_y_train = eddlT.create(y_train.astype(np.float32))
-t_x_test = eddlT.create(x_test.astype(np.float32))
-t_y_test = eddlT.create(y_test.astype(np.float32))
+t_x_train = Tensor.fromarray(x_train.astype(np.float32))
+t_y_train = Tensor.fromarray(y_train.astype(np.float32))
+t_x_test = Tensor.fromarray(x_test.astype(np.float32))
+t_y_test = Tensor.fromarray(y_test.astype(np.float32))
 print(x_train.shape, x_train.dtype)
-eddlT.info(t_x_train)
+t_x_train.info()

@@ -15,7 +15,6 @@ ${binder} \
   --root-module _core \
   --prefix $PWD/bindings/ \
   --bind eddl \
-  --bind eddlT \
   --config config.cfg \
   --single-file \
   all_includes.hpp \

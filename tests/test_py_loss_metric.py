@@ -21,7 +21,7 @@
 import numpy as np
 import pytest
 import pyeddl.eddl as eddl
-import pyeddl.eddlT as eddlT
+from pyeddl.tensor import Tensor
 from pyeddl._core import Loss, Metric
 
 
@@ -31,14 +31,12 @@ class MSELoss(Loss):
         Loss.__init__(self, "py_mean_squared_error")
 
     def delta(self, t, y, d):
-        eddlT.copyTensor(eddlT.sub(y, t), d)
-        eddlT.div_(d, eddlT.getShape(t)[0])
+        Tensor.copy(Tensor.sub(y, t), d)
+        d.div_(t.shape[0])
 
     def value(self, t, y):
-        size = t.size / eddlT.getShape(t)[0]
-        aux = eddlT.add(t, eddlT.neg(y))
-        aux = eddlT.mult(aux, aux)
-        return aux.sum() / size
+        size = t.size / t.shape[0]
+        return (Tensor.sqr(Tensor.sub(t, y))).sum() / size
 
 
 class MSEMetric(Metric):
@@ -47,10 +45,8 @@ class MSEMetric(Metric):
         Metric.__init__(self, "py_mean_squared_error")
 
     def value(self, t, y):
-        size = t.size / eddlT.getShape(t)[0]
-        aux = eddlT.add(t, eddlT.neg(y))
-        aux = eddlT.mult(aux, aux)
-        return aux.sum() / size
+        size = t.size / t.shape[0]
+        return (Tensor.sqr(Tensor.sub(t, y))).sum() / size
 
 
 class CategoricalAccuracy(Metric):
@@ -59,8 +55,8 @@ class CategoricalAccuracy(Metric):
         Metric.__init__(self, "py_categorical_accuracy")
 
     def value(self, t, y):
-        a = eddlT.getdata(t)
-        b = eddlT.getdata(y)
+        a = t.getdata()
+        b = y.getdata()
         return (np.argmax(a, axis=-1) == np.argmax(b, axis=-1)).sum()
 
 
@@ -68,7 +64,7 @@ def test_py_metric():
     shape = [8, 10]
     a = np.random.random(shape).astype(np.float32)
     b = np.random.random(shape).astype(np.float32)
-    t, y = eddlT.create(a), eddlT.create(b)
+    t, y = Tensor.fromarray(a), Tensor.fromarray(b)
     v = MSEMetric().value(t, y)
     exp_v = eddl.getMetric("mse").value(t, y)
     assert v == pytest.approx(exp_v)
@@ -81,15 +77,15 @@ def test_py_loss():
     shape = [8, 10]
     a = np.random.random(shape).astype(np.float32)
     b = np.random.random(shape).astype(np.float32)
-    t, y = eddlT.create(a), eddlT.create(b)
-    z = eddlT.create(shape)
-    exp_z = eddlT.create(shape)
+    t, y = Tensor.fromarray(a), Tensor.fromarray(b)
+    z = Tensor(shape)
+    exp_z = Tensor(shape)
     py_mse_loss = MSELoss()
     mse_loss = eddl.getLoss("mse")
     mse_loss.delta(t, y, exp_z)
     py_mse_loss.delta(t, y, z)
-    c = eddlT.getdata(z)
-    exp_c = eddlT.getdata(exp_z)
+    c = np.array(z, copy=False)
+    exp_c = np.array(exp_z, copy=False)
     assert np.array_equal(c, exp_c)
     v = py_mse_loss.value(t, y)
     exp_v = mse_loss.value(t, y)

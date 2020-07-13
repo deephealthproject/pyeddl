@@ -26,14 +26,20 @@ _eddl = _core.eddl
 
 # = Creation =
 
-def Model(in_, out):
-    """\
-    Create a model.
+def Model(in_, out=None):
+    r"""\
+    Create a model (Net).
 
-    :param in_: list of input layers, typically from :func:`.Input`
-    :param out: list of ouput layers
+    With one argument, create from a list of models. With two arguments,
+    create from a list of input layers and a list of output layers.
+
+    :param in\_: if this is the only parameter, it must be a list of models.
+      If ``out`` is specified, this must be a list of input layers.
+    :param out: list of output layers
     :return: model instance
     """
+    if out is None:
+        return _eddl.Model(in_)
     return _eddl.Model(in_, out)
 
 
@@ -103,7 +109,7 @@ def toCPU(net, t=None):
     return _eddl.toCPU(net, t)
 
 
-def CS_CPU(th=-1, mem="low_mem"):
+def CS_CPU(th=-1, mem="full_mem"):
     """\
     Create a computing service that executes the code in the CPU.
 
@@ -115,7 +121,7 @@ def CS_CPU(th=-1, mem="low_mem"):
     return _eddl.CS_CPU(th, mem)
 
 
-def CS_GPU(g=[1], lsb=1, mem="low_mem"):
+def CS_GPU(g=[1], lsb=1, mem="full_mem"):
     """\
     Create a computing service that executes the code in the GPU.
 
@@ -381,6 +387,17 @@ def evaluate(m, in_, out):
     return _eddl.evaluate(m, in_, out)
 
 
+def predict(m, in_):
+    r"""\
+    Perform a prediction with input data
+
+    :param m: model
+    :param in\_: input data (features)
+    :return: output tensors
+    """
+    return _eddl.predict(m, in_)
+
+
 # Training and evaluation - finer methods
 
 def random_indices(batch_size, num_samples):
@@ -465,6 +482,10 @@ def backward(m, target=None):
     if target is None:
         return _eddl.backward(m)
     return _eddl.backward(m, target)
+
+
+def optimize(l):
+    return _eddl.optimize(l)
 
 
 def update(m):
@@ -747,6 +768,28 @@ def Conv(parent, filters, kernel_size, strides=[1, 1], padding="same",
                       use_bias, groups, dilation_rate, name)
 
 
+def Conv1D(parent, filters, kernel_size, strides=[1], padding="same",
+           use_bias=True, groups=1, dilation_rate=[1], name=""):
+    """\
+    1D convolution layer.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param kernel_size: list of 1 integer.
+    :param strides: list of 1 integers
+    :param padding: one of "none", "valid" or "same"
+    :param use_bias: whether the layer uses a bias vector
+    :param groups: number of blocked connections from input to output channels
+    :param dilation_rate: list of 1 integer, specifying the dilation rate
+      to use for dilated convolution
+    :param name: name of the output layer
+    :return: Convolution layer
+    """
+    return _eddl.Conv1D(parent, filters, kernel_size, strides, padding,
+                        use_bias, groups, dilation_rate, name)
+
+
 def Dense(parent, ndim, use_bias=True, name=""):
     """\
     Regular densely-connected layer.
@@ -760,7 +803,7 @@ def Dense(parent, ndim, use_bias=True, name=""):
     return _eddl.Dense(parent, ndim, use_bias, name)
 
 
-def Dropout(parent, rate, name=""):
+def Dropout(parent, rate, iw=True, name=""):
     """\
     Apply dropout to a layer.
 
@@ -769,10 +812,11 @@ def Dropout(parent, rate, name=""):
 
     :param parent: parent layer
     :param rate: fraction of input units to drop (between 0 and 1)
+    :param iw: whether to perform weighting in inference
     :param name: name of the output layer
     :return: Dropout layer
     """
-    return _eddl.Dropout(parent, rate, name)
+    return _eddl.Dropout(parent, rate, iw, name)
 
 
 def Input(shape, name=""):
@@ -862,17 +906,22 @@ def ConvT(parent, filters, kernel_size, output_padding, padding="same",
                        dilation_rate, strides, use_bias, name)
 
 
-def Embedding(input_dim, output_dim, name=""):
+def Embedding(parent, vocsize, length, output_dim, mask_zeros=False, name=""):
     """\
     Turn positive integers (indexes) into dense vectors of fixed size. e.g.,
     ``[[4], [20]] -> [[0.25, 0.1], [0.6, -0.2]]``.
 
-    :param input_dim: size of the vocabulary, i.e., maximum integer index + 1
+    :param parent: parent layer
+    :param vocsize: size of the vocabulary, i.e., maximum integer index + 1
+    :param length: length of the sequence, to connect to Dense layers
+      (non Recurrent)
     :param output_dim: dimension of the dense embedding
     :param name: name of the output layer
     :return: Embedding layer
     """
-    return _eddl.Embedding(input_dim, output_dim, name)
+    return _eddl.Embedding(
+        parent, vocsize, length, output_dim, mask_zeros, name
+    )
 
 
 def Transpose(parent, name=""):
@@ -1261,8 +1310,7 @@ def GaussianNoise(parent, stddev, name=""):
 
 # = Normalization =
 
-def BatchNormalization(parent, momentum=0.9, epsilon=0.00001, affine=True,
-                       name=""):
+def BatchNormalization(parent, affine, momentum=0.9, epsilon=0.00001, name=""):
     """\
     Batch normalization layer.
 
@@ -1272,29 +1320,29 @@ def BatchNormalization(parent, momentum=0.9, epsilon=0.00001, affine=True,
     https://arxiv.org/abs/1502.03167
 
     :param parent: parent layer
+    :param affine: if True, this module has learnable affine parameters
     :param momentum: momentum for the moving mean and the moving variance
     :param epsilon: small float added to variance to avoid dividing by zero
-    :param affine: if True, this module has learnable affine parameters
     :param name: name of the output layer
     :return: BatchNorm layer
     """
-    return _eddl.BatchNormalization(parent, momentum, epsilon, affine, name)
+    return _eddl.BatchNormalization(parent, affine, momentum, epsilon, name)
 
 
-def LayerNormalization(parent, epsilon=0.00001, affine=True, name=""):
+def LayerNormalization(parent, affine=True, epsilon=0.00001, name=""):
     """\
     Layer normalization layer.
 
     See: https://arxiv.org/abs/1607.06450.
 
     :param parent: parent layer
+    :param affine: if True, this module has learnable affine parameters
     :param momentum: momentum for the moving mean and the moving variance
     :param epsilon: value added to the denominator for numerical stability
-    :param affine: if True, this module has learnable affine parameters
     :param name: name of the output layer
     :return: LayerNorm layer
     """
-    return _eddl.LayerNormalization(parent, epsilon, affine, name)
+    return _eddl.LayerNormalization(parent, affine, epsilon, name)
 
 
 def GroupNormalization(parent, groups, epsilon=0.001, affine=True, name=""):
@@ -1477,23 +1525,23 @@ def Permute(l, dims, name=""):
 
 # = Reduction layers =
 
-def ReduceMean(l, axis=[0], keepdims=False):
+def ReduceMean(l, axis, keepdims=False):
     return _eddl.ReduceMean(l, axis, keepdims)
 
 
-def ReduceVar(l, axis=[0], keepdims=False):
+def ReduceVar(l, axis, keepdims=False):
     return _eddl.ReduceVar(l, axis, keepdims)
 
 
-def ReduceSum(l, axis=[0], keepdims=False):
+def ReduceSum(l, axis, keepdims=False):
     return _eddl.ReduceSum(l, axis, keepdims)
 
 
-def ReduceMax(l, axis=[0], keepdims=False):
+def ReduceMax(l, axis, keepdims=False):
     return _eddl.ReduceMax(l, axis, keepdims)
 
 
-def ReduceMin(l, axis=[0], keepdims=False):
+def ReduceMin(l, axis, keepdims=False):
     return _eddl.ReduceMin(l, axis, keepdims)
 
 
@@ -1560,44 +1608,50 @@ def MaxPool(parent, pool_size=[2, 2], strides=[2, 2], padding="none", name=""):
     return _eddl.MaxPool(parent, pool_size, strides, padding, name)
 
 
+def MaxPool1D(parent, pool_size=[2], strides=[2], padding="none", name=""):
+    """\
+    Perform 1D Max pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the max pooling windows
+    :param strides: factor by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: MaxPool1D layer
+    """
+    return _eddl.MaxPool1D(parent, pool_size, strides, padding, name)
+
+
 # = Recurrent layers =
 
-def RNN(parent, units, num_layers=1, use_bias=True, dropout=0.0,
-        bidirectional=False, name=""):
+def RNN(parent, units, activation="tanh", use_bias=True, bidirectional=False,
+        name=""):
     """\
     Fully-connected RNN where the output is to be fed back to input.
 
     :param parent: parent layer
     :param units: dimensionality of the output space.
-    :param num_layers: Number of RNN layers
+    :param activation: activation
     :param use_bias: whether the layer uses a bias vector
-    :param dropout: fraction of the units to drop for the linear transformation
-      of the inputs.
     :param bidirectional: whether the RNN is bidirectional
     :param name: name of the output layer
     :return: RNN layer
     """
-    return _eddl.RNN(parent, units, num_layers, use_bias, dropout,
-                     bidirectional, name)
+    return _eddl.RNN(parent, units, activation, use_bias, bidirectional, name)
 
 
-def LSTM(parent, units, num_layers, use_bias=True, dropout=0.0,
-         bidirectional=False, name=""):
+def LSTM(parent, units, mask_zeros=False, bidirectional=False, name=""):
     """\
     Long Short-Term Memory layer - Hochreiter 1997.
 
     :param parent: parent layer
     :param units: dimensionality of the output space.
-    :param num_layers: Number of layers
-    :param use_bias: whether the layer uses a bias vector.
-    :param dropout: fraction of the units to drop for the linear transformation
-      of the inputs
+    :param mask_zeros: boolean
     :param bidirectional: whether the net is bidirectional or not
     :param name: name of the output layer
     :return: LSTM layer
     """
-    return _eddl.LSTM(parent, units, num_layers, use_bias, dropout,
-                      bidirectional, name)
+    return _eddl.LSTM(parent, units, mask_zeros, bidirectional, name)
 
 
 # = Layers methods =
@@ -1606,24 +1660,50 @@ def set_trainable(l, val):
     return _eddl.set_trainable(l, val)
 
 
-def copyTensor(l1, l2):
-    return _eddl.copyTensor(l1, l2)
-
-
-def copyGrad(l1, l2):
-    return _eddl.copyGrad(l1, l2)
-
-
 def getOut(net):
     return _eddl.getOut(net)
 
 
-def getTensor(l):
-    return _eddl.getTensor(l)
+# = Manage tensors inside layers =
+
+def getOutput(l1):
+    return _eddl.getOutput(l1)
 
 
-def getGrad(l):
-    return _eddl.getGrad(l)
+def getDelta(l1):
+    return _eddl.getDelta(l1)
+
+
+def getParam(l1, p):
+    return _eddl.getParam(l1, p)
+
+
+def getGradient(l1, p):
+    return _eddl.getGradient(l1, p)
+
+
+def getParams(l1):
+    return _eddl.getParams(l1)
+
+
+def getGradients(l1):
+    return _eddl.getGradients(l1)
+
+
+def copyOutput(l1, l2):
+    return _eddl.copyOutput(l1, l2)
+
+
+def copyDelta(l1, l2):
+    return _eddl.copyDelta(l1, l2)
+
+
+def copyParam(l1, l2, p):
+    return _eddl.copyParam(l1, l2, p)
+
+
+def copyGradient(l1, l2, p):
+    return _eddl.copyGradient(l1, l2, p)
 
 
 # == INITIALIZERS ==
@@ -1764,6 +1844,24 @@ def download_drive():
     See: https://drive.grand-challenge.org/
     """
     return _eddl.download_drive()
+
+
+def download_imdb():
+    """\
+    Download the IMDB Dataset.
+
+    See: https://ai.stanford.edu/~amaas/data/sentiment/
+    """
+    return _eddl.download_imdb()
+
+
+def download_imdb_1000():
+    """\
+    Download the IMDB Dataset, 1000 most frequent words.
+
+    See: https://ai.stanford.edu/~amaas/data/sentiment/
+    """
+    return _eddl.download_imdb_1000()
 
 
 # == ONNX ==

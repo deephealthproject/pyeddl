@@ -19,15 +19,14 @@
 # SOFTWARE.
 
 """\
-MNIST RNN example.
+MNIST recurrent NN example.
 """
 
 import argparse
 import sys
 
 import pyeddl.eddl as eddl
-import pyeddl.eddlT as eddlT
-from pyeddl._core import Tensor
+from pyeddl.tensor import Tensor
 
 
 def main(args):
@@ -39,8 +38,7 @@ def main(args):
 
     layer = in_
     layer = eddl.LeakyReLu(eddl.Dense(layer, 32))
-    layer = eddl.LeakyReLu(eddl.RNN(layer, 32))
-    layer = eddl.LeakyReLu(eddl.Dense(layer, 32))
+    layer = eddl.L2(eddl.LSTM(layer, 128), 0.001)
     out = eddl.Softmax(eddl.Dense(layer, num_classes))
     net = eddl.Model([in_], [out])
 
@@ -55,23 +53,20 @@ def main(args):
     eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
-    x_train = eddlT.load("trX.bin")
-    y_train = eddlT.load("trY.bin")
-    x_test = eddlT.load("tsX.bin")
-    y_test = eddlT.load("tsY.bin")
+    x_train = Tensor.load("mnist_trX.bin")
+    y_train = Tensor.load("mnist_trY.bin")
+    x_test = Tensor.load("mnist_tsX.bin")
+    y_test = Tensor.load("mnist_tsY.bin")
 
-    eddlT.reshape_(x_train, [60000, 28, 28])
-    x_trainp = Tensor.permute(x_train, [1, 0, 2])
+    x_train.reshape_([60000, 28, 28])
+    x_test.reshape_([10000, 28, 28])
 
-    eddlT.reshape_(x_test, [10000, 28, 28])
-    x_testp = Tensor.permute(x_test, [1, 0, 2])
-
-    eddlT.div_(x_trainp, 255.0)
-    eddlT.div_(x_testp, 255.0)
+    x_train.div_(255.0)
+    x_test.div_(255.0)
 
     for i in range(args.epochs):
-        eddl.fit(net, [x_trainp], [y_train], args.batch_size, 1)
-        eddl.evaluate(net, [x_testp], [y_test])
+        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
+        eddl.evaluate(net, [x_test], [y_test])
 
 
 if __name__ == "__main__":

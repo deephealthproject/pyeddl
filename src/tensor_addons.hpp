@@ -45,6 +45,7 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
            pybind11::arg("shape"), pybind11::arg("dev") = DEV_CPU,
            pybind11::keep_alive<1, 2>());
     cl.def("getShape", &Tensor::getShape);
+    cl.def("select", (Tensor* (Tensor::*)(const vector<string>&)) &Tensor::select, "C++: Tensor::select(const vector<string>&) --> Tensor*", pybind11::arg("indices"));
     cl.def_static("full", &Tensor::full, pybind11::arg("shape"),
 		  pybind11::arg("value"), pybind11::arg("dev") = DEV_CPU);
     cl.def_static("ones", &Tensor::ones, pybind11::arg("shape"),
@@ -55,14 +56,51 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
 		  pybind11::arg("B"), pybind11::arg("dims"));
     cl.def_static("zeros", &Tensor::zeros, pybind11::arg("shape"),
 		  pybind11::arg("dev") = DEV_CPU);
+    cl.def_static("add", [](Tensor* A, float v) {
+	    Tensor* B = A->clone();
+	    B->add_(v);
+	    return B;
+	}, pybind11::arg("A"), pybind11::arg("v"));
+    cl.def("div_", [](Tensor* t, Tensor* A) {
+	    Tensor::el_div(t, A, t, 0);
+	}, pybind11::arg("A"));
+    cl.def("mult_", [](Tensor* t, Tensor* A) {
+	    Tensor::el_mult(t, A, t, 0);
+	}, pybind11::arg("A"));
+    cl.def_static("sub", [](Tensor* A, float v) {
+	    Tensor* B = A->clone();
+	    B->sub_(v);
+	    return B;
+	}, pybind11::arg("A"), pybind11::arg("v"));
+    cl.def("sub_", [](Tensor* t, Tensor* A) {
+	    Tensor::add(1.0, t, -1.0, A, t, 0);
+	}, pybind11::arg("A"));
+    cl.def_static("mult2D", [](Tensor* A, Tensor* B) {
+	    Tensor *C = new Tensor({A->shape[0], B->shape[1]}, A->device);
+	    Tensor::mult2D(A, 0, B, 0, C, 0);
+	    return C;
+	}, pybind11::arg("A"), pybind11::arg("B"));
+    cl.def("save", &Tensor::save,
+	   pybind11::arg("filename"), pybind11::arg("format") = "");
+    cl.def_static("load", [](const string& filename, string format) {
+	    return Tensor::load(filename, format);
+	}, pybind11::arg("filename"), pybind11::arg("format") = "");
     cl.def_static("load_uint8_t", &Tensor::load<uint8_t>,
 		  pybind11::arg("filename"), pybind11::arg("format") = "");
     cl.def_static("permute", &Tensor::permute,
 		  pybind11::arg("t"), pybind11::arg("dims"));
+    cl.def_static("normalize", [](Tensor* A, float min, float max) {
+	    Tensor *B = A->clone();
+	    B->normalize_(min, max);
+	    return B;
+	}, pybind11::arg("A"), pybind11::arg("min"), pybind11::arg("max"));
+    cl.def("reshape_", (void (Tensor::*)(const vector<int>&)) &Tensor::reshape_, "C++: Tensor::reshape_(const vector<int>&) --> void", pybind11::arg("new_shape"));
+    cl.def("set_", (void (Tensor::*)(vector<int>, float)) &Tensor::set_, "C++: Tensor::set_(vector<int>, float) --> void", pybind11::arg("indices"), pybind11::arg("value"));
+    // Expose contents as a buffer object. Allows a = numpy.array(t).
+    // Mostly useful for a = numpy.array(t, copy=False) (CPU only, of course).
     cl.def_buffer([](Tensor &t) -> pybind11::buffer_info {
         if (!t.isCPU()) {
-            std::cerr << "WARNING: converting tensor to CPU" << std::endl;
-            t.toCPU();
+          throw std::invalid_argument("device not supported");
         }
         std::vector<ssize_t> strides(t.ndim);
         ssize_t S = sizeof(float);
@@ -79,4 +117,23 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
               strides
         );
     });
+    // get data as a NumPy array
+    cl.def("getdata", [](Tensor* t) -> array_t {
+        Tensor* aux = t;
+        bool del = false;
+        if (!t->isCPU()) {
+            aux = t->clone();
+            aux->toCPU();
+            del = true;
+        }
+        pybind11::array_t<float> rval = pybind11::array_t<float>(aux->size);
+        pybind11::buffer_info info = rval.request();
+        float* ptr = (float*)info.ptr;
+        std::copy(aux->ptr, aux->ptr + aux->size, ptr);
+        rval.resize(aux->shape);
+        if (del) {
+            delete aux;
+        }
+        return rval;
+    }, "getdata() --> array");
 }

@@ -349,15 +349,7 @@ Utilities
 
 .. autofunction:: pyeddl.eddl.set_trainable
 
-.. autofunction:: pyeddl.eddl.copyTensor
-
-.. autofunction:: pyeddl.eddl.copyGrad
-
 .. autofunction:: pyeddl.eddl.getOut
-
-.. autofunction:: pyeddl.eddl.getTensor
-
-.. autofunction:: pyeddl.eddl.getGrad
 
 
 Initializers
