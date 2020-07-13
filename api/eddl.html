@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pyeddl.eddlT — eddlT API" href="eddlT.html" />
+    <link rel="next" title="pyeddl.tensor — Tensor" href="tensor.html" />
     <link rel="prev" title="&lt;no title&gt;" href="index.html" /> 
 </head>
 
@@ -121,7 +121,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#onnx-support">ONNX support</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="eddlT.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddlT</span></code> — eddlT API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tensor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.tensor</span></code> — Tensor</a></li>
 </ul>
 
             
@@ -197,13 +197,16 @@
 <h3>Creation<a class="headerlink" href="#creation" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="pyeddl.eddl.Model">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">Model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_</span></em>, <em class="sig-param"><span class="n">out</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a model.</p>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">Model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_</span></em>, <em class="sig-param"><span class="n">out</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a model (Net).</p>
+<p>With one argument, create from a list of models. With two arguments,
+create from a list of input layers and a list of output layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>in</strong> – list of input layers, typically from <a class="reference internal" href="#pyeddl.eddl.Input" title="pyeddl.eddl.Input"><code class="xref py py-func docutils literal notranslate"><span class="pre">Input()</span></code></a></p></li>
-<li><p><strong>out</strong> – list of ouput layers</p></li>
+<li><p><strong>in_</strong> – if this is the only parameter, it must be a list of models.
+If <code class="docutils literal notranslate"><span class="pre">out</span></code> is specified, this must be a list of input layers.</p></li>
+<li><p><strong>out</strong> – list of output layers</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -273,7 +276,7 @@ use.</p>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.CS_CPU">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">CS_CPU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">th</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">mem</span><span class="o">=</span><span class="default_value">'low_mem'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.CS_CPU" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">CS_CPU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">th</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">mem</span><span class="o">=</span><span class="default_value">'full_mem'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.CS_CPU" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a computing service that executes the code in the CPU.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -291,7 +294,7 @@ use.</p>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.CS_GPU">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">CS_GPU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">[1]</span></em>, <em class="sig-param"><span class="n">lsb</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">mem</span><span class="o">=</span><span class="default_value">'low_mem'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.CS_GPU" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">CS_GPU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">[1]</span></em>, <em class="sig-param"><span class="n">lsb</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">mem</span><span class="o">=</span><span class="default_value">'full_mem'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.CS_GPU" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a computing service that executes the code in the GPU.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1159,7 +1162,7 @@ to use for dilated convolution</p></li>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.Dropout">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">Dropout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">rate</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Dropout" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">Dropout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">rate</span></em>, <em class="sig-param"><span class="n">iw</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Dropout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply dropout to a layer.</p>
 <p>The dropout consists of randomly setting a fraction of input units to
 0 at each update during training time, which helps prevent overfitting.</p>
@@ -1168,6 +1171,7 @@ to use for dilated convolution</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> – parent layer</p></li>
 <li><p><strong>rate</strong> – fraction of input units to drop (between 0 and 1)</p></li>
+<li><p><strong>iw</strong> – whether to perform weighting in inference</p></li>
 <li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
 </dd>
@@ -1290,13 +1294,16 @@ Spacing between kernel elements</p></li>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.Embedding">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">Embedding</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dim</span></em>, <em class="sig-param"><span class="n">output_dim</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Embedding" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">Embedding</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">vocsize</span></em>, <em class="sig-param"><span class="n">length</span></em>, <em class="sig-param"><span class="n">output_dim</span></em>, <em class="sig-param"><span class="n">mask_zeros</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Embedding" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn positive integers (indexes) into dense vectors of fixed size. e.g.,
 <code class="docutils literal notranslate"><span class="pre">[[4],</span> <span class="pre">[20]]</span> <span class="pre">-&gt;</span> <span class="pre">[[0.25,</span> <span class="pre">0.1],</span> <span class="pre">[0.6,</span> <span class="pre">-0.2]]</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_dim</strong> – size of the vocabulary, i.e., maximum integer index + 1</p></li>
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>vocsize</strong> – size of the vocabulary, i.e., maximum integer index + 1</p></li>
+<li><p><strong>length</strong> – length of the sequence, to connect to Dense layers
+(non Recurrent)</p></li>
 <li><p><strong>output_dim</strong> – dimension of the dense embedding</p></li>
 <li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
@@ -1853,7 +1860,7 @@ it is only active at training time.</p>
 <h3>Normalization layers<a class="headerlink" href="#normalization-layers" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="pyeddl.eddl.BatchNormalization">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">BatchNormalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">momentum</span><span class="o">=</span><span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">epsilon</span><span class="o">=</span><span class="default_value">1e-05</span></em>, <em class="sig-param"><span class="n">affine</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.BatchNormalization" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">BatchNormalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">affine</span></em>, <em class="sig-param"><span class="n">momentum</span><span class="o">=</span><span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">epsilon</span><span class="o">=</span><span class="default_value">1e-05</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.BatchNormalization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Batch normalization layer.</p>
 <p>Normalize the activations of the input layer at each batch, i.e., apply a
 transformation that maintains the mean activation close to 0 and the
@@ -1863,9 +1870,9 @@ activation standard deviation close to 1. See:
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>affine</strong> – if True, this module has learnable affine parameters</p></li>
 <li><p><strong>momentum</strong> – momentum for the moving mean and the moving variance</p></li>
 <li><p><strong>epsilon</strong> – small float added to variance to avoid dividing by zero</p></li>
-<li><p><strong>affine</strong> – if True, this module has learnable affine parameters</p></li>
 <li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
 </dd>
@@ -1877,16 +1884,16 @@ activation standard deviation close to 1. See:
 
 <dl class="py function">
 <dt id="pyeddl.eddl.LayerNormalization">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">LayerNormalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">epsilon</span><span class="o">=</span><span class="default_value">1e-05</span></em>, <em class="sig-param"><span class="n">affine</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.LayerNormalization" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">LayerNormalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">affine</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">epsilon</span><span class="o">=</span><span class="default_value">1e-05</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.LayerNormalization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Layer normalization layer.</p>
 <p>See: <a class="reference external" href="https://arxiv.org/abs/1607.06450">https://arxiv.org/abs/1607.06450</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>affine</strong> – if True, this module has learnable affine parameters</p></li>
 <li><p><strong>momentum</strong> – momentum for the moving mean and the moving variance</p></li>
 <li><p><strong>epsilon</strong> – value added to the denominator for numerical stability</p></li>
-<li><p><strong>affine</strong> – if True, this module has learnable affine parameters</p></li>
 <li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
 </dd>
@@ -2149,27 +2156,27 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 <h3>Reduction layers<a class="headerlink" href="#reduction-layers" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="pyeddl.eddl.ReduceMean">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceMean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">[0]</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceMean" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceMean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceMean" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.ReduceVar">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceVar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">[0]</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceVar" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceVar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceVar" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.ReduceSum">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceSum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">[0]</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceSum" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceSum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceSum" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.ReduceMax">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceMax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">[0]</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceMax" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceMax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceMax" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.ReduceMin">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceMin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">[0]</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceMin" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceMin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceMin" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -2267,17 +2274,15 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 <h3>Recurrent layers<a class="headerlink" href="#recurrent-layers" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="pyeddl.eddl.RNN">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">RNN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">units</span></em>, <em class="sig-param"><span class="n">num_layers</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">use_bias</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dropout</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">bidirectional</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.RNN" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">RNN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">units</span></em>, <em class="sig-param"><span class="n">activation</span><span class="o">=</span><span class="default_value">'tanh'</span></em>, <em class="sig-param"><span class="n">use_bias</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">bidirectional</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.RNN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fully-connected RNN where the output is to be fed back to input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> – parent layer</p></li>
 <li><p><strong>units</strong> – dimensionality of the output space.</p></li>
-<li><p><strong>num_layers</strong> – Number of RNN layers</p></li>
+<li><p><strong>activation</strong> – activation</p></li>
 <li><p><strong>use_bias</strong> – whether the layer uses a bias vector</p></li>
-<li><p><strong>dropout</strong> – fraction of the units to drop for the linear transformation
-of the inputs.</p></li>
 <li><p><strong>bidirectional</strong> – whether the RNN is bidirectional</p></li>
 <li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
@@ -2290,17 +2295,14 @@ of the inputs.</p></li>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.LSTM">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">LSTM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">units</span></em>, <em class="sig-param"><span class="n">num_layers</span></em>, <em class="sig-param"><span class="n">use_bias</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dropout</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">bidirectional</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.LSTM" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">LSTM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">units</span></em>, <em class="sig-param"><span class="n">mask_zeros</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">bidirectional</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.LSTM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Long Short-Term Memory layer - Hochreiter 1997.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> – parent layer</p></li>
 <li><p><strong>units</strong> – dimensionality of the output space.</p></li>
-<li><p><strong>num_layers</strong> – Number of layers</p></li>
-<li><p><strong>use_bias</strong> – whether the layer uses a bias vector.</p></li>
-<li><p><strong>dropout</strong> – fraction of the units to drop for the linear transformation
-of the inputs</p></li>
+<li><p><strong>mask_zeros</strong> – boolean</p></li>
 <li><p><strong>bidirectional</strong> – whether the net is bidirectional or not</p></li>
 <li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
@@ -2320,28 +2322,8 @@ of the inputs</p></li>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddl.copyTensor">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">copyTensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l1</span></em>, <em class="sig-param"><span class="n">l2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.copyTensor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddl.copyGrad">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">copyGrad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l1</span></em>, <em class="sig-param"><span class="n">l2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.copyGrad" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
 <dt id="pyeddl.eddl.getOut">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">getOut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.getOut" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddl.getTensor">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">getTensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.getTensor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="pyeddl.eddl.getGrad">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">getGrad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.getGrad" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -2563,7 +2545,7 @@ in the weight tensor.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="eddlT.html" class="btn btn-neutral float-right" title="pyeddl.eddlT — eddlT API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tensor.html" class="btn btn-neutral float-right" title="pyeddl.tensor — Tensor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

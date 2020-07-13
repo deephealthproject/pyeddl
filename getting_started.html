@@ -93,7 +93,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/eddl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/eddlT.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddlT</span></code> — eddlT API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/tensor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.tensor</span></code> — Tensor</a></li>
 </ul>
 
             
@@ -165,57 +165,79 @@
 <div class="section" id="creating-and-manipulating-tensors">
 <h2>Creating and manipulating tensors<a class="headerlink" href="#creating-and-manipulating-tensors" title="Permalink to this headline">¶</a></h2>
 <p>Create an uninitialized tensor with a given shape:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyeddl.eddlT</span> <span class="k">as</span> <span class="nn">eddlT</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyeddl.tensor</span> <span class="kn">import</span> <span class="n">Tensor</span>
 <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Tensor</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default, the tensor stores its data on the CPU. If you are using a
+GPU-enabled version of PyEDDL/EDDL, you can create a GPU tensor (i.e., with
+data stored on the GPU):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyeddl.tensor</span> <span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">DEV_GPU</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Tensor</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">DEV_GPU</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Create a tensor with evenly spaced values and compute the element-wise cosine:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">pyeddl.eddlT</span> <span class="k">as</span> <span class="nn">eddlT</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cos_t</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pyeddl.tensor</span> <span class="kn">import</span> <span class="n">Tensor</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">cos_t</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="to-from-numpy-conversions">
 <h2>To/from NumPy conversions<a class="headerlink" href="#to-from-numpy-conversions" title="Permalink to this headline">¶</a></h2>
 <p>Create a tensor with data initialized from a NumPy array:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyeddl.eddlT</span> <span class="k">as</span> <span class="nn">eddlT</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyeddl.tensor</span> <span class="kn">import</span> <span class="n">Tensor</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+<span class="n">t</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Convert a tensor to a NumPy array:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyeddl.eddlT</span> <span class="k">as</span> <span class="nn">eddlT</span>
+<p>Get tensor data as a NumPy array:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyeddl.tensor</span> <span class="kn">import</span> <span class="n">Tensor</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>  <span class="c1"># [3, 4] tensor filled with ones</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>  <span class="c1"># [3, 4] tensor filled with ones</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">getdata</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>You can also do <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">np.array(t,</span> <span class="pre">copy=False)</span></code> to view the tensor data as an
-array without copying the data. Another way to get the tensor data as an array
-(with copy) is <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">eddlT.getdata(t)</span></code>.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">getdata</span></code> performs a copy of the tensor’s data. If <code class="docutils literal notranslate"><span class="pre">t</span></code> is a CPU
+tensor, you can also do <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">np.array(t,</span> <span class="pre">copy=False)</span></code> to view the tensor’s
+data as an array without any copying being done. In this case, any
+modification of <code class="docutils literal notranslate"><span class="pre">a</span></code> is reflected in <code class="docutils literal notranslate"><span class="pre">t</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyeddl.tensor</span> <span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">t</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>However, this is only possible for CPU tensors (NumPy does not support other
+devices).</p>
 <p>Load NumPy data into EDDL tensors:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlretrieve</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pyeddl.eddlT</span> <span class="k">as</span> <span class="nn">eddlT</span>
+<span class="kn">from</span> <span class="nn">pyeddl.tensor</span> <span class="kn">import</span> <span class="n">Tensor</span>
 <span class="n">urlretrieve</span><span class="p">(</span><span class="s2">&quot;https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz&quot;</span><span class="p">,</span> <span class="s2">&quot;mnist.npz&quot;</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mnist.npz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;x_train&#39;</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;y_train&#39;</span><span class="p">]</span>
     <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;x_test&#39;</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;y_test&#39;</span><span class="p">]</span>
-<span class="n">t_x_train</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
-<span class="n">t_y_train</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
-<span class="n">t_x_test</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">x_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
-<span class="n">t_y_test</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+<span class="n">t_x_train</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+<span class="n">t_y_train</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+<span class="n">t_x_test</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">x_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+<span class="n">t_y_test</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="training-a-mlp-network">
 <h2>Training a MLP network<a class="headerlink" href="#training-a-mlp-network" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyeddl.eddl</span> <span class="k">as</span> <span class="nn">eddl</span>
-<span class="kn">import</span> <span class="nn">pyeddl.eddlT</span> <span class="k">as</span> <span class="nn">eddlT</span>
+<span class="kn">from</span> <span class="nn">pyeddl.tensor</span> <span class="kn">import</span> <span class="n">Tensor</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="n">eddl</span><span class="o">.</span><span class="n">download_mnist</span><span class="p">()</span>
@@ -240,12 +262,12 @@ array without copying the data. Another way to get the tensor data as an array
         <span class="n">eddl</span><span class="o">.</span><span class="n">CS_CPU</span><span class="p">()</span>
     <span class="p">)</span>
 
-    <span class="n">x_train</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;trX.bin&quot;</span><span class="p">)</span>
-    <span class="n">y_train</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;trY.bin&quot;</span><span class="p">)</span>
-    <span class="n">x_test</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;tsX.bin&quot;</span><span class="p">)</span>
-    <span class="n">y_test</span> <span class="o">=</span> <span class="n">eddlT</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;tsY.bin&quot;</span><span class="p">)</span>
-    <span class="n">eddlT</span><span class="o">.</span><span class="n">div_</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">)</span>
-    <span class="n">eddlT</span><span class="o">.</span><span class="n">div_</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">)</span>
+    <span class="n">x_train</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mnist_trX.bin&quot;</span><span class="p">)</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mnist_trY.bin&quot;</span><span class="p">)</span>
+    <span class="n">x_test</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mnist_tsX.bin&quot;</span><span class="p">)</span>
+    <span class="n">y_test</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mnist_tsY.bin&quot;</span><span class="p">)</span>
+    <span class="n">x_train</span><span class="o">.</span><span class="n">div_</span><span class="p">(</span><span class="mf">255.0</span><span class="p">)</span>
+    <span class="n">x_test</span><span class="o">.</span><span class="n">div_</span><span class="p">(</span><span class="mf">255.0</span><span class="p">)</span>
 
     <span class="n">eddl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">[</span><span class="n">x_train</span><span class="p">],</span> <span class="p">[</span><span class="n">y_train</span><span class="p">],</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">epochs</span><span class="p">)</span>
     <span class="n">eddl</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">[</span><span class="n">x_test</span><span class="p">],</span> <span class="p">[</span><span class="n">y_test</span><span class="p">])</span>

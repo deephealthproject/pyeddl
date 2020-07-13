@@ -3,12 +3,6 @@
 Installation
 ============
 
-.. note::
-
-    An alternative to manual installation is to use the `DeepHealth Docker
-    images <https://github.com/deephealthproject/docker-libs>`_, which provide
-    ready-to-use containers for the DeepHealth components, including PyEDDL.
-
 The easiest way to install PyEDDL is via `Conda
 <https://docs.conda.io/en/latest/>`_::
 
@@ -143,6 +137,8 @@ version:
 | 0.6.0          | 0.4.4        |
 +----------------+--------------+
 | 0.7.*          | 0.5.4a       |
++----------------+--------------+
+| 0.8.0          | 0.6.0        |
 +----------------+--------------+
 
 To install, run::

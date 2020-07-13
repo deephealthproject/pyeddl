@@ -5,4 +5,4 @@
    :caption: API Docs:
 
    eddl
-   eddlT
+   tensor
