@@ -222,8 +222,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("plot", (void (*)(class Net*, string, string)) &eddl::plot, "C++: eddl::plot(class Net*, string, string) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("string") = "LR");
     m.def("fit", (void (*)(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int, int)) &eddl::fit, "C++: eddl::fit(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int, int) --> void", pybind11::call_guard<pybind11::gil_scoped_release>(), pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"), pybind11::arg("batch"), pybind11::arg("epochs"));
     m.def("evaluate", (void (*)(class Net*, const vector<Tensor*>&, const vector<Tensor*>&)) &eddl::evaluate, "C++: eddl::evaluate(class Net*, const vector<Tensor*>&, const vector<Tensor*>&) --> void", pybind11::call_guard<pybind11::gil_scoped_release>(), pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"));
-    m.def("predict", (vector<Tensor*> (*)(class Net*, const vector<Tensor*>&)) &eddl::predict, "C++: eddl::predict(class Net*, const vector<Tensor*>&) --> vector<Tensor*>", pybind11::call_guard<pybind11::gil_scoped_release>(), pybind11::arg("m"), pybind11::arg("in"), pybind11::keep_alive<0, 2>());
-
+    m.def("predict", (vector<Tensor*> (*)(class Net*, const vector<Tensor*>&)) &eddl::predict, "C++: eddl::predict(class Net*, const vector<Tensor*>&) --> vector<Tensor*>", pybind11::call_guard<pybind11::gil_scoped_release>(), pybind11::arg("m"), pybind11::arg("in"));
     // not implemented upstream:
     //   Affine
     //   ColorJitter

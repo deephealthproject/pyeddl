@@ -57,6 +57,8 @@ def main(args):
     x_train = Tensor.load("mnist_trX.bin")
     x_train.div_(255.0)
     eddl.fit(net, [x_train], [x_train], args.batch_size, args.epochs)
+    tout = eddl.predict(net, [x_train])
+    tout[0].info()
 
 
 if __name__ == "__main__":
