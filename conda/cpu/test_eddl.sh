@@ -7,12 +7,12 @@ conda activate eddl-test
 conda install -y gxx_linux-64==7.3.0
 cat <<EOF >example.cpp
 #include <eddl/apis/eddl.h>
-#include <eddl/apis/eddlT.h>
+#include <eddl/tensor/tensor.h>
 
 int main() {
     eddl::download_mnist();
     int epochs = 1;
-    int batch_size = 100;
+    int batch_size = 1000;
     eddl::layer in = eddl::Input({784});
     eddl::layer l = in;
     l = eddl::Activation(eddl::Dense(l, 128), "relu");
@@ -20,13 +20,12 @@ int main() {
     l = eddl::Activation(eddl::Dense(l, 128), "relu");
     eddl::layer out = eddl::Dense(l, 784);
     eddl::model net = eddl::Model({in}, {out});
-    eddl::build(net, eddl::sgd(0.0001, 0.89),
+    eddl::build(net, eddl::sgd(0.001, 0.9),
 		{"mean_squared_error"}, {"mean_squared_error"},
 		eddl::CS_CPU(-1, "low_mem"));
     eddl::summary(net);
-    eddl::plot(net, "model.pdf");
-    tensor x_train = eddlT::load("trX.bin");
-    eddlT::div_(x_train, 255.0);
+    Tensor* x_train = Tensor::load("mnist_trX.bin");
+    x_train->div_(255.0);
     eddl::fit(net, {x_train}, {x_train}, batch_size, epochs);
 }
 EOF
