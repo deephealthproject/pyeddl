@@ -1,10 +1,10 @@
 {% set name = "eddl-gpu" %}
-{% set version = "v0.5.4a" %}
-{% set sha256 = "50acb25976f14e6caf5535b82fc760dd1a0f7e0b81db83906b62eddd8eba0db7" %}
+{% set version = "0.6.0" %}
+{% set sha256 = "a13aba429d2ea110fba66d4f756b59aff1f32480ad260f08db8baa0d40ae25be" %}
 
 package:
   name: {{ name|lower }}
-  version: {{ version[1:] }}0
+  version: {{ version }}
 
 source:
   fn: {{ name }}-{{ version }}.tar.gz

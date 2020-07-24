@@ -1,6 +1,6 @@
 {% set name = "pyeddl-cpu" %}
-{% set version = "0.7.0" %}
-{% set sha256 = "dfacc88fdfd421aa1ecc0e8404a0821e17f262a9e8eb5b76818d253af90202dc" %}
+{% set version = "0.8.0" %}
+{% set sha256 = "a6162612c5c9b870c24b583ca1b90ee2a8275d6d301dca4a8107c3790968dfd5" %}
 
 package:
   name: {{ name|lower }}
@@ -18,7 +18,7 @@ requirements:
   build:
     - {{ compiler('cxx') }}
   host:
-    - eddl-cpu ==0.5.4a0
+    - eddl-cpu ==0.6.0
     - eigen >=3.3.7
     - numpy
     - pip
@@ -26,7 +26,7 @@ requirements:
     - python {{ py_ver }}
     - setuptools
   run:
-    - eddl-cpu ==0.5.4a0
+    - eddl-cpu ==0.6.0
     - numpy
     - python {{ py_ver }}
 
