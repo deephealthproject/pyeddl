@@ -1,9 +1,0 @@
-FROM continuumio/miniconda3
-
-RUN conda update -y conda && \
-    conda install -y conda-build && \
-    conda update -y conda-build
-
-COPY eddl /eddl
-
-RUN conda build eddl
