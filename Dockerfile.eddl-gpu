@@ -1,13 +1,13 @@
-FROM stal12/cuda10-gcc5
-
-COPY third_party/eddl /eddl
-WORKDIR /eddl
+FROM nvidia/cuda:10.1-devel
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
-    zlib1g-dev \
-    libprotobuf-dev \
-    protobuf-compiler \
-    protobuf-c-compiler
+    wget \
+    zlib1g-dev
+
+RUN wget -q https://github.com/Kitware/CMake/releases/download/v3.18.0/cmake-3.18.0-Linux-x86_64.sh && \
+    chmod u+x cmake-3.18.0-Linux-x86_64.sh && \
+    ./cmake-3.18.0-Linux-x86_64.sh --skip-license --prefix=/usr/local && \
+    rm -f cmake-3.18.0-Linux-x86_64.sh
 
 # Eigen version installed by APT is too old to work properly with CUDA
 # https://devtalk.nvidia.com/default/topic/1026622/nvcc-can-t-compile-code-that-uses-eigen/
@@ -18,6 +18,7 @@ RUN wget -q https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz
     cd build && \
     cmake .. && \
     make install
+ENV CPATH="/usr/local/include/eigen3:${CPATH}"
 
 RUN wget -q https://github.com/protocolbuffers/protobuf/releases/download/v3.11.4/protobuf-all-3.11.4.tar.gz && \
     tar xf protobuf-all-3.11.4.tar.gz && \
@@ -27,9 +28,8 @@ RUN wget -q https://github.com/protocolbuffers/protobuf/releases/download/v3.11.
     make install && \
     ldconfig
 
-
-ENV CPATH="/usr/local/include/eigen3:${CPATH}"
-
+COPY third_party/eddl /eddl
+WORKDIR /eddl
 
 RUN mkdir build && \
     cd build && \
