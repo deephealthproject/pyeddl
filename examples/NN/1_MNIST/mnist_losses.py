@@ -76,6 +76,8 @@ def main(args):
     eddl.summary(net)
 
     x_train = Tensor.load("mnist_trX.bin")
+    if args.small:
+        x_train = x_train.select([":6000"])
     x_train.div_(255.0)
 
     mse = eddl.newloss(mse_loss, [out, target], "mse_loss")
@@ -110,4 +112,5 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, metavar="INT", default=10)
     parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
     parser.add_argument("--gpu", action="store_true")
+    parser.add_argument("--small", action="store_true")
     main(parser.parse_args(sys.argv[1:]))

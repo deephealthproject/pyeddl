@@ -21,5 +21,5 @@ names=(
 
 for n in "${names[@]}"; do
     echo -en "\n*** ${n} ***\n"
-    python3 "${this_dir}"/${n}.py --gpu --epochs 1
+    python3 "${this_dir}"/${n}.py --gpu --epochs 1 --small
 done

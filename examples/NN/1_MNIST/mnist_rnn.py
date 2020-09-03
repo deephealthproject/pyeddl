@@ -57,9 +57,16 @@ def main(args):
     y_train = Tensor.load("mnist_trY.bin")
     x_test = Tensor.load("mnist_tsX.bin")
     y_test = Tensor.load("mnist_tsY.bin")
-
-    x_train.reshape_([60000, 28, 28])
-    x_test.reshape_([10000, 28, 28])
+    if args.small:
+        x_train = x_train.select([":6000"])
+        y_train = y_train.select([":6000"])
+        x_test = x_test.select([":1000"])
+        y_test = y_test.select([":1000"])
+        x_train.reshape_([6000, 28, 28])
+        x_test.reshape_([1000, 28, 28])
+    else:
+        x_train.reshape_([60000, 28, 28])
+        x_test.reshape_([10000, 28, 28])
 
     x_train.div_(255.0)
     x_test.div_(255.0)
@@ -74,4 +81,5 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, metavar="INT", default=10)
     parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
     parser.add_argument("--gpu", action="store_true")
+    parser.add_argument("--small", action="store_true")
     main(parser.parse_args(sys.argv[1:]))
