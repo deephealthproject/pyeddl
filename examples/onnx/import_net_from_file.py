@@ -38,6 +38,7 @@ def main(args):
 
     print("importing net from", args.input)
     net = eddl.import_net_from_onnx_file(args.input)
+    print("input.shape:", net.layers[0].input.shape)
     print("output size =", len(net.lout))
 
     eddl.build(
