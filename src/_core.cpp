@@ -343,6 +343,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 #include <fstream>
 #include <ios>
 #include <iterator>
+#include <layer_addons.hpp>
 #include <loss_addons.hpp>
 #include <memory>
 #include <metric_addons.hpp>
@@ -846,6 +847,8 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("apply_accumulated_gradients", (void (Layer::*)()) &Layer::apply_accumulated_gradients, "C++: Layer::apply_accumulated_gradients() --> void");
 		cl.def("enable_distributed", (void (Layer::*)()) &Layer::enable_distributed, "C++: Layer::enable_distributed() --> void");
 		cl.def("assign", (class Layer & (Layer::*)(const class Layer &)) &Layer::operator=, "C++: Layer::operator=(const class Layer &) --> class Layer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		layer_addons(cl);
 	}
 	{ // Optimizer file:eddl/optimizers/optim.h line:27
 		pybind11::class_<Optimizer, std::shared_ptr<Optimizer>, PyCallBack_Optimizer> cl(M(""), "Optimizer", "");
