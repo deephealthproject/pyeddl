@@ -376,6 +376,6 @@ def test_computing_services(eddl):
     eddl.CS_GPU([1])
     eddl.CS_GPU([1], 1)
     eddl.CS_GPU([1], 1, "low_mem")
-    eddl.CS_FGPA([1])
-    eddl.CS_FGPA([1], 1)
+    eddl.CS_FPGA([1])
+    eddl.CS_FPGA([1], 1)
     eddl.CS_COMPSS("foo.xml")

@@ -95,7 +95,6 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
 	    return B;
 	}, pybind11::arg("A"), pybind11::arg("min"), pybind11::arg("max"));
     cl.def("reshape_", (void (Tensor::*)(const vector<int>&)) &Tensor::reshape_, "C++: Tensor::reshape_(const vector<int>&) --> void", pybind11::arg("new_shape"));
-    cl.def("set_", (void (Tensor::*)(vector<int>, float)) &Tensor::set_, "C++: Tensor::set_(vector<int>, float) --> void", pybind11::arg("indices"), pybind11::arg("value"));
     // Expose contents as a buffer object. Allows a = numpy.array(t).
     // Mostly useful for a = numpy.array(t, copy=False) (CPU only, of course).
     cl.def_buffer([](Tensor &t) -> pybind11::buffer_info {

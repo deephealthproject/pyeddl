@@ -182,7 +182,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("CS_GPU", (class CompServ* (*)(const vector<int>, string)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, string) --> class CompServ*", pybind11::arg("g"), pybind11::arg("mem"));
     m.def("CS_GPU", (class CompServ* (*)(const vector<int>, int)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, int) --> class CompServ*", pybind11::arg("g"), pybind11::arg("lsb"));
     m.def("CS_GPU", (class CompServ* (*)(const vector<int>, int, string)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, int, string) --> class CompServ*", pybind11::arg("g"), pybind11::arg("lsb"), pybind11::arg("mem"));
-    m.def("CS_FGPA", (class CompServ* (*)(const vector<int>&, int)) &eddl::CS_FGPA, "C++: eddl::CS_FGPA(const vector<int>&, int) --> class CompServ*", pybind11::arg("f"), pybind11::arg("lsb") = 1);
+    m.def("CS_FPGA", (class CompServ* (*)(const vector<int>&, int)) &eddl::CS_FPGA, "C++: eddl::CS_FPGA(const vector<int>&, int) --> class CompServ*", pybind11::arg("f"), pybind11::arg("lsb") = 1);
     m.def("CS_COMPSS", (class CompServ* (*)(string)) &eddl::CS_COMPSS, "C++: eddl::CS_COMPSS(string) --> class CompServ*", pybind11::arg("filename"));
     m.def("exist", (bool (*)(string)) &eddl::exist, "C++: eddl::exist(string) --> bool", pybind11::arg("name"));
 

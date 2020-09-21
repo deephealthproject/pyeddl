@@ -135,7 +135,7 @@ def CS_GPU(g=[1], lsb=1, mem="full_mem"):
     return _eddl.CS_GPU(g, lsb, mem)
 
 
-def CS_FGPA(f, lsb=1):
+def CS_FPGA(f, lsb=1):
     """\
     Create a computing service that executes the code in the FPGA.
 
@@ -144,7 +144,7 @@ def CS_FGPA(f, lsb=1):
       synchronizing the weights of the different FPGAs
     :return: computing service
     """
-    return _eddl.CS_FGPA(f, lsb)
+    return _eddl.CS_FPGA(f, lsb)
 
 
 def CS_COMPSS(filename):

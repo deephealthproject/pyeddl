@@ -27,7 +27,7 @@ Computing services
 
 .. autofunction:: pyeddl.eddl.CS_GPU
 
-.. autofunction:: pyeddl.eddl.CS_FGPA
+.. autofunction:: pyeddl.eddl.CS_FPGA
 
 .. autofunction:: pyeddl.eddl.CS_COMPSS
 
