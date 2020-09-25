@@ -79,6 +79,10 @@ pipeline {
 				sh 'wget -q https://www.dropbox.com/s/gdmsve6mbu82ndp/cifar_tsY.bin'
 				sh 'bash examples/NN/2_CIFAR10/run_all_fast.sh'
 				sh 'rm -fv cifar_*.bin'
+				sh 'wget -q https://www.dropbox.com/s/sbd8eu32adcf5oi/drive_trX.npy'
+				sh 'wget -q https://www.dropbox.com/s/qp0j8oiqzf6tc1a/drive_trY.npy'
+				sh 'python3 examples/NN/3_DRIVE/drive_seg.py --gpu --epochs 1'
+				sh 'rm -fv drive_*.npy'
 			    }
                         }
                         stage('linux_gpu_end') {
