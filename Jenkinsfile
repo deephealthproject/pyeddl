@@ -73,6 +73,12 @@ pipeline {
 				sh 'bash examples/NN/py_loss_metric/run_all_fast.sh'
 				sh 'bash examples/onnx/run_all_fast.sh'
 				sh 'rm -fv mnist_*.bin'
+				sh 'wget -q https://www.dropbox.com/s/wap282xox5ew02d/cifar_trX.bin'
+				sh 'wget -q https://www.dropbox.com/s/yxhw99cu1ktiwxq/cifar_trY.bin'
+				sh 'wget -q https://www.dropbox.com/s/dh9vqxe9vt7scrp/cifar_tsX.bin'
+				sh 'wget -q https://www.dropbox.com/s/gdmsve6mbu82ndp/cifar_tsY.bin'
+				sh 'bash examples/NN/2_CIFAR10/run_all_fast.sh'
+				sh 'rm -fv cifar_*.bin'
 			    }
                         }
                         stage('linux_gpu_end') {
