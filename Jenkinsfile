@@ -62,17 +62,17 @@ pipeline {
                         }
                         stage('Test') {
                             steps {
-				echo 'Downloading test dataset'
+				echo 'Testing'
+				sh 'pytest tests'
+				sh 'python3 examples/Tensor/array_tensor_save.py'
 				sh 'wget -q https://www.dropbox.com/s/khrb3th2z6owd9t/mnist_trX.bin'
 				sh 'wget -q https://www.dropbox.com/s/m82hmmrg46kcugp/mnist_trY.bin'
 				sh 'wget -q https://www.dropbox.com/s/7psutd4m4wna2d5/mnist_tsX.bin'
 				sh 'wget -q https://www.dropbox.com/s/q0tnbjvaenb4tjs/mnist_tsY.bin'
-				echo 'Testing'
-				sh 'pytest tests'
-				sh 'python3 examples/Tensor/array_tensor_save.py'
 				sh 'bash examples/NN/1_MNIST/run_all_fast.sh'
 				sh 'bash examples/NN/py_loss_metric/run_all_fast.sh'
 				sh 'bash examples/onnx/run_all_fast.sh'
+				sh 'rm -fv mnist_*.bin'
 			    }
                         }
                         stage('linux_gpu_end') {
