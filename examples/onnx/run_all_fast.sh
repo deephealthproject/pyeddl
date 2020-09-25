@@ -14,8 +14,11 @@ names=(
 
 for n in "${names[@]}"; do
     echo -en "\n*** ${n} ***\n"
-    python3 "${this_dir}"/${n}.py --gpu --epochs 1
+    python3 "${this_dir}"/${n}.py --gpu --epochs 1 --small
 done
 
 echo -en "\n*** import_net_from_file ***\n"
 python3 "${this_dir}"/import_net_from_file.py --gpu
+
+echo -en "\n*** check_getout_forward ***\n"
+python3 "${this_dir}"/check_getout_forward.py --gpu
