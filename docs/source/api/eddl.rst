@@ -359,6 +359,10 @@ Initializers
 
 .. autofunction:: pyeddl.eddl.GlorotUniform
 
+.. autofunction:: pyeddl.eddl.HeNormal
+
+.. autofunction:: pyeddl.eddl.HeUniform
+
 .. autofunction:: pyeddl.eddl.RandomNormal
 
 .. autofunction:: pyeddl.eddl.RandomUniform

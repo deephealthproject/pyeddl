@@ -1740,6 +1740,36 @@ def GlorotUniform(l, seed=1234):
     return _eddl.GlorotUniform(l, seed)
 
 
+def HeNormal(l, seed=1234):
+    """\
+    He normal initializer.
+
+    It draws samples from a truncated normal distribution centered on 0 with
+    stddev = sqrt(2 / (fan_in)) where fan_in is the number of input units in
+    the weight tensor.
+
+    :param l: parent layer to initialize
+    :param seed: used to seed the random generator
+    :return: HeNormal layer
+    """
+    return _eddl.HeNormal(l, seed)
+
+
+def HeUniform(l, seed=1234):
+    """\
+    He uniform initializer.
+
+    It draws samples from a uniform distribution within [-limit, limit] where
+    limit is sqrt(6 / (fan_in )) where fan_in is the number of input units in
+    the weight tensor.
+
+    :param l: parent layer to initialize
+    :param seed: used to seed the random generator
+    :return: HeUniform layer
+    """
+    return _eddl.HeUniform(l, seed)
+
+
 def RandomNormal(l, m=0.0, s=0.1, seed=1234):
     """\
     Random normal initializer.

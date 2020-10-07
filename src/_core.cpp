@@ -1273,14 +1273,6 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 	// eddl::copyGradient(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:1665
 	M("eddl").def("copyGradient", (void (*)(class Layer *, class Layer *, int)) &eddl::copyGradient, "C++: eddl::copyGradient(class Layer *, class Layer *, int) --> void", pybind11::arg("l1"), pybind11::arg("l2"), pybind11::arg("p"));
 
-	// eddl::HeUniform(class Layer *, int) file:eddl/apis/eddl.h line:1704
-	M("eddl").def("HeUniform", [](class Layer * a0) -> Layer * { return eddl::HeUniform(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-	M("eddl").def("HeUniform", (class Layer * (*)(class Layer *, int)) &eddl::HeUniform, "He uniform initializer\n\n  \n\n   It draws samples from a uniform distribution within [-limit, limit] where limit is sqrt(6 / (fan_in )) where fan_in is the number of input units in the weight tensor\n\n  \n  Parent layer to initialize\n  \n\n   Used to seed the random generator\n  \n\n     The layer l initialized with the Glorot uniform\n\nC++: eddl::HeUniform(class Layer *, int) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("seed"));
-
-	// eddl::HeNormal(class Layer *, int) file:eddl/apis/eddl.h line:1716
-	M("eddl").def("HeNormal", [](class Layer * a0) -> Layer * { return eddl::HeNormal(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("l"));
-	M("eddl").def("HeNormal", (class Layer * (*)(class Layer *, int)) &eddl::HeNormal, "He normal initializer\n\n  \n\n   It draws samples from a truncated normal distribution centered on 0 with stddev = sqrt(2 / (fan_in)) where fan_in is the number of input units in the weight tensor\n\n  \n  Parent layer to initialize\n  \n\n   Used to seed the random generator\n  \n\n     The layer l initialized with the Glorot normal\n\nC++: eddl::HeNormal(class Layer *, int) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("seed"));
-
 	// eddl::download_mnist() file:eddl/apis/eddl.h line:1795
 	M("eddl").def("download_mnist", (void (*)()) &eddl::download_mnist, "Downloads MNIST Dataset.\n\n  \n   http://yann.lecun.com/exdb/mnist/\n\n  \n     (void) The binary files of MNIST\n\nC++: eddl::download_mnist() --> void");
 
