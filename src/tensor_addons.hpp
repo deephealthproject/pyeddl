@@ -85,8 +85,6 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
     cl.def_static("load", [](const string& filename, string format) {
 	    return Tensor::load(filename, format);
 	}, pybind11::arg("filename"), pybind11::arg("format") = "");
-    cl.def_static("load_uint8_t", &Tensor::load<uint8_t>,
-		  pybind11::arg("filename"), pybind11::arg("format") = "");
     cl.def_static("permute", &Tensor::permute,
 		  pybind11::arg("t"), pybind11::arg("dims"));
     cl.def_static("normalize", [](Tensor* A, float min, float max) {
