@@ -9,6 +9,7 @@ this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 names=(
     mnist_auto_encoder
+    mnist_auto_encoder_merging
     mnist_conv
     mnist_losses
     mnist_mlp_da
