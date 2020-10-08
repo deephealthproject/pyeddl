@@ -43,6 +43,14 @@ def Model(in_, out=None):
     return _eddl.Model(in_, out)
 
 
+def setName(m, name):
+    return _eddl.setName(m, name)
+
+
+def getLayer(net, in_):
+    return _eddl.getLayer(net, in_)
+
+
 def build(net, o=None, lo=None, me=None, cs=None, init_weights=True):
     """\
     Tell the model which optimizer, losses, metrics and computing service to

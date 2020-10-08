@@ -212,6 +212,8 @@ void eddl_addons(pybind11::module &m) {
     // --- model methods ---
     m.def("Model", (class Net* (*)(vector<Layer*>, vector<Layer*>)) &eddl::Model, "C++: eddl::Model(vector<Layer*>, vector<Layer*>) --> class Net*", pybind11::arg("in"), pybind11::arg("out"), pybind11::keep_alive<0, 1>(), pybind11::keep_alive<0, 2>());
     m.def("Model", (class Net* (*)(vector<Net*>)) &eddl::Model, "C++: eddl::Model(vector<Net*>) --> class Net*", pybind11::arg("vnets"), pybind11::keep_alive<0, 1>());
+    m.def("setName", (void (*)(class Net*, string)) &eddl::setName, "C++: eddl::setName(class Net*, string) --> void", pybind11::arg("m"), pybind11::arg("name"));
+    m.def("getLayer", (Layer* (*)(class Net*, vector<Layer*>)) &eddl::getLayer, "C++: eddl::getLayer(class Net*, vector<Layer*>) --> Layer*", pybind11::return_value_policy::reference, pybind11::arg("net"), pybind11::arg("in"));
     m.def("build", (void (*)(class Net*, class Optimizer*, const vector<string>&, const vector<string>&, class CompServ*, bool)) &eddl::build, "C++: eddl::build(class Net*, class Optimizer*, const vector<string>&, const vector<string>&, class CompServ*, bool) --> void", pybind11::arg("net"), pybind11::arg("o"), pybind11::arg("lo"), pybind11::arg("me"), pybind11::arg("cs") = nullptr, pybind11::arg("init_weights") = true, pybind11::keep_alive<1, 2>(), pybind11::keep_alive<1, 5>());
     m.def("toGPU", (void (*)(class Net*, vector<int>, int)) &eddl::toGPU, "C++: eddl::toGPU(class Net*, vector<int>, int) --> void", pybind11::arg("net"), pybind11::arg("g"), pybind11::arg("lsb"));
     m.def("toGPU", (void (*)(class Net*, vector<int>, string)) &eddl::toGPU, "C++: eddl::toGPU(class Net*, vector<int>, string) --> void", pybind11::arg("net"), pybind11::arg("g"), pybind11::arg("mem"));

@@ -13,6 +13,10 @@ Creation
 
 .. autofunction:: pyeddl.eddl.Model
 
+.. autofunction:: pyeddl.eddl.setName
+
+.. autofunction:: pyeddl.eddl.getLayer
+
 .. autofunction:: pyeddl.eddl.build
 
 
