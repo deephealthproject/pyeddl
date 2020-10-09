@@ -95,6 +95,7 @@ def main(args):
         eddl.eval_batch(net, [x_test], [y_test], indices)
         eddl.print_loss(net, j)
         print()
+    print("All done")
 
 
 if __name__ == "__main__":

@@ -91,6 +91,7 @@ def main(args):
     eddl.setlr(net, [0.0001, 0.9])
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs // 4)
     eddl.evaluate(net, [x_test], [y_test])
+    print("All done")
 
 
 if __name__ == "__main__":

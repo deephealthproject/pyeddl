@@ -150,6 +150,7 @@ def main(args):
                 yout = eddl.getOutput(out).select(["0"])
                 yout.save("./out_%d.jpg" % j)
             print()
+    print("All done")
 
 
 if __name__ == "__main__":

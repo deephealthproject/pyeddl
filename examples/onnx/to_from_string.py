@@ -90,6 +90,7 @@ def main(args):
 
     print("evaluating imported net")
     eddl.evaluate(imported_net, [x_test], [y_test])
+    print("All done")
 
 
 if __name__ == "__main__":

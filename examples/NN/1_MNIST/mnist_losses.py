@@ -105,6 +105,7 @@ def main(args):
             eddl.optimize(dicep)
             eddl.update(net)
         print()
+    print("All done")
 
 
 if __name__ == "__main__":

@@ -69,6 +69,7 @@ def main(args):
 
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
     eddl.evaluate(net, [x_test], [y_test])
+    print("All done")
 
 
 if __name__ == "__main__":

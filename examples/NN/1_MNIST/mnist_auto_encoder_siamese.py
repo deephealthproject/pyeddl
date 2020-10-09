@@ -80,6 +80,7 @@ def main(args):
     # eddl.fit(
     #     siamese, [x_train, x_train], [x_train], args.batch_size, args.epochs
     # )
+    print("All done")
 
 
 if __name__ == "__main__":

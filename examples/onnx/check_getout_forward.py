@@ -60,6 +60,7 @@ def main(args):
     out = eddl.getOut(net)
     sys.stderr.write("getOut done\n")
     sys.stderr.write("out: %r\n" % (out,))
+    print("All done")
 
 
 if __name__ == "__main__":

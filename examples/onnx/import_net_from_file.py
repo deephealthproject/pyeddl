@@ -59,6 +59,7 @@ def main(args):
     x_test.div_(255.0)
 
     eddl.evaluate(net, [x_test], [y_test])
+    print("All done")
 
 
 if __name__ == "__main__":
