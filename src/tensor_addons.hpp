@@ -56,25 +56,6 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
 		  pybind11::arg("B"), pybind11::arg("dims"));
     cl.def_static("zeros", &Tensor::zeros, pybind11::arg("shape"),
 		  pybind11::arg("dev") = DEV_CPU);
-    // cl.def_static("add", [](Tensor* A, float v) {
-    // 	    Tensor* B = A->clone();
-    // 	    B->add_(v);
-    // 	    return B;
-    // 	}, pybind11::arg("A"), pybind11::arg("v"));
-    // cl.def("div_", [](Tensor* t, Tensor* A) {
-    // 	    Tensor::el_div(t, A, t, 0);
-    // 	}, pybind11::arg("A"));
-    // cl.def("mult_", [](Tensor* t, Tensor* A) {
-    // 	    Tensor::el_mult(t, A, t, 0);
-    // 	}, pybind11::arg("A"));
-    // cl.def_static("sub", [](Tensor* A, float v) {
-    // 	    Tensor* B = A->clone();
-    // 	    B->sub_(v);
-    // 	    return B;
-    // 	}, pybind11::arg("A"), pybind11::arg("v"));
-    // cl.def("sub_", [](Tensor* t, Tensor* A) {
-    // 	    Tensor::add(1.0, t, -1.0, A, t, 0);
-    // 	}, pybind11::arg("A"));
     cl.def_static("mult2D", [](Tensor* A, Tensor* B) {
 	    Tensor *C = new Tensor({A->shape[0], B->shape[1]}, A->device);
 	    Tensor::mult2D(A, 0, B, 0, C, 0);
