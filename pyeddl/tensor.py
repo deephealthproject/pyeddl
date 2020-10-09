@@ -1024,6 +1024,17 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.tanh(self)
 
+    def trace(self, k=0):
+        """\
+        Sum diagonal elements.
+
+        :param k: offset (0 for the main diagonal, positive for the nth
+          diagonal above the main one, negative for the nth diagonal below the
+          main one)
+        :return: float
+        """
+        return _core.Tensor.trace(self, k)
+
     def trunc_(self):
         """\
         Truncate (discard the fractional part) the tensor, element-wise.

@@ -976,6 +976,14 @@ def test_tanh(Tensor):
 
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_trace(Tensor):
+    a = np.arange(16).reshape(4, 4).astype(np.float32)
+    t = Tensor(a)
+    for k in range(-3, 4):
+        assert np.allclose(t.trace(k=k), np.trace(a, offset=k))
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
 def test_trunc_(Tensor):
     t = Tensor.range(-2.0, 2.0, 0.4)
     a = np.array(t, copy=True)
