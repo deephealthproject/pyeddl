@@ -1884,22 +1884,13 @@ def download_drive():
     return _eddl.download_drive()
 
 
-def download_imdb():
+def download_imdb_2000():
     """\
-    Download the IMDB Dataset.
+    Download the IMDB Dataset, 2000 most frequent words.
 
     See: https://ai.stanford.edu/~amaas/data/sentiment/
     """
-    return _eddl.download_imdb()
-
-
-def download_imdb_1000():
-    """\
-    Download the IMDB Dataset, 1000 most frequent words.
-
-    See: https://ai.stanford.edu/~amaas/data/sentiment/
-    """
-    return _eddl.download_imdb_1000()
+    return _eddl.download_imdb_2000()
 
 
 # == ONNX ==
