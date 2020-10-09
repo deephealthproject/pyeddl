@@ -487,6 +487,34 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.cosh(self)
 
+    def diag_(self, k=0):
+        """\
+        Select diagonal elements.
+
+        Modifies the tensor (elements other than those in the selected
+        diagonal are set to zero).
+
+        :param k: offset (0 for the main diagonal, positive for the nth
+          diagonal above the main one, negative for the nth diagonal below the
+          main one)
+        :return: None
+        """
+        return _core.Tensor.diag_(self, k)
+
+    def diag(self, k=0):
+        """\
+        Select diagonal elements.
+
+        Returns a new tensor which is the same as this one, except that
+        elements other than those in the selected diagonal are set to zero.
+
+        :param k: offset (0 for the main diagonal, positive for the nth
+          diagonal above the main one, negative for the nth diagonal below the
+          main one)
+        :return: Tensor
+        """
+        return _core.Tensor.diag(self, k)
+
     def div_(self, other):
         """\
         Divides the tensor by ``other``.

@@ -462,6 +462,28 @@ def test_cosh(Tensor):
 
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_diag_(Tensor):
+    a = np.arange(16).reshape(4, 4).astype(np.float32)
+    for k in range(-3, 4):
+        t = Tensor(a)
+        t.diag_(k=k)
+        b = np.array(t, copy=False)
+        exp = np.diagflat(np.diag(a, k=k), k=k)
+        assert np.allclose(exp, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_diag(Tensor):
+    a = np.arange(16).reshape(4, 4).astype(np.float32)
+    t = Tensor(a)
+    for k in range(-3, 4):
+        u = t.diag(k=k)
+        b = np.array(u, copy=False)
+        exp = np.diagflat(np.diag(a, k=k), k=k)
+        assert np.allclose(exp, b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
 def test_div_(Tensor):
     a = np.arange(2, 8).reshape(2, 3).astype(np.float32)
     n = 2
