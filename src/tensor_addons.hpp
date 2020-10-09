@@ -87,11 +87,6 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
 	}, pybind11::arg("filename"), pybind11::arg("format") = "");
     cl.def_static("permute", &Tensor::permute,
 		  pybind11::arg("t"), pybind11::arg("dims"));
-    cl.def_static("normalize", [](Tensor* A, float min, float max) {
-	    Tensor *B = A->clone();
-	    B->normalize_(min, max);
-	    return B;
-	}, pybind11::arg("A"), pybind11::arg("min"), pybind11::arg("max"));
     cl.def("reshape_", (void (Tensor::*)(const vector<int>&)) &Tensor::reshape_, "C++: Tensor::reshape_(const vector<int>&) --> void", pybind11::arg("new_shape"));
     // Expose contents as a buffer object. Allows a = numpy.array(t).
     // Mostly useful for a = numpy.array(t, copy=False) (CPU only, of course).
