@@ -409,22 +409,59 @@ def predict(m, in_):
 # Training and evaluation - finer methods
 
 def random_indices(batch_size, num_samples):
+    """\
+    Generate a random sequence of indices for a batch.
+
+    :param batch_size: length of the random sequence to generate
+    :param num_samples: number of samples available, i.e., maximum value to
+      include in the random sequence + 1
+    :return: list of integers
+    """
     return _eddl.random_indices(batch_size, num_samples)
 
 
 def train_batch(net, in_, out, indices=None):
+    """\
+    Train the model using the samples of the input list that are on the
+    selected indices list.
+
+    :param net: model to train
+    :param in_: list of samples
+    :param out: list of labels or expected output
+    :param indices: list of indices of the samples to train
+    :return: None
+    """
     if indices is None:
         return _eddl.train_batch(net, in_, out)
     return _eddl.train_batch(net, in_, out, indices)
 
 
 def eval_batch(net, in_, out, indices=None):
+    """\
+    Evaluate the model using the samples of the input list that are on the
+    selected indices list.
+
+    :param net: model to evaluate
+    :param in_: list of samples
+    :param out: list of labels or expected output
+    :param indices: list of indices of the samples to train
+    :return: None
+    """
     if indices is None:
         return _eddl.eval_batch(net, in_, out)
     return _eddl.eval_batch(net, in_, out, indices)
 
 
 def next_batch(in_, out):
+    """\
+    Load the next batch of random samples from the input list to the
+    output list.
+
+    :param in_: list from where the samples of the next batch should be
+      chosen from
+    :param out: list where the samples of the next batch should be stored
+    :return: None
+    """
     return _eddl.next_batch(in_, out)
 
 
@@ -452,6 +489,14 @@ def reset_loss(m):
 
 
 def forward(m, in_=None, b=None):
+    """\
+    Compute the gradient of the model through the forward graph
+
+    :param m: model
+    :param in_: list of layers or tensors
+    :param b: batch size to resize the model to
+    :return: list of layers
+    """
     # core module has multiple overloads for this:
     #  1. forward(m, in_)  where in_ is a list of layers
     #  2. forward(m, in_)  where in_ is a list of tensors
@@ -497,6 +542,12 @@ def optimize(l):
 
 
 def update(m):
+    """\
+    Update the model weights.
+
+    :param m: Model
+    :return: None
+    """
     return _eddl.update(m)
 
 
@@ -528,10 +579,22 @@ def clamp(m, min, max):
 # = Loss and metrics methods =
 
 def compute_loss(L):
+    """\
+    Compute the loss of the associated model.
+
+    :param L: loss object
+    :return: computed loss
+    """
     return _eddl.compute_loss(L)
 
 
 def compute_metric(L):
+    """\
+    Compute the loss of the associated model (alias for ``compute_loss``).
+
+    :param L: loss object
+    :return: computed loss
+    """
     return _eddl.compute_metric(L)
 
 
@@ -581,6 +644,12 @@ def getMetric(type_):
 
 
 def detach(l):
+    """\
+    Set a layer as detached, excluding it from gradient computation.
+
+    :param l: layer or list of layers to detach
+    :return: detached layer(s)
+    """
     # core module has multiple overloads for this:
     #  1. detach(l)  where l is a Layer and the return value is a Layer
     #  2. detach(l)  where l is a [Layer] and the return value is a [Layer]
