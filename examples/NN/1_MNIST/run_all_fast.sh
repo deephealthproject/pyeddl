@@ -13,7 +13,6 @@ names=(
     mnist_auto_encoder_siamese
     mnist_conv
     mnist_losses
-    mnist_mlp_da
     mnist_mlp_initializers
     mnist_mlp
     mnist_mlp_regularizers
@@ -25,3 +24,6 @@ for n in "${names[@]}"; do
     echo -en "\n*** ${n} ***\n"
     python3 "${this_dir}"/${n}.py --gpu --epochs 1 --small
 done
+
+echo -en "\n*** mnist_mlp_da ***\n"
+python3 "${this_dir}"/${n}.py --gpu --epochs 5 --small
