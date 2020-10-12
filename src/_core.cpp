@@ -179,7 +179,8 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def("updateSize", (void (Tensor::*)()) &Tensor::updateSize, "C++: Tensor::updateSize() --> void");
 		cl.def("updateStrides", (void (Tensor::*)()) &Tensor::updateStrides, "C++: Tensor::updateStrides() --> void");
 		cl.def("updateData", [](Tensor &o, float * a0) -> void { return o.updateData(a0); }, "", pybind11::arg("ptr"));
-		cl.def("updateData", (void (Tensor::*)(float *, void *)) &Tensor::updateData, "C++: Tensor::updateData(float *, void *) --> void", pybind11::arg("ptr"), pybind11::arg("ptr2"));
+		cl.def("updateData", [](Tensor &o, float * a0, void * a1) -> void { return o.updateData(a0, a1); }, "", pybind11::arg("ptr"), pybind11::arg("ptr2"));
+		cl.def("updateData", (void (Tensor::*)(float *, void *, bool)) &Tensor::updateData, "C++: Tensor::updateData(float *, void *, bool) --> void", pybind11::arg("ptr"), pybind11::arg("ptr2"), pybind11::arg("setshared"));
 		cl.def("deleteData", (void (Tensor::*)()) &Tensor::deleteData, "C++: Tensor::deleteData() --> void");
 		cl.def("toCPU", [](Tensor &o) -> void { return o.toCPU(); }, "");
 		cl.def("toCPU", (void (Tensor::*)(int)) &Tensor::toCPU, "Clone a tensor to the CPU.\n\nC++: Tensor::toCPU(int) --> void", pybind11::arg("dev"));
@@ -1306,6 +1307,9 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 
 	// eddl::download_eutrans() file:eddl/apis/eddl.h line:1830
 	M("eddl").def("download_eutrans", (void (*)()) &eddl::download_eutrans, "Downloads EuTrans Dataset.\n\n  \n\n\n\n  \n     (void) The binary files of EuTrans\n\nC++: eddl::download_eutrans() --> void");
+
+	// eddl::download_flickr() file:eddl/apis/eddl.h line:1839
+	M("eddl").def("download_flickr", (void (*)()) &eddl::download_flickr, "Downloads Flickr Dataset (small partition)\n\n  \n\n\n\n  \n     (void) The binary files of Flickr\n\nC++: eddl::download_flickr() --> void");
 
 }
 
