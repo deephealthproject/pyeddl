@@ -27,4 +27,4 @@ for n in "${names[@]}"; do
 done
 
 echo -en "\n*** mnist_mlp_da ***\n"
-python3 "${this_dir}"/${n}.py --gpu --epochs 5 --small
+python3 "${this_dir}"/mnist_mlp_da.py --gpu --epochs 5 --small
