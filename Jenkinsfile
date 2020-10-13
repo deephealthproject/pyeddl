@@ -87,7 +87,7 @@ pipeline {
 				sh 'wget https://www.dropbox.com/s/zekpjclm58tdevk/imdb_2000_trY.bin'
 				sh 'wget https://www.dropbox.com/s/1bgdr8mz1lqkhgi/imdb_2000_tsX.bin'
 				sh 'wget https://www.dropbox.com/s/6cwob77654lruwq/imdb_2000_tsY.bin'
-				sh 'python3 nlp_sentiment_rnn.py --gpu --epochs 1 --small'
+				sh 'python3 examples/NN/4_NLP/nlp_sentiment_rnn.py --gpu --epochs 1 --small'
 				sh 'rm -fv imdb_2000_*.npy'
 			    }
                         }
