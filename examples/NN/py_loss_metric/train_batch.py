@@ -95,6 +95,7 @@ def main(args):
                   (i + 1, args.epochs, j + 1, test_batches))
             indices = np.random.randint(0, num_samples, args.batch_size)
             eddl.eval_batch(net, [x_train], [y_train], indices)
+    print("All done")
 
 
 if __name__ == "__main__":

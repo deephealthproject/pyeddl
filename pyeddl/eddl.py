@@ -43,6 +43,14 @@ def Model(in_, out=None):
     return _eddl.Model(in_, out)
 
 
+def setName(m, name):
+    return _eddl.setName(m, name)
+
+
+def getLayer(net, in_):
+    return _eddl.getLayer(net, in_)
+
+
 def build(net, o=None, lo=None, me=None, cs=None, init_weights=True):
     """\
     Tell the model which optimizer, losses, metrics and computing service to
@@ -135,7 +143,7 @@ def CS_GPU(g=[1], lsb=1, mem="full_mem"):
     return _eddl.CS_GPU(g, lsb, mem)
 
 
-def CS_FGPA(f, lsb=1):
+def CS_FPGA(f, lsb=1):
     """\
     Create a computing service that executes the code in the FPGA.
 
@@ -144,7 +152,7 @@ def CS_FGPA(f, lsb=1):
       synchronizing the weights of the different FPGAs
     :return: computing service
     """
-    return _eddl.CS_FGPA(f, lsb)
+    return _eddl.CS_FPGA(f, lsb)
 
 
 def CS_COMPSS(filename):
@@ -401,22 +409,59 @@ def predict(m, in_):
 # Training and evaluation - finer methods
 
 def random_indices(batch_size, num_samples):
+    """\
+    Generate a random sequence of indices for a batch.
+
+    :param batch_size: length of the random sequence to generate
+    :param num_samples: number of samples available, i.e., maximum value to
+      include in the random sequence + 1
+    :return: list of integers
+    """
     return _eddl.random_indices(batch_size, num_samples)
 
 
 def train_batch(net, in_, out, indices=None):
+    """\
+    Train the model using the samples of the input list that are on the
+    selected indices list.
+
+    :param net: model to train
+    :param in_: list of samples
+    :param out: list of labels or expected output
+    :param indices: list of indices of the samples to train
+    :return: None
+    """
     if indices is None:
         return _eddl.train_batch(net, in_, out)
     return _eddl.train_batch(net, in_, out, indices)
 
 
 def eval_batch(net, in_, out, indices=None):
+    """\
+    Evaluate the model using the samples of the input list that are on the
+    selected indices list.
+
+    :param net: model to evaluate
+    :param in_: list of samples
+    :param out: list of labels or expected output
+    :param indices: list of indices of the samples to train
+    :return: None
+    """
     if indices is None:
         return _eddl.eval_batch(net, in_, out)
     return _eddl.eval_batch(net, in_, out, indices)
 
 
 def next_batch(in_, out):
+    """\
+    Load the next batch of random samples from the input list to the
+    output list.
+
+    :param in_: list from where the samples of the next batch should be
+      chosen from
+    :param out: list where the samples of the next batch should be stored
+    :return: None
+    """
     return _eddl.next_batch(in_, out)
 
 
@@ -444,6 +489,14 @@ def reset_loss(m):
 
 
 def forward(m, in_=None, b=None):
+    """\
+    Compute the gradient of the model through the forward graph
+
+    :param m: model
+    :param in_: list of layers or tensors
+    :param b: batch size to resize the model to
+    :return: list of layers
+    """
     # core module has multiple overloads for this:
     #  1. forward(m, in_)  where in_ is a list of layers
     #  2. forward(m, in_)  where in_ is a list of tensors
@@ -489,6 +542,12 @@ def optimize(l):
 
 
 def update(m):
+    """\
+    Update the model weights.
+
+    :param m: Model
+    :return: None
+    """
     return _eddl.update(m)
 
 
@@ -520,10 +579,22 @@ def clamp(m, min, max):
 # = Loss and metrics methods =
 
 def compute_loss(L):
+    """\
+    Compute the loss of the associated model.
+
+    :param L: loss object
+    :return: computed loss
+    """
     return _eddl.compute_loss(L)
 
 
 def compute_metric(L):
+    """\
+    Compute the loss of the associated model (alias for ``compute_loss``).
+
+    :param L: loss object
+    :return: computed loss
+    """
     return _eddl.compute_metric(L)
 
 
@@ -573,6 +644,12 @@ def getMetric(type_):
 
 
 def detach(l):
+    """\
+    Set a layer as detached, excluding it from gradient computation.
+
+    :param l: layer or list of layers to detach
+    :return: detached layer(s)
+    """
     # core module has multiple overloads for this:
     #  1. detach(l)  where l is a Layer and the return value is a Layer
     #  2. detach(l)  where l is a [Layer] and the return value is a [Layer]
@@ -1545,6 +1622,10 @@ def ReduceMin(l, axis, keepdims=False):
     return _eddl.ReduceMin(l, axis, keepdims)
 
 
+def ReduceArgMax(l, axis, keepdims=False):
+    return _eddl.ReduceArgMax(l, axis, keepdims)
+
+
 # = Generator layers =
 
 def GaussGenerator(mean, stdev, size):
@@ -1654,6 +1735,10 @@ def LSTM(parent, units, mask_zeros=False, bidirectional=False, name=""):
     return _eddl.LSTM(parent, units, mask_zeros, bidirectional, name)
 
 
+def Decoder(l, ld, op="concat"):
+    return _eddl.Decoder(l, ld, op)
+
+
 # = Layers methods =
 
 def set_trainable(l, val):
@@ -1738,6 +1823,36 @@ def GlorotUniform(l, seed=1234):
     :return: GlorotUniform layer
     """
     return _eddl.GlorotUniform(l, seed)
+
+
+def HeNormal(l, seed=1234):
+    """\
+    He normal initializer.
+
+    It draws samples from a truncated normal distribution centered on 0 with
+    stddev = sqrt(2 / (fan_in)) where fan_in is the number of input units in
+    the weight tensor.
+
+    :param l: parent layer to initialize
+    :param seed: used to seed the random generator
+    :return: HeNormal layer
+    """
+    return _eddl.HeNormal(l, seed)
+
+
+def HeUniform(l, seed=1234):
+    """\
+    He uniform initializer.
+
+    It draws samples from a uniform distribution within [-limit, limit] where
+    limit is sqrt(6 / (fan_in )) where fan_in is the number of input units in
+    the weight tensor.
+
+    :param l: parent layer to initialize
+    :param seed: used to seed the random generator
+    :return: HeUniform layer
+    """
+    return _eddl.HeUniform(l, seed)
 
 
 def RandomNormal(l, m=0.0, s=0.1, seed=1234):
@@ -1846,22 +1961,27 @@ def download_drive():
     return _eddl.download_drive()
 
 
-def download_imdb():
+def download_imdb_2000():
     """\
-    Download the IMDB Dataset.
+    Download the IMDB Dataset, 2000 most frequent words.
 
     See: https://ai.stanford.edu/~amaas/data/sentiment/
     """
-    return _eddl.download_imdb()
+    return _eddl.download_imdb_2000()
 
 
-def download_imdb_1000():
+def download_eutrans():
     """\
-    Download the IMDB Dataset, 1000 most frequent words.
-
-    See: https://ai.stanford.edu/~amaas/data/sentiment/
+    Download the EuTrans Dataset.
     """
-    return _eddl.download_imdb_1000()
+    return _eddl.download_eutrans()
+
+
+def download_flickr():
+    """\
+    Download the Flickr Dataset (small partition).
+    """
+    return _eddl.download_flickr()
 
 
 # == ONNX ==

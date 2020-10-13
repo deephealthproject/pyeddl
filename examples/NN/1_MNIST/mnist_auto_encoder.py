@@ -61,6 +61,7 @@ def main(args):
     eddl.fit(net, [x_train], [x_train], args.batch_size, args.epochs)
     tout = eddl.predict(net, [x_train])
     tout[0].info()
+    print("All done")
 
 
 if __name__ == "__main__":

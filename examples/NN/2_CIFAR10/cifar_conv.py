@@ -51,9 +51,9 @@ def main(args):
     layer = eddl.MaxPool(eddl.ReLu(Normalization(
         eddl.Conv(layer, 128, [3, 3], [1, 1])
     )), [2, 2])
-    # layer = eddl.MaxPool(eddl.ReLu(Normalization(
-    #     eddl.Conv(layer, 256, [3, 3], [1, 1])
-    # )), [2, 2])
+    layer = eddl.MaxPool(eddl.ReLu(Normalization(
+        eddl.Conv(layer, 256, [3, 3], [1, 1])
+    )), [2, 2])
     layer = eddl.GlobalMaxPool(layer)
     layer = eddl.Flatten(layer)
     layer = eddl.Activation(eddl.Dense(layer, 128), "relu")
@@ -63,7 +63,7 @@ def main(args):
 
     eddl.build(
         net,
-        eddl.sgd(0.01, 0.9),
+        eddl.adam(0.001),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
         eddl.CS_GPU() if args.gpu else eddl.CS_CPU()
@@ -89,6 +89,7 @@ def main(args):
     for i in range(args.epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
         eddl.evaluate(net, [x_test], [y_test])
+    print("All done")
 
 
 if __name__ == "__main__":

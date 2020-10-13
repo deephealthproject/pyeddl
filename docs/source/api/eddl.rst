@@ -13,6 +13,10 @@ Creation
 
 .. autofunction:: pyeddl.eddl.Model
 
+.. autofunction:: pyeddl.eddl.setName
+
+.. autofunction:: pyeddl.eddl.getLayer
+
 .. autofunction:: pyeddl.eddl.build
 
 
@@ -27,7 +31,7 @@ Computing services
 
 .. autofunction:: pyeddl.eddl.CS_GPU
 
-.. autofunction:: pyeddl.eddl.CS_FGPA
+.. autofunction:: pyeddl.eddl.CS_FPGA
 
 .. autofunction:: pyeddl.eddl.CS_COMPSS
 
@@ -315,6 +319,8 @@ Reduction layers
 
 .. autofunction:: pyeddl.eddl.ReduceMin
 
+.. autofunction:: pyeddl.eddl.ReduceArgMax
+
 
 Generator layers
 ^^^^^^^^^^^^^^^^
@@ -343,6 +349,8 @@ Recurrent layers
 
 .. autofunction:: pyeddl.eddl.LSTM
 
+.. autofunction:: pyeddl.eddl.Decoder
+
 
 Utilities
 ^^^^^^^^^
@@ -358,6 +366,10 @@ Initializers
 .. autofunction:: pyeddl.eddl.GlorotNormal
 
 .. autofunction:: pyeddl.eddl.GlorotUniform
+
+.. autofunction:: pyeddl.eddl.HeNormal
+
+.. autofunction:: pyeddl.eddl.HeUniform
 
 .. autofunction:: pyeddl.eddl.RandomNormal
 
@@ -386,6 +398,12 @@ Datasets
 .. autofunction:: pyeddl.eddl.download_cifar10
 
 .. autofunction:: pyeddl.eddl.download_drive
+
+.. autofunction:: pyeddl.eddl.download_imdb_2000
+
+.. autofunction:: pyeddl.eddl.download_eutrans
+
+.. autofunction:: pyeddl.eddl.download_flickr
 
 
 ONNX support

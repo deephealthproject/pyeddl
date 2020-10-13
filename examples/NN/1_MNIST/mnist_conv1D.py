@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 CRS4
+# Copyright (c) 2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-Save model to string and import model from string in ONNX format.
+MNIST CONV1D example.
 """
 
 import argparse
@@ -35,12 +35,21 @@ def main(args):
     num_classes = 10
 
     in_ = eddl.Input([784])
-
     layer = in_
+    layer = eddl.Reshape(layer, [1, 784])  # image as a 1D signal with depth 1
+    layer = eddl.MaxPool1D(
+        eddl.ReLu(eddl.Conv1D(layer, 16, [3], [1])), [4], [4]
+    )
+    layer = eddl.MaxPool1D(
+        eddl.ReLu(eddl.Conv1D(layer, 32, [3], [1])), [4], [4],
+    )
+    layer = eddl.MaxPool1D(
+        eddl.ReLu(eddl.Conv1D(layer, 64, [3], [1])), [4], [4],
+    )
+    layer = eddl.MaxPool1D(
+        eddl.ReLu(eddl.Conv1D(layer, 64, [3], [1])), [4], [4],
+    )
     layer = eddl.Reshape(layer, [-1])
-    layer = eddl.ReLu(eddl.Dense(layer, 1024))
-    layer = eddl.ReLu(eddl.Dense(layer, 1024))
-    layer = eddl.ReLu(eddl.Dense(layer, 1024))
     out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
     net = eddl.Model([in_], [out])
 
@@ -49,11 +58,9 @@ def main(args):
         eddl.rmsprop(0.01),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(),
-        True  # initialize weights to random values
+        eddl.CS_GPU() if args.gpu else eddl.CS_CPU()
     )
 
-    serialized_net = eddl.serialize_net_to_onnx_string(net, False)
     eddl.summary(net)
 
     x_train = Tensor.load("mnist_trX.bin")
@@ -65,38 +72,18 @@ def main(args):
         y_train = y_train.select([":6000"])
         x_test = x_test.select([":1000"])
         y_test = y_test.select([":1000"])
-
     x_train.div_(255.0)
     x_test.div_(255.0)
 
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
-    print("evaluating before import")
     eddl.evaluate(net, [x_test], [y_test])
-
-    imported_net = eddl.import_net_from_onnx_string(serialized_net)
-
-    eddl.build(
-        imported_net,
-        eddl.rmsprop(0.01),
-        ["soft_cross_entropy"],
-        ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(),
-        False  # do not initialize weights to random values
-    )
-
-    eddl.summary(imported_net)
-    print("net layers:", len(net.layers))
-    print("imported_net layers:", len(imported_net.layers))
-
-    print("evaluating imported net")
-    eddl.evaluate(imported_net, [x_test], [y_test])
     print("All done")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--epochs", type=int, metavar="INT", default=1)
-    parser.add_argument("--batch-size", type=int, metavar="INT", default=100)
+    parser.add_argument("--epochs", type=int, metavar="INT", default=10)
+    parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
     parser.add_argument("--gpu", action="store_true")
     parser.add_argument("--small", action="store_true")
     main(parser.parse_args(sys.argv[1:]))

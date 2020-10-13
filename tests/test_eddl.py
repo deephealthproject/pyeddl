@@ -273,6 +273,8 @@ def test_reduction_layers(eddl):
     eddl.ReduceMax(in2d, [0], False)
     eddl.ReduceMin(in2d, [0])
     eddl.ReduceMin(in2d, [0], False)
+    eddl.ReduceArgMax(in2d, [0])
+    eddl.ReduceArgMax(in2d, [0], False)
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
@@ -337,6 +339,10 @@ def test_recurrent_layers(eddl):
     eddl.LSTM(in2d, 1, True)
     eddl.LSTM(in2d, 1, True, True)
     eddl.LSTM(in2d, 1, True, True, "foo")
+    # Decoder
+    enc = eddl.LSTM(in2d, 1, True)
+    eddl.Decoder(eddl.LSTM(in2d, 1), enc)
+    eddl.Decoder(eddl.LSTM(in2d, 1), enc, "concat")
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
@@ -346,6 +352,10 @@ def test_initializers(eddl):
     eddl.GlorotNormal(in2d, 1234)
     eddl.GlorotUniform(in2d)
     eddl.GlorotUniform(in2d, 1234)
+    eddl.HeNormal(in2d)
+    eddl.HeNormal(in2d, 1234)
+    eddl.HeUniform(in2d)
+    eddl.HeUniform(in2d, 1234)
     eddl.RandomNormal(in2d)
     eddl.RandomNormal(in2d, 0.0)
     eddl.RandomNormal(in2d, 0.0, 0.1)
@@ -376,6 +386,6 @@ def test_computing_services(eddl):
     eddl.CS_GPU([1])
     eddl.CS_GPU([1], 1)
     eddl.CS_GPU([1], 1, "low_mem")
-    eddl.CS_FGPA([1])
-    eddl.CS_FGPA([1], 1)
+    eddl.CS_FPGA([1])
+    eddl.CS_FPGA([1], 1)
     eddl.CS_COMPSS("foo.xml")

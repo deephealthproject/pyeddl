@@ -27,6 +27,7 @@ https://drive.grand-challenge.org/DRIVE
 import argparse
 import sys
 
+import numpy as np
 import pyeddl.eddl as eddl
 from pyeddl.tensor import Tensor
 
@@ -118,13 +119,13 @@ def main(args):
     eddl.summary(segnet)
 
     print("Reading training data")
-    x_train_f = Tensor.load_uint8_t("drive_trX.npy")
+    x_train_f = Tensor.fromarray(np.load("drive_trX.npy").astype(np.float32))
     x_train = Tensor.permute(x_train_f, [0, 3, 1, 2])
     x_train.info()
     x_train.div_(255.0)
 
     print("Reading test data")
-    y_train = Tensor.load_uint8_t("drive_trY.npy")
+    y_train = Tensor.fromarray(np.load("drive_trY.npy").astype(np.float32))
     y_train.info()
     y_train.reshape_([20, 1, 584, 584])
     y_train.div_(255.0)
@@ -149,6 +150,7 @@ def main(args):
                 yout = eddl.getOutput(out).select(["0"])
                 yout.save("./out_%d.jpg" % j)
             print()
+    print("All done")
 
 
 if __name__ == "__main__":

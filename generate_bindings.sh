@@ -22,3 +22,4 @@ docker run --rm -v "${this_dir}":"${pyeddl_mount}" \
   -e EDDL_INCLUDE="${pyeddl_mount}"/include \
   -w "${pyeddl_mount}"/codegen crs4/binder:135f6e3 ./gen_bindings.sh
 cp codegen/bindings/_core.cpp src/
+python3 dev_tools/fix_static_same_name.py

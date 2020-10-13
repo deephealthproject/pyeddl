@@ -76,6 +76,7 @@ def main(args):
 
     eddl.save_net_to_onnx_file(net, args.output)
     print("saved net to", args.output)
+    print("All done")
 
 
 if __name__ == "__main__":

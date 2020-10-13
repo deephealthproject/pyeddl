@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 CRS4
+# Copyright (c) 2020 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-Basic MLP for MNIST.
+Autoencoder merging two networks example for MNIST.
 """
 
 import argparse
@@ -32,43 +32,41 @@ from pyeddl.tensor import Tensor
 def main(args):
     eddl.download_mnist()
 
-    num_classes = 10
-
+    # define encoder
     in_ = eddl.Input([784])
-
     layer = in_
-    layer = eddl.LeakyReLu(eddl.Dense(layer, 1024))
-    layer = eddl.LeakyReLu(eddl.Dense(layer, 1024))
-    layer = eddl.LeakyReLu(eddl.Dense(layer, 1024))
-    out = eddl.Softmax(eddl.Dense(layer, num_classes))
-    net = eddl.Model([in_], [out])
+    layer = eddl.Activation(eddl.Dense(layer, 256), "relu")
+    layer = eddl.Activation(eddl.Dense(layer, 128), "relu")
+    out = eddl.Activation(eddl.Dense(layer, 64), "relu")
+    encoder = eddl.Model([in_], [out])
 
+    # define decoder
+    in_ = eddl.Input([64])
+    layer = in_
+    layer = eddl.Activation(eddl.Dense(layer, 128), "relu")
+    layer = eddl.Activation(eddl.Dense(layer, 256), "relu")
+    out = eddl.Sigmoid(eddl.Dense(layer, 784))
+    decoder = eddl.Model([in_], [out])
+
+    # merge models
+    net = eddl.Model([encoder, decoder])
     eddl.build(
         net,
-        eddl.rmsprop(0.01),
-        ["soft_cross_entropy"],
-        ["categorical_accuracy"],
-        eddl.CS_GPU() if args.gpu else eddl.CS_CPU()
+        eddl.adam(0.0001),
+        ["mse"],
+        ["dice"],
+        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
     )
-
     eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
     x_train = Tensor.load("mnist_trX.bin")
-    y_train = Tensor.load("mnist_trY.bin")
-    x_test = Tensor.load("mnist_tsX.bin")
-    y_test = Tensor.load("mnist_tsY.bin")
     if args.small:
         x_train = x_train.select([":6000"])
-        y_train = y_train.select([":6000"])
-        x_test = x_test.select([":1000"])
-        y_test = y_test.select([":1000"])
-
     x_train.div_(255.0)
-    x_test.div_(255.0)
-
-    eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
-    eddl.evaluate(net, [x_test], [y_test])
+    eddl.fit(net, [x_train], [x_train], args.batch_size, args.epochs)
+    tout = eddl.predict(encoder, [x_train])
+    tout[0].info()
     print("All done")
 
 
