@@ -273,6 +273,8 @@ def test_reduction_layers(eddl):
     eddl.ReduceMax(in2d, [0], False)
     eddl.ReduceMin(in2d, [0])
     eddl.ReduceMin(in2d, [0], False)
+    eddl.ReduceArgMax(in2d, [0])
+    eddl.ReduceArgMax(in2d, [0], False)
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
@@ -337,6 +339,10 @@ def test_recurrent_layers(eddl):
     eddl.LSTM(in2d, 1, True)
     eddl.LSTM(in2d, 1, True, True)
     eddl.LSTM(in2d, 1, True, True, "foo")
+    # Decoder
+    enc = eddl.LSTM(in2d, 1, True)
+    eddl.Decoder(eddl.LSTM(in2d, 1), enc)
+    eddl.Decoder(eddl.LSTM(in2d, 1), enc, "concat")
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])

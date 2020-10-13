@@ -1622,6 +1622,10 @@ def ReduceMin(l, axis, keepdims=False):
     return _eddl.ReduceMin(l, axis, keepdims)
 
 
+def ReduceArgMax(l, axis, keepdims=False):
+    return _eddl.ReduceArgMax(l, axis, keepdims)
+
+
 # = Generator layers =
 
 def GaussGenerator(mean, stdev, size):
@@ -1729,6 +1733,10 @@ def LSTM(parent, units, mask_zeros=False, bidirectional=False, name=""):
     :return: LSTM layer
     """
     return _eddl.LSTM(parent, units, mask_zeros, bidirectional, name)
+
+
+def Decoder(l, ld, op="concat"):
+    return _eddl.Decoder(l, ld, op)
 
 
 # = Layers methods =
@@ -1960,6 +1968,20 @@ def download_imdb_2000():
     See: https://ai.stanford.edu/~amaas/data/sentiment/
     """
     return _eddl.download_imdb_2000()
+
+
+def download_eutrans():
+    """\
+    Download the EuTrans Dataset.
+    """
+    return _eddl.download_eutrans()
+
+
+def download_flickr():
+    """\
+    Download the Flickr Dataset (small partition).
+    """
+    return _eddl.download_flickr()
 
 
 # == ONNX ==

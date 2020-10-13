@@ -319,6 +319,8 @@ Reduction layers
 
 .. autofunction:: pyeddl.eddl.ReduceMin
 
+.. autofunction:: pyeddl.eddl.ReduceArgMax
+
 
 Generator layers
 ^^^^^^^^^^^^^^^^
@@ -346,6 +348,8 @@ Recurrent layers
 .. autofunction:: pyeddl.eddl.RNN
 
 .. autofunction:: pyeddl.eddl.LSTM
+
+.. autofunction:: pyeddl.eddl.Decoder
 
 
 Utilities
@@ -394,6 +398,12 @@ Datasets
 .. autofunction:: pyeddl.eddl.download_cifar10
 
 .. autofunction:: pyeddl.eddl.download_drive
+
+.. autofunction:: pyeddl.eddl.download_imdb_2000
+
+.. autofunction:: pyeddl.eddl.download_eutrans
+
+.. autofunction:: pyeddl.eddl.download_flickr
 
 
 ONNX support
