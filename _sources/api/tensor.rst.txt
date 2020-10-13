@@ -203,8 +203,6 @@
 
   .. automethod:: Tensor.fill_
 
-  .. automethod:: Tensor.set_
-
   .. automethod:: Tensor.reshape_
 
   .. automethod:: Tensor.getdata

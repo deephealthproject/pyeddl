@@ -216,6 +216,16 @@ If <code class="docutils literal notranslate"><span class="pre">out</span></code
 </dd></dl>
 
 <dl class="py function">
+<dt id="pyeddl.eddl.setName">
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">setName</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.setName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddl.getLayer">
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">getLayer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">in_</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.getLayer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt id="pyeddl.eddl.build">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">o</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lo</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">me</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_weights</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.build" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tell the model which optimizer, losses, metrics and computing service to
@@ -313,8 +323,8 @@ synchronizing the weights of the different GPUs</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyeddl.eddl.CS_FGPA">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">CS_FGPA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">lsb</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.CS_FGPA" title="Permalink to this definition">¶</a></dt>
+<dt id="pyeddl.eddl.CS_FPGA">
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">CS_FPGA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">lsb</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.CS_FPGA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a computing service that executes the code in the FPGA.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -665,22 +675,79 @@ the entire data provided</p></li>
 <dl class="py function">
 <dt id="pyeddl.eddl.random_indices">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">random_indices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">batch_size</span></em>, <em class="sig-param"><span class="n">num_samples</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.random_indices" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate a random sequence of indices for a batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>batch_size</strong> – length of the random sequence to generate</p></li>
+<li><p><strong>num_samples</strong> – number of samples available, i.e., maximum value to
+include in the random sequence + 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of integers</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.train_batch">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">train_batch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">in_</span></em>, <em class="sig-param"><span class="n">out</span></em>, <em class="sig-param"><span class="n">indices</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.train_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Train the model using the samples of the input list that are on the
+selected indices list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – model to train</p></li>
+<li><p><strong>in</strong> – list of samples</p></li>
+<li><p><strong>out</strong> – list of labels or expected output</p></li>
+<li><p><strong>indices</strong> – list of indices of the samples to train</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.eval_batch">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">eval_batch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">in_</span></em>, <em class="sig-param"><span class="n">out</span></em>, <em class="sig-param"><span class="n">indices</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.eval_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Evaluate the model using the samples of the input list that are on the
+selected indices list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – model to evaluate</p></li>
+<li><p><strong>in</strong> – list of samples</p></li>
+<li><p><strong>out</strong> – list of labels or expected output</p></li>
+<li><p><strong>indices</strong> – list of indices of the samples to train</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.next_batch">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">next_batch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_</span></em>, <em class="sig-param"><span class="n">out</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.next_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Load the next batch of random samples from the input list to the
+output list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in</strong> – list from where the samples of the next batch should be
+chosen from</p></li>
+<li><p><strong>out</strong> – list where the samples of the next batch should be stored</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="training-and-evaluation-finest-methods">
@@ -719,7 +786,20 @@ the entire data provided</p></li>
 <dl class="py function">
 <dt id="pyeddl.eddl.forward">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">in_</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.forward" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Compute the gradient of the model through the forward graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m</strong> – model</p></li>
+<li><p><strong>in</strong> – list of layers or tensors</p></li>
+<li><p><strong>b</strong> – batch size to resize the model to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of layers</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.zeroGrads">
@@ -756,7 +836,16 @@ default) through the backward graph.</p>
 <dl class="py function">
 <dt id="pyeddl.eddl.update">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.update" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Update the model weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>m</strong> – Model</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.print_loss">
@@ -799,7 +888,16 @@ default) through the backward graph.</p>
 <dl class="py function">
 <dt id="pyeddl.eddl.compute_loss">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">compute_loss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">L</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.compute_loss" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Compute the loss of the associated model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>L</strong> – loss object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>computed loss</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="losses-and-metrics">
@@ -807,7 +905,16 @@ default) through the backward graph.</p>
 <dl class="py function">
 <dt id="pyeddl.eddl.compute_metric">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">compute_metric</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">L</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.compute_metric" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Compute the loss of the associated model (alias for <code class="docutils literal notranslate"><span class="pre">compute_loss</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>L</strong> – loss object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>computed loss</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.getLoss">
@@ -860,7 +967,16 @@ default) through the backward graph.</p>
 <dl class="py function">
 <dt id="pyeddl.eddl.detach">
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">detach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.detach" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set a layer as detached, excluding it from gradient computation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>l</strong> – layer or list of layers to detach</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>detached layer(s)</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </div>
@@ -2179,6 +2295,11 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceMin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceMin" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py function">
+<dt id="pyeddl.eddl.ReduceArgMax">
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">ReduceArgMax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceArgMax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="generator-layers">
 <h3>Generator layers<a class="headerlink" href="#generator-layers" title="Permalink to this headline">¶</a></h3>
@@ -2313,6 +2434,11 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pyeddl.eddl.Decoder">
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">Decoder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">ld</span></em>, <em class="sig-param"><span class="n">op</span><span class="o">=</span><span class="default_value">'concat'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Decoder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="utilities">
 <h3>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h3>
@@ -2368,6 +2494,46 @@ in the weight tensor.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>GlorotUniform layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddl.HeNormal">
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">HeNormal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">1234</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.HeNormal" title="Permalink to this definition">¶</a></dt>
+<dd><p>He normal initializer.</p>
+<p>It draws samples from a truncated normal distribution centered on 0 with
+stddev = sqrt(2 / (fan_in)) where fan_in is the number of input units in
+the weight tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> – parent layer to initialize</p></li>
+<li><p><strong>seed</strong> – used to seed the random generator</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>HeNormal layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddl.HeUniform">
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">HeUniform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">1234</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.HeUniform" title="Permalink to this definition">¶</a></dt>
+<dd><p>He uniform initializer.</p>
+<p>It draws samples from a uniform distribution within [-limit, limit] where
+limit is sqrt(6 / (fan_in )) where fan_in is the number of input units in
+the weight tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> – parent layer to initialize</p></li>
+<li><p><strong>seed</strong> – used to seed the random generator</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>HeUniform layer</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2509,6 +2675,25 @@ in the weight tensor.</p>
 <code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">download_drive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_drive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download the DRIVE Dataset.</p>
 <p>See: <a class="reference external" href="https://drive.grand-challenge.org/">https://drive.grand-challenge.org/</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddl.download_imdb_2000">
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">download_imdb_2000</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_imdb_2000" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the IMDB Dataset, 2000 most frequent words.</p>
+<p>See: <a class="reference external" href="https://ai.stanford.edu/~amaas/data/sentiment/">https://ai.stanford.edu/~amaas/data/sentiment/</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddl.download_eutrans">
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">download_eutrans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_eutrans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the EuTrans Dataset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyeddl.eddl.download_flickr">
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">download_flickr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_flickr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the Flickr Dataset (small partition).</p>
 </dd></dl>
 
 </div>
