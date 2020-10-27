@@ -8,7 +8,7 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
       setuptools \
       pip \
       numpy \
-      pybind11 \
+      'pybind11<2.6' \
       pytest && \
     ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcudart.so /usr/local/lib/ && \
     ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcurand.so /usr/local/lib/ && \
