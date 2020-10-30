@@ -30,6 +30,9 @@ import pyeddl.eddl as eddl
 from pyeddl.tensor import Tensor
 
 
+MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")
+
+
 def main(args):
     if not os.path.isfile(args.input):
         raise RuntimeError("input file '%s' not found" % args.input)
@@ -42,7 +45,7 @@ def main(args):
         eddl.rmsprop(0.01),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU(),
+        eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem),
         False  # do not initialize weights to random values
     )
 
@@ -70,4 +73,6 @@ if __name__ == "__main__":
     parser.add_argument("--input", metavar="STRING",
                         default="trained_model.onnx",
                         help="input path of the serialized model")
+    parser.add_argument("--mem", metavar="|".join(MEM_CHOICES),
+                        choices=MEM_CHOICES, default="low_mem")
     main(parser.parse_args(sys.argv[1:]))

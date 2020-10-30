@@ -54,6 +54,9 @@ class MSEMetric(Metric):
         return (Tensor.sqr(Tensor.sub(t, y))).sum() / size
 
 
+MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")
+
+
 def main(args):
     eddl.download_mnist()
 
@@ -74,7 +77,7 @@ def main(args):
         eddl.sgd(0.001, 0.9),
         [mse_loss],
         [mse_metric],
-        eddl.CS_GPU([1]) if args.gpu else eddl.CS_CPU()
+        eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
     )
 
     eddl.summary(net)
@@ -91,4 +94,6 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, metavar="INT", default=10)
     parser.add_argument("--batch-size", type=int, metavar="INT", default=1000)
     parser.add_argument("--gpu", action="store_true")
+    parser.add_argument("--mem", metavar="|".join(MEM_CHOICES),
+                        choices=MEM_CHOICES, default="low_mem")
     main(parser.parse_args(sys.argv[1:]))
