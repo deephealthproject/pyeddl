@@ -383,16 +383,17 @@ def fit(m, in_, out, batch, epochs):
     return _eddl.fit(m, in_, out, batch, epochs)
 
 
-def evaluate(m, in_, out):
+def evaluate(m, in_, out, bs=100):
     """\
     Compute the loss and metric values for the model in test mode.
 
     :param m: model to train
     :param in_: input data (features)
     :param out: output data (labels)
+    :param bs: batch size
     :return: None
     """
-    return _eddl.evaluate(m, in_, out)
+    return _eddl.evaluate(m, in_, out, bs)
 
 
 def predict(m, in_):
@@ -1047,7 +1048,7 @@ def CenteredCrop(parent, size, reshape=True, constant=0.0, name=""):
     return _eddl.CenteredCrop(parent, size, reshape, constant, name)
 
 
-def CropScale(parent, from_coords, to_coords, da_mode="nearest", constant=0.0,
+def CropScale(parent, from_coords, to_coords, da_mode="constant", constant=0.0,
               name=""):
     """\
     Crop the given image layer at ``[(top, left), (bottom, right)]`` and scale
@@ -1120,7 +1121,7 @@ def Rotate(parent, angle, offset_center=[0, 0], da_mode="original",
     return _eddl.Rotate(parent, angle, offset_center, da_mode, constant, name)
 
 
-def Scale(parent, new_shape, reshape=True, da_mode="nearest", constant=0.0,
+def Scale(parent, new_shape, reshape=True, da_mode="constant", constant=0.0,
           name=""):
     """\
     Resize an image layer to the given size as ``[height, width]``.
@@ -1741,8 +1742,8 @@ def Decoder(l, ld, op="concat"):
 
 # = Layers methods =
 
-def set_trainable(l, val):
-    return _eddl.set_trainable(l, val)
+def setTrainable(net, lanme, val):
+    return _eddl.setTrainable(net, lanme, val)
 
 
 def getOut(net):

@@ -123,7 +123,7 @@ def main(args):
 
     print("Reading training data")
     x_train_f = Tensor.fromarray(np.load("drive_trX.npy").astype(np.float32))
-    x_train = Tensor.permute(x_train_f, [0, 3, 1, 2])
+    x_train = x_train_f.permute([0, 3, 1, 2])
     x_train.info()
     x_train.div_(255.0)
 

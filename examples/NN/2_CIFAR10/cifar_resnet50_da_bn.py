@@ -92,9 +92,7 @@ def main(args):
         eddl.sgd(0.001, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU(mem="full_mem") if args.gpu else eddl.CS_CPU(
-            mem="full_mem"
-        )
+        eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
     )
 
     eddl.summary(net)
@@ -121,7 +119,7 @@ def main(args):
         eddl.setlr(net, [lr, 0.9])
         for i in range(args.epochs):
             eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-            eddl.evaluate(net, [x_test], [y_test])
+            eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
     print("All done")
 
 

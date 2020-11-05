@@ -77,9 +77,7 @@ def main(args):
         eddl.sgd(0.001, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU(mem="full_mem") if args.gpu else eddl.CS_CPU(
-            mem="full_mem"
-        )
+        eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
     )
 
     eddl.setlogfile(net, "vgg16")

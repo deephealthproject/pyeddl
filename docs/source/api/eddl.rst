@@ -355,7 +355,7 @@ Recurrent layers
 Utilities
 ^^^^^^^^^
 
-.. autofunction:: pyeddl.eddl.set_trainable
+.. autofunction:: pyeddl.eddl.setTrainable
 
 .. autofunction:: pyeddl.eddl.getOut
 
