@@ -48,6 +48,7 @@ def setName(m, name):
 
 
 def getLayer(net, in_):
+    # note: in_ can be a vector of layers or a string
     return _eddl.getLayer(net, in_)
 
 

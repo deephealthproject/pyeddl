@@ -188,6 +188,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def("toGPU", (void (Tensor::*)(int)) &Tensor::toGPU, "Clone a tensor to the GPU.\n\nC++: Tensor::toGPU(int) --> void", pybind11::arg("dev"));
 		cl.def("toFPGA", [](Tensor &o) -> void { return o.toFPGA(); }, "");
 		cl.def("toFPGA", (void (Tensor::*)(int)) &Tensor::toFPGA, "Clone a tensor to the GFPGA.\n\nC++: Tensor::toFPGA(int) --> void", pybind11::arg("dev"));
+		cl.def("toDevice", (void (Tensor::*)(int)) &Tensor::toDevice, "Clone a tensor to a specific device.\n\nC++: Tensor::toDevice(int) --> void", pybind11::arg("dev"));
 		cl.def("isCPU", (int (Tensor::*)()) &Tensor::isCPU, "Check if the tensor is in CPU.\n\n  \n int\n\nC++: Tensor::isCPU() --> int");
 		cl.def("isGPU", (int (Tensor::*)()) &Tensor::isGPU, "Check if the tensor is in GPU.\n\n  \n int\n\nC++: Tensor::isGPU() --> int");
 		cl.def("isFPGA", (int (Tensor::*)()) &Tensor::isFPGA, "Check if the tensor is in FPGA.\n\n  \n int\n\nC++: Tensor::isFPGA() --> int");
@@ -195,6 +196,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def("print", [](Tensor &o) -> void { return o.print(); }, "");
 		cl.def("print", [](Tensor &o, int const & a0) -> void { return o.print(a0); }, "", pybind11::arg("precision"));
 		cl.def("print", (void (Tensor::*)(int, bool)) &Tensor::print, "Print the tensor values.\n\n  \n    void\n\nC++: Tensor::print(int, bool) --> void", pybind11::arg("precision"), pybind11::arg("raw"));
+		cl.def("getDeviceID", (int (Tensor::*)(int) const) &Tensor::getDeviceID, "Returns the device name given a device number\n\n  \n    string\n\nC++: Tensor::getDeviceID(int) const --> int", pybind11::arg("dev"));
 		cl.def("numel", (unsigned int (Tensor::*)()) &Tensor::numel, "C++: Tensor::numel() --> unsigned int");
 		cl.def_static("isSquared", (bool (*)(class Tensor *)) &Tensor::isSquared, "Check if all dimensions in the tensor are the same.\n\n  \n   Tensor\n  \n\n    bool\n\nC++: Tensor::isSquared(class Tensor *) --> bool", pybind11::arg("A"));
 		cl.def_static("load_from_ptr", (class Tensor * (*)(void *)) &Tensor::load_from_ptr, "Load tensor from a void pointer.\n\n  \n    Void pointer to the serialized tensor.\n  \n\n    Tensor\n\nC++: Tensor::load_from_ptr(void *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("src"));
@@ -471,25 +473,44 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def("nonzero", (class Tensor * (Tensor::*)(bool)) &Tensor::nonzero, "Returns a tensor containing the indices of nonzero elements.\n   \n\n Whether to sort the indices or not. (default: not sorted)\n\n   \n A tensor containing the indices of the nonzero elements.\n\nC++: Tensor::nonzero(bool) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("sort_indices"));
 		cl.def_static("where", (class Tensor * (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::where, "Depending on ``condition``, returns a tensor whith elements from ``A`` or ``B``.\n   \n\n Tensor with the condition to be accomplished.\n   \n\n Input tensor.\n   \n\n Input tensor.\n   \n\n A tensor with the same shape with elements from ``A`` if ``condition`` holds and from ``B`` otherwise..\n\nC++: Tensor::where(class Tensor *, class Tensor *, class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("condition"), pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("where", (void (*)(class Tensor *, class Tensor *, class Tensor *, class Tensor *)) &Tensor::where, "Depending on ``condition``, returns a tensor whith elements from ``A`` or ``B``.\n   \n\n Tensor with the condition to be accomplished.\n   \n\n Input tensor.\n   \n\n Input tensor.\n   \n\n A tensor with elements from ``A`` if ``condition`` holds and from ``B`` otherwise..\n\nC++: Tensor::where(class Tensor *, class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("condition"), pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
-		cl.def_static("all", (bool (*)(class Tensor *)) &Tensor::all, "Test whether all elements evaluate to True.\n\n  \n   Tensor to evaluate\n  \n\n    bool\n\nC++: Tensor::all(class Tensor *) --> bool", pybind11::arg("A"));
-		cl.def_static("any", (bool (*)(class Tensor *)) &Tensor::any, "Test whether any element evaluates to True.\n\n  \n   Tensor to evaluate\n  \n\n    bool\n\nC++: Tensor::any(class Tensor *) --> bool", pybind11::arg("A"));
-		cl.def_static("isfinite", (void (*)(class Tensor *, class Tensor *)) &Tensor::isfinite, "Test element-wise for finiteness (not infinity or not Not a Number).\n\n  \n   Tensor to evaluate\n  \n\n   Tensor to store the results of the test as booleans\n  \n\n    void\n\nC++: Tensor::isfinite(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
-		cl.def_static("isinf", (void (*)(class Tensor *, class Tensor *)) &Tensor::isinf, "Test element-wise for positive or negative infinity.\n\n  \n   Tensor to evaluate\n  \n\n   Tensor to store the results of the test as booleans\n  \n\n    void\n\nC++: Tensor::isinf(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
-		cl.def_static("isnan", (void (*)(class Tensor *, class Tensor *)) &Tensor::isnan, "Test element-wise for Nan.\n\n  \n   Tensor to evaluate\n  \n\n   Tensor to store the results of the test as booleans\n  \n\n    void\n\nC++: Tensor::isnan(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
-		cl.def_static("isneginf", (void (*)(class Tensor *, class Tensor *)) &Tensor::isneginf, "Test element-wise for negative infinity.\n\n  \n   Tensor to evaluate\n  \n\n   Tensor to store the results of the test as booleans\n  \n\n    void\n\nC++: Tensor::isneginf(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
-		cl.def_static("isposinf", (void (*)(class Tensor *, class Tensor *)) &Tensor::isposinf, "Test element-wise for positive infinity.\n\n  \n   Tensor to evaluate\n  \n\n   Tensor to store the results of the test as booleans\n  \n\n    void\n\nC++: Tensor::isposinf(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
-		cl.def_static("logical_and", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::logical_and, "Compute the truth value of ``A and B`` element-wise.\n\n  \n   Tensor\n  \n\n   Tensor\n  \n\n   Tensor to store the results of the operation\n  \n\n    void\n\nC++: Tensor::logical_and(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
-		cl.def_static("logical_or", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::logical_or, "Compute the truth value of ``A or B`` element-wise.\n\n  \n   Tensor\n  \n\n   Tensor\n  \n\n   Tensor to store the results of the operation\n  \n\n    void\n\nC++: Tensor::logical_or(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
-		cl.def_static("logical_not", (void (*)(class Tensor *, class Tensor *)) &Tensor::logical_not, "Compute the truth value of ``not A`` element-wise.\n\n  \n   Tensor\n  \n\n   Tensor to store the results of the operation\n  \n\n    void\n\nC++: Tensor::logical_not(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
-		cl.def_static("logical_xor", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::logical_xor, "Compute the truth value of ``A xor B`` element-wise.\n\n  \n   Tensor\n  \n\n   Tensor\n  \n\n   Tensor to store the results of the operation\n  \n\n    void\n\nC++: Tensor::logical_xor(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
-		cl.def_static("allclose", [](class Tensor * a0, class Tensor * a1) -> bool { return Tensor::allclose(a0, a1); }, "", pybind11::arg("A"), pybind11::arg("B"));
-		cl.def_static("allclose", [](class Tensor * a0, class Tensor * a1, float const & a2) -> bool { return Tensor::allclose(a0, a1, a2); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("rtol"));
-		cl.def_static("allclose", [](class Tensor * a0, class Tensor * a1, float const & a2, float const & a3) -> bool { return Tensor::allclose(a0, a1, a2, a3); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("rtol"), pybind11::arg("atol"));
-		cl.def_static("allclose", (bool (*)(class Tensor *, class Tensor *, float, float, bool)) &Tensor::allclose, "Returns True if two arrays accomplish, element-wise, the condition \n\n  \n   Input tensor.\n  \n\n   Input tensor.\n  \n\n relative tolerance.\n  \n\n absolute tolerance.\n  \n\n if ``True``, then two ``NaN``s will be considered equal.\n  \n\n    void\n\nC++: Tensor::allclose(class Tensor *, class Tensor *, float, float, bool) --> bool", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("rtol"), pybind11::arg("atol"), pybind11::arg("equal_nan"));
-		cl.def_static("isclose", [](class Tensor * a0, class Tensor * a1, class Tensor * a2) -> void { return Tensor::isclose(a0, a1, a2); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
-		cl.def_static("isclose", [](class Tensor * a0, class Tensor * a1, class Tensor * a2, float const & a3) -> void { return Tensor::isclose(a0, a1, a2, a3); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("rtol"));
-		cl.def_static("isclose", [](class Tensor * a0, class Tensor * a1, class Tensor * a2, float const & a3, float const & a4) -> void { return Tensor::isclose(a0, a1, a2, a3, a4); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("rtol"), pybind11::arg("atol"));
-		cl.def_static("isclose", (void (*)(class Tensor *, class Tensor *, class Tensor *, float, float, bool)) &Tensor::isclose, "Returns a boolean array where a position is true if elements in A and B accomplish \n\n  \n   Input tensor.\n  \n\n   Input tensor.\n  \n\n   Output tensor.\n  \n\n relative tolerance.\n  \n\n absolute tolerance.\n  \n\n if ``True``, then two ``NaN``s will be considered equal.\n  \n\n    void\n\nC++: Tensor::isclose(class Tensor *, class Tensor *, class Tensor *, float, float, bool) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("rtol"), pybind11::arg("atol"), pybind11::arg("equal_nan"));
+		cl.def_static("static_all", (bool (*)(class Tensor *)) &Tensor::all, "Test whether all elements evaluate to True.\n\n  \n   Tensor to evaluate\n  \n\n    bool\n\nC++: Tensor::all(class Tensor *) --> bool", pybind11::arg("A"));
+		cl.def("all", (bool (Tensor::*)()) &Tensor::all, "C++: Tensor::all() --> bool");
+		cl.def_static("static_any", (bool (*)(class Tensor *)) &Tensor::any, "Test whether any element evaluates to True.\n\n  \n   Tensor to evaluate\n  \n\n    bool\n\nC++: Tensor::any(class Tensor *) --> bool", pybind11::arg("A"));
+		cl.def("any", (bool (Tensor::*)()) &Tensor::any, "C++: Tensor::any() --> bool");
+		cl.def_static("static_isfinite", (void (*)(class Tensor *, class Tensor *)) &Tensor::isfinite, "Test element-wise for finiteness (not infinity or not Not a Number).\n\n  \n   Tensor to evaluate\n  \n\n   Tensor to store the results of the test as booleans\n  \n\n    void\n\nC++: Tensor::isfinite(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def("isfinite", (class Tensor * (Tensor::*)()) &Tensor::isfinite, "C++: Tensor::isfinite() --> class Tensor *", pybind11::return_value_policy::automatic);
+		cl.def_static("static_isinf", (void (*)(class Tensor *, class Tensor *)) &Tensor::isinf, "Test element-wise for positive or negative infinity.\n\n  \n   Tensor to evaluate\n  \n\n   Tensor to store the results of the test as booleans\n  \n\n    void\n\nC++: Tensor::isinf(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def("isinf", (class Tensor * (Tensor::*)()) &Tensor::isinf, "C++: Tensor::isinf() --> class Tensor *", pybind11::return_value_policy::automatic);
+		cl.def_static("static_isnan", (void (*)(class Tensor *, class Tensor *)) &Tensor::isnan, "Test element-wise for Nan.\n\n  \n   Tensor to evaluate\n  \n\n   Tensor to store the results of the test as booleans\n  \n\n    void\n\nC++: Tensor::isnan(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def("isnan", (class Tensor * (Tensor::*)()) &Tensor::isnan, "C++: Tensor::isnan() --> class Tensor *", pybind11::return_value_policy::automatic);
+		cl.def_static("static_isneginf", (void (*)(class Tensor *, class Tensor *)) &Tensor::isneginf, "Test element-wise for negative infinity.\n\n  \n   Tensor to evaluate\n  \n\n   Tensor to store the results of the test as booleans\n  \n\n    void\n\nC++: Tensor::isneginf(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def("isneginf", (class Tensor * (Tensor::*)()) &Tensor::isneginf, "C++: Tensor::isneginf() --> class Tensor *", pybind11::return_value_policy::automatic);
+		cl.def_static("static_isposinf", (void (*)(class Tensor *, class Tensor *)) &Tensor::isposinf, "Test element-wise for positive infinity.\n\n  \n   Tensor to evaluate\n  \n\n   Tensor to store the results of the test as booleans\n  \n\n    void\n\nC++: Tensor::isposinf(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def("isposinf", (class Tensor * (Tensor::*)()) &Tensor::isposinf, "C++: Tensor::isposinf() --> class Tensor *", pybind11::return_value_policy::automatic);
+		cl.def_static("static_logical_and", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::logical_and, "Compute the truth value of ``A and B`` element-wise.\n\n  \n   Tensor\n  \n\n   Tensor\n  \n\n   Tensor to store the results of the operation\n  \n\n    void\n\nC++: Tensor::logical_and(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
+		cl.def("logical_and", (class Tensor * (Tensor::*)(class Tensor *)) &Tensor::logical_and, "C++: Tensor::logical_and(class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
+		cl.def_static("static_logical_or", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::logical_or, "Compute the truth value of ``A or B`` element-wise.\n\n  \n   Tensor\n  \n\n   Tensor\n  \n\n   Tensor to store the results of the operation\n  \n\n    void\n\nC++: Tensor::logical_or(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
+		cl.def("logical_or", (class Tensor * (Tensor::*)(class Tensor *)) &Tensor::logical_or, "C++: Tensor::logical_or(class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
+		cl.def_static("static_logical_not", (void (*)(class Tensor *, class Tensor *)) &Tensor::logical_not, "Compute the truth value of ``not A`` element-wise.\n\n  \n   Tensor\n  \n\n   Tensor to store the results of the operation\n  \n\n    void\n\nC++: Tensor::logical_not(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def("logical_not", (class Tensor * (Tensor::*)()) &Tensor::logical_not, "C++: Tensor::logical_not() --> class Tensor *", pybind11::return_value_policy::automatic);
+		cl.def_static("static_logical_xor", (void (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::logical_xor, "Compute the truth value of ``A xor B`` element-wise.\n\n  \n   Tensor\n  \n\n   Tensor\n  \n\n   Tensor to store the results of the operation\n  \n\n    void\n\nC++: Tensor::logical_xor(class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
+		cl.def("logical_xor", (class Tensor * (Tensor::*)(class Tensor *)) &Tensor::logical_xor, "C++: Tensor::logical_xor(class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"));
+		cl.def_static("static_allclose", [](class Tensor * a0, class Tensor * a1) -> bool { return Tensor::allclose(a0, a1); }, "", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def_static("static_allclose", [](class Tensor * a0, class Tensor * a1, float const & a2) -> bool { return Tensor::allclose(a0, a1, a2); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("rtol"));
+		cl.def_static("static_allclose", [](class Tensor * a0, class Tensor * a1, float const & a2, float const & a3) -> bool { return Tensor::allclose(a0, a1, a2, a3); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("rtol"), pybind11::arg("atol"));
+		cl.def_static("static_allclose", (bool (*)(class Tensor *, class Tensor *, float, float, bool)) &Tensor::allclose, "Returns True if two arrays accomplish, element-wise, the condition \n\n  \n   Input tensor.\n  \n\n   Input tensor.\n  \n\n relative tolerance.\n  \n\n absolute tolerance.\n  \n\n if ``True``, then two ``NaN``s will be considered equal.\n  \n\n    void\n\nC++: Tensor::allclose(class Tensor *, class Tensor *, float, float, bool) --> bool", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("rtol"), pybind11::arg("atol"), pybind11::arg("equal_nan"));
+		cl.def("allclose", [](Tensor &o, class Tensor * a0) -> bool { return o.allclose(a0); }, "", pybind11::arg("A"));
+		cl.def("allclose", [](Tensor &o, class Tensor * a0, float const & a1) -> bool { return o.allclose(a0, a1); }, "", pybind11::arg("A"), pybind11::arg("rtol"));
+		cl.def("allclose", [](Tensor &o, class Tensor * a0, float const & a1, float const & a2) -> bool { return o.allclose(a0, a1, a2); }, "", pybind11::arg("A"), pybind11::arg("rtol"), pybind11::arg("atol"));
+		cl.def("allclose", (bool (Tensor::*)(class Tensor *, float, float, bool)) &Tensor::allclose, "C++: Tensor::allclose(class Tensor *, float, float, bool) --> bool", pybind11::arg("A"), pybind11::arg("rtol"), pybind11::arg("atol"), pybind11::arg("equal_nan"));
+		cl.def_static("static_isclose", [](class Tensor * a0, class Tensor * a1, class Tensor * a2) -> void { return Tensor::isclose(a0, a1, a2); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
+		cl.def_static("static_isclose", [](class Tensor * a0, class Tensor * a1, class Tensor * a2, float const & a3) -> void { return Tensor::isclose(a0, a1, a2, a3); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("rtol"));
+		cl.def_static("static_isclose", [](class Tensor * a0, class Tensor * a1, class Tensor * a2, float const & a3, float const & a4) -> void { return Tensor::isclose(a0, a1, a2, a3, a4); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("rtol"), pybind11::arg("atol"));
+		cl.def_static("static_isclose", (void (*)(class Tensor *, class Tensor *, class Tensor *, float, float, bool)) &Tensor::isclose, "Returns a boolean array where a position is true if elements in A and B accomplish \n\n  \n   Input tensor.\n  \n\n   Input tensor.\n  \n\n   Output tensor.\n  \n\n relative tolerance.\n  \n\n absolute tolerance.\n  \n\n if ``True``, then two ``NaN``s will be considered equal.\n  \n\n    void\n\nC++: Tensor::isclose(class Tensor *, class Tensor *, class Tensor *, float, float, bool) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("rtol"), pybind11::arg("atol"), pybind11::arg("equal_nan"));
+		cl.def("isclose", [](Tensor &o, class Tensor * a0) -> Tensor * { return o.isclose(a0); }, "", pybind11::return_value_policy::automatic, pybind11::arg("A"));
+		cl.def("isclose", [](Tensor &o, class Tensor * a0, float const & a1) -> Tensor * { return o.isclose(a0, a1); }, "", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("rtol"));
+		cl.def("isclose", [](Tensor &o, class Tensor * a0, float const & a1, float const & a2) -> Tensor * { return o.isclose(a0, a1, a2); }, "", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("rtol"), pybind11::arg("atol"));
+		cl.def("isclose", (class Tensor * (Tensor::*)(class Tensor *, float, float, bool)) &Tensor::isclose, "C++: Tensor::isclose(class Tensor *, float, float, bool) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("rtol"), pybind11::arg("atol"), pybind11::arg("equal_nan"));
 		cl.def("greater_", (void (Tensor::*)(float)) &Tensor::greater_, "Return the truth value of the input elements > ``v`` element-wise. In-place operation.\n\n  \n   Value to make the comparison with.\n  \n\n    void\n\nC++: Tensor::greater_(float) --> void", pybind11::arg("v"));
 		cl.def("greater", (class Tensor * (Tensor::*)(float)) &Tensor::greater, "Return the truth value of the input elements > ``v`` element-wise.\n\n  \n   Value to make the comparison with.\n  \n\n    A tensor with the true values.\n\nC++: Tensor::greater(float) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("v"));
 		cl.def_static("static_greater", (void (*)(class Tensor *, class Tensor *, float)) &Tensor::greater, "Return the truth value of the input elements > ``v`` element-wise.\n\n  \n   Input tensor.\n  \n\n   Output tensor.\n  \n\n   Value to make the comparison with.\n  \n\n    void\n\nC++: Tensor::greater(class Tensor *, class Tensor *, float) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("v"));
@@ -1283,55 +1304,58 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 	// eddl::print_loss(class Net *, int) file:eddl/apis/eddl.h line:596
 	M("eddl").def("print_loss", (void (*)(class Net *, int)) &eddl::print_loss, "Prints model loss at some batch.\n\n  \n  Model\n  \n\n  Batch number\n  \n\n     (void)\n\nC++: eddl::print_loss(class Net *, int) --> void", pybind11::arg("m"), pybind11::arg("batch"));
 
-	// eddl::clamp(class Net *, float, float) file:eddl/apis/eddl.h line:607
+	// eddl::clamp(class Net *, float, float) file:eddl/apis/eddl.h line:623
 	M("eddl").def("clamp", (void (*)(class Net *, float, float)) &eddl::clamp, "Model parameters values clipping.\n\n  \n  Model\n  \n\n  Minimum value\n  \n\n   Maximum value\n  \n\n     (void) Performs model clamp between min and max\n\nC++: eddl::clamp(class Net *, float, float) --> void", pybind11::arg("m"), pybind11::arg("min"), pybind11::arg("max"));
 
-	// eddl::compute_loss(class NetLoss *) file:eddl/apis/eddl.h line:616
+	// eddl::compute_loss(class NetLoss *) file:eddl/apis/eddl.h line:632
 	M("eddl").def("compute_loss", (float (*)(class NetLoss *)) &eddl::compute_loss, "Computes loss of the associated model\n\n  \n  Loss\n  \n\n (float) Computed loss\n\nC++: eddl::compute_loss(class NetLoss *) --> float", pybind11::arg("L"));
 
-	// eddl::compute_metric(class NetLoss *) file:eddl/apis/eddl.h line:623
+	// eddl::compute_metric(class NetLoss *) file:eddl/apis/eddl.h line:639
 	M("eddl").def("compute_metric", (float (*)(class NetLoss *)) &eddl::compute_metric, "Computes loss of the associated model (same as ``compute_loss``)\n\n  \n  Loss\n  \n\n (float) Computed loss\n\nC++: eddl::compute_metric(class NetLoss *) --> float", pybind11::arg("L"));
 
-	// eddl::getOutput(class Layer *) file:eddl/apis/eddl.h line:1684
+	// eddl::show_profile() file:eddl/apis/eddl.h line:711
+	M("eddl").def("show_profile", (void (*)()) &eddl::show_profile, "Shows profile information.\n\nC++: eddl::show_profile() --> void");
+
+	// eddl::getOutput(class Layer *) file:eddl/apis/eddl.h line:1722
 	M("eddl").def("getOutput", (class Tensor * (*)(class Layer *)) &eddl::getOutput, "C++: eddl::getOutput(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"));
 
-	// eddl::getDelta(class Layer *) file:eddl/apis/eddl.h line:1685
+	// eddl::getDelta(class Layer *) file:eddl/apis/eddl.h line:1723
 	M("eddl").def("getDelta", (class Tensor * (*)(class Layer *)) &eddl::getDelta, "C++: eddl::getDelta(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"));
 
-	// eddl::getParam(class Layer *, int) file:eddl/apis/eddl.h line:1686
+	// eddl::getParam(class Layer *, int) file:eddl/apis/eddl.h line:1724
 	M("eddl").def("getParam", (class Tensor * (*)(class Layer *, int)) &eddl::getParam, "C++: eddl::getParam(class Layer *, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("p"));
 
-	// eddl::getGradient(class Layer *, int) file:eddl/apis/eddl.h line:1687
+	// eddl::getGradient(class Layer *, int) file:eddl/apis/eddl.h line:1725
 	M("eddl").def("getGradient", (class Tensor * (*)(class Layer *, int)) &eddl::getGradient, "C++: eddl::getGradient(class Layer *, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("p"));
 
-	// eddl::copyOutput(class Layer *, class Layer *) file:eddl/apis/eddl.h line:1690
+	// eddl::copyOutput(class Layer *, class Layer *) file:eddl/apis/eddl.h line:1728
 	M("eddl").def("copyOutput", (void (*)(class Layer *, class Layer *)) &eddl::copyOutput, "C++: eddl::copyOutput(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::copyDelta(class Layer *, class Layer *) file:eddl/apis/eddl.h line:1691
+	// eddl::copyDelta(class Layer *, class Layer *) file:eddl/apis/eddl.h line:1729
 	M("eddl").def("copyDelta", (void (*)(class Layer *, class Layer *)) &eddl::copyDelta, "C++: eddl::copyDelta(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::copyParam(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:1692
+	// eddl::copyParam(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:1730
 	M("eddl").def("copyParam", (void (*)(class Layer *, class Layer *, int)) &eddl::copyParam, "C++: eddl::copyParam(class Layer *, class Layer *, int) --> void", pybind11::arg("l1"), pybind11::arg("l2"), pybind11::arg("p"));
 
-	// eddl::copyGradient(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:1693
+	// eddl::copyGradient(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:1731
 	M("eddl").def("copyGradient", (void (*)(class Layer *, class Layer *, int)) &eddl::copyGradient, "C++: eddl::copyGradient(class Layer *, class Layer *, int) --> void", pybind11::arg("l1"), pybind11::arg("l2"), pybind11::arg("p"));
 
-	// eddl::download_mnist() file:eddl/apis/eddl.h line:1823
+	// eddl::download_mnist() file:eddl/apis/eddl.h line:1861
 	M("eddl").def("download_mnist", (void (*)()) &eddl::download_mnist, "Downloads MNIST Dataset.\n\n  \n   http://yann.lecun.com/exdb/mnist/\n\n  \n     (void) The binary files of MNIST\n\nC++: eddl::download_mnist() --> void");
 
-	// eddl::download_cifar10() file:eddl/apis/eddl.h line:1831
+	// eddl::download_cifar10() file:eddl/apis/eddl.h line:1869
 	M("eddl").def("download_cifar10", (void (*)()) &eddl::download_cifar10, "Downloads CIFAR-10 Dataset.\n\n  \n   https://www.cs.toronto.edu/~kriz/cifar.html\n\n  \n     (void) The binary files of CIFAR-10\n\nC++: eddl::download_cifar10() --> void");
 
-	// eddl::download_drive() file:eddl/apis/eddl.h line:1839
+	// eddl::download_drive() file:eddl/apis/eddl.h line:1877
 	M("eddl").def("download_drive", (void (*)()) &eddl::download_drive, "Downloads DRIVE Dataset.\n\n  \n   https://drive.grand-challenge.org/\n\n  \n     (void) The numpy files of DRIVE\n\nC++: eddl::download_drive() --> void");
 
-	// eddl::download_imdb_2000() file:eddl/apis/eddl.h line:1848
+	// eddl::download_imdb_2000() file:eddl/apis/eddl.h line:1886
 	M("eddl").def("download_imdb_2000", (void (*)()) &eddl::download_imdb_2000, "Downloads IMDB Dataset. 2000 most frequent words\n\n  \n   https://ai.stanford.edu/~amaas/data/sentiment/\n\n  \n     (void) The binary files of IMDB\n\nC++: eddl::download_imdb_2000() --> void");
 
-	// eddl::download_eutrans() file:eddl/apis/eddl.h line:1858
+	// eddl::download_eutrans() file:eddl/apis/eddl.h line:1896
 	M("eddl").def("download_eutrans", (void (*)()) &eddl::download_eutrans, "Downloads EuTrans Dataset.\n\n  \n\n\n\n  \n     (void) The binary files of EuTrans\n\nC++: eddl::download_eutrans() --> void");
 
-	// eddl::download_flickr() file:eddl/apis/eddl.h line:1867
+	// eddl::download_flickr() file:eddl/apis/eddl.h line:1905
 	M("eddl").def("download_flickr", (void (*)()) &eddl::download_flickr, "Downloads Flickr Dataset (small partition)\n\n  \n\n\n\n  \n     (void) The binary files of Flickr\n\nC++: eddl::download_flickr() --> void");
 
 }
