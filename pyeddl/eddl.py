@@ -1301,6 +1301,12 @@ def Add(layers, name=""):
     """\
     Add input layers.
 
+    **NOTE:** this function can also be used to compute the sum of two layers
+    or floats (which was previously done via the now deprecated function
+    Sum). In this case, the function is called as ``Add(l1, l2)``, where each
+    of the two parameters can be a layer or a float (one of them must be a
+    layer).
+
     :param layers: list of layers, all of the same shape
     :param name: name of the output layer
     :return: Add layer
@@ -1467,9 +1473,23 @@ def Abs(l):
     return _eddl.Abs(l)
 
 
+def Sub(l1, l2):
+    """\
+    Compute the difference between two layers or floats.
+
+    :param l1: a layer or float
+    :param l2: a layer or float
+    :return: Sub layer
+    """
+    # l1, l2 can be either layers or floats
+    return _eddl.Sub(l1, l2)
+
+
 def Diff(l1, l2):
     """\
     Compute the difference between two layers or floats.
+
+    Deprecated alias for Sub.
 
     :param l1: a layer or float
     :param l2: a layer or float
@@ -1568,6 +1588,8 @@ def Sqrt(l):
 def Sum(l1, l2):
     """\
     Compute the sum of two layers or floats.
+
+    Deprecated alias for Add (in the add-two-layers-or-floats version).
 
     :param l1: a layer or float
     :param l2: a layer or float

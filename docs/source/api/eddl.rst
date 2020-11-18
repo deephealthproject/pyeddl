@@ -281,6 +281,8 @@ Operator layers
 
 .. autofunction:: pyeddl.eddl.Abs
 
+.. autofunction:: pyeddl.eddl.Sub
+
 .. autofunction:: pyeddl.eddl.Diff
 
 .. autofunction:: pyeddl.eddl.Div
