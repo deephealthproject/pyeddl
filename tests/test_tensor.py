@@ -710,7 +710,7 @@ def test_normalize_(Tensor):
     t.normalize_(m, M)
     b = np.array(t, copy=False)
     r = (M - m) / (a.max() - a.min())
-    assert np.allclose(r * (a - a.min()) + m, b)
+    assert np.allclose(r * (a - a.min()) + m, b, atol=1e-7)
 
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
@@ -721,7 +721,7 @@ def test_normalize(Tensor):
     u = Tensor.normalize(t, m, M)
     b = np.array(u, copy=False)
     r = (M - m) / (a.max() - a.min())
-    assert np.allclose(r * (a - a.min()) + m, b)
+    assert np.allclose(r * (a - a.min()) + m, b, atol=1e-7)
 
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
