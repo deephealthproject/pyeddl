@@ -58,7 +58,7 @@ def main(args):
     out2 = eddl.getLayer(base, [in2])
 
     # combine siameses with some operations
-    layer = eddl.Diff(out1, out2)
+    layer = eddl.Sub(out1, out2)
     layer = eddl.ReLu(eddl.Dense(layer, 256))
     outs = eddl.Sigmoid(eddl.Dense(layer, 784))
 

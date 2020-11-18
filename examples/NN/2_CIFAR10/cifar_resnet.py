@@ -36,9 +36,9 @@ def ResBlock(layer, filters, nconv, half):
     for i in range(nconv - 1):
         layer = eddl.ReLu(eddl.Conv(layer, filters, [3, 3], [1, 1]))
     if (half):
-        return eddl.Sum(eddl.Conv(in_, filters, [1, 1], [2, 2]), layer)
+        return eddl.Add(eddl.Conv(in_, filters, [1, 1], [2, 2]), layer)
     else:
-        return eddl.Sum(layer, in_)
+        return eddl.Add(layer, in_)
 
 
 MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")

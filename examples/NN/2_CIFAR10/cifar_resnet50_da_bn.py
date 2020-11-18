@@ -47,16 +47,16 @@ def ResBlock(layer, filters, half, expand=0):
         layer, 4*filters, [1, 1], [1, 1], "same", False
     )))
     if (half):
-        return eddl.ReLu(eddl.Sum(BG(eddl.Conv(
+        return eddl.ReLu(eddl.Add(BG(eddl.Conv(
             in_, 4*filters, [1, 1], [2, 2], "same", False
         )), layer))
     else:
         if expand:
-            return eddl.ReLu(eddl.Sum(BG(eddl.Conv(
+            return eddl.ReLu(eddl.Add(BG(eddl.Conv(
                 in_, 4*filters, [1, 1], [1, 1], "same", False)), layer
             ))
         else:
-            return eddl.ReLu(eddl.Sum(in_, layer))
+            return eddl.ReLu(eddl.Add(in_, layer))
 
 
 MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")
