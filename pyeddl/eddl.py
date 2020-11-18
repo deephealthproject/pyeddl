@@ -52,6 +52,18 @@ def getLayer(net, in_):
     return _eddl.getLayer(net, in_)
 
 
+def removeLayer(net, l):
+    _eddl.removeLayer(net, l)
+
+
+def get_parameters(net, deepcopy=False, tocpu=False):
+    return _eddl.get_parameters(net, deepcopy, tocpu)
+
+
+def set_parameters(net, params):
+    _eddl.set_parameters(net, params)
+
+
 def build(net, o=None, lo=None, me=None, cs=None, init_weights=True):
     """\
     Tell the model which optimizer, losses, metrics and computing service to
@@ -562,6 +574,26 @@ def print_loss(m, batch):
     :return: None
     """
     return _eddl.print_loss(m, batch)
+
+
+def get_losses(m):
+    """\
+    Get model losses.
+
+    :param m: model
+    :return: list of float
+    """
+    return _eddl.get_losses(m)
+
+
+def get_metrics(m):
+    """\
+    Get model metrics.
+
+    :param m: model
+    :return: list of float
+    """
+    return _eddl.get_metrics(m)
 
 
 # = Model constraints =
