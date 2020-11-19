@@ -40,34 +40,40 @@ def main(args):
     in_ = eddl.Input([3, 32, 32])
 
     layer = in_
-    # layer = eddl.RandomCropScale(layer, [0.8, 1.0])
-    # layer = eddl.Flip(layer, 1)
-    layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 32, [3, 3], [1, 1])), [2, 2]
-    )
-    layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 64, [3, 3], [1, 1])), [2, 2]
-    )
-    layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 128, [3, 3], [1, 1])), [2, 2]
-    )
-    layer = eddl.MaxPool(
-        eddl.ReLu(eddl.Conv(layer, 256, [3, 3], [1, 1])), [2, 2]
-    )
-    layer = eddl.Reshape(layer, [-1])
-    layer = eddl.Activation(eddl.Dense(layer, 128), "relu")
 
-    out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
+    layer = eddl.RandomHorizontalFlip(layer)
+    layer = eddl.RandomCropScale(layer, [0.8, 1.0])
+    layer = eddl.RandomCutout(layer, [0.1, 0.5], [0.1, 0.5])
+
+    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+        eddl.HeUniform(eddl.Conv(layer, 32, [3, 3], [1, 1], "same", False)),
+        True)), [2, 2])
+    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+        eddl.HeUniform(eddl.Conv(layer, 64, [3, 3], [1, 1], "same", False)),
+        True)), [2, 2])
+    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+        eddl.HeUniform(eddl.Conv(layer, 128, [3, 3], [1, 1], "same", False)),
+        True)), [2, 2])
+    layer = eddl.MaxPool(eddl.ReLu(eddl.BatchNormalization(
+        eddl.HeUniform(eddl.Conv(layer, 256, [3, 3], [1, 1], "same", False)),
+        True)), [2, 2])
+
+    layer = eddl.Reshape(layer, [-1])
+    layer = eddl.Activation(eddl.BatchNormalization(
+        eddl.Dense(layer, 128), True
+    ), "relu")
+    out = eddl.Softmax(eddl.BatchNormalization(
+        eddl.Dense(layer, num_classes), True
+    ))
     net = eddl.Model([in_], [out])
 
     eddl.build(
         net,
-        eddl.sgd(0.01, 0.9),
-        ["soft_cross_entropy"],
+        eddl.adam(0.001),
+        ["softmax_cross_entropy"],
         ["categorical_accuracy"],
         eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
     )
-
     eddl.summary(net)
     eddl.plot(net, "model.pdf")
 
@@ -88,6 +94,11 @@ def main(args):
     for i in range(args.epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
         eddl.evaluate(net, [x_test], [y_test])
+    eddl.setlr(net, [0.0001])
+    for i in range(args.epochs):
+        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
+        eddl.evaluate(net, [x_test], [y_test])
+
     print("All done")
 
 
