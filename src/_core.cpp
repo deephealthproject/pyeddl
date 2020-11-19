@@ -11,6 +11,7 @@
 #include <string>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
+#include <utils_addons.hpp>
 
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
@@ -153,6 +154,7 @@ void bind_eddl_descriptors_tensor_descriptors(std::function< pybind11::module &(
 #include <string>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
+#include <utils_addons.hpp>
 
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
@@ -628,6 +630,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 #include <string>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
+#include <utils_addons.hpp>
 
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
@@ -1245,6 +1248,7 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 #include <string>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
+#include <utils_addons.hpp>
 
 
 #ifndef BINDER_PYBIND11_TYPE_CASTER
@@ -1397,6 +1401,7 @@ PYBIND11_MODULE(_core, root_module) {
 	//pybind11::class_<std::shared_ptr<void>>(M(""), "_encapsulated_data_");
 
 	bind_eddl_descriptors_tensor_descriptors(M);
+	bind_eddl_utils(M);
 	bind_eddl_tensor_tensor(M);
 	bind_eddl_losses_loss(M);
 	bind_eddl_apis_eddl(M);

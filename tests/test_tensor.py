@@ -1001,6 +1001,19 @@ def test_trunc(Tensor):
     assert np.allclose(np.trunc(a), b)
 
 
+# --- Transformations ---
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_scale(Tensor):
+    shape = [10, 3, 128, 128]
+    t = Tensor(shape)
+    target_shape = [64, 64]
+    u = t.scale(target_shape)
+    assert u.shape == shape[:2] + target_shape
+    u = t.scale(target_shape, keep_size=True)
+    assert u.shape == shape
+
+
 # --- Other ---
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])

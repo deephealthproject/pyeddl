@@ -199,6 +199,10 @@
 
   .. automethod:: Tensor.trunc
 
+  **=== Transformations ===**
+
+  .. automethod:: Tensor.scale
+
   **=== Other Methods ===**
 
   .. automethod:: Tensor.fill_
