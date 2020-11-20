@@ -40,9 +40,9 @@ def ResBlock(layer, filters, nconv, half):
     for i in range(nconv - 1):
         layer = eddl.ReLu(BG(eddl.Conv(layer, filters, [3, 3], [1, 1])))
     if (half):
-        return eddl.Sum(BG(eddl.Conv(in_, filters, [1, 1], [2, 2])), layer)
+        return eddl.Add(BG(eddl.Conv(in_, filters, [1, 1], [2, 2])), layer)
     else:
-        return eddl.Sum(layer, in_)
+        return eddl.Add(layer, in_)
 
 
 MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")
@@ -100,7 +100,7 @@ def main(args):
 
     for i in range(args.epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-        eddl.evaluate(net, [x_test], [y_test])
+        eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
     print("All done")
 
 

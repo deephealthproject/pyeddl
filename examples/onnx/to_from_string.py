@@ -74,7 +74,7 @@ def main(args):
 
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
     print("evaluating before import")
-    eddl.evaluate(net, [x_test], [y_test])
+    eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
 
     imported_net = eddl.import_net_from_onnx_string(serialized_net)
 
@@ -92,7 +92,7 @@ def main(args):
     print("imported_net layers:", len(imported_net.layers))
 
     print("evaluating imported net")
-    eddl.evaluate(imported_net, [x_test], [y_test])
+    eddl.evaluate(imported_net, [x_test], [y_test], bs=args.batch_size)
     print("All done")
 
 

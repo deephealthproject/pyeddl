@@ -8,15 +8,9 @@ this="${BASH_SOURCE-$0}"
 this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 names=(
-    cifar_conv
-    cifar_conv_da
-    cifar_pretrained
-    cifar_resnet
-    cifar_resnet50_da_bn
-    cifar_resnet_da_bn
-    cifar_vgg16
-    cifar_vgg16_bn
-    cifar_vgg16_gn
+    nlp_sentiment_rnn
+    nlp_machine_translation
+    nlp_text_generation
 )
 
 for n in "${names[@]}"; do

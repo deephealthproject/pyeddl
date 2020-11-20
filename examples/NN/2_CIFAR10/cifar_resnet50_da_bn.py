@@ -47,16 +47,16 @@ def ResBlock(layer, filters, half, expand=0):
         layer, 4*filters, [1, 1], [1, 1], "same", False
     )))
     if (half):
-        return eddl.ReLu(eddl.Sum(BG(eddl.Conv(
+        return eddl.ReLu(eddl.Add(BG(eddl.Conv(
             in_, 4*filters, [1, 1], [2, 2], "same", False
         )), layer))
     else:
         if expand:
-            return eddl.ReLu(eddl.Sum(BG(eddl.Conv(
+            return eddl.ReLu(eddl.Add(BG(eddl.Conv(
                 in_, 4*filters, [1, 1], [1, 1], "same", False)), layer
             ))
         else:
-            return eddl.ReLu(eddl.Sum(in_, layer))
+            return eddl.ReLu(eddl.Add(in_, layer))
 
 
 MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")
@@ -92,9 +92,7 @@ def main(args):
         eddl.sgd(0.001, 0.9),
         ["soft_cross_entropy"],
         ["categorical_accuracy"],
-        eddl.CS_GPU(mem="full_mem") if args.gpu else eddl.CS_CPU(
-            mem="full_mem"
-        )
+        eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
     )
 
     eddl.summary(net)
@@ -121,7 +119,7 @@ def main(args):
         eddl.setlr(net, [lr, 0.9])
         for i in range(args.epochs):
             eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-            eddl.evaluate(net, [x_test], [y_test])
+            eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
     print("All done")
 
 

@@ -710,7 +710,7 @@ def test_normalize_(Tensor):
     t.normalize_(m, M)
     b = np.array(t, copy=False)
     r = (M - m) / (a.max() - a.min())
-    assert np.allclose(r * (a - a.min()) + m, b)
+    assert np.allclose(r * (a - a.min()) + m, b, atol=1e-7)
 
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
@@ -721,7 +721,7 @@ def test_normalize(Tensor):
     u = Tensor.normalize(t, m, M)
     b = np.array(u, copy=False)
     r = (M - m) / (a.max() - a.min())
-    assert np.allclose(r * (a - a.min()) + m, b)
+    assert np.allclose(r * (a - a.min()) + m, b, atol=1e-7)
 
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
@@ -1001,6 +1001,19 @@ def test_trunc(Tensor):
     assert np.allclose(np.trunc(a), b)
 
 
+# --- Transformations ---
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_scale(Tensor):
+    shape = [10, 3, 128, 128]
+    t = Tensor(shape)
+    target_shape = [64, 64]
+    u = t.scale(target_shape)
+    assert u.shape == shape[:2] + target_shape
+    u = t.scale(target_shape, keep_size=True)
+    assert u.shape == shape
+
+
 # --- Other ---
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
@@ -1038,3 +1051,25 @@ def test_getShape(Tensor):
     shape = [3, 4]
     t = Tensor(shape)
     assert t.getShape() == shape
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_onehot(Tensor):
+    a = np.array([
+        [0, 2, 4],
+        [2, 3, 0]
+    ])
+    vocs = 5
+    t = Tensor(a)
+    u = Tensor.onehot(t, vocs)
+    assert u.shape == t.shape + [vocs]
+    b = np.array(u)
+    exp = np.array([
+        [[1., 0., 0., 0., 0.],   # 0
+         [0., 0., 1., 0., 0.],   # 2
+         [0., 0., 0., 0., 1.]],  # 4
+        [[0., 0., 1., 0., 0.],   # 2
+         [0., 0., 0., 1., 0.],   # 3
+         [1., 0., 0., 0., 0.]]   # 0
+    ], dtype=np.float32)
+    assert np.allclose(b, exp)

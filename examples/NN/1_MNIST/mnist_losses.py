@@ -31,7 +31,7 @@ from pyeddl.tensor import Tensor
 
 # l2_loss
 def mse_loss(inputs):
-    diff = eddl.Diff(inputs[0], inputs[1])
+    diff = eddl.Sub(inputs[0], inputs[1])
     return eddl.Mult(diff, diff)
 
 
@@ -40,17 +40,17 @@ def dice_loss_img(inputs):
     num = eddl.Mult(2, eddl.ReduceSum(
         eddl.Mult(inputs[0], inputs[1]), [0, 1, 2]
     ))
-    den = eddl.ReduceSum(eddl.Sum(inputs[0], inputs[1]), [0, 1, 2])
-    return eddl.Diff(1.0, eddl.Div(num, den))
+    den = eddl.ReduceSum(eddl.Add(inputs[0], inputs[1]), [0, 1, 2])
+    return eddl.Sub(1.0, eddl.Div(num, den))
 
 
 # Dice loss pixel-level
 def dice_loss_pixel(inputs):
     num = eddl.Mult(2, eddl.ReduceSum(eddl.Mult(inputs[0], inputs[1]), [0]))
-    den = eddl.ReduceSum(eddl.Sum(inputs[0], inputs[1]), [0])
-    num = eddl.Sum(num, 1)
-    den = eddl.Sum(den, 1)
-    return eddl.Diff(1.0, eddl.Div(num, den))
+    den = eddl.ReduceSum(eddl.Add(inputs[0], inputs[1]), [0])
+    num = eddl.Add(num, 1)
+    den = eddl.Add(den, 1)
+    return eddl.Sub(1.0, eddl.Div(num, den))
 
 
 MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")

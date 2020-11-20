@@ -46,6 +46,7 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
            pybind11::keep_alive<1, 2>());
     cl.def("getShape", &Tensor::getShape);
     cl.def("select", (Tensor* (Tensor::*)(const vector<string>&)) &Tensor::select, "C++: Tensor::select(const vector<string>&) --> Tensor*", pybind11::arg("indices"));
+    cl.def("scale", (Tensor* (Tensor::*)(vector<int>, WrappingMode, float, bool)) &Tensor::scale, "Scale the tensor", pybind11::arg("new_shape"), pybind11::arg("mode")=WrappingMode::Constant, pybind11::arg("cval")=0.0f, pybind11::arg("keep_size")=false);
     cl.def_static("full", &Tensor::full, pybind11::arg("shape"),
 		  pybind11::arg("value"), pybind11::arg("dev") = DEV_CPU);
     cl.def_static("ones", &Tensor::ones, pybind11::arg("shape"),
@@ -66,8 +67,8 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
     cl.def_static("load", [](const string& filename, string format) {
 	    return Tensor::load(filename, format);
 	}, pybind11::arg("filename"), pybind11::arg("format") = "");
-    cl.def_static("permute", &Tensor::permute,
-		  pybind11::arg("t"), pybind11::arg("dims"));
+    cl.def("permute", (Tensor* (Tensor::*)(const vector<int>&)) &Tensor::permute, "In-place permutation of tensor dimensions", pybind11::arg("dims"));
+    cl.def_static("permute_static", (Tensor* (*)(Tensor*, const vector<int>&)) &Tensor::permute, "Permutation of tensor dimensions", pybind11::arg("A"), pybind11::arg("dims"));
     cl.def("reshape_", (void (Tensor::*)(const vector<int>&)) &Tensor::reshape_, "C++: Tensor::reshape_(const vector<int>&) --> void", pybind11::arg("new_shape"));
     // Expose contents as a buffer object. Allows a = numpy.array(t).
     // Mostly useful for a = numpy.array(t, copy=False) (CPU only, of course).
@@ -109,4 +110,17 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
         }
         return rval;
     }, "getdata() --> array");
+    // from the EDDL NLP examples
+    cl.def_static("onehot", [](Tensor* in, int vocs) -> Tensor* {
+	    int n = in->shape[0];
+	    int l = in->shape[1];
+	    Tensor *out = new Tensor({n, l, vocs});
+	    out->fill_(0.0);
+	    int p = 0;
+	    for(int i = 0; i < n * l; i++, p += vocs) {
+		int w = in->ptr[i];
+		out->ptr[p+w] = 1.0;
+	    }
+	    return out;
+	}, pybind11::arg("in"), pybind11::arg("vocs"));
 }

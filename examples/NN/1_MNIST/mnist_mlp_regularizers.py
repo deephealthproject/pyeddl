@@ -71,7 +71,7 @@ def main(args):
     x_test.div_(255.0)
 
     eddl.fit(net, [x_train], [y_train], args.batch_size, args.epochs)
-    eddl.evaluate(net, [x_test], [y_test])
+    eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
     print("All done")
 
 

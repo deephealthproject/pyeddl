@@ -57,28 +57,28 @@ def UNetWithPadding(layer):
         eddl.UpSampling(x5, [2, 2]), 8*depth, [2, 2], [1, 1], "same"
     )
 
-    x4 = eddl.Concat([x4, x5]) if USE_CONCAT else eddl.Sum([x4, x5])
+    x4 = eddl.Concat([x4, x5]) if USE_CONCAT else eddl.Add([x4, x5])
     x4 = eddl.LeakyReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
     x4 = eddl.LeakyReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
     x4 = eddl.Conv(
         eddl.UpSampling(x4, [2, 2]), 4*depth, [2, 2], [1, 1], "same"
     )
 
-    x3 = eddl.Concat([x3, x4]) if USE_CONCAT else eddl.Sum([x3, x4])
+    x3 = eddl.Concat([x3, x4]) if USE_CONCAT else eddl.Add([x3, x4])
     x3 = eddl.LeakyReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
     x3 = eddl.LeakyReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
     x3 = eddl.Conv(
         eddl.UpSampling(x3, [2, 2]), 2*depth, [2, 2], [1, 1], "same"
     )
 
-    x2 = eddl.Concat([x2, x3]) if USE_CONCAT else eddl.Sum([x2, x3])
+    x2 = eddl.Concat([x2, x3]) if USE_CONCAT else eddl.Add([x2, x3])
     x2 = eddl.LeakyReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
     x2 = eddl.LeakyReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
     x2 = eddl.Conv(
         eddl.UpSampling(x2, [2, 2]), depth, [2, 2], [1, 1], "same"
     )
 
-    x = eddl.Concat([x, x2]) if USE_CONCAT else eddl.Sum([x, x2])
+    x = eddl.Concat([x, x2]) if USE_CONCAT else eddl.Add([x, x2])
     x = eddl.LeakyReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
     x = eddl.LeakyReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
     x = eddl.Conv(x, 1, [1, 1])
@@ -123,7 +123,7 @@ def main(args):
 
     print("Reading training data")
     x_train_f = Tensor.fromarray(np.load("drive_trX.npy").astype(np.float32))
-    x_train = Tensor.permute(x_train_f, [0, 3, 1, 2])
+    x_train = x_train_f.permute([0, 3, 1, 2])
     x_train.info()
     x_train.div_(255.0)
 

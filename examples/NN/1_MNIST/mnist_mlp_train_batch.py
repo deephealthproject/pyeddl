@@ -43,13 +43,13 @@ def main(args):
     layer = eddl.ReLu(eddl.Dense(layer, 1024))
     layer = eddl.ReLu(eddl.Dense(layer, 1024))
     layer = eddl.ReLu(eddl.Dense(layer, 1024))
-    out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
+    out = eddl.Softmax(eddl.Dense(layer, num_classes))
     net = eddl.Model([in_], [out])
 
     eddl.build(
         net,
-        eddl.sgd(0.01, 0.9),
-        ["soft_cross_entropy"],
+        eddl.sgd(0.001, 0.9),
+        ["softmax_cross_entropy"],
         ["categorical_accuracy"],
         eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
     )
@@ -79,8 +79,11 @@ def main(args):
         for j in range(num_batches):
             indices = np.random.randint(0, s[0], args.batch_size)
             eddl.train_batch(net, [x_train], [y_train], indices)
-            eddl.print_loss(net, j)
-            print()
+
+    losses1 = eddl.get_losses(net)
+    metrics1 = eddl.get_metrics(net)
+    for l, m in zip(losses1, metrics1):
+        print("Loss: %.6f\tMetric: %.6f" % (l, m))
 
     s = x_test.shape
     num_batches = s[0] // args.batch_size
@@ -88,16 +91,23 @@ def main(args):
         indices = np.arange(j * args.batch_size,
                             j * args.batch_size + args.batch_size)
         eddl.eval_batch(net, [x_test], [y_test], indices)
-        eddl.print_loss(net, j)
-        print()
+
+    losses2 = eddl.get_losses(net)
+    metrics2 = eddl.get_metrics(net)
+    for l, m in zip(losses2, metrics2):
+        print("Loss: %.6f\tMetric: %.6f" % (l, m))
 
     last_batch_size = s[0] % args.batch_size
     if last_batch_size:
         indices = np.arange(j * args.batch_size,
                             j * args.batch_size + args.batch_size)
         eddl.eval_batch(net, [x_test], [y_test], indices)
-        eddl.print_loss(net, j)
-        print()
+
+    losses3 = eddl.get_losses(net)
+    metrics3 = eddl.get_metrics(net)
+    for l, m in zip(losses3, metrics3):
+        print("Loss: %.6f\tMetric: %.6f" % (l, m))
+
     print("All done")
 
 

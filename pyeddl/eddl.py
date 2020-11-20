@@ -48,7 +48,20 @@ def setName(m, name):
 
 
 def getLayer(net, in_):
+    # note: in_ can be a vector of layers or a string
     return _eddl.getLayer(net, in_)
+
+
+def removeLayer(net, l):
+    _eddl.removeLayer(net, l)
+
+
+def get_parameters(net, deepcopy=False, tocpu=False):
+    return _eddl.get_parameters(net, deepcopy, tocpu)
+
+
+def set_parameters(net, params):
+    _eddl.set_parameters(net, params)
 
 
 def build(net, o=None, lo=None, me=None, cs=None, init_weights=True):
@@ -383,16 +396,17 @@ def fit(m, in_, out, batch, epochs):
     return _eddl.fit(m, in_, out, batch, epochs)
 
 
-def evaluate(m, in_, out):
+def evaluate(m, in_, out, bs=100):
     """\
     Compute the loss and metric values for the model in test mode.
 
     :param m: model to train
     :param in_: input data (features)
     :param out: output data (labels)
+    :param bs: batch size
     :return: None
     """
-    return _eddl.evaluate(m, in_, out)
+    return _eddl.evaluate(m, in_, out, bs)
 
 
 def predict(m, in_):
@@ -560,6 +574,26 @@ def print_loss(m, batch):
     :return: None
     """
     return _eddl.print_loss(m, batch)
+
+
+def get_losses(m):
+    """\
+    Get model losses.
+
+    :param m: model
+    :return: list of float
+    """
+    return _eddl.get_losses(m)
+
+
+def get_metrics(m):
+    """\
+    Get model metrics.
+
+    :param m: model
+    :return: list of float
+    """
+    return _eddl.get_metrics(m)
 
 
 # = Model constraints =
@@ -867,6 +901,27 @@ def Conv1D(parent, filters, kernel_size, strides=[1], padding="same",
                         use_bias, groups, dilation_rate, name)
 
 
+def PointwiseConv(parent, filters, strides=[1, 1], use_bias=True, groups=1,
+                  dilation_rate=[1, 1], name=""):
+    """\
+    Pointwise convolution layer.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param strides: list of 2 integers, specifying the strides of the
+      convolution along the height and width
+    :param use_bias: whether the layer uses a bias vector
+    :param groups: number of blocked connections from input to output channels
+    :param dilation_rate: list of 2 integers, specifying the dilation rate
+      to use for dilated convolution
+    :param name: name of the output layer
+    :return: Convolution layer
+    """
+    return _eddl.PointwiseConv(parent, filters, strides, use_bias, groups,
+                               dilation_rate, name)
+
+
 def Dense(parent, ndim, use_bias=True, name=""):
     """\
     Regular densely-connected layer.
@@ -1047,7 +1102,7 @@ def CenteredCrop(parent, size, reshape=True, constant=0.0, name=""):
     return _eddl.CenteredCrop(parent, size, reshape, constant, name)
 
 
-def CropScale(parent, from_coords, to_coords, da_mode="nearest", constant=0.0,
+def CropScale(parent, from_coords, to_coords, da_mode="constant", constant=0.0,
               name=""):
     """\
     Crop the given image layer at ``[(top, left), (bottom, right)]`` and scale
@@ -1120,7 +1175,7 @@ def Rotate(parent, angle, offset_center=[0, 0], da_mode="original",
     return _eddl.Rotate(parent, angle, offset_center, da_mode, constant, name)
 
 
-def Scale(parent, new_shape, reshape=True, da_mode="nearest", constant=0.0,
+def Scale(parent, new_shape, reshape=True, da_mode="constant", constant=0.0,
           name=""):
     """\
     Resize an image layer to the given size as ``[height, width]``.
@@ -1299,6 +1354,12 @@ def Add(layers, name=""):
     """\
     Add input layers.
 
+    **NOTE:** this function can also be used to compute the sum of two layers
+    or floats (which was previously done via the now deprecated function
+    Sum). In this case, the function is called as ``Add(l1, l2)``, where each
+    of the two parameters can be a layer or a float (one of them must be a
+    layer).
+
     :param layers: list of layers, all of the same shape
     :param name: name of the output layer
     :return: Add layer
@@ -1465,9 +1526,23 @@ def Abs(l):
     return _eddl.Abs(l)
 
 
+def Sub(l1, l2):
+    """\
+    Compute the difference between two layers or floats.
+
+    :param l1: a layer or float
+    :param l2: a layer or float
+    :return: Sub layer
+    """
+    # l1, l2 can be either layers or floats
+    return _eddl.Sub(l1, l2)
+
+
 def Diff(l1, l2):
     """\
     Compute the difference between two layers or floats.
+
+    Deprecated alias for Sub.
 
     :param l1: a layer or float
     :param l2: a layer or float
@@ -1566,6 +1641,8 @@ def Sqrt(l):
 def Sum(l1, l2):
     """\
     Compute the sum of two layers or floats.
+
+    Deprecated alias for Add (in the add-two-layers-or-floats version).
 
     :param l1: a layer or float
     :param l2: a layer or float
@@ -1741,8 +1818,8 @@ def Decoder(l, ld, op="concat"):
 
 # = Layers methods =
 
-def set_trainable(l, val):
-    return _eddl.set_trainable(l, val)
+def setTrainable(net, lanme, val):
+    return _eddl.setTrainable(net, lanme, val)
 
 
 def getOut(net):

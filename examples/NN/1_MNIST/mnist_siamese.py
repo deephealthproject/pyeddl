@@ -58,7 +58,7 @@ def main(args):
     out2 = eddl.getLayer(base, [in2])
 
     # combine siameses with some operations
-    layer = eddl.Diff(out1, out2)
+    layer = eddl.Sub(out1, out2)
     layer = eddl.ReLu(eddl.Dense(layer, 256))
     outs = eddl.Sigmoid(eddl.Dense(layer, 784))
 
@@ -80,9 +80,9 @@ def main(args):
     if args.small:
         x_train = x_train.select([":6000"])
     x_train.div_(255.0)
-    # eddl.fit(
-    #     siamese, [x_train, x_train], [x_train], args.batch_size, args.epochs
-    # )
+    eddl.fit(
+        siamese, [x_train, x_train], [x_train], args.batch_size, args.epochs
+    )
     print("All done")
 
 
