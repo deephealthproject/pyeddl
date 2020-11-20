@@ -8,6 +8,8 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: build eddl image
         run: docker build -t eddl -f Dockerfile.eddl .
       - name: build pyeddl image
