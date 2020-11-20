@@ -93,11 +93,11 @@ def main(args):
 
     for i in range(args.epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-        eddl.evaluate(net, [x_test], [y_test])
+        eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
     eddl.setlr(net, [0.0001])
     for i in range(args.epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-        eddl.evaluate(net, [x_test], [y_test])
+        eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
 
     print("All done")
 

@@ -61,7 +61,7 @@ def main(args):
 
     x_test.div_(255.0)
 
-    eddl.evaluate(net, [x_test], [y_test])
+    eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
     print("All done")
 
 
