@@ -7,7 +7,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker'
-                            image 'simleo/pyeddl-base:8c9878af'
+                            image 'simleo/pyeddl-base:c23a43d6'
                         }
                     }
                     stages {
@@ -46,7 +46,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker && gpu'
-                            image 'simleo/pyeddl-gpu-base:8c9878af'
+                            image 'simleo/pyeddl-gpu-base:c23a43d6'
                             args '--gpus 1'
                         }
                     }
@@ -87,8 +87,14 @@ pipeline {
 				sh 'wget -q https://www.dropbox.com/s/zekpjclm58tdevk/imdb_2000_trY.bin'
 				sh 'wget -q https://www.dropbox.com/s/1bgdr8mz1lqkhgi/imdb_2000_tsX.bin'
 				sh 'wget -q https://www.dropbox.com/s/6cwob77654lruwq/imdb_2000_tsY.bin'
-				sh 'python3 examples/NN/4_NLP/nlp_sentiment_rnn.py --gpu --epochs 1 --small'
-				sh 'rm -fv imdb_2000_*.npy'
+				sh 'wget -q https://www.dropbox.com/s/2w0p7f4un6ci94v/eutrans_trX.bin'
+				sh 'wget -q https://www.dropbox.com/s/g4k1bc6p4bow9tf/eutrans_trY.bin'
+				sh 'wget -q https://www.dropbox.com/s/egcfin16gl9t92y/eutrans_tsX.bin'
+				sh 'wget -q https://www.dropbox.com/s/n8ks3lyqyhxx1e8/eutrans_tsY.bin'
+				sh 'wget -q https://www.dropbox.com/s/452pyxe9x5jpnwb/flickr_trX.bin'
+				sh 'wget -q https://www.dropbox.com/s/24c2d5bm6pug8gg/flickr_trY.bin'
+				sh 'bash examples/NN/4_NLP/run_all_fast.sh'
+				sh 'rm -fv imdb_2000_*.bin eutrans_*.bin flickr_*.bin'
 			    }
                         }
                         stage('linux_gpu_end') {
