@@ -11,6 +11,7 @@ names=(
     nlp_sentiment_rnn
     nlp_sentiment_lstm
     nlp_machine_translation
+    nlp_text_generation
 )
 
 for n in "${names[@]}"; do

@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-Machine translation example.
+Text generation.
 """
 
 import argparse
@@ -32,38 +32,68 @@ from pyeddl.tensor import Tensor
 MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")
 
 
+def ResBlock(layer, filters, nconv, half):
+    in_ = layer
+
+    if half:
+        layer = eddl.ReLu(eddl.BatchNormalization(
+            eddl.Conv(layer, filters, [3, 3], [2, 2]), True
+        ))
+    else:
+        layer = eddl.ReLu(eddl.BatchNormalization(
+            eddl.Conv(layer, filters, [3, 3], [1, 1]), True
+        ))
+
+    for i in range(nconv - 1):
+        layer = eddl.ReLu(eddl.BatchNormalization(
+            eddl.Conv(layer, filters, [3, 3], [1, 1]), True
+        ))
+
+    if half:
+        return eddl.Add(eddl.BatchNormalization(
+            eddl.Conv(in_, filters, [1, 1], [2, 2]), True
+        ), layer)
+    else:
+        return eddl.Add(layer, in_)
+
+
 def main(args):
-    eddl.download_eutrans()
+    eddl.download_flickr()
 
-    ilength = 30
-    olength = 30
-    invs = 687
-    outvs = 514
-    embedding = 64
+    olength = 20
+    outvs = 2000
+    embdim = 32
 
-    # Encoder
-    in_ = eddl.Input([1])  # 1 word
+    # Define network
+    in_ = eddl.Input([3, 256, 256])  # Image
     layer = in_
-    lE = eddl.RandomUniform(
-        eddl.Embedding(layer, invs, 1, embedding, True), -0.05, 0.05
-    )
-    enc = eddl.LSTM(lE, 128, True)
+    layer = eddl.ReLu(eddl.Conv(layer, 64, [3, 3], [2, 2]))
+
+    layer = ResBlock(layer, 64, 2, 1)
+    layer = ResBlock(layer, 64, 2, 0)
+    layer = ResBlock(layer, 128, 2, 1)
+    layer = ResBlock(layer, 128, 2, 0)
+    layer = ResBlock(layer, 256, 2, 1)
+    layer = ResBlock(layer, 256, 2, 0)
+    layer = ResBlock(layer, 512, 2, 1)
+    layer = ResBlock(layer, 512, 2, 0)
+    layer = eddl.GlobalAveragePool(layer)
+    layer = eddl.Reshape(layer, [-1])
 
     # Decoder
-    ld = eddl.Input([outvs])
-    ld = eddl.ReduceArgMax(ld, [0])
-    ld = eddl.RandomUniform(
-        eddl.Embedding(ld, outvs, 1, embedding), -0.05, 0.05
+    ldec = eddl.Input([outvs])
+    ldec = eddl.ReduceArgMax(ldec, [0])
+    ldec = eddl.RandomUniform(
+        eddl.Embedding(ldec, outvs, 1, embdim), -0.05, 0.05
     )
-    layer = eddl.Decoder(eddl.LSTM(ld, 128), enc)
+    layer = eddl.Decoder(eddl.LSTM(ldec, 512, True), layer, "concat")
     out = eddl.Softmax(eddl.Dense(layer, outvs))
-
     net = eddl.Model([in_], [out])
 
     # Build model
     eddl.build(
         net,
-        eddl.adam(0.01),
+        eddl.adam(0.001),
         ["softmax_cross_entropy"],
         ["accuracy"],
         eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
@@ -71,31 +101,19 @@ def main(args):
     eddl.summary(net)
 
     # Load dataset
-    x_train = Tensor.load("eutrans_trX.bin")
-    y_train = Tensor.load("eutrans_trY.bin")
+    x_train = Tensor.load("flickr_trX.bin")
+    y_train = Tensor.load("flickr_trY.bin")
+    if args.small:
+        x_train = x_train.select([":200"])
+        y_train = y_train.select([":200"])
+    xtrain = Tensor.permute(x_train, [0, 3, 1, 2])
     y_train = Tensor.onehot(y_train, outvs)
     # batch x timesteps x input_dim
-    x_train.reshape_([x_train.shape[0], ilength, 1])
-    # batch x timesteps x ouput_dim
     y_train.reshape_([y_train.shape[0], olength, outvs])
-
-    x_test = Tensor.load("eutrans_tsX.bin")
-    y_test = Tensor.load("eutrans_tsY.bin")
-    y_test = Tensor.onehot(y_test, outvs)
-    # batch x timesteps x input_dim
-    x_test.reshape_([x_test.shape[0], ilength, 1])
-    # batch x timesteps x ouput_dim
-    y_test.reshape_([y_test.shape[0], olength, outvs])
-
-    if args.small:
-        x_train = x_train.select([":300"])
-        y_train = y_train.select([":300"])
-        x_test = x_test.select([":100"])
-        y_test = y_test.select([":100"])
 
     # Train model
     for i in range(args.epochs):
-        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
+        eddl.fit(net, [xtrain], [y_train], args.batch_size, 1)
 
     print("All done")
 
@@ -103,11 +121,9 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--epochs", type=int, metavar="INT", default=10)
-    parser.add_argument("--batch-size", type=int, metavar="INT", default=32)
+    parser.add_argument("--batch-size", type=int, metavar="INT", default=24)
     parser.add_argument("--gpu", action="store_true")
     parser.add_argument("--small", action="store_true")
-    # This needs full_mem, otherwise it crashes with a weird "Tensors with
-    # different size (Tensor::copy)" error during fit
     parser.add_argument("--mem", metavar="|".join(MEM_CHOICES),
-                        choices=MEM_CHOICES, default="full_mem")
+                        choices=MEM_CHOICES, default="low_mem")
     main(parser.parse_args(sys.argv[1:]))
