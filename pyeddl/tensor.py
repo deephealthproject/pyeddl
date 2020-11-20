@@ -1116,3 +1116,7 @@ class Tensor(_core.Tensor):
         :return: the tensor's shape (a list of integers)
         """
         return _core.Tensor.getShape(self)
+
+    @staticmethod
+    def onehot(in_, vocs):
+        return _core.Tensor.onehot(in_, vocs)

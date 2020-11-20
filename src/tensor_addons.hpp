@@ -110,4 +110,17 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
         }
         return rval;
     }, "getdata() --> array");
+    // from the EDDL NLP examples
+    cl.def_static("onehot", [](Tensor* in, int vocs) -> Tensor* {
+	    int n = in->shape[0];
+	    int l = in->shape[1];
+	    Tensor *out = new Tensor({n, l, vocs});
+	    out->fill_(0.0);
+	    int p = 0;
+	    for(int i = 0; i < n * l; i++, p += vocs) {
+		int w = in->ptr[i];
+		out->ptr[p+w] = 1.0;
+	    }
+	    return out;
+	}, pybind11::arg("in"), pybind11::arg("vocs"));
 }

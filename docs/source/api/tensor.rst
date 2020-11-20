@@ -216,3 +216,5 @@
   .. automethod:: Tensor.info
 
   .. automethod:: Tensor.getShape
+
+  .. automethod:: Tensor.onehot

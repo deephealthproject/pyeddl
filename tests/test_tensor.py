@@ -1051,3 +1051,25 @@ def test_getShape(Tensor):
     shape = [3, 4]
     t = Tensor(shape)
     assert t.getShape() == shape
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_onehot(Tensor):
+    a = np.array([
+        [0, 2, 4],
+        [2, 3, 0]
+    ])
+    vocs = 5
+    t = Tensor(a)
+    u = Tensor.onehot(t, vocs)
+    assert u.shape == t.shape + [vocs]
+    b = np.array(u)
+    exp = np.array([
+        [[1., 0., 0., 0., 0.],   # 0
+         [0., 0., 1., 0., 0.],   # 2
+         [0., 0., 0., 0., 1.]],  # 4
+        [[0., 0., 1., 0., 0.],   # 2
+         [0., 0., 0., 1., 0.],   # 3
+         [1., 0., 0., 0., 0.]]   # 0
+    ], dtype=np.float32)
+    assert np.allclose(b, exp)
