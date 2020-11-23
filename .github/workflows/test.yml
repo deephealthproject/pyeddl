@@ -19,3 +19,13 @@ jobs:
         run: docker build -t pyeddl .
       - name: run tests
         run: docker run --rm pyeddl bash -c "pytest tests"
+      - name: install build dependencies
+        run: python -m pip install --upgrade setuptools
+      - name: build
+        run: python setup.py sdist
+      - name: publish to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_password }}
