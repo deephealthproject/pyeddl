@@ -28,9 +28,9 @@ jobs:
           python -m pip install pybind11
       - name: build dist package
         run: python setup.py sdist
-      # - name: publish to PyPI
-      #   uses: pypa/gh-action-pypi-publish@master
-      #   if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-      #   with:
-      #     user: __token__
-      #     password: ${{ secrets.pypi_password }}
+      - name: publish to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_password }}
