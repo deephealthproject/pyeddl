@@ -23,12 +23,12 @@ jobs:
         run: |
           pip install flake8
           flake8 -v .
-      # - name: build eddl image
-      #   run: docker build -t eddl -f Dockerfile.eddl .
-      # - name: build pyeddl image
-      #   run: docker build -t pyeddl .
-      # - name: run tests
-      #   run: docker run --rm pyeddl bash -c "pytest tests"
+      - name: build eddl image
+        run: docker build -t eddl -f Dockerfile.eddl .
+      - name: build pyeddl image
+        run: docker build -t pyeddl .
+      - name: run tests
+        run: docker run --rm pyeddl bash -c "pytest tests"
       - name: build dist package
         run: |
           pip install pybind11
