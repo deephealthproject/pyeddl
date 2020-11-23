@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; PyEDDL  documentation</title>
+  <title>pyeddl.utils — Utilities &mdash; PyEDDL  documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pyeddl.utils — Utilities" href="utils.html" />
-    <link rel="prev" title="Getting Started" href="../getting_started.html" /> 
+    <link rel="next" title="pyeddl.eddl — eddl API" href="eddl.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -83,10 +83,10 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.utils</span></code> — Utilities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.utils</span></code> — Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="eddl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tensor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.tensor</span></code> — Tensor</a></li>
 </ul>
@@ -135,13 +135,15 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>&lt;no title&gt;</li>
+          <li><a href="index.html">&lt;no title&gt;</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.utils</span></code> — Utilities</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/api/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/utils.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -154,21 +156,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="toctree-wrapper compound" id="api">
-<p class="caption"><span class="caption-text">API Docs:</span><a class="headerlink" href="#api" title="Permalink to this toctree">¶</a></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.utils</span></code> — Utilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="eddl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="eddl.html#model">Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="eddl.html#layers">Layers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="eddl.html#initializers">Initializers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="eddl.html#regularizers">Regularizers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="eddl.html#datasets">Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="eddl.html#onnx-support">ONNX support</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tensor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.tensor</span></code> — Tensor</a></li>
-</ul>
+  <div class="section" id="pyeddl-utils-utilities">
+<span id="utils"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.utils</span></code> — Utilities<a class="headerlink" href="#pyeddl-utils-utilities" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pyeddl.utils.WrappingMode">
+<em class="property">class </em><code class="sig-prename descclassname">pyeddl.utils.</code><code class="sig-name descname">WrappingMode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span><span class="p">:</span> <span class="n">pyeddl._core.WrappingMode</span></em>, <em class="sig-param"><span class="n">arg0</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pyeddl.utils.WrappingMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enum class which defines a wrapping mode for tensor transformations.</p>
+<dl class="py attribute">
+<dt id="pyeddl.utils.WrappingMode.Constant">
+<code class="sig-name descname">Constant</code><em class="property"> = WrappingMode.Constant</em><a class="headerlink" href="#pyeddl.utils.WrappingMode.Constant" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyeddl.utils.WrappingMode.Mirror">
+<code class="sig-name descname">Mirror</code><em class="property"> = WrappingMode.Mirror</em><a class="headerlink" href="#pyeddl.utils.WrappingMode.Mirror" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyeddl.utils.WrappingMode.Nearest">
+<code class="sig-name descname">Nearest</code><em class="property"> = WrappingMode.Nearest</em><a class="headerlink" href="#pyeddl.utils.WrappingMode.Nearest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyeddl.utils.WrappingMode.Original">
+<code class="sig-name descname">Original</code><em class="property"> = WrappingMode.Original</em><a class="headerlink" href="#pyeddl.utils.WrappingMode.Original" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyeddl.utils.WrappingMode.Reflect">
+<code class="sig-name descname">Reflect</code><em class="property"> = WrappingMode.Reflect</em><a class="headerlink" href="#pyeddl.utils.WrappingMode.Reflect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyeddl.utils.WrappingMode.Wrap">
+<code class="sig-name descname">Wrap</code><em class="property"> = WrappingMode.Wrap</em><a class="headerlink" href="#pyeddl.utils.WrappingMode.Wrap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -179,10 +204,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="utils.html" class="btn btn-neutral float-right" title="pyeddl.utils — Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="eddl.html" class="btn btn-neutral float-right" title="pyeddl.eddl — eddl API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

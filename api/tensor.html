@@ -85,6 +85,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.utils</span></code> — Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="eddl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.tensor</span></code> — Tensor</a></li>
 </ul>
@@ -1426,6 +1427,27 @@ of the tensor.</p>
 </dl>
 </dd></dl>
 
+<p><strong>=== Transformations ===</strong></p>
+<dl class="py method">
+<dt id="pyeddl.tensor.Tensor.scale">
+<code class="sig-name descname">scale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_shape</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">WrappingMode.Constant</span></em>, <em class="sig-param"><span class="n">cval</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">keep_size</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale the tensor. The array is scaled using spline interpolation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>new_shape</strong> – list with the target size</p></li>
+<li><p><strong>mode</strong> – a WrappingMode</p></li>
+<li><p><strong>cval</strong> – Value to fill past edges of input if mode is
+<code class="docutils literal notranslate"><span class="pre">WrappingMode.Constant</span></code></p></li>
+<li><p><strong>keep_size</strong> – whether to keep the original size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
 <p><strong>=== Other Methods ===</strong></p>
 <dl class="py method">
 <dt id="pyeddl.tensor.Tensor.fill_">
@@ -1498,6 +1520,11 @@ of the tensor.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pyeddl.tensor.Tensor.onehot">
+<em class="property">static </em><code class="sig-name descname">onehot</code><span class="sig-paren">(</span><em class="sig-param">in: pyeddl._core.Tensor</em>, <em class="sig-param">vocs: int</em><span class="sig-paren">)</span> &#x2192; pyeddl._core.Tensor<a class="headerlink" href="#pyeddl.tensor.Tensor.onehot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

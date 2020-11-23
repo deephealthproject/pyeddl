@@ -84,6 +84,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.utils</span></code> — Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/eddl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/tensor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.tensor</span></code> — Tensor</a></li>
 </ul>
@@ -172,6 +173,7 @@
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
  
 </div>
@@ -270,11 +272,15 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.Concat">Concat() (in module pyeddl.eddl)</a>
 </li>
+      <li><a href="api/utils.html#pyeddl.utils.WrappingMode.Constant">Constant (pyeddl.utils.WrappingMode attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/eddl.html#pyeddl.eddl.Constant">Constant() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.Conv">Conv() (in module pyeddl.eddl)</a>
+</li>
+      <li><a href="api/eddl.html#pyeddl.eddl.Conv1D">Conv1D() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.ConvT">ConvT() (in module pyeddl.eddl)</a>
 </li>
@@ -406,16 +412,22 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.GaussianNoise">GaussianNoise() (in module pyeddl.eddl)</a>
 </li>
+      <li><a href="api/eddl.html#pyeddl.eddl.get_losses">get_losses() (in module pyeddl.eddl)</a>
+</li>
+      <li><a href="api/eddl.html#pyeddl.eddl.get_metrics">get_metrics() (in module pyeddl.eddl)</a>
+</li>
+      <li><a href="api/eddl.html#pyeddl.eddl.get_parameters">get_parameters() (in module pyeddl.eddl)</a>
+</li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.getdata">getdata() (pyeddl.tensor.Tensor method)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.getLayer">getLayer() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.getLoss">getLoss() (in module pyeddl.eddl)</a>
 </li>
-      <li><a href="api/eddl.html#pyeddl.eddl.getMetric">getMetric() (in module pyeddl.eddl)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/eddl.html#pyeddl.eddl.getMetric">getMetric() (in module pyeddl.eddl)</a>
+</li>
       <li><a href="api/eddl.html#pyeddl.eddl.getOut">getOut() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.getShape">getShape() (pyeddl.tensor.Tensor method)</a>
@@ -534,6 +546,8 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.Minimum">Minimum() (in module pyeddl.eddl)</a>
 </li>
+      <li><a href="api/utils.html#pyeddl.utils.WrappingMode.Mirror">Mirror (pyeddl.utils.WrappingMode attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.mod">mod() (pyeddl.tensor.Tensor method)</a>
@@ -558,16 +572,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/eddl.html#pyeddl.eddl.nadam">nadam() (in module pyeddl.eddl)</a>
 </li>
+      <li><a href="api/utils.html#pyeddl.utils.WrappingMode.Nearest">Nearest (pyeddl.utils.WrappingMode attribute)</a>
+</li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.neg">neg() (pyeddl.tensor.Tensor method)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.neg_">neg_() (pyeddl.tensor.Tensor method)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.newloss">newloss() (in module pyeddl.eddl)</a>
 </li>
-      <li><a href="api/eddl.html#pyeddl.eddl.next_batch">next_batch() (in module pyeddl.eddl)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/eddl.html#pyeddl.eddl.next_batch">next_batch() (in module pyeddl.eddl)</a>
+</li>
       <li><a href="api/eddl.html#pyeddl.eddl.Norm">Norm() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.normalize">normalize() (pyeddl.tensor.Tensor method)</a>
@@ -584,7 +600,13 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tensor.html#pyeddl.tensor.Tensor.onehot">onehot() (pyeddl.tensor.Tensor static method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.ones">ones() (pyeddl.tensor.Tensor static method)</a>
+</li>
+      <li><a href="api/utils.html#pyeddl.utils.WrappingMode.Original">Original (pyeddl.utils.WrappingMode attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -595,6 +617,8 @@
       <li><a href="api/eddl.html#pyeddl.eddl.Permute">Permute() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.plot">plot() (in module pyeddl.eddl)</a>
+</li>
+      <li><a href="api/eddl.html#pyeddl.eddl.PointwiseConv">PointwiseConv() (in module pyeddl.eddl)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -642,10 +666,10 @@
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.reciprocal_">reciprocal_() (pyeddl.tensor.Tensor method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/eddl.html#pyeddl.eddl.ReduceArgMax">ReduceArgMax() (in module pyeddl.eddl)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/eddl.html#pyeddl.eddl.ReduceMax">ReduceMax() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.ReduceMean">ReduceMean() (in module pyeddl.eddl)</a>
@@ -656,7 +680,11 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.ReduceVar">ReduceVar() (in module pyeddl.eddl)</a>
 </li>
+      <li><a href="api/utils.html#pyeddl.utils.WrappingMode.Reflect">Reflect (pyeddl.utils.WrappingMode attribute)</a>
+</li>
       <li><a href="api/eddl.html#pyeddl.eddl.ReLu">ReLu() (in module pyeddl.eddl)</a>
+</li>
+      <li><a href="api/eddl.html#pyeddl.eddl.removeLayer">removeLayer() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.reset_loss">reset_loss() (in module pyeddl.eddl)</a>
 </li>
@@ -694,6 +722,8 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.Scale">Scale() (in module pyeddl.eddl)</a>
 </li>
+      <li><a href="api/tensor.html#pyeddl.tensor.Tensor.scale">scale() (pyeddl.tensor.Tensor method)</a>
+</li>
       <li><a href="api/eddl.html#pyeddl.eddl.Select">Select() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.select">select() (pyeddl.tensor.Tensor method)</a>
@@ -704,13 +734,15 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.set_mode">set_mode() (in module pyeddl.eddl)</a>
 </li>
-      <li><a href="api/eddl.html#pyeddl.eddl.set_trainable">set_trainable() (in module pyeddl.eddl)</a>
+      <li><a href="api/eddl.html#pyeddl.eddl.set_parameters">set_parameters() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.setlogfile">setlogfile() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.setlr">setlr() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.setName">setName() (in module pyeddl.eddl)</a>
+</li>
+      <li><a href="api/eddl.html#pyeddl.eddl.setTrainable">setTrainable() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.sgd">sgd() (in module pyeddl.eddl)</a>
 </li>
@@ -751,6 +783,8 @@
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.sqrt">sqrt() (pyeddl.tensor.Tensor method)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.sqrt_">sqrt_() (pyeddl.tensor.Tensor method)</a>
+</li>
+      <li><a href="api/eddl.html#pyeddl.eddl.Sub">Sub() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.sub">sub() (pyeddl.tensor.Tensor method)</a>
 </li>
@@ -825,6 +859,18 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/eddl.html#pyeddl.eddl.VerticalFlip">VerticalFlip() (in module pyeddl.eddl)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/utils.html#pyeddl.utils.WrappingMode.Wrap">Wrap (pyeddl.utils.WrappingMode attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/utils.html#pyeddl.utils.WrappingMode">WrappingMode (class in pyeddl.utils)</a>
 </li>
   </ul></td>
 </tr></table>

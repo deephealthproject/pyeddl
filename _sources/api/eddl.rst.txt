@@ -17,6 +17,12 @@ Creation
 
 .. autofunction:: pyeddl.eddl.getLayer
 
+.. autofunction:: pyeddl.eddl.removeLayer
+
+.. autofunction:: pyeddl.eddl.get_parameters
+
+.. autofunction:: pyeddl.eddl.set_parameters
+
 .. autofunction:: pyeddl.eddl.build
 
 
@@ -111,6 +117,10 @@ Training and evaluation: finest methods
 
 .. autofunction:: pyeddl.eddl.print_loss
 
+.. autofunction:: pyeddl.eddl.get_losses
+
+.. autofunction:: pyeddl.eddl.get_metrics
+
 
 Constraints
 ^^^^^^^^^^^
@@ -170,6 +180,10 @@ Core layers
 .. autofunction:: pyeddl.eddl.Tanh
 
 .. autofunction:: pyeddl.eddl.Conv
+
+.. autofunction:: pyeddl.eddl.Conv1D
+
+.. autofunction:: pyeddl.eddl.PointwiseConv
 
 .. autofunction:: pyeddl.eddl.Dense
 
@@ -281,6 +295,8 @@ Operator layers
 
 .. autofunction:: pyeddl.eddl.Abs
 
+.. autofunction:: pyeddl.eddl.Sub
+
 .. autofunction:: pyeddl.eddl.Diff
 
 .. autofunction:: pyeddl.eddl.Div
@@ -355,7 +371,7 @@ Recurrent layers
 Utilities
 ^^^^^^^^^
 
-.. autofunction:: pyeddl.eddl.set_trainable
+.. autofunction:: pyeddl.eddl.setTrainable
 
 .. autofunction:: pyeddl.eddl.getOut
 

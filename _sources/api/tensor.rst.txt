@@ -199,6 +199,10 @@
 
   .. automethod:: Tensor.trunc
 
+  **=== Transformations ===**
+
+  .. automethod:: Tensor.scale
+
   **=== Other Methods ===**
 
   .. automethod:: Tensor.fill_
@@ -212,3 +216,5 @@
   .. automethod:: Tensor.info
 
   .. automethod:: Tensor.getShape
+
+  .. automethod:: Tensor.onehot
