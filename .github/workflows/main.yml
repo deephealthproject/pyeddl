@@ -1,4 +1,4 @@
-name: test
+name: main
 
 on:
   push:
@@ -9,9 +9,12 @@ on:
       - gh-pages
 
 jobs:
-  test:
+  main:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
       - name: checkout code
         uses: actions/checkout@v2
         with:
@@ -23,9 +26,7 @@ jobs:
       # - name: run tests
       #   run: docker run --rm pyeddl bash -c "pytest tests"
       - name: install dist build dependencies
-        run: |
-          python -m pip install --upgrade setuptools
-          python -m pip install pybind11
+        run: python -m pip install pybind11
       - name: build dist package
         run: python setup.py sdist
       - name: publish to PyPI
