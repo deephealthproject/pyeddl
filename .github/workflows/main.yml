@@ -1,0 +1,41 @@
+name: main
+
+on:
+  push:
+    branches-ignore:
+      - gh-pages
+  pull_request:
+    branches-ignore:
+      - gh-pages
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+      - name: checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: lint with flake8
+        run: |
+          pip install flake8
+          flake8 -v .
+      - name: build eddl image
+        run: docker build -t eddl -f Dockerfile.eddl .
+      - name: build pyeddl image
+        run: docker build -t pyeddl .
+      - name: run tests
+        run: docker run --rm pyeddl bash -c "pytest tests"
+      - name: build dist package
+        run: |
+          pip install pybind11
+          python setup.py sdist
+      - name: publish to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_password }}
