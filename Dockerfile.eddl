@@ -22,6 +22,6 @@ RUN wget -q https://github.com/protocolbuffers/protobuf/releases/download/v3.11.
 
 RUN mkdir build && \
     cd build && \
-    cmake -D BUILD_SHARED_LIB=ON -D BUILD_PROTOBUF=ON -DBUILD_TESTS=OFF .. && \
+    cmake -D BUILD_SHARED_LIBS=ON -D BUILD_PROTOBUF=ON -DBUILD_TESTS=OFF -D BUILD_HPC=OFF .. && \
     make -j$(grep -c ^processor /proc/cpuinfo) && \
     make install
