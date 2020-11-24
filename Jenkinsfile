@@ -46,7 +46,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker && gpu'
-                            image 'simleo/pyeddl-gpu-base:c23a43d6'
+                            image 'simleo/pyeddl-gpu-base:c23a43d6-v2'
                             args '--gpus 1'
                         }
                     }
