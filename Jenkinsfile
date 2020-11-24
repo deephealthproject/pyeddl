@@ -7,7 +7,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker'
-                            image 'simleo/pyeddl-base:c23a43d6'
+                            image 'simleo/pyeddl-base:c23a43d6-v2'
                         }
                     }
                     stages {
@@ -46,7 +46,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker && gpu'
-                            image 'simleo/pyeddl-gpu-base:c23a43d6'
+                            image 'simleo/pyeddl-gpu-base:c23a43d6-v2'
                             args '--gpus 1'
                         }
                     }
@@ -79,10 +79,6 @@ pipeline {
 				sh 'wget -q https://www.dropbox.com/s/gdmsve6mbu82ndp/cifar_tsY.bin'
 				sh 'bash examples/NN/2_CIFAR10/run_all_fast.sh'
 				sh 'rm -fv cifar_*.bin'
-				sh 'wget -q https://www.dropbox.com/s/sbd8eu32adcf5oi/drive_trX.npy'
-				sh 'wget -q https://www.dropbox.com/s/qp0j8oiqzf6tc1a/drive_trY.npy'
-				sh 'python3 examples/NN/3_DRIVE/drive_seg.py --gpu --epochs 1'
-				sh 'rm -fv drive_*.npy'
 				sh 'wget -q https://www.dropbox.com/s/4m0h8ep53mixq6x/imdb_2000_trX.bin'
 				sh 'wget -q https://www.dropbox.com/s/zekpjclm58tdevk/imdb_2000_trY.bin'
 				sh 'wget -q https://www.dropbox.com/s/1bgdr8mz1lqkhgi/imdb_2000_tsX.bin'
