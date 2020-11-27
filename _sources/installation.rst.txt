@@ -9,6 +9,9 @@ The easiest way to install PyEDDL is via `Conda
   conda install -c dhealth pyeddl-cpu  # cpu-only version
   conda install -c dhealth pyeddl-gpu  # gpu-enabled version
 
+Note that the highest version available from Conda might be less than the
+latest version on PyPI.
+
 If you prefer to build and install from source instead, read on.
 
 To install PyEDDL, you need to install EDDL first. Installation instructions
@@ -101,9 +104,11 @@ Install PyEDDL
 You need the development version of python3 and pip. On Ubuntu, install
 ``python3-dev`` and ``python3-pip``.
 
-Install the Python dependencies::
+Install the Python dependencies. Note that, at the moment, the pybind11
+version needs to be less than 2.6::
 
-    python3 -m pip install --upgrade setuptools pip numpy pybind11 pytest
+    python3 -m pip install --upgrade setuptools pip
+    python3 -m pip install --upgrade numpy 'pybind11<2.6' pytest
 
 The EDDL code includes Eigen headers like in this example: ``#include
 <Eigen/Dense>``, e.g., with ``Eigen`` as the root directory. However, Eigen

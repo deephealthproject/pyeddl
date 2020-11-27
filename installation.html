@@ -168,6 +168,8 @@
 <span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">dhealth</span> <span class="n">pyeddl</span><span class="o">-</span><span class="n">gpu</span>  <span class="c1"># gpu-enabled version</span>
 </pre></div>
 </div>
+<p>Note that the highest version available from Conda might be less than the
+latest version on PyPI.</p>
 <p>If you prefer to build and install from source instead, read on.</p>
 <p>To install PyEDDL, you need to install EDDL first. Installation instructions
 for EDDL are available as part of the <a class="reference external" href="https://deephealthproject.github.io/eddl/">EDDL docs</a>. However, here we provide
@@ -243,8 +245,10 @@ repository).</p>
 <h2>Install PyEDDL<a class="headerlink" href="#install-pyeddl" title="Permalink to this headline">¶</a></h2>
 <p>You need the development version of python3 and pip. On Ubuntu, install
 <code class="docutils literal notranslate"><span class="pre">python3-dev</span></code> and <code class="docutils literal notranslate"><span class="pre">python3-pip</span></code>.</p>
-<p>Install the Python dependencies:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">setuptools</span> <span class="n">pip</span> <span class="n">numpy</span> <span class="n">pybind11</span> <span class="n">pytest</span>
+<p>Install the Python dependencies. Note that, at the moment, the pybind11
+version needs to be less than 2.6:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">setuptools</span> <span class="n">pip</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">numpy</span> <span class="s1">&#39;pybind11&lt;2.6&#39;</span> <span class="n">pytest</span>
 </pre></div>
 </div>
 <p>The EDDL code includes Eigen headers like in this example: <code class="docutils literal notranslate"><span class="pre">#include</span>
