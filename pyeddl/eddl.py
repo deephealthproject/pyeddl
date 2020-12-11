@@ -707,12 +707,12 @@ def Activation(parent, activation, params=[], name=""):
     return _eddl.Activation(parent, activation, params, name)
 
 
-def Softmax(parent, axis=1, name=""):
+def Softmax(parent, axis=-1, name=""):
     """\
     Apply a softmax activation function to the given layer.
 
     :param parent: parent layer
-    :param axis: dimension on which to operate
+    :param axis: dimension on which to operate (-1 for last axis)
     :param name: name of the output layer
     :return: softmax Activation layer
     """
