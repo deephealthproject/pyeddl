@@ -53,7 +53,7 @@ def main(args):
         eddl.ReLu(eddl.Conv1D(layer, 64, [3], [1])), [4], [4],
     )
     layer = eddl.Reshape(layer, [-1])
-    out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
+    out = eddl.Softmax(eddl.Dense(layer, num_classes))
     net = eddl.Model([in_], [out])
 
     eddl.build(

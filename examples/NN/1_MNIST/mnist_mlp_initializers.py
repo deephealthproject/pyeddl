@@ -43,7 +43,7 @@ def main(args):
     layer = eddl.ReLu(eddl.GlorotNormal(eddl.Dense(layer, 1024)))
     layer = eddl.ReLu(eddl.GlorotUniform(eddl.Dense(layer, 1024)))
     layer = eddl.ReLu(eddl.RandomNormal(eddl.Dense(layer, 1024)))
-    out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
+    out = eddl.Softmax(eddl.Dense(layer, num_classes))
     net = eddl.Model([in_], [out])
 
     eddl.build(

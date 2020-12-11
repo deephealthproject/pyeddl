@@ -70,6 +70,8 @@ def main(args):
     #  batch x timesteps x input_dim
     x_train.reshape_([x_train.shape[0], length, 1])
     x_test.reshape_([x_test.shape[0], length, 1])
+    y_train.reshape_([y_train.shape[0], 1, 1])
+    y_test.reshape_([y_test.shape[0], 1, 1])
 
     for i in range(args.epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)

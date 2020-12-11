@@ -27,7 +27,6 @@ https://drive.grand-challenge.org/DRIVE
 import argparse
 import sys
 
-import numpy as np
 import pyeddl.eddl as eddl
 from pyeddl.tensor import Tensor
 
@@ -122,13 +121,15 @@ def main(args):
     eddl.summary(segnet)
 
     print("Reading training data")
-    x_train_f = Tensor.fromarray(np.load("drive_trX.npy").astype(np.float32))
+    # x_train_f = Tensor.fromarray(np.load("drive_trX.npy").astype(np.float32))
+    x_train_f = Tensor.load("drive_trX.bin")
     x_train = x_train_f.permute([0, 3, 1, 2])
     x_train.info()
     x_train.div_(255.0)
 
     print("Reading test data")
-    y_train = Tensor.fromarray(np.load("drive_trY.npy").astype(np.float32))
+    # y_train = Tensor.fromarray(np.load("drive_trY.npy").astype(np.float32))
+    y_train = Tensor.load("drive_trY.bin")
     y_train.info()
     y_train.reshape_([20, 1, 584, 584])
     y_train.div_(255.0)
