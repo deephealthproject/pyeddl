@@ -1050,13 +1050,13 @@ default) through the backward graph.</p>
 
 <dl class="py function">
 <dt id="pyeddl.eddl.Softmax">
-<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">Softmax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Softmax" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pyeddl.eddl.</code><code class="sig-name descname">Softmax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Softmax" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a softmax activation function to the given layer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> – parent layer</p></li>
-<li><p><strong>axis</strong> – dimension on which to operate</p></li>
+<li><p><strong>axis</strong> – dimension on which to operate (-1 for last axis)</p></li>
 <li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
 </dd>
