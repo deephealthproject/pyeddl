@@ -47,7 +47,7 @@ def main(args):
     layer = eddl.BatchNormalization(layer, True)
     layer = eddl.ReLu(eddl.Dense(layer, 1024))
     layer = eddl.BatchNormalization(layer, True)
-    out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
+    out = eddl.Softmax(eddl.Dense(layer, num_classes))
     net = eddl.Model([in_], [out])
 
     eddl.build(

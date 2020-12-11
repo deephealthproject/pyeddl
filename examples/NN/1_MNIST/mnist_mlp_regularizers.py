@@ -43,7 +43,7 @@ def main(args):
     layer = eddl.ReLu(eddl.L2(eddl.Dense(layer, 1024), 0.0001))
     layer = eddl.ReLu(eddl.L1(eddl.Dense(layer, 1024), 0.0001))
     layer = eddl.ReLu(eddl.L1L2(eddl.Dense(layer, 1024), 0.00001, 0.0001))
-    out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
+    out = eddl.Softmax(eddl.Dense(layer, num_classes))
     net = eddl.Model([in_], [out])
 
     eddl.build(

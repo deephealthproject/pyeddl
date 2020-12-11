@@ -58,7 +58,7 @@ def main(args):
     layer = eddl.Activation(eddl.Dense(layer, 1024), "relu")
     layer = eddl.Activation(eddl.Dense(layer, 1024), "relu")
     layer = eddl.Activation(eddl.Dense(layer, 1024), "relu")
-    out = eddl.Activation(eddl.Dense(layer, num_classes), "softmax")
+    out = eddl.Softmax(eddl.Dense(layer, num_classes))
     net = eddl.Model([in_], [out])
 
     acc = CategoricalAccuracy()
