@@ -27,7 +27,6 @@ https://drive.grand-challenge.org/DRIVE
 import argparse
 import sys
 
-import numpy as np
 import pyeddl.eddl as eddl
 from pyeddl.tensor import Tensor
 
