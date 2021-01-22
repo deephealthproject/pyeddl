@@ -16,12 +16,12 @@ RUN wget -q https://github.com/protocolbuffers/protobuf/releases/download/v3.11.
     tar xf protobuf-all-3.11.4.tar.gz && \
     cd protobuf-3.11.4/ && \
     ./configure && \
-    make -j$(nproc) && \
+    make -j$(( $(nproc) < 24 ? $(nproc) : 24 )) && \
     make install && \
     ldconfig
 
 RUN mkdir build && \
     cd build && \
     cmake -D BUILD_SHARED_LIBS=ON -D BUILD_PROTOBUF=ON -DBUILD_TESTS=OFF -D BUILD_HPC=OFF .. && \
-    make -j$(grep -c ^processor /proc/cpuinfo) && \
+    make -j$(( $(nproc) < 24 ? $(nproc) : 24 )) && \
     make install

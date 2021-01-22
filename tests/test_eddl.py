@@ -364,8 +364,13 @@ def test_recurrent_layers(eddl):
     eddl.LSTM(in2d, 1, True, True, "foo")
     # Decoder
     enc = eddl.LSTM(in2d, 1, True)
-    eddl.Decoder(eddl.LSTM(in2d, 1), enc)
-    eddl.Decoder(eddl.LSTM(in2d, 1), enc, "concat")
+    eddl.GetStates(enc)
+    eddl.setDecoder(in2d)
+    # LSTM with vector
+    eddl.LSTM([in2d, enc], 1)
+    eddl.LSTM([in2d, enc], 1, True)
+    eddl.LSTM([in2d, enc], 1, True, True)
+    eddl.LSTM([in2d, enc], 1, True, True, "foo")
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])

@@ -1803,7 +1803,7 @@ def LSTM(parent, units, mask_zeros=False, bidirectional=False, name=""):
     """\
     Long Short-Term Memory layer - Hochreiter 1997.
 
-    :param parent: parent layer
+    :param parent: parent layer or vector of layers
     :param units: dimensionality of the output space.
     :param mask_zeros: boolean
     :param bidirectional: whether the net is bidirectional or not
@@ -1813,8 +1813,12 @@ def LSTM(parent, units, mask_zeros=False, bidirectional=False, name=""):
     return _eddl.LSTM(parent, units, mask_zeros, bidirectional, name)
 
 
-def Decoder(l, ld, op="concat"):
-    return _eddl.Decoder(l, ld, op)
+def setDecoder(l):
+    return _eddl.setDecoder(l)
+
+
+def GetStates(parent):
+    return _eddl.GetStates(parent)
 
 
 # = Layers methods =
@@ -1861,7 +1865,7 @@ def copyDelta(l1, l2):
     return _eddl.copyDelta(l1, l2)
 
 
-def copyParam(l1, l2, p):
+def copyParam(l1, l2, p=-1):
     return _eddl.copyParam(l1, l2, p)
 
 

@@ -365,7 +365,9 @@ Recurrent layers
 
 .. autofunction:: pyeddl.eddl.LSTM
 
-.. autofunction:: pyeddl.eddl.Decoder
+.. autofunction:: pyeddl.eddl.setDecoder
+
+.. autofunction:: pyeddl.eddl.GetStates
 
 
 Utilities
