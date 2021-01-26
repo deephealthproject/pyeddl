@@ -222,9 +222,7 @@ void eddl_addons(pybind11::module &m) {
 
     // --- model methods ---
     m.def("Model", (class Net* (*)(vector<Layer*>, vector<Layer*>)) &eddl::Model, "C++: eddl::Model(vector<Layer*>, vector<Layer*>) --> class Net*", pybind11::arg("in"), pybind11::arg("out"), pybind11::keep_alive<0, 1>(), pybind11::keep_alive<0, 2>());
-    m.def("Model", (class Net* (*)(vector<Net*>)) &eddl::Model, "C++: eddl::Model(vector<Net*>) --> class Net*", pybind11::arg("vnets"), pybind11::keep_alive<0, 1>());
     m.def("setName", (void (*)(class Net*, string)) &eddl::setName, "C++: eddl::setName(class Net*, string) --> void", pybind11::arg("m"), pybind11::arg("name"));
-    m.def("getLayer", (Layer* (*)(class Net*, vector<Layer*>)) &eddl::getLayer, "C++: eddl::getLayer(class Net*, vector<Layer*>) --> Layer*", pybind11::return_value_policy::reference, pybind11::arg("net"), pybind11::arg("in"));
     m.def("getLayer", (Layer* (*)(class Net*, string)) &eddl::getLayer, "C++: eddl::getLayer(class Net*, string) --> Layer*", pybind11::return_value_policy::reference, pybind11::arg("net"), pybind11::arg("l"));
     m.def("removeLayer", (void (*)(class Net*, string)) &eddl::removeLayer, "C++: eddl::removeLayer(class Net*, string) --> void", pybind11::arg("net"), pybind11::arg("l"));
     m.def("setTrainable", (void (*)(class Net*, string, bool)) &eddl::setTrainable, "C++: eddl::setTrainable(class Net*, string, bool) --> void", pybind11::arg("net"), pybind11::arg("lanme"), pybind11::arg("val"));
@@ -272,3 +270,23 @@ void eddl_addons(pybind11::module &m) {
     m.attr("DEV_GPU") = pybind11::int_(DEV_GPU);
     m.attr("DEV_FPGA") = pybind11::int_(DEV_FPGA);
 }
+
+// TODO:
+//   Conv2D
+//   Conv3D
+//   PointwiseConv2D
+//   UpSampling2D
+//   Squeeze
+//   Unsqueeze
+//   ConvT2D
+//   MaxPool2D
+//   MaxPool3D
+//   GlobalMaxPool1D
+//   GlobalMaxPool2D
+//   GlobalMaxPool3D
+//   GlobalAveragePool1D
+//   GlobalAveragePool2D
+//   GlobalAveragePool3D
+//   States
+//   GRU
+//   getStates

@@ -26,20 +26,16 @@ _eddl = _core.eddl
 
 # = Creation =
 
-def Model(in_, out=None):
+def Model(in_, out):
     r"""\
     Create a model (Net).
 
-    With one argument, create from a list of models. With two arguments,
-    create from a list of input layers and a list of output layers.
+    Takes a list of input layers and a list of output layers as arguments.
 
-    :param in\_: if this is the only parameter, it must be a list of models.
-      If ``out`` is specified, this must be a list of input layers.
+    :param in\_: list of input layers.
     :param out: list of output layers
     :return: model instance
     """
-    if out is None:
-        return _eddl.Model(in_)
     return _eddl.Model(in_, out)
 
 
@@ -48,7 +44,7 @@ def setName(m, name):
 
 
 def getLayer(net, in_):
-    # note: in_ can be a vector of layers or a string
+    # note: in_ must be a string
     return _eddl.getLayer(net, in_)
 
 
@@ -1849,6 +1845,10 @@ def getGradient(l1, p):
     return _eddl.getGradient(l1, p)
 
 
+def getState(l1, p):
+    return _eddl.getState(l1, p)
+
+
 def getParams(l1):
     return _eddl.getParams(l1)
 
@@ -1871,6 +1871,10 @@ def copyParam(l1, l2, p=-1):
 
 def copyGradient(l1, l2, p):
     return _eddl.copyGradient(l1, l2, p)
+
+
+def distributeParams(l):
+    return _eddl.distributeParams(l)
 
 
 # == INITIALIZERS ==
