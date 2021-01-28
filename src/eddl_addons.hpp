@@ -82,8 +82,8 @@ void eddl_addons(pybind11::module &m) {
 
     // --- losses ---
     m.def("getLoss", (class Loss* (*)(string)) &eddl::getLoss, "C++: eddl::getLoss(string) --> class Loss*", pybind11::return_value_policy::reference, pybind11::arg("type"));
-    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string) --> class NetLoss*");
-    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(Layer*)>&, Layer*, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(Layer*)>&, Layer*, string) --> class NetLoss*");
+    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string) --> class NetLoss*", pybind11::return_value_policy::reference);
+    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(Layer*)>&, Layer*, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(Layer*)>&, Layer*, string) --> class NetLoss*", pybind11::return_value_policy::reference);
 
     // --- metrics ---
     m.def("getMetric", (class Metric* (*)(string)) &eddl::getMetric, "C++: eddl::getMetric(string) --> class Metric*", pybind11::return_value_policy::reference, pybind11::arg("type"));
@@ -188,13 +188,13 @@ void eddl_addons(pybind11::module &m) {
     m.def("L1L2", (class Layer* (*)(class Layer*, float, float)) &eddl::L1L2, "C++: eddl::L1L2(class Layer*, float, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("l1"), pybind11::arg("l2"), pybind11::keep_alive<0, 1>());
 
     // --- computing services ---
-    m.def("CS_CPU", (class CompServ* (*)(int, string)) &eddl::CS_CPU, "C++: eddl::CS_CPU(int, string) --> class CompServ*", pybind11::arg("th"), pybind11::arg("mem"));
-    m.def("CS_GPU", (class CompServ* (*)(const vector<int>)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>) --> class CompServ*", pybind11::arg("g"));
-    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, string)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, string) --> class CompServ*", pybind11::arg("g"), pybind11::arg("mem"));
-    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, int)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, int) --> class CompServ*", pybind11::arg("g"), pybind11::arg("lsb"));
-    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, int, string)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, int, string) --> class CompServ*", pybind11::arg("g"), pybind11::arg("lsb"), pybind11::arg("mem"));
-    m.def("CS_FPGA", (class CompServ* (*)(const vector<int>&, int)) &eddl::CS_FPGA, "C++: eddl::CS_FPGA(const vector<int>&, int) --> class CompServ*", pybind11::arg("f"), pybind11::arg("lsb") = 1);
-    m.def("CS_COMPSS", (class CompServ* (*)(string)) &eddl::CS_COMPSS, "C++: eddl::CS_COMPSS(string) --> class CompServ*", pybind11::arg("filename"));
+    m.def("CS_CPU", (class CompServ* (*)(int, string)) &eddl::CS_CPU, "C++: eddl::CS_CPU(int, string) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("th"), pybind11::arg("mem"));
+    m.def("CS_GPU", (class CompServ* (*)(const vector<int>)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("g"));
+    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, string)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, string) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("g"), pybind11::arg("mem"));
+    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, int)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, int) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("g"), pybind11::arg("lsb"));
+    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, int, string)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, int, string) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("g"), pybind11::arg("lsb"), pybind11::arg("mem"));
+    m.def("CS_FPGA", (class CompServ* (*)(const vector<int>&, int)) &eddl::CS_FPGA, "C++: eddl::CS_FPGA(const vector<int>&, int) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("f"), pybind11::arg("lsb") = 1);
+    m.def("CS_COMPSS", (class CompServ* (*)(string)) &eddl::CS_COMPSS, "C++: eddl::CS_COMPSS(string) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("filename"));
     m.def("exist", (bool (*)(string)) &eddl::exist, "C++: eddl::exist(string) --> bool", pybind11::arg("name"));
 
     // --- fine-grained methods ---

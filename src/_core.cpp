@@ -1093,6 +1093,7 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def_readwrite("lout", &Layer::lout);
 		cl.def_readwrite("delta_bp", &Layer::delta_bp);
 		cl.def_readwrite("detached", &Layer::detached);
+		cl.def_readwrite("do_deletes", &Layer::do_deletes);
 		cl.def_readwrite("verbosity_level", &Layer::verbosity_level);
 		cl.def("initialize", (void (Layer::*)()) &Layer::initialize, "C++: Layer::initialize() --> void");
 		cl.def("info", (void (Layer::*)()) &Layer::info, "C++: Layer::info() --> void");
