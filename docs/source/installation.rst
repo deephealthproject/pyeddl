@@ -9,13 +9,16 @@ The easiest way to install PyEDDL is via `Conda
   conda install -c dhealth pyeddl-cpu  # cpu-only version
   conda install -c dhealth pyeddl-gpu  # gpu-enabled version
 
+Each PyEDDL package installs the corresponding EDDL one as a dependency. So
+there's no need to separately install EDDL when installing via Conda.
+
 Note that the highest version available from Conda might be less than the
-latest version on PyPI.
+latest version on PyPI for recent releases.
 
 If you prefer to build and install from source instead, read on.
 
-To install PyEDDL, you need to install EDDL first. Installation instructions
-for EDDL are available as part of the `EDDL docs
+To install PyEDDL from source, you need to install EDDL first. Installation
+instructions for EDDL are available as part of the `EDDL docs
 <https://deephealthproject.github.io/eddl/>`_. However, here we provide
 instructions on how to install PyEDDL including EDDL. You can refer to the
 EDDL docs if you need more details.
@@ -60,11 +63,11 @@ Eigen3
    other DeepHealth components, you should make sure that your environment
    satisfies the requirements of all such components. In particular, `ECVL
    <https://github.com/deephealthproject/ecvl>`_ needs a compiler with support
-   for C++ 17, such as GCC 8 or newer. Being a set of bindings for ECVL,
-   `PyECVL <https://github.com/deephealthproject/pyecvl>`_ also need a C++ 17
+   for C++ 17. Being a set of bindings for ECVL,
+   `PyECVL <https://github.com/deephealthproject/pyecvl>`_ also needs a C++ 17
    compiler. Since all components need to be built with the same compiler to
    work together, if you want to use PyEDDL together with PyECVL, you need to
-   compile everything with GCC 8 or similar. See the `PyECVL docs
+   compile everything with the same C++ 17 compiler. See the `PyECVL docs
    <https://deephealthproject.github.io/pyecvl>`_ for an example of PyECVL +
    PyEDDL installation.
 
