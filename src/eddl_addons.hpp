@@ -30,6 +30,104 @@
 
 void eddl_addons(pybind11::module &m) {
 
+    // --- specific layer classes ---
+
+    // Minimal bindings for specific layers. These are not meant to be used
+    // directly, but their presence allows pybind11 to return the relevant
+    // specific layer type from functions like getLayer.
+
+    // tier 1
+    pybind11::class_<LinLayer, std::shared_ptr<LinLayer>, Layer>(m, "LinLayer", "");
+    pybind11::class_<MLayer, std::shared_ptr<MLayer>, Layer>(m, "MLayer", "");
+    pybind11::class_<OperatorLayer, std::shared_ptr<OperatorLayer>, Layer>(m, "OperatorLayer", "");
+    pybind11::class_<ReductionLayer, std::shared_ptr<ReductionLayer>, Layer>(m, "ReductionLayer", "");
+    pybind11::class_<ReductionLayer2, std::shared_ptr<ReductionLayer2>, Layer>(m, "ReductionLayer2", "");
+
+    // tier 2
+    pybind11::class_<GeneratorLayer, std::shared_ptr<GeneratorLayer>, LinLayer>(m, "GeneratorLayer", "");
+    pybind11::class_<LActivation, std::shared_ptr<LActivation>, LinLayer>(m, "LActivation", "");
+    pybind11::class_<LBatchNorm, std::shared_ptr<LBatchNorm>, LinLayer>(m, "LBatchNorm", "");
+    pybind11::class_<LConv, std::shared_ptr<LConv>, LinLayer>(m, "LConv", "");
+    pybind11::class_<LConv1D, std::shared_ptr<LConv1D>, LinLayer>(m, "LConv1D", "");
+    pybind11::class_<LConvT, std::shared_ptr<LConvT>, LinLayer>(m, "LConvT", "");
+    pybind11::class_<LDataAugmentation, std::shared_ptr<LDataAugmentation>, LinLayer>(m, "LDataAugmentation", "");
+    pybind11::class_<LDense, std::shared_ptr<LDense>, LinLayer>(m, "LDense", "");
+    pybind11::class_<LDropout, std::shared_ptr<LDropout>, LinLayer>(m, "LDropout", "");
+    pybind11::class_<LEmbedding, std::shared_ptr<LEmbedding>, LinLayer>(m, "LEmbedding", "");
+    pybind11::class_<LGaussianNoise, std::shared_ptr<LGaussianNoise>, LinLayer>(m, "LGaussianNoise", "");
+    pybind11::class_<LGroupNorm, std::shared_ptr<LGroupNorm>, LinLayer>(m, "LGroupNorm", "");
+    pybind11::class_<LInput, std::shared_ptr<LInput>, LinLayer>(m, "LInput", "");
+    pybind11::class_<LLayerNorm, std::shared_ptr<LLayerNorm>, LinLayer>(m, "LLayerNorm", "");
+    pybind11::class_<LNorm, std::shared_ptr<LNorm>, LinLayer>(m, "LNorm", "");
+    pybind11::class_<LNormMax, std::shared_ptr<LNormMax>, LinLayer>(m, "LNormMax", "");
+    pybind11::class_<LNormMinMax, std::shared_ptr<LNormMinMax>, LinLayer>(m, "LNormMinMax", "");
+    pybind11::class_<LPermute, std::shared_ptr<LPermute>, LinLayer>(m, "LPermute", "");
+    pybind11::class_<LPool, std::shared_ptr<LPool>, LinLayer>(m, "LPool", "");
+    pybind11::class_<LPool1D, std::shared_ptr<LPool1D>, LinLayer>(m, "LPool1D", "");
+    pybind11::class_<LReshape, std::shared_ptr<LReshape>, LinLayer>(m, "LReshape", "");
+    pybind11::class_<LSelect, std::shared_ptr<LSelect>, LinLayer>(m, "LSelect", "");
+    pybind11::class_<LTensor, std::shared_ptr<LTensor>, LinLayer>(m, "LTensor", "");
+    pybind11::class_<LTranspose, std::shared_ptr<LTranspose>, LinLayer>(m, "LTranspose", "");
+    pybind11::class_<LUpSampling, std::shared_ptr<LUpSampling>, LinLayer>(m, "LUpSampling", "");
+
+    pybind11::class_<LAdd, std::shared_ptr<LAdd>, MLayer>(m, "LAdd", "");
+    pybind11::class_<LAverage, std::shared_ptr<LAverage>, MLayer>(m, "LAverage", "");
+    pybind11::class_<LConcat, std::shared_ptr<LConcat>, MLayer>(m, "LConcat", "");
+    pybind11::class_<LCopyStates, std::shared_ptr<LCopyStates>, MLayer>(m, "LCopyStates", "");
+    pybind11::class_<LLSTM, std::shared_ptr<LLSTM>, MLayer>(m, "LLSTM", "");
+    pybind11::class_<LMatMul, std::shared_ptr<LMatMul>, MLayer>(m, "LMatMul", "");
+    pybind11::class_<LMaximum, std::shared_ptr<LMaximum>, MLayer>(m, "LMaximum", "");
+    pybind11::class_<LMinimum, std::shared_ptr<LMinimum>, MLayer>(m, "LMinimum", "");
+    pybind11::class_<LRNN, std::shared_ptr<LRNN>, MLayer>(m, "LRNN", "");
+    pybind11::class_<LSubtract, std::shared_ptr<LSubtract>, MLayer>(m, "LSubtract", "");
+
+    pybind11::class_<LAbs, std::shared_ptr<LAbs>, OperatorLayer>(m, "LAbs", "");
+    pybind11::class_<LDiff, std::shared_ptr<LDiff>, OperatorLayer>(m, "LDiff", "");
+    pybind11::class_<LDiv, std::shared_ptr<LDiv>, OperatorLayer>(m, "LDiv", "");
+    pybind11::class_<LExp, std::shared_ptr<LExp>, OperatorLayer>(m, "LExp", "");
+    pybind11::class_<LLog, std::shared_ptr<LLog>, OperatorLayer>(m, "LLog", "");
+    pybind11::class_<LLog10, std::shared_ptr<LLog10>, OperatorLayer>(m, "LLog10", "");
+    pybind11::class_<LLog2, std::shared_ptr<LLog2>, OperatorLayer>(m, "LLog2", "");
+    pybind11::class_<LMult, std::shared_ptr<LMult>, OperatorLayer>(m, "LMult", "");
+    pybind11::class_<LPow, std::shared_ptr<LPow>, OperatorLayer>(m, "LPow", "");
+    pybind11::class_<LSqrt, std::shared_ptr<LSqrt>, OperatorLayer>(m, "LSqrt", "");
+    pybind11::class_<LSum, std::shared_ptr<LSum>, OperatorLayer>(m, "LSum", "");
+
+    pybind11::class_<LRMax, std::shared_ptr<LRMax>, ReductionLayer>(m, "LRMax", "");
+    pybind11::class_<LRMean, std::shared_ptr<LRMean>, ReductionLayer>(m, "LRMean", "");
+    pybind11::class_<LRMin, std::shared_ptr<LRMin>, ReductionLayer>(m, "LRMin", "");
+    pybind11::class_<LRSum, std::shared_ptr<LRSum>, ReductionLayer>(m, "LRSum", "");
+    pybind11::class_<LRVar, std::shared_ptr<LRVar>, ReductionLayer>(m, "LRVar", "");
+
+    pybind11::class_<LRArgmax, std::shared_ptr<LRArgmax>, ReductionLayer2>(m, "LRArgmax", "");
+
+    // tier 3
+    pybind11::class_<LGauss, std::shared_ptr<LGauss>, GeneratorLayer>(m, "LGauss", "");
+    pybind11::class_<LUniform, std::shared_ptr<LUniform>, GeneratorLayer>(m, "LUniform", "");
+
+    pybind11::class_<LCrop, std::shared_ptr<LCrop>, LDataAugmentation>(m, "LCrop", "");
+    pybind11::class_<LCropRandom, std::shared_ptr<LCropRandom>, LDataAugmentation>(m, "LCropRandom", "");
+    pybind11::class_<LCropScaleRandom, std::shared_ptr<LCropScaleRandom>, LDataAugmentation>(m, "LCropScaleRandom", "");
+    pybind11::class_<LCutout, std::shared_ptr<LCutout>, LDataAugmentation>(m, "LCutout", "");
+    pybind11::class_<LCutoutRandom, std::shared_ptr<LCutoutRandom>, LDataAugmentation>(m, "LCutoutRandom", "");
+    pybind11::class_<LFlip, std::shared_ptr<LFlip>, LDataAugmentation>(m, "LFlip", "");
+    pybind11::class_<LFlipRandom, std::shared_ptr<LFlipRandom>, LDataAugmentation>(m, "LFlipRandom", "");
+    pybind11::class_<LRotate, std::shared_ptr<LRotate>, LDataAugmentation>(m, "LRotate", "");
+    pybind11::class_<LRotateRandom, std::shared_ptr<LRotateRandom>, LDataAugmentation>(m, "LRotateRandom", "");
+    pybind11::class_<LScale, std::shared_ptr<LScale>, LDataAugmentation>(m, "LScale", "");
+    pybind11::class_<LScaleRandom, std::shared_ptr<LScaleRandom>, LDataAugmentation>(m, "LScaleRandom", "");
+    pybind11::class_<LShift, std::shared_ptr<LShift>, LDataAugmentation>(m, "LShift", "");
+    pybind11::class_<LShiftRandom, std::shared_ptr<LShiftRandom>, LDataAugmentation>(m, "LShiftRandom", "");
+
+    pybind11::class_<LAveragePool, std::shared_ptr<LAveragePool>, LPool>(m, "LAveragePool", "");
+    pybind11::class_<LMaxPool, std::shared_ptr<LMaxPool>, LPool>(m, "LMaxPool", "");
+
+    pybind11::class_<LMaxPool1D, std::shared_ptr<LMaxPool1D>, LPool1D>(m, "LMaxPool1D", "");
+
+    // tier 4
+    pybind11::class_<LCropScale, std::shared_ptr<LCropScale>, LCrop>(m, "LCropScale", "");
+
+
     // --- core layers ---
     m.def("Activation", (class Layer* (*)(class Layer*, string, vector<float>, string)) &eddl::Activation, "C++: eddl::Activation(class Layer*, string, vector<float>, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("activation"), pybind11::arg("params") = vector<float>{}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Softmax", (class Layer* (*)(class Layer*, int, string)) &eddl::Softmax, "C++: eddl::Softmax(class Layer*, int, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("axis") = -1, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
