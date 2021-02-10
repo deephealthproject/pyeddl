@@ -392,7 +392,7 @@ def fit(m, in_, out, batch, epochs):
     return _eddl.fit(m, in_, out, batch, epochs)
 
 
-def evaluate(m, in_, out, bs=100):
+def evaluate(m, in_, out, bs=-1):
     """\
     Compute the loss and metric values for the model in test mode.
 

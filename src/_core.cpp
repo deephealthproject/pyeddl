@@ -1048,6 +1048,7 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def( pybind11::init( [](){ return new CompServ(); } ) );
 		cl.def( pybind11::init( [](CompServ const &o){ return new CompServ(o); } ) );
 		cl.def_readwrite("type", &CompServ::type);
+		cl.def_readwrite("threads_arg", &CompServ::threads_arg);
 		cl.def_readwrite("local_threads", &CompServ::local_threads);
 		cl.def_readwrite("local_gpus", &CompServ::local_gpus);
 		cl.def_readwrite("local_fpgas", &CompServ::local_fpgas);
@@ -1160,6 +1161,7 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def_readwrite("isencoder", &Net::isencoder);
 		cl.def_readwrite("decsize", &Net::decsize);
 		cl.def_readwrite("devsel", &Net::devsel);
+		cl.def_readwrite("do_compserv_delete", &Net::do_compserv_delete);
 		cl.def_readwrite("layers", &Net::layers);
 		cl.def_readwrite("lin", &Net::lin);
 		cl.def_readwrite("din", &Net::din);
@@ -1172,6 +1174,9 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def_readwrite("fiterr", &Net::fiterr);
 		cl.def_readwrite("total_loss", &Net::total_loss);
 		cl.def_readwrite("total_metric", &Net::total_metric);
+		cl.def_readwrite("has_to_close_flog_tr", &Net::has_to_close_flog_tr);
+		cl.def_readwrite("has_to_close_flog_ts", &Net::has_to_close_flog_ts);
+		cl.def_readwrite("do_optimizer_delete", &Net::do_optimizer_delete);
 		cl.def_readwrite("snets", &Net::snets);
 		cl.def("toCPU", (void (Net::*)(int)) &Net::toCPU, "C++: Net::toCPU(int) --> void", pybind11::arg("t"));
 		cl.def("fts", (void (Net::*)()) &Net::fts, "C++: Net::fts() --> void");
