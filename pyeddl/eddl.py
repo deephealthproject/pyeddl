@@ -2072,13 +2072,44 @@ def download_flickr():
 
 # == ONNX ==
 
+
+class LOG_LEVEL(_eddl.LOG_LEVEL):
+    """\
+    Enum class which defines log levels for ONNX functions.
+    """
+    TRACE = _eddl.LOG_LEVEL.TRACE
+    DEBUG = _eddl.LOG_LEVEL.DEBUG
+    INFO = _eddl.LOG_LEVEL.INFO
+    WARN = _eddl.LOG_LEVEL.WARN
+    ERROR = _eddl.LOG_LEVEL.ERROR
+    NO_LOGS = _eddl.LOG_LEVEL.NO_LOGS
+
+
 def save_net_to_onnx_file(net, path):
     return _eddl.save_net_to_onnx_file(net, path)
 
 
-# TODO: map mem and log_level args
-def import_net_from_onnx_file(path):
-    return _eddl.import_net_from_onnx_file(path)
+def import_net_from_onnx_file(
+        path, input_shape=None, mem=0, log_level=LOG_LEVEL.INFO
+):
+    """\
+    Import ONNX Net from file.
+
+    If ``input_shape`` is specified, also change the net's input shape (works
+    only for models with one input layer).
+
+    :param path: path to the file where the net is saved
+    :param input_shape: shape of the input data (without the batch dimension)
+    :param mem: device
+    :param log_level: a ``LOG_LEVEL`` value
+    :return: Net
+    """
+    if input_shape:
+        return _eddl.import_net_from_onnx_file(
+            path, input_shape, mem, log_level
+        )
+    else:
+        return _eddl.import_net_from_onnx_file(path, mem, log_level)
 
 
 def serialize_net_to_onnx_string(net, gradients):
