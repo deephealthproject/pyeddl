@@ -2076,6 +2076,7 @@ def save_net_to_onnx_file(net, path):
     return _eddl.save_net_to_onnx_file(net, path)
 
 
+# TODO: map mem and log_level args
 def import_net_from_onnx_file(path):
     return _eddl.import_net_from_onnx_file(path)
 
