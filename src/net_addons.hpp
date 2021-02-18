@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <eddl/net/net.h>
 #include <pybind11/pybind11.h>
 
 template <typename type_, typename... options>

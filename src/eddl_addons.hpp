@@ -180,8 +180,8 @@ void eddl_addons(pybind11::module &m) {
 
     // --- losses ---
     m.def("getLoss", (class Loss* (*)(string)) &eddl::getLoss, "C++: eddl::getLoss(string) --> class Loss*", pybind11::return_value_policy::reference, pybind11::arg("type"));
-    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string) --> class NetLoss*");
-    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(Layer*)>&, Layer*, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(Layer*)>&, Layer*, string) --> class NetLoss*");
+    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(vector<Layer*>)>&, vector<Layer*>, string) --> class NetLoss*", pybind11::return_value_policy::reference);
+    m.def("newloss", (class NetLoss* (*)(const std::function<Layer*(Layer*)>&, Layer*, string)) &eddl::newloss, "C++: eddl::newloss(const std::function<Layer*(Layer*)>&, Layer*, string) --> class NetLoss*", pybind11::return_value_policy::reference);
 
     // --- metrics ---
     m.def("getMetric", (class Metric* (*)(string)) &eddl::getMetric, "C++: eddl::getMetric(string) --> class Metric*", pybind11::return_value_policy::reference, pybind11::arg("type"));
@@ -269,7 +269,7 @@ void eddl_addons(pybind11::module &m) {
     // --- recurrent layers ---
     m.def("RNN", (class Layer* (*)(class Layer*, int, string, bool, bool, string)) &eddl::RNN, "C++: eddl::RNN(class Layer*, int, string, bool, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("activation") = "tanh", pybind11::arg("use_bias") = true, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("LSTM", (class Layer* (*)(class Layer*, int, bool, bool, string)) &eddl::LSTM, "C++: eddl::LSTM(class Layer*, int, bool, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("mask_zeros") = false, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
-    m.def("Decoder", (class Layer* (*)(class Layer*, class Layer*, string)) &eddl::Decoder, "C++: eddl::Decoder(class Layer*, class Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("ld"), pybind11::arg("op") = "concat", pybind11::keep_alive<0, 1>(), pybind11::keep_alive<0, 2>());
+    m.def("LSTM", (class Layer* (*)(vector<Layer*>, int, bool, bool, string)) &eddl::LSTM, "C++: eddl::LSTM(vector<Layer*>, int, bool, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("mask_zeros") = false, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
 
     // --- initializers ---
     m.def("GlorotNormal", (class Layer* (*)(class Layer*, int)) &eddl::GlorotNormal, "C++: eddl::GlorotNormal(class Layer*, int) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("seed") = 1234, pybind11::keep_alive<0, 1>());
@@ -286,13 +286,13 @@ void eddl_addons(pybind11::module &m) {
     m.def("L1L2", (class Layer* (*)(class Layer*, float, float)) &eddl::L1L2, "C++: eddl::L1L2(class Layer*, float, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("l1"), pybind11::arg("l2"), pybind11::keep_alive<0, 1>());
 
     // --- computing services ---
-    m.def("CS_CPU", (class CompServ* (*)(int, string)) &eddl::CS_CPU, "C++: eddl::CS_CPU(int, string) --> class CompServ*", pybind11::arg("th"), pybind11::arg("mem"));
-    m.def("CS_GPU", (class CompServ* (*)(const vector<int>)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>) --> class CompServ*", pybind11::arg("g"));
-    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, string)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, string) --> class CompServ*", pybind11::arg("g"), pybind11::arg("mem"));
-    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, int)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, int) --> class CompServ*", pybind11::arg("g"), pybind11::arg("lsb"));
-    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, int, string)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, int, string) --> class CompServ*", pybind11::arg("g"), pybind11::arg("lsb"), pybind11::arg("mem"));
-    m.def("CS_FPGA", (class CompServ* (*)(const vector<int>&, int)) &eddl::CS_FPGA, "C++: eddl::CS_FPGA(const vector<int>&, int) --> class CompServ*", pybind11::arg("f"), pybind11::arg("lsb") = 1);
-    m.def("CS_COMPSS", (class CompServ* (*)(string)) &eddl::CS_COMPSS, "C++: eddl::CS_COMPSS(string) --> class CompServ*", pybind11::arg("filename"));
+    m.def("CS_CPU", (class CompServ* (*)(int, string)) &eddl::CS_CPU, "C++: eddl::CS_CPU(int, string) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("th"), pybind11::arg("mem"));
+    m.def("CS_GPU", (class CompServ* (*)(const vector<int>)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("g"));
+    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, string)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, string) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("g"), pybind11::arg("mem"));
+    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, int)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, int) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("g"), pybind11::arg("lsb"));
+    m.def("CS_GPU", (class CompServ* (*)(const vector<int>, int, string)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>, int, string) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("g"), pybind11::arg("lsb"), pybind11::arg("mem"));
+    m.def("CS_FPGA", (class CompServ* (*)(const vector<int>&, int)) &eddl::CS_FPGA, "C++: eddl::CS_FPGA(const vector<int>&, int) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("f"), pybind11::arg("lsb") = 1);
+    m.def("CS_COMPSS", (class CompServ* (*)(string)) &eddl::CS_COMPSS, "C++: eddl::CS_COMPSS(string) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("filename"));
     m.def("exist", (bool (*)(string)) &eddl::exist, "C++: eddl::exist(string) --> bool", pybind11::arg("name"));
 
     // --- fine-grained methods ---
@@ -320,9 +320,7 @@ void eddl_addons(pybind11::module &m) {
 
     // --- model methods ---
     m.def("Model", (class Net* (*)(vector<Layer*>, vector<Layer*>)) &eddl::Model, "C++: eddl::Model(vector<Layer*>, vector<Layer*>) --> class Net*", pybind11::arg("in"), pybind11::arg("out"), pybind11::keep_alive<0, 1>(), pybind11::keep_alive<0, 2>());
-    m.def("Model", (class Net* (*)(vector<Net*>)) &eddl::Model, "C++: eddl::Model(vector<Net*>) --> class Net*", pybind11::arg("vnets"), pybind11::keep_alive<0, 1>());
     m.def("setName", (void (*)(class Net*, string)) &eddl::setName, "C++: eddl::setName(class Net*, string) --> void", pybind11::arg("m"), pybind11::arg("name"));
-    m.def("getLayer", (Layer* (*)(class Net*, vector<Layer*>)) &eddl::getLayer, "C++: eddl::getLayer(class Net*, vector<Layer*>) --> Layer*", pybind11::return_value_policy::reference, pybind11::arg("net"), pybind11::arg("in"));
     m.def("getLayer", (Layer* (*)(class Net*, string)) &eddl::getLayer, "C++: eddl::getLayer(class Net*, string) --> Layer*", pybind11::return_value_policy::reference, pybind11::arg("net"), pybind11::arg("l"));
     m.def("removeLayer", (void (*)(class Net*, string)) &eddl::removeLayer, "C++: eddl::removeLayer(class Net*, string) --> void", pybind11::arg("net"), pybind11::arg("l"));
     m.def("setTrainable", (void (*)(class Net*, string, bool)) &eddl::setTrainable, "C++: eddl::setTrainable(class Net*, string, bool) --> void", pybind11::arg("net"), pybind11::arg("lanme"), pybind11::arg("val"));
@@ -339,7 +337,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("save", (void (*)(class Net*, const string&, string)) &eddl::save, "C++: eddl::save(class Net*, const string&, string) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("format") = "bin");
     m.def("plot", (void (*)(class Net*, string, string)) &eddl::plot, "C++: eddl::plot(class Net*, string, string) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("string") = "LR");
     m.def("fit", (void (*)(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int, int)) &eddl::fit, "C++: eddl::fit(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int, int) --> void", pybind11::call_guard<pybind11::gil_scoped_release>(), pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"), pybind11::arg("batch"), pybind11::arg("epochs"));
-    m.def("evaluate", (void (*)(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int)) &eddl::evaluate, "C++: eddl::evaluate(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int) --> void", pybind11::call_guard<pybind11::gil_scoped_release>(), pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"), pybind11::arg("bs")=100);
+    m.def("evaluate", (void (*)(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int)) &eddl::evaluate, "C++: eddl::evaluate(class Net*, const vector<Tensor*>&, const vector<Tensor*>&, int) --> void", pybind11::call_guard<pybind11::gil_scoped_release>(), pybind11::arg("m"), pybind11::arg("in"), pybind11::arg("out"), pybind11::arg("bs")=-1);
     m.def("predict", (vector<Tensor*> (*)(class Net*, const vector<Tensor*>&)) &eddl::predict, "C++: eddl::predict(class Net*, const vector<Tensor*>&) --> vector<Tensor*>", pybind11::call_guard<pybind11::gil_scoped_release>(), pybind11::arg("m"), pybind11::arg("in"));
     // not implemented upstream:
     //   Affine
@@ -354,7 +352,10 @@ void eddl_addons(pybind11::module &m) {
 #ifdef EDDL_WITH_PROTOBUF
     // --- serialization ---
     m.def("save_net_to_onnx_file", (void (*)(class Net*, string)) &save_net_to_onnx_file, "C++: eddl::save_net_to_onnx_file(class Net *, string) --> void", pybind11::arg("net"), pybind11::arg("path"));
-    m.def("import_net_from_onnx_file", (class Net* (*)(string)) &import_net_from_onnx_file, "C++: eddl::import_net_from_onnx_file(string) --> class Net*", pybind11::arg("path"));
+    // TODOs:
+    //   bind LOG_LEVEL or use lambdas to make it fall back to the C++ default
+    //   bind the other overload
+    m.def("import_net_from_onnx_file", (class Net* (*)(string, int, int)) &import_net_from_onnx_file, "Imports ONNX Net from file", pybind11::arg("path"), pybind11::arg("mem") = 0, pybind11::arg("log_level") = 2);
     m.def("serialize_net_to_onnx_string", [](Net* net, bool gradients) -> pybind11::bytes {
       string* s = serialize_net_to_onnx_string(net, gradients);
       return pybind11::bytes(*s);
@@ -370,3 +371,23 @@ void eddl_addons(pybind11::module &m) {
     m.attr("DEV_GPU") = pybind11::int_(DEV_GPU);
     m.attr("DEV_FPGA") = pybind11::int_(DEV_FPGA);
 }
+
+// TODO:
+//   Conv2D
+//   Conv3D
+//   PointwiseConv2D
+//   UpSampling2D
+//   Squeeze
+//   Unsqueeze
+//   ConvT2D
+//   MaxPool2D
+//   MaxPool3D
+//   GlobalMaxPool1D
+//   GlobalMaxPool2D
+//   GlobalMaxPool3D
+//   GlobalAveragePool1D
+//   GlobalAveragePool2D
+//   GlobalAveragePool3D
+//   States
+//   GRU
+//   getStates

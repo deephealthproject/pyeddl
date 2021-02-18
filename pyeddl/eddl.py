@@ -26,20 +26,16 @@ _eddl = _core.eddl
 
 # = Creation =
 
-def Model(in_, out=None):
+def Model(in_, out):
     r"""\
     Create a model (Net).
 
-    With one argument, create from a list of models. With two arguments,
-    create from a list of input layers and a list of output layers.
+    Takes a list of input layers and a list of output layers as arguments.
 
-    :param in\_: if this is the only parameter, it must be a list of models.
-      If ``out`` is specified, this must be a list of input layers.
+    :param in\_: list of input layers.
     :param out: list of output layers
     :return: model instance
     """
-    if out is None:
-        return _eddl.Model(in_)
     return _eddl.Model(in_, out)
 
 
@@ -48,7 +44,7 @@ def setName(m, name):
 
 
 def getLayer(net, in_):
-    # note: in_ can be a vector of layers or a string
+    # note: in_ must be a string
     return _eddl.getLayer(net, in_)
 
 
@@ -396,7 +392,7 @@ def fit(m, in_, out, batch, epochs):
     return _eddl.fit(m, in_, out, batch, epochs)
 
 
-def evaluate(m, in_, out, bs=100):
+def evaluate(m, in_, out, bs=-1):
     """\
     Compute the loss and metric values for the model in test mode.
 
@@ -1803,7 +1799,7 @@ def LSTM(parent, units, mask_zeros=False, bidirectional=False, name=""):
     """\
     Long Short-Term Memory layer - Hochreiter 1997.
 
-    :param parent: parent layer
+    :param parent: parent layer or vector of layers
     :param units: dimensionality of the output space.
     :param mask_zeros: boolean
     :param bidirectional: whether the net is bidirectional or not
@@ -1813,8 +1809,12 @@ def LSTM(parent, units, mask_zeros=False, bidirectional=False, name=""):
     return _eddl.LSTM(parent, units, mask_zeros, bidirectional, name)
 
 
-def Decoder(l, ld, op="concat"):
-    return _eddl.Decoder(l, ld, op)
+def setDecoder(l):
+    return _eddl.setDecoder(l)
+
+
+def GetStates(parent):
+    return _eddl.GetStates(parent)
 
 
 # = Layers methods =
@@ -1845,6 +1845,10 @@ def getGradient(l1, p):
     return _eddl.getGradient(l1, p)
 
 
+def getState(l1, p):
+    return _eddl.getState(l1, p)
+
+
 def getParams(l1):
     return _eddl.getParams(l1)
 
@@ -1861,12 +1865,16 @@ def copyDelta(l1, l2):
     return _eddl.copyDelta(l1, l2)
 
 
-def copyParam(l1, l2, p):
+def copyParam(l1, l2, p=-1):
     return _eddl.copyParam(l1, l2, p)
 
 
 def copyGradient(l1, l2, p):
     return _eddl.copyGradient(l1, l2, p)
+
+
+def distributeParams(l):
+    return _eddl.distributeParams(l)
 
 
 # == INITIALIZERS ==
@@ -2068,6 +2076,7 @@ def save_net_to_onnx_file(net, path):
     return _eddl.save_net_to_onnx_file(net, path)
 
 
+# TODO: map mem and log_level args
 def import_net_from_onnx_file(path):
     return _eddl.import_net_from_onnx_file(path)
 

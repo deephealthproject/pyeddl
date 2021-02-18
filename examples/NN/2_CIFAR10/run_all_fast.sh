@@ -10,7 +10,6 @@ this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 names=(
     cifar_conv
     cifar_conv_da
-    cifar_pretrained
     cifar_resnet
     cifar_resnet50_da_bn
     cifar_resnet_da_bn

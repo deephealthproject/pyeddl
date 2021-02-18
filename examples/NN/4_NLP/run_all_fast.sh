@@ -9,8 +9,8 @@ this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 names=(
     nlp_sentiment_rnn
-    nlp_machine_translation
-    nlp_text_generation
+    # nlp_machine_translation
+    # nlp_text_generation
 )
 
 for n in "${names[@]}"; do
