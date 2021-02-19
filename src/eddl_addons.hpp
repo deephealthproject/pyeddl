@@ -378,10 +378,10 @@ void eddl_addons(pybind11::module &m) {
       string* s = serialize_net_to_onnx_string(net, gradients);
       return pybind11::bytes(*s);
     }, pybind11::arg("net"), pybind11::arg("gradients"));
-    m.def("import_net_from_onnx_string", [](pybind11::bytes model_string) -> Net* {
+    m.def("import_net_from_onnx_string", [](pybind11::bytes model_string, int mem = 0) -> Net* {
       string s = string(model_string);
-      return import_net_from_onnx_string(&s, s.size());
-    }, pybind11::arg("model_string"));
+      return import_net_from_onnx_string(&s, mem);
+    }, pybind11::arg("model_string"), pybind11::arg("mem") = 0);
 #endif
 
     // --- constants ---

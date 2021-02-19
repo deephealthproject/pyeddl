@@ -2168,5 +2168,5 @@ def serialize_net_to_onnx_string(net, gradients):
     return _eddl.serialize_net_to_onnx_string(net, gradients)
 
 
-def import_net_from_onnx_string(model_string):
-    return _eddl.import_net_from_onnx_string(model_string)
+def import_net_from_onnx_string(model_string, mem=0):
+    return _eddl.import_net_from_onnx_string(model_string, mem=mem)
