@@ -323,6 +323,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("setName", (void (*)(class Net*, string)) &eddl::setName, "C++: eddl::setName(class Net*, string) --> void", pybind11::arg("m"), pybind11::arg("name"));
     m.def("getLayer", (Layer* (*)(class Net*, string)) &eddl::getLayer, "C++: eddl::getLayer(class Net*, string) --> Layer*", pybind11::return_value_policy::reference, pybind11::arg("net"), pybind11::arg("l"));
     m.def("removeLayer", (void (*)(class Net*, string)) &eddl::removeLayer, "C++: eddl::removeLayer(class Net*, string) --> void", pybind11::arg("net"), pybind11::arg("l"));
+    m.def("initializeLayer", (void (*)(class Net*, string)) &eddl::initializeLayer, "C++: eddl::initializeLayer(class Net*, string) --> void", pybind11::arg("net"), pybind11::arg("l"));
     m.def("setTrainable", (void (*)(class Net*, string, bool)) &eddl::setTrainable, "C++: eddl::setTrainable(class Net*, string, bool) --> void", pybind11::arg("net"), pybind11::arg("lanme"), pybind11::arg("val"));
     m.def("get_parameters", (vector<vector<Tensor*>> (*)(class Net*, bool, bool)) &eddl::get_parameters, "C++: eddl::get_parameters(class Net*, bool, bool) --> vector<vector<Tensor*>>", pybind11::return_value_policy::reference, pybind11::arg("net"), pybind11::arg("deepcopy")=false, pybind11::arg("tocpu")=false);
     m.def("set_parameters", (void (*)(class Net*, const vector<vector<Tensor*>>&)) &eddl::set_parameters, "C++: eddl::set_parameters(class Net*, const vector<vector<Tensor*>>&) --> void", pybind11::arg("net"), pybind11::arg("params"));
@@ -348,6 +349,16 @@ void eddl_addons(pybind11::module &m) {
     //   RandomAffine
     //   RandomCenteredCrop
     //   RandomGrayscale
+
+    // --- get models ---
+    m.def("download_model", (void (*)(string, string)) &eddl::download_model, "C++: eddl::download_model(string, string) --> void", pybind11::arg("name"), pybind11::arg("link"));
+    m.def("download_vgg16", (Net* (*)(bool, vector<int>)) &eddl::download_vgg16, "C++: eddl::download_vgg16(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
+    m.def("download_resnet18", (Net* (*)(bool, vector<int>)) &eddl::download_resnet18, "C++: eddl::download_resnet18(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
+    m.def("download_resnet34", (Net* (*)(bool, vector<int>)) &eddl::download_resnet34, "C++: eddl::download_resnet34(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
+    m.def("download_resnet50", (Net* (*)(bool, vector<int>)) &eddl::download_resnet50, "C++: eddl::download_resnet50(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
+    m.def("download_resnet101", (Net* (*)(bool, vector<int>)) &eddl::download_resnet101, "C++: eddl::download_resnet101(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
+    m.def("download_resnet152", (Net* (*)(bool, vector<int>)) &eddl::download_resnet152, "C++: eddl::download_resnet152(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
+
 
 #ifdef EDDL_WITH_PROTOBUF
 

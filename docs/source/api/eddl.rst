@@ -19,6 +19,8 @@ Creation
 
 .. autofunction:: pyeddl.eddl.removeLayer
 
+.. autofunction:: pyeddl.eddl.initializeLayer
+
 .. autofunction:: pyeddl.eddl.get_parameters
 
 .. autofunction:: pyeddl.eddl.set_parameters
@@ -404,6 +406,25 @@ Regularizers
 .. autofunction:: pyeddl.eddl.L1
 
 .. autofunction:: pyeddl.eddl.L1L2
+
+
+Get Models
+----------
+
+.. autofunction:: pyeddl.eddl.download_model
+
+.. autofunction:: pyeddl.eddl.download_vgg16
+
+.. autofunction:: pyeddl.eddl.download_resnet18
+
+.. autofunction:: pyeddl.eddl.download_resnet34
+
+.. autofunction:: pyeddl.eddl.download_resnet50
+
+.. autofunction:: pyeddl.eddl.download_resnet101
+
+.. autofunction:: pyeddl.eddl.download_resnet152
+
 
 
 Datasets

@@ -52,6 +52,10 @@ def removeLayer(net, l):
     _eddl.removeLayer(net, l)
 
 
+def initializeLayer(net, l):
+    _eddl.initializeLayer(net, l)
+
+
 def get_parameters(net, deepcopy=False, tocpu=False):
     return _eddl.get_parameters(net, deepcopy, tocpu)
 
@@ -2012,6 +2016,54 @@ def L1L2(l, l1, l2):
     :return: the input layer, regularized
     """
     return _eddl.L1L2(l, l1, l2)
+
+
+# == GET MODELS ==
+
+def download_model(name, link):
+    return _eddl.download_model(name, link)
+
+
+def download_vgg16(top=True, shape=None):
+    if not shape:
+        return _eddl.download_vgg16(top)
+    else:
+        return _eddl.download_vgg16(top, shape=shape)
+
+
+def download_resnet18(top=True, shape=None):
+    if not shape:
+        return _eddl.download_resnet18(top)
+    else:
+        return _eddl.download_resnet18(top, shape=shape)
+
+
+def download_resnet34(top=True, shape=None):
+    if not shape:
+        return _eddl.download_resnet34(top)
+    else:
+        return _eddl.download_resnet34(top, shape=shape)
+
+
+def download_resnet50(top=True, shape=None):
+    if not shape:
+        return _eddl.download_resnet50(top)
+    else:
+        return _eddl.download_resnet50(top, shape=shape)
+
+
+def download_resnet101(top=True, shape=None):
+    if not shape:
+        return _eddl.download_resnet101(top)
+    else:
+        return _eddl.download_resnet101(top, shape=shape)
+
+
+def download_resnet152(top=True, shape=None):
+    if not shape:
+        return _eddl.download_resnet152(top)
+    else:
+        return _eddl.download_resnet152(top, shape=shape)
 
 
 # == DATASETS ==
