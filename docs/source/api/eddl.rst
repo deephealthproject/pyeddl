@@ -359,9 +359,21 @@ Pooling layers
 
 .. autofunction:: pyeddl.eddl.GlobalMaxPool
 
+.. autofunction:: pyeddl.eddl.GlobalMaxPool1D
+
+.. autofunction:: pyeddl.eddl.GlobalMaxPool2D
+
+.. autofunction:: pyeddl.eddl.GlobalMaxPool3D
+
 .. autofunction:: pyeddl.eddl.GlobalAveragePool
 
 .. autofunction:: pyeddl.eddl.MaxPool
+
+.. autofunction:: pyeddl.eddl.MaxPool1D
+
+.. autofunction:: pyeddl.eddl.MaxPool2D
+
+.. autofunction:: pyeddl.eddl.MaxPool3D
 
 
 Recurrent layers

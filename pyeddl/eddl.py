@@ -1790,6 +1790,39 @@ def GlobalMaxPool(parent, name=""):
     return _eddl.GlobalMaxPool(parent, name)
 
 
+def GlobalMaxPool1D(parent, name=""):
+    """\
+    Perform 1D global max pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: a MaxPool layer
+    """
+    return _eddl.GlobalMaxPool1D(parent, name)
+
+
+def GlobalMaxPool2D(parent, name=""):
+    """\
+    Perform 2D global max pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: a MaxPool layer
+    """
+    return _eddl.GlobalMaxPool2D(parent, name)
+
+
+def GlobalMaxPool3D(parent, name=""):
+    """\
+    Perform 3D global max pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: a MaxPool layer
+    """
+    return _eddl.GlobalMaxPool3D(parent, name)
+
+
 def GlobalAveragePool(parent, name=""):
     """\
     Perform global average pooling.
@@ -1827,6 +1860,36 @@ def MaxPool1D(parent, pool_size=[2], strides=[2], padding="none", name=""):
     :return: MaxPool1D layer
     """
     return _eddl.MaxPool1D(parent, pool_size, strides, padding, name)
+
+
+def MaxPool2D(parent, pool_size=[2, 2], strides=[2, 2], padding="none",
+              name=""):
+    """\
+    Perform 2D Max pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the max pooling windows
+    :param strides: factor by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: MaxPool layer
+    """
+    return _eddl.MaxPool2D(parent, pool_size, strides, padding, name)
+
+
+def MaxPool3D(parent, pool_size=[2, 2, 2], strides=[2, 2, 2], padding="none",
+              name=""):
+    """\
+    Perform 3D Max pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the max pooling windows
+    :param strides: factor by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: MaxPool layer
+    """
+    return _eddl.MaxPool3D(parent, pool_size, strides, padding, name)
 
 
 # = Recurrent layers =
