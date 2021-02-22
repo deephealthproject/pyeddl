@@ -402,11 +402,6 @@ void eddl_addons(pybind11::module &m) {
 //   Squeeze
 //   Unsqueeze
 //   ConvT2D
-//   MaxPool2D
-//   MaxPool3D
-//   GlobalMaxPool1D
-//   GlobalMaxPool2D
-//   GlobalMaxPool3D
 //   GlobalAveragePool1D
 //   GlobalAveragePool2D
 //   GlobalAveragePool3D
