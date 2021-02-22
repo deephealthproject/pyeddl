@@ -17,3 +17,6 @@ for n in "${names[@]}"; do
     echo -en "\n*** ${n} ***\n"
     python3 "${this_dir}"/${n}.py --gpu --epochs 1 --small
 done
+
+echo -en "\n*** nlp_video_to_labels ***\n"
+python3 "${this_dir}"/nlp_video_to_labels.py --gpu --small

@@ -165,6 +165,13 @@ def test_eye(Tensor):
 
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_randu(Tensor):
+    shape = [2, 3]
+    t = Tensor.randu(shape)
+    assert Tensor.getShape(t) == shape
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
 def test_randn(Tensor):
     shape = [2, 3]
     t = Tensor.randn(shape)

@@ -51,6 +51,8 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
 		  pybind11::arg("value"), pybind11::arg("dev") = DEV_CPU);
     cl.def_static("ones", &Tensor::ones, pybind11::arg("shape"),
 		  pybind11::arg("dev") = DEV_CPU);
+    cl.def_static("randu", &Tensor::randu, pybind11::arg("shape"),
+		  pybind11::arg("dev") = DEV_CPU);
     cl.def_static("randn", &Tensor::randn, pybind11::arg("shape"),
 		  pybind11::arg("dev") = DEV_CPU);
     cl.def_static("transpose", &Tensor::transpose, pybind11::arg("A"),

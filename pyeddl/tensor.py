@@ -174,6 +174,17 @@ class Tensor(_core.Tensor):
         return _core.Tensor.eye(size, offset, dev)
 
     @staticmethod
+    def randu(shape, dev=DEV_CPU):
+        """\
+        Create a tensor with uniformly distributed random values.
+
+        :param shape: shape of the tensor to create
+        :param dev: device to use: :data:`DEV_CPU` or :data:`DEV_GPU`
+        :return: Tensor
+        """
+        return _core.Tensor.randu(shape, dev)
+
+    @staticmethod
     def randn(shape, dev=DEV_CPU):
         """\
         Create a tensor with normally distributed random values.
