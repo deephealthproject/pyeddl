@@ -145,6 +145,9 @@ void eddl_addons(pybind11::module &m) {
     m.def("Tanh", (class Layer* (*)(class Layer*, string)) &eddl::Tanh, "C++: eddl::Tanh(class Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Conv", (class Layer* (*)(class Layer*, int, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::Conv, "C++: eddl::Conv(class Layer*, int, const vector<int>&, const vector<int> &, string, bool, int, const vector<int>&, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("padding") = "same", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Conv1D", (class Layer* (*)(class Layer*, int, vector<int>, vector<int>, string, bool, int, const vector<int>, string)) &eddl::Conv1D, "C++: eddl::Conv1D(class Layer*, int, vector<int>, vector<int>, string, bool, int, const vector<int>, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1}, pybind11::arg("padding") = "same", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("Conv2D", (Layer* (*)(Layer*, int, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::Conv2D, "2D convolution layer", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("padding") = "same", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("Conv3D", (Layer* (*)(Layer*, int, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::Conv3D, "3D convolution layer", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1, 1}, pybind11::arg("padding") = "same", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+
     m.def("PointwiseConv", (class Layer* (*)(class Layer*, int, const vector<int>&, bool, int, const vector<int>&, string)) &eddl::PointwiseConv, "Pointwise convolution", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("filters"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("ConvT", (class Layer* (*)(class Layer*, int, const vector<int>&, const vector<int>&, string, const vector<int>&, const vector<int>&, bool, string)) &eddl::ConvT, "C++: eddl::ConvT(class Layer*, int, const vector<int>&, const vector<int>&, string, const vector<int>&, const vector<int>&, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("output_padding"), pybind11::arg("padding") = "same", pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("use_bias") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Dense", (class Layer* (*)(class Layer*, int, bool, string)) &eddl::Dense, "C++: eddl::Dense(class Layer*, int, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("ndim"), pybind11::arg("use_bias") = true, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
@@ -347,7 +350,6 @@ void eddl_addons(pybind11::module &m) {
     //   Normalize
     //   Pad
     //   RandomAffine
-    //   RandomCenteredCrop
     //   RandomGrayscale
 
     // --- get models ---
@@ -391,8 +393,6 @@ void eddl_addons(pybind11::module &m) {
 }
 
 // TODO:
-//   Conv2D
-//   Conv3D
 //   PointwiseConv2D
 //   UpSampling2D
 //   Squeeze

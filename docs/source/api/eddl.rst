@@ -185,6 +185,10 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.Conv1D
 
+.. autofunction:: pyeddl.eddl.Conv2D
+
+.. autofunction:: pyeddl.eddl.Conv3D
+
 .. autofunction:: pyeddl.eddl.PointwiseConv
 
 .. autofunction:: pyeddl.eddl.Dense

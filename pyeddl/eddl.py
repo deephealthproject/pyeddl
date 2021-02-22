@@ -902,6 +902,54 @@ def Conv1D(parent, filters, kernel_size, strides=[1], padding="same",
                         use_bias, groups, dilation_rate, name)
 
 
+def Conv2D(parent, filters, kernel_size, strides=[1, 1], padding="same",
+           use_bias=True, groups=1, dilation_rate=[1, 1], name=""):
+    """\
+    2D convolution layer.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param kernel_size: list of 2 integers, specifying the height and width of
+      the 2D convolution window.
+    :param strides: list of 2 integers, specifying the strides of the
+      convolution along the height and width
+    :param padding: one of "none", "valid" or "same"
+    :param use_bias: whether the layer uses a bias vector
+    :param groups: number of blocked connections from input to output channels
+    :param dilation_rate: list of 2 integers, specifying the dilation rate
+      to use for dilated convolution
+    :param name: name of the output layer
+    :return: Convolution layer
+    """
+    return _eddl.Conv2D(parent, filters, kernel_size, strides, padding,
+                        use_bias, groups, dilation_rate, name)
+
+
+def Conv3D(parent, filters, kernel_size, strides=[1, 1, 1], padding="same",
+           use_bias=True, groups=1, dilation_rate=[1, 1, 1], name=""):
+    """\
+    3D convolution layer.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param kernel_size: list of 3 integers, specifying the sizes of
+      the 3D convolution window along each dimension
+    :param strides: list of 3 integers, specifying the strides of the
+      convolution along each dimension
+    :param padding: one of "none", "valid" or "same"
+    :param use_bias: whether the layer uses a bias vector
+    :param groups: number of blocked connections from input to output channels
+    :param dilation_rate: list of 3 integers, specifying the dilation rate
+      to use for dilated convolution
+    :param name: name of the output layer
+    :return: Convolution layer
+    """
+    return _eddl.Conv3D(parent, filters, kernel_size, strides, padding,
+                        use_bias, groups, dilation_rate, name)
+
+
 def PointwiseConv(parent, filters, strides=[1, 1], use_bias=True, groups=1,
                   dilation_rate=[1, 1], name=""):
     """\
