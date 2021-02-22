@@ -22,7 +22,13 @@
 Machine translation example.
 """
 
-# TODO: update
+# Leads to a segmentation fault at interpreter exit.
+# Notes:
+#  * If "cps = eddl.GetStates(enc)" is commented out and "cps" is replaced
+#    with "enc" in "layer = eddl.LSTM([ld, cps], 128)", there is no segfault.
+#  * If "cps" is replaced with "enc" in "layer = eddl.LSTM([ld, cps], 128)",
+#    but "cps = eddl.GetStates(enc)" is NOT commented out, then a
+#    "RuntimeError: RuntimeError: unroll" occurs.
 
 import argparse
 import sys
@@ -37,6 +43,8 @@ MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")
 def main(args):
     eddl.download_eutrans()
 
+    epochs = 1 if args.small else 5
+
     ilength = 30
     olength = 30
     invs = 687
@@ -50,15 +58,17 @@ def main(args):
         eddl.Embedding(layer, invs, 1, embedding, True), -0.05, 0.05
     )
     enc = eddl.LSTM(lE, 128, True)
+    cps = eddl.GetStates(enc)
 
     # Decoder
-    ld = eddl.Input([outvs])
-    ld = eddl.ReduceArgMax(ld, [0])
+    ldin = eddl.Input([outvs])
+    ld = eddl.ReduceArgMax(ldin, [0])
     ld = eddl.RandomUniform(
         eddl.Embedding(ld, outvs, 1, embedding), -0.05, 0.05
     )
-    layer = eddl.Decoder(eddl.LSTM(ld, 128), enc)
+    layer = eddl.LSTM([ld, cps], 128)
     out = eddl.Softmax(eddl.Dense(layer, outvs))
+    eddl.setDecoder(ldin)
 
     net = eddl.Model([in_], [out])
 
@@ -90,13 +100,16 @@ def main(args):
     y_test.reshape_([y_test.shape[0], olength, outvs])
 
     if args.small:
-        x_train = x_train.select([":300"])
-        y_train = y_train.select([":300"])
-        x_test = x_test.select([":100"])
-        y_test = y_test.select([":100"])
+        sel = [f":{3 * args.batch_size}", ":", ":"]
+        x_train = x_train.select(sel)
+        y_train = y_train.select(sel)
+        x_test = x_test.select(sel)
+        y_test = y_test.select(sel)
 
     # Train model
-    for i in range(args.epochs):
+    ybatch = Tensor([args.batch_size, olength, outvs])
+    eddl.next_batch([y_train], [ybatch])
+    for i in range(epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
 
     print("All done")
@@ -104,7 +117,6 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--epochs", type=int, metavar="INT", default=10)
     parser.add_argument("--batch-size", type=int, metavar="INT", default=32)
     parser.add_argument("--gpu", action="store_true")
     parser.add_argument("--small", action="store_true")
