@@ -1924,6 +1924,20 @@ def LSTM(parent, units, mask_zeros=False, bidirectional=False, name=""):
     return _eddl.LSTM(parent, units, mask_zeros, bidirectional, name)
 
 
+def GRU(parent, units, mask_zeros=False, bidirectional=False, name=""):
+    """\
+    Gated Recurrent Unit (GRU).
+
+    :param parent: parent layer or vector of layers
+    :param units: dimensionality of the output space.
+    :param mask_zeros: boolean
+    :param bidirectional: whether the net is bidirectional or not
+    :param name: name of the output layer
+    :return: GRU layer
+    """
+    return _eddl.GRU(parent, units, mask_zeros, bidirectional, name)
+
+
 def setDecoder(l):
     return _eddl.setDecoder(l)
 

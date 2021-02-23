@@ -409,6 +409,15 @@ def test_recurrent_layers(eddl):
     eddl.LSTM([in2d, enc], 1, True)
     eddl.LSTM([in2d, enc], 1, True, True)
     eddl.LSTM([in2d, enc], 1, True, True, "foo")
+    # GRU
+    eddl.GRU(in2d, 1)
+    eddl.GRU(in2d, 1, True)
+    eddl.GRU(in2d, 1, True, True)
+    eddl.GRU(in2d, 1, True, True, "foo")
+    eddl.GRU([in2d, enc], 1)
+    eddl.GRU([in2d, enc], 1, True)
+    eddl.GRU([in2d, enc], 1, True, True)
+    eddl.GRU([in2d, enc], 1, True, True, "foo")
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])

@@ -277,6 +277,8 @@ void eddl_addons(pybind11::module &m) {
     m.def("RNN", (class Layer* (*)(class Layer*, int, string, bool, bool, string)) &eddl::RNN, "C++: eddl::RNN(class Layer*, int, string, bool, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("activation") = "tanh", pybind11::arg("use_bias") = true, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("LSTM", (class Layer* (*)(class Layer*, int, bool, bool, string)) &eddl::LSTM, "C++: eddl::LSTM(class Layer*, int, bool, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("mask_zeros") = false, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("LSTM", (class Layer* (*)(vector<Layer*>, int, bool, bool, string)) &eddl::LSTM, "C++: eddl::LSTM(vector<Layer*>, int, bool, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("mask_zeros") = false, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("GRU", (Layer* (*)(Layer*, int, bool, bool, string)) &eddl::GRU, "C++: eddl::GRU(Layer*, int, bool, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("mask_zeros") = false, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("GRU", (Layer* (*)(vector<Layer*>, int, bool, bool, string)) &eddl::GRU, "C++: eddl::GRU(vector<Layer*>, int, bool, bool, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("units"), pybind11::arg("mask_zeros") = false, pybind11::arg("bidirectional") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("GetStates", (Layer* (*)(Layer*)) &eddl::GetStates, "C++: eddl::GetStates(Layer*) --> Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::keep_alive<0, 1>());
     m.def("setDecoder", (void (*)(Layer*)) &eddl::setDecoder, "C++: eddl::setDecoder(Layer*) --> void", pybind11::arg("l"));
 
@@ -408,5 +410,4 @@ void eddl_addons(pybind11::module &m) {
 //   GlobalAveragePool2D
 //   GlobalAveragePool3D
 //   States
-//   GRU
 //   getStates

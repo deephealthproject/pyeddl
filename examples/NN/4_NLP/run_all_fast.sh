@@ -22,3 +22,6 @@ python3 "${this_dir}"/nlp_video_to_labels.py --gpu --small
 
 echo -en "\n*** nlp_machine_translation ***\n"
 python3 "${this_dir}"/nlp_machine_translation.py --gpu --small
+
+echo -en "\n*** nlp_sentiment_gru ***\n"
+python3 "${this_dir}"/nlp_sentiment_gru.py --gpu --small
