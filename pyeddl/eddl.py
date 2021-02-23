@@ -2285,46 +2285,28 @@ def download_model(name, link):
     return _eddl.download_model(name, link)
 
 
-def download_vgg16(top=True, shape=None):
-    if not shape:
-        return _eddl.download_vgg16(top)
-    else:
-        return _eddl.download_vgg16(top, shape=shape)
+def download_vgg16(top=True, input_shape=[]):
+    return _eddl.download_vgg16(top, input_shape)
 
 
-def download_resnet18(top=True, shape=None):
-    if not shape:
-        return _eddl.download_resnet18(top)
-    else:
-        return _eddl.download_resnet18(top, shape=shape)
+def download_resnet18(top=True, input_shape=[]):
+    return _eddl.download_resnet18(top, input_shape)
 
 
-def download_resnet34(top=True, shape=None):
-    if not shape:
-        return _eddl.download_resnet34(top)
-    else:
-        return _eddl.download_resnet34(top, shape=shape)
+def download_resnet34(top=True, input_shape=[]):
+    return _eddl.download_resnet34(top, input_shape)
 
 
-def download_resnet50(top=True, shape=None):
-    if not shape:
-        return _eddl.download_resnet50(top)
-    else:
-        return _eddl.download_resnet50(top, shape=shape)
+def download_resnet50(top=True, input_shape=[]):
+    return _eddl.download_resnet50(top, input_shape)
 
 
-def download_resnet101(top=True, shape=None):
-    if not shape:
-        return _eddl.download_resnet101(top)
-    else:
-        return _eddl.download_resnet101(top, shape=shape)
+def download_resnet101(top=True, input_shape=[]):
+    return _eddl.download_resnet101(top, input_shape)
 
 
-def download_resnet152(top=True, shape=None):
-    if not shape:
-        return _eddl.download_resnet152(top)
-    else:
-        return _eddl.download_resnet152(top, shape=shape)
+def download_resnet152(top=True, input_shape=[]):
+    return _eddl.download_resnet152(top, input_shape)
 
 
 # == DATASETS ==
