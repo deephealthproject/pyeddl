@@ -9,7 +9,6 @@ this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 names=(
     nlp_sentiment_rnn
-    # nlp_machine_translation
     # nlp_text_generation
 )
 
@@ -20,3 +19,6 @@ done
 
 echo -en "\n*** nlp_video_to_labels ***\n"
 python3 "${this_dir}"/nlp_video_to_labels.py --gpu --small
+
+echo -en "\n*** nlp_machine_translation ***\n"
+python3 "${this_dir}"/nlp_machine_translation.py --gpu --small

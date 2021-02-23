@@ -40,28 +40,18 @@ def main(args):
 
     eddl.download_cifar10()
     eddl.download_model("resnet18.onnx", "re7jodd12srksd7")
-    orig_net = eddl.import_net_from_onnx_file(
+    net = eddl.import_net_from_onnx_file(
         "resnet18.onnx", [3, 32, 32], DEV_CPU
     )
-    names = [_.name for _ in orig_net.layers]
-
-    # avoid segmentation fault when network is deleted
-    eddl.build(
-        orig_net,
-        eddl.adam(0.0001),
-        ["softmax_cross_entropy"],
-        ["categorical_accuracy"],
-        eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem),
-        False
-    )
+    names = [_.name for _ in net.layers]
 
     # Remove dense output layer
-    eddl.removeLayer(orig_net, "resnetv15_dense0_fwd")
+    eddl.removeLayer(net, "resnetv15_dense0_fwd")
     # Get last layer to connect the new dense
-    layer = eddl.getLayer(orig_net, "flatten_170")
+    layer = eddl.getLayer(net, "flatten_170")
     out = eddl.Softmax(eddl.Dense(layer, num_classes, True, "new_dense"))
     # Get input layer
-    in_ = eddl.getLayer(orig_net, "data")
+    in_ = eddl.getLayer(net, "data")
     # Create a new model
     net = eddl.Model([in_], [out])
 
