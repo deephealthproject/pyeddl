@@ -1124,9 +1124,8 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("reset_accumulated_gradients", (void (Layer::*)()) &Layer::reset_accumulated_gradients, "C++: Layer::reset_accumulated_gradients() --> void");
 		cl.def("apply_accumulated_gradients", (void (Layer::*)()) &Layer::apply_accumulated_gradients, "C++: Layer::apply_accumulated_gradients() --> void");
 		cl.def("enable_distributed", (void (Layer::*)()) &Layer::enable_distributed, "C++: Layer::enable_distributed() --> void");
-		cl.def("set_my_owner", (bool (Layer::*)(void *)) &Layer::set_my_owner, "C++: Layer::set_my_owner(void *) --> bool", pybind11::arg("net"));
-		cl.def("is_my_owner", (bool (Layer::*)(void *)) &Layer::is_my_owner, "C++: Layer::is_my_owner(void *) --> bool", pybind11::arg("net"));
-		cl.def("get_my_owner", (void * (Layer::*)()) &Layer::get_my_owner, "C++: Layer::get_my_owner() --> void *", pybind11::return_value_policy::automatic);
+		cl.def("decrease_and_get_reference_counter", (int (Layer::*)()) &Layer::decrease_and_get_reference_counter, "C++: Layer::decrease_and_get_reference_counter() --> int");
+		cl.def("increase_reference_counter", (void (Layer::*)()) &Layer::increase_reference_counter, "C++: Layer::increase_reference_counter() --> void");
 		cl.def("assign", (class Layer & (Layer::*)(const class Layer &)) &Layer::operator=, "C++: Layer::operator=(const class Layer &) --> class Layer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 
 		layer_addons(cl);

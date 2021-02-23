@@ -22,14 +22,6 @@
 Machine translation example.
 """
 
-# Leads to a segmentation fault at interpreter exit.
-# Notes:
-#  * If "cps = eddl.GetStates(enc)" is commented out and "cps" is replaced
-#    with "enc" in "layer = eddl.LSTM([ld, cps], 128)", there is no segfault.
-#  * If "cps" is replaced with "enc" in "layer = eddl.LSTM([ld, cps], 128)",
-#    but "cps = eddl.GetStates(enc)" is NOT commented out, then a
-#    "RuntimeError: RuntimeError: unroll" occurs.
-
 import argparse
 import sys
 
