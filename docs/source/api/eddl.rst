@@ -191,6 +191,8 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.PointwiseConv
 
+.. autofunction:: pyeddl.eddl.PointwiseConv2D
+
 .. autofunction:: pyeddl.eddl.Dense
 
 .. autofunction:: pyeddl.eddl.Dropout
@@ -199,11 +201,19 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.UpSampling
 
+.. autofunction:: pyeddl.eddl.UpSampling2D
+
 .. autofunction:: pyeddl.eddl.Reshape
 
 .. autofunction:: pyeddl.eddl.Flatten
 
+.. autofunction:: pyeddl.eddl.Squeeze
+
+.. autofunction:: pyeddl.eddl.Unsqueeze
+
 .. autofunction:: pyeddl.eddl.ConvT
+
+.. autofunction:: pyeddl.eddl.ConvT2D
 
 .. autofunction:: pyeddl.eddl.Embedding
 
@@ -366,6 +376,12 @@ Pooling layers
 .. autofunction:: pyeddl.eddl.GlobalMaxPool3D
 
 .. autofunction:: pyeddl.eddl.GlobalAveragePool
+
+.. autofunction:: pyeddl.eddl.GlobalAveragePool1D
+
+.. autofunction:: pyeddl.eddl.GlobalAveragePool2D
+
+.. autofunction:: pyeddl.eddl.GlobalAveragePool3D
 
 .. autofunction:: pyeddl.eddl.MaxPool
 

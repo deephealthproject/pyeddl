@@ -971,6 +971,27 @@ def PointwiseConv(parent, filters, strides=[1, 1], use_bias=True, groups=1,
                                dilation_rate, name)
 
 
+def PointwiseConv2D(parent, filters, strides=[1, 1], use_bias=True, groups=1,
+                    dilation_rate=[1, 1], name=""):
+    """\
+    2D Pointwise convolution layer.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param strides: list of 2 integers, specifying the strides of the
+      convolution along the height and width
+    :param use_bias: whether the layer uses a bias vector
+    :param groups: number of blocked connections from input to output channels
+    :param dilation_rate: list of 2 integers, specifying the dilation rate
+      to use for dilated convolution
+    :param name: name of the output layer
+    :return: Convolution layer
+    """
+    return _eddl.PointwiseConv2D(parent, filters, strides, use_bias, groups,
+                                 dilation_rate, name)
+
+
 def Dense(parent, ndim, use_bias=True, name=""):
     """\
     Regular densely-connected layer.
@@ -1030,6 +1051,23 @@ def UpSampling(parent, size, interpolation="nearest", name=""):
     return _eddl.UpSampling(parent, size, interpolation, name)
 
 
+def UpSampling2D(parent, size, interpolation="nearest", name=""):
+    """\
+    2D Upsampling layer.
+
+    Similar to the scale transformation. The only difference is that
+    upsampling repeats its rows/columns n times, while scaling uses a
+    proportion.
+
+    :param parent: parent layer
+    :param size: list of 2 integers (upsampling factors for rows and columns)
+    :param interpolation: "nearest" or "bilinear"
+    :param name: name of the output layer
+    :return: UpSampling2D layer
+    """
+    return _eddl.UpSampling2D(parent, size, interpolation, name)
+
+
 def Reshape(parent, shape, name=""):
     """\
     Reshape an output to the given shape.
@@ -1054,6 +1092,33 @@ def Flatten(parent, name=""):
     :return: a Reshape layer
     """
     return _eddl.Flatten(parent, name)
+
+
+def Squeeze(parent, axis=-1, name=""):
+    """\
+    Dimension of size one is removed at the specified position (batch
+    dimension is ignored).
+
+    :param parent: parent layer
+    :param axis: squeeze only along this dimension
+      (default: -1, squeeze along all dimensions)
+    :param name: name of the output layer
+    :return: Squeeze layer
+    """
+    return _eddl.Squeeze(parent, axis, name)
+
+
+def Unsqueeze(parent, axis=0, name=""):
+    """\
+    Dimension of size one is inserted at the specified position (batch
+    dimension is ignored).
+
+    :param parent: parent layer
+    :param axis: unsqueeze only along this dimension
+    :param name: name of the output layer
+    :return: Unsqueeze layer
+    """
+    return _eddl.Unsqueeze(parent, axis, name)
 
 
 def ConvT(parent, filters, kernel_size, output_padding, padding="same",
@@ -1085,6 +1150,36 @@ def ConvT(parent, filters, kernel_size, output_padding, padding="same",
     """
     return _eddl.ConvT(parent, filters, kernel_size, output_padding, padding,
                        dilation_rate, strides, use_bias, name)
+
+
+def ConvT2D(parent, filters, kernel_size, output_padding, padding="same",
+            dilation_rate=[1, 1], strides=[1, 1], use_bias=True, name=""):
+    """\
+    Transposed convolution layer (sometimes called deconvolution).
+
+    The need for transposed convolutions generally arises from the desire to
+    use a transformation going in the opposite direction of a normal
+    convolution, i.e., from something that has the shape of the output of some
+    convolution to something that has the shape of its input while maintaining
+    a connectivity pattern that is compatible with said convolution.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param kernel_size: the height and width of the 2D convolution window
+    :param output_padding: the amount of padding along the height and width of
+      the output tensor. The amount of output padding along a given dimension
+      must be lower than the stride along the same dimension
+    :param padding: one of "valid" or "same"
+    :param dilation_rate: the dilation rate to use for dilated convolution.
+      Spacing between kernel elements
+    :param strides: the strides of the convolution along the height and width
+    :param use_bias: whether the layer uses a bias vector
+    :param name: name of the output layer
+    :return: ConvT layer
+    """
+    return _eddl.ConvT2D(parent, filters, kernel_size, output_padding, padding,
+                         dilation_rate, strides, use_bias, name)
 
 
 def Embedding(parent, vocsize, length, output_dim, mask_zeros=False, name=""):
@@ -1834,6 +1929,39 @@ def GlobalAveragePool(parent, name=""):
     return _eddl.GlobalAveragePool(parent, name)
 
 
+def GlobalAveragePool1D(parent, name=""):
+    """\
+    Perform 1D global average pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: an AveragePool layer
+    """
+    return _eddl.GlobalAveragePool1D(parent, name)
+
+
+def GlobalAveragePool2D(parent, name=""):
+    """\
+    Perform 2D global average pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: an AveragePool layer
+    """
+    return _eddl.GlobalAveragePool2D(parent, name)
+
+
+def GlobalAveragePool3D(parent, name=""):
+    """\
+    Perform 3D global average pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: an AveragePool layer
+    """
+    return _eddl.GlobalAveragePool3D(parent, name)
+
+
 def MaxPool(parent, pool_size=[2, 2], strides=[2, 2], padding="none", name=""):
     """\
     Perform Max pooling.
@@ -1924,6 +2052,10 @@ def LSTM(parent, units, mask_zeros=False, bidirectional=False, name=""):
     return _eddl.LSTM(parent, units, mask_zeros, bidirectional, name)
 
 
+def States(shape, name=""):
+    return _eddl.States(shape, name)
+
+
 def GRU(parent, units, mask_zeros=False, bidirectional=False, name=""):
     """\
     Gated Recurrent Unit (GRU).
@@ -1984,6 +2116,10 @@ def getParams(l1):
 
 def getGradients(l1):
     return _eddl.getGradients(l1)
+
+
+def getStates(l1):
+    return _eddl.getStates(l1)
 
 
 def copyOutput(l1, l2):
