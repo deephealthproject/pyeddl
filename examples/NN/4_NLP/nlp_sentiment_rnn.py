@@ -35,6 +35,8 @@ MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")
 def main(args):
     eddl.download_imdb_2000()
 
+    epochs = 1 if args.small else 10
+
     length = 250
     embdim = 32
     vocsize = 2000
@@ -62,10 +64,11 @@ def main(args):
     x_test = Tensor.load("imdb_2000_tsX.bin")
     y_test = Tensor.load("imdb_2000_tsY.bin")
     if args.small:
-        x_train = x_train.select([":500"])
-        y_train = y_train.select([":500"])
-        x_test = x_test.select([":200"])
-        y_test = y_test.select([":200"])
+        sel = [f"0:{2 * args.batch_size}"]
+        x_train = x_train.select(sel)
+        y_train = y_train.select(sel)
+        x_test = x_test.select(sel)
+        y_test = y_test.select(sel)
 
     #  batch x timesteps x input_dim
     x_train.reshape_([x_train.shape[0], length, 1])
@@ -73,7 +76,7 @@ def main(args):
     y_train.reshape_([y_train.shape[0], 1, 1])
     y_test.reshape_([y_test.shape[0], 1, 1])
 
-    for i in range(args.epochs):
+    for i in range(epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
         eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
     print("All done")
@@ -81,7 +84,6 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--epochs", type=int, metavar="INT", default=10)
     parser.add_argument("--batch-size", type=int, metavar="INT", default=32)
     parser.add_argument("--gpu", action="store_true")
     parser.add_argument("--small", action="store_true")
