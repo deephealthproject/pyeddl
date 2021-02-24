@@ -7,7 +7,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker'
-                            image 'simleo/pyeddl-base:690f3b6c'
+                            image 'simleo/pyeddl-base:5ab93fc0'
                         }
                     }
                     stages {
@@ -46,7 +46,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker && gpu'
-                            image 'simleo/pyeddl-gpu-base:690f3b6c'
+                            image 'simleo/pyeddl-gpu-base:5ab93fc0'
                             args '--gpus 1'
                         }
                     }
@@ -78,7 +78,6 @@ pipeline {
 				sh 'wget -q https://www.dropbox.com/s/dh9vqxe9vt7scrp/cifar_tsX.bin'
 				sh 'wget -q https://www.dropbox.com/s/gdmsve6mbu82ndp/cifar_tsY.bin'
 				sh 'bash examples/NN/2_CIFAR10/run_all_fast.sh'
-				sh 'rm -fv cifar_*.bin'
 				sh 'wget -q https://www.dropbox.com/s/4m0h8ep53mixq6x/imdb_2000_trX.bin'
 				sh 'wget -q https://www.dropbox.com/s/zekpjclm58tdevk/imdb_2000_trY.bin'
 				sh 'wget -q https://www.dropbox.com/s/1bgdr8mz1lqkhgi/imdb_2000_tsX.bin'
@@ -89,8 +88,11 @@ pipeline {
 				sh 'wget -q https://www.dropbox.com/s/n8ks3lyqyhxx1e8/eutrans_tsY.bin'
 				sh 'wget -q https://www.dropbox.com/s/452pyxe9x5jpnwb/flickr_trX.bin'
 				sh 'wget -q https://www.dropbox.com/s/24c2d5bm6pug8gg/flickr_trY.bin'
+				sh 'wget -q https://www.dropbox.com/s/re7jodd12srksd7/resnet18.onnx'
 				sh 'bash examples/NN/4_NLP/run_all_fast.sh'
+				sh 'rm -fv cifar_*.bin'
 				sh 'rm -fv imdb_2000_*.bin eutrans_*.bin flickr_*.bin'
+				sh 'rm -fv resnet18.onnx'
 			    }
                         }
                         stage('linux_gpu_end') {
