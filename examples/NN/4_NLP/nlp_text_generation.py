@@ -89,6 +89,81 @@ def main(args):
 
     # print("\n === INFERENCE ===\n")
 
+    # Get all the reshapes of the images. Only use the CNN
+    timage = Tensor([x_train.shape[0], 512])  # images reshape
+    cnn = eddl.Model([image_in], [lreshape])
+    eddl.build(
+        cnn,
+        eddl.adam(0.001),  # not relevant
+        ["mse"],  # not relevant
+        ["mse"],  # not relevant
+        eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
+    )
+    eddl.summary(cnn)
+
+    # forward images
+    xbatch = Tensor([args.batch_size, 3, 256, 256])
+    # numbatches = x_train.shape[0] / args.batch_size
+    j = 0
+    eddl.next_batch([x_train], [xbatch])
+    eddl.forward(cnn, [xbatch])
+    ybatch = eddl.getOutput(lreshape)
+    sample = str(j * args.batch_size) + ":" + str((j + 1) * args.batch_size)
+    timage.set_select([sample, ":"], ybatch)
+
+    # Create Decoder non recurrent for n-best
+    ldecin = eddl.Input([outvs])
+    image = eddl.Input([512])
+    lstate = eddl.States([2, 512])
+    ldec = eddl.ReduceArgMax(ldecin, [0])
+    ldec = eddl.RandomUniform(
+        eddl.Embedding(ldec, outvs, 1, embdim), -0.05, 0.05
+    )
+    ldec = eddl.Concat([ldec, image])
+    lstm = eddl.LSTM([ldec, lstate], 512, True)
+    lstm.isrecurrent = False  # Important
+    out = eddl.Softmax(eddl.Dense(lstm, outvs))
+    decoder = eddl.Model([ldecin, image, lstate], [out])
+    eddl.build(
+        decoder,
+        eddl.adam(0.001),  # not relevant
+        ["softmax_cross_entropy"],  # not relevant
+        ["accuracy"],  # not relevant
+        eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
+    )
+    eddl.summary(decoder)
+
+    # Copy params from trained net
+    eddl.copyParam(eddl.getLayer(net, "LSTM1"),
+                   eddl.getLayer(decoder, "LSTM2"))
+    eddl.copyParam(eddl.getLayer(net, "dense1"),
+                   eddl.getLayer(decoder, "dense2"))
+    eddl.copyParam(eddl.getLayer(net, "embedding1"),
+                   eddl.getLayer(decoder, "embedding2"))
+
+    # N-best for sample s
+    s = 1 if args.small else 100  # sample 100
+    # three input tensors with batch_size = 1 (one sentence)
+    treshape = timage.select([str(s), ":"])
+    text = y_train.select([str(s), ":", ":"])  # 1 x olength x outvs
+    for j in range(olength):
+        print(f"Word: {j}")
+        word = None
+        if j == 0:
+            word = Tensor.zeros([1, outvs])
+        else:
+            word = text.select(["0", str(j - 1), ":"])
+            word.reshape_([1, outvs])  # batch = 1
+    treshape.reshape_([1, 512])  # batch = 1
+    state = Tensor.zeros([1, 2, 512])  # batch = 1
+    input_ = [word, treshape, state]
+    eddl.forward(decoder, input_)
+    # outword = eddl.getOutput(out)
+    vstates = eddl.getStates(lstm)
+    for i in range(len(vstates)):
+        vstates[i].reshape_([1, 1, 512])
+        state.set_select([":", str(i), ":"], vstates[i])
+
     print("All done")
 
 

@@ -46,6 +46,7 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
            pybind11::keep_alive<1, 2>());
     cl.def("getShape", &Tensor::getShape);
     cl.def("select", (Tensor* (Tensor::*)(const vector<string>&)) &Tensor::select, "C++: Tensor::select(const vector<string>&) --> Tensor*", pybind11::arg("indices"));
+    cl.def("set_select", (void (Tensor::*)(const vector<string>&, Tensor*)) &Tensor::set_select, "C++: Tensor::set_select(const vector<string>&, Tensor*) --> void", pybind11::arg("indices"), pybind11::arg("A"));
     cl.def("scale", (Tensor* (Tensor::*)(vector<int>, WrappingMode, float, bool)) &Tensor::scale, "Scale the tensor", pybind11::arg("new_shape"), pybind11::arg("mode")=WrappingMode::Constant, pybind11::arg("cval")=0.0f, pybind11::arg("keep_size")=false);
     cl.def_static("full", &Tensor::full, pybind11::arg("shape"),
 		  pybind11::arg("value"), pybind11::arg("dev") = DEV_CPU);

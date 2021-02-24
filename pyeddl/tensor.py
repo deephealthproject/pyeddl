@@ -232,6 +232,18 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.select(self, indices)
 
+    def set_select(self, indices, A):
+        """\
+        Sets tensor elements to the values of tensor A using the selected
+        indices.
+
+        :param indices: list of strings representing the indices to be
+          set. These indices must follow a NumPy-like syntax. For
+          instance: ``["1:3", "2"]``.
+        :return: None
+        """
+        return _core.Tensor.set_select(self, indices, A)
+
     @staticmethod
     def copy(A, B):
         """\
