@@ -174,6 +174,17 @@ class Tensor(_core.Tensor):
         return _core.Tensor.eye(size, offset, dev)
 
     @staticmethod
+    def randu(shape, dev=DEV_CPU):
+        """\
+        Create a tensor with uniformly distributed random values.
+
+        :param shape: shape of the tensor to create
+        :param dev: device to use: :data:`DEV_CPU` or :data:`DEV_GPU`
+        :return: Tensor
+        """
+        return _core.Tensor.randu(shape, dev)
+
+    @staticmethod
     def randn(shape, dev=DEV_CPU):
         """\
         Create a tensor with normally distributed random values.
@@ -220,6 +231,18 @@ class Tensor(_core.Tensor):
         :return: Tensor
         """
         return _core.Tensor.select(self, indices)
+
+    def set_select(self, indices, A):
+        """\
+        Sets tensor elements to the values of tensor A using the selected
+        indices.
+
+        :param indices: list of strings representing the indices to be
+          set. These indices must follow a NumPy-like syntax. For
+          instance: ``["1:3", "2"]``.
+        :return: None
+        """
+        return _core.Tensor.set_select(self, indices, A)
 
     @staticmethod
     def copy(A, B):

@@ -52,6 +52,10 @@ def removeLayer(net, l):
     _eddl.removeLayer(net, l)
 
 
+def initializeLayer(net, l):
+    _eddl.initializeLayer(net, l)
+
+
 def get_parameters(net, deepcopy=False, tocpu=False):
     return _eddl.get_parameters(net, deepcopy, tocpu)
 
@@ -898,6 +902,54 @@ def Conv1D(parent, filters, kernel_size, strides=[1], padding="same",
                         use_bias, groups, dilation_rate, name)
 
 
+def Conv2D(parent, filters, kernel_size, strides=[1, 1], padding="same",
+           use_bias=True, groups=1, dilation_rate=[1, 1], name=""):
+    """\
+    2D convolution layer.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param kernel_size: list of 2 integers, specifying the height and width of
+      the 2D convolution window.
+    :param strides: list of 2 integers, specifying the strides of the
+      convolution along the height and width
+    :param padding: one of "none", "valid" or "same"
+    :param use_bias: whether the layer uses a bias vector
+    :param groups: number of blocked connections from input to output channels
+    :param dilation_rate: list of 2 integers, specifying the dilation rate
+      to use for dilated convolution
+    :param name: name of the output layer
+    :return: Convolution layer
+    """
+    return _eddl.Conv2D(parent, filters, kernel_size, strides, padding,
+                        use_bias, groups, dilation_rate, name)
+
+
+def Conv3D(parent, filters, kernel_size, strides=[1, 1, 1], padding="same",
+           use_bias=True, groups=1, dilation_rate=[1, 1, 1], name=""):
+    """\
+    3D convolution layer.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param kernel_size: list of 3 integers, specifying the sizes of
+      the 3D convolution window along each dimension
+    :param strides: list of 3 integers, specifying the strides of the
+      convolution along each dimension
+    :param padding: one of "none", "valid" or "same"
+    :param use_bias: whether the layer uses a bias vector
+    :param groups: number of blocked connections from input to output channels
+    :param dilation_rate: list of 3 integers, specifying the dilation rate
+      to use for dilated convolution
+    :param name: name of the output layer
+    :return: Convolution layer
+    """
+    return _eddl.Conv3D(parent, filters, kernel_size, strides, padding,
+                        use_bias, groups, dilation_rate, name)
+
+
 def PointwiseConv(parent, filters, strides=[1, 1], use_bias=True, groups=1,
                   dilation_rate=[1, 1], name=""):
     """\
@@ -917,6 +969,27 @@ def PointwiseConv(parent, filters, strides=[1, 1], use_bias=True, groups=1,
     """
     return _eddl.PointwiseConv(parent, filters, strides, use_bias, groups,
                                dilation_rate, name)
+
+
+def PointwiseConv2D(parent, filters, strides=[1, 1], use_bias=True, groups=1,
+                    dilation_rate=[1, 1], name=""):
+    """\
+    2D Pointwise convolution layer.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param strides: list of 2 integers, specifying the strides of the
+      convolution along the height and width
+    :param use_bias: whether the layer uses a bias vector
+    :param groups: number of blocked connections from input to output channels
+    :param dilation_rate: list of 2 integers, specifying the dilation rate
+      to use for dilated convolution
+    :param name: name of the output layer
+    :return: Convolution layer
+    """
+    return _eddl.PointwiseConv2D(parent, filters, strides, use_bias, groups,
+                                 dilation_rate, name)
 
 
 def Dense(parent, ndim, use_bias=True, name=""):
@@ -978,6 +1051,23 @@ def UpSampling(parent, size, interpolation="nearest", name=""):
     return _eddl.UpSampling(parent, size, interpolation, name)
 
 
+def UpSampling2D(parent, size, interpolation="nearest", name=""):
+    """\
+    2D Upsampling layer.
+
+    Similar to the scale transformation. The only difference is that
+    upsampling repeats its rows/columns n times, while scaling uses a
+    proportion.
+
+    :param parent: parent layer
+    :param size: list of 2 integers (upsampling factors for rows and columns)
+    :param interpolation: "nearest" or "bilinear"
+    :param name: name of the output layer
+    :return: UpSampling2D layer
+    """
+    return _eddl.UpSampling2D(parent, size, interpolation, name)
+
+
 def Reshape(parent, shape, name=""):
     """\
     Reshape an output to the given shape.
@@ -1002,6 +1092,33 @@ def Flatten(parent, name=""):
     :return: a Reshape layer
     """
     return _eddl.Flatten(parent, name)
+
+
+def Squeeze(parent, axis=-1, name=""):
+    """\
+    Dimension of size one is removed at the specified position (batch
+    dimension is ignored).
+
+    :param parent: parent layer
+    :param axis: squeeze only along this dimension
+      (default: -1, squeeze along all dimensions)
+    :param name: name of the output layer
+    :return: Squeeze layer
+    """
+    return _eddl.Squeeze(parent, axis, name)
+
+
+def Unsqueeze(parent, axis=0, name=""):
+    """\
+    Dimension of size one is inserted at the specified position (batch
+    dimension is ignored).
+
+    :param parent: parent layer
+    :param axis: unsqueeze only along this dimension
+    :param name: name of the output layer
+    :return: Unsqueeze layer
+    """
+    return _eddl.Unsqueeze(parent, axis, name)
 
 
 def ConvT(parent, filters, kernel_size, output_padding, padding="same",
@@ -1033,6 +1150,36 @@ def ConvT(parent, filters, kernel_size, output_padding, padding="same",
     """
     return _eddl.ConvT(parent, filters, kernel_size, output_padding, padding,
                        dilation_rate, strides, use_bias, name)
+
+
+def ConvT2D(parent, filters, kernel_size, output_padding, padding="same",
+            dilation_rate=[1, 1], strides=[1, 1], use_bias=True, name=""):
+    """\
+    Transposed convolution layer (sometimes called deconvolution).
+
+    The need for transposed convolutions generally arises from the desire to
+    use a transformation going in the opposite direction of a normal
+    convolution, i.e., from something that has the shape of the output of some
+    convolution to something that has the shape of its input while maintaining
+    a connectivity pattern that is compatible with said convolution.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param kernel_size: the height and width of the 2D convolution window
+    :param output_padding: the amount of padding along the height and width of
+      the output tensor. The amount of output padding along a given dimension
+      must be lower than the stride along the same dimension
+    :param padding: one of "valid" or "same"
+    :param dilation_rate: the dilation rate to use for dilated convolution.
+      Spacing between kernel elements
+    :param strides: the strides of the convolution along the height and width
+    :param use_bias: whether the layer uses a bias vector
+    :param name: name of the output layer
+    :return: ConvT layer
+    """
+    return _eddl.ConvT2D(parent, filters, kernel_size, output_padding, padding,
+                         dilation_rate, strides, use_bias, name)
 
 
 def Embedding(parent, vocsize, length, output_dim, mask_zeros=False, name=""):
@@ -1738,6 +1885,39 @@ def GlobalMaxPool(parent, name=""):
     return _eddl.GlobalMaxPool(parent, name)
 
 
+def GlobalMaxPool1D(parent, name=""):
+    """\
+    Perform 1D global max pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: a MaxPool layer
+    """
+    return _eddl.GlobalMaxPool1D(parent, name)
+
+
+def GlobalMaxPool2D(parent, name=""):
+    """\
+    Perform 2D global max pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: a MaxPool layer
+    """
+    return _eddl.GlobalMaxPool2D(parent, name)
+
+
+def GlobalMaxPool3D(parent, name=""):
+    """\
+    Perform 3D global max pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: a MaxPool layer
+    """
+    return _eddl.GlobalMaxPool3D(parent, name)
+
+
 def GlobalAveragePool(parent, name=""):
     """\
     Perform global average pooling.
@@ -1747,6 +1927,39 @@ def GlobalAveragePool(parent, name=""):
     :return: an AveragePool layer
     """
     return _eddl.GlobalAveragePool(parent, name)
+
+
+def GlobalAveragePool1D(parent, name=""):
+    """\
+    Perform 1D global average pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: an AveragePool layer
+    """
+    return _eddl.GlobalAveragePool1D(parent, name)
+
+
+def GlobalAveragePool2D(parent, name=""):
+    """\
+    Perform 2D global average pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: an AveragePool layer
+    """
+    return _eddl.GlobalAveragePool2D(parent, name)
+
+
+def GlobalAveragePool3D(parent, name=""):
+    """\
+    Perform 3D global average pooling.
+
+    :param parent: parent layer
+    :param name: name of the output layer
+    :return: an AveragePool layer
+    """
+    return _eddl.GlobalAveragePool3D(parent, name)
 
 
 def MaxPool(parent, pool_size=[2, 2], strides=[2, 2], padding="none", name=""):
@@ -1775,6 +1988,36 @@ def MaxPool1D(parent, pool_size=[2], strides=[2], padding="none", name=""):
     :return: MaxPool1D layer
     """
     return _eddl.MaxPool1D(parent, pool_size, strides, padding, name)
+
+
+def MaxPool2D(parent, pool_size=[2, 2], strides=[2, 2], padding="none",
+              name=""):
+    """\
+    Perform 2D Max pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the max pooling windows
+    :param strides: factor by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: MaxPool layer
+    """
+    return _eddl.MaxPool2D(parent, pool_size, strides, padding, name)
+
+
+def MaxPool3D(parent, pool_size=[2, 2, 2], strides=[2, 2, 2], padding="none",
+              name=""):
+    """\
+    Perform 3D Max pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the max pooling windows
+    :param strides: factor by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: MaxPool layer
+    """
+    return _eddl.MaxPool3D(parent, pool_size, strides, padding, name)
 
 
 # = Recurrent layers =
@@ -1807,6 +2050,24 @@ def LSTM(parent, units, mask_zeros=False, bidirectional=False, name=""):
     :return: LSTM layer
     """
     return _eddl.LSTM(parent, units, mask_zeros, bidirectional, name)
+
+
+def States(shape, name=""):
+    return _eddl.States(shape, name)
+
+
+def GRU(parent, units, mask_zeros=False, bidirectional=False, name=""):
+    """\
+    Gated Recurrent Unit (GRU).
+
+    :param parent: parent layer or vector of layers
+    :param units: dimensionality of the output space.
+    :param mask_zeros: boolean
+    :param bidirectional: whether the net is bidirectional or not
+    :param name: name of the output layer
+    :return: GRU layer
+    """
+    return _eddl.GRU(parent, units, mask_zeros, bidirectional, name)
 
 
 def setDecoder(l):
@@ -1855,6 +2116,10 @@ def getParams(l1):
 
 def getGradients(l1):
     return _eddl.getGradients(l1)
+
+
+def getStates(l1):
+    return _eddl.getStates(l1)
 
 
 def copyOutput(l1, l2):
@@ -2014,6 +2279,36 @@ def L1L2(l, l1, l2):
     return _eddl.L1L2(l, l1, l2)
 
 
+# == GET MODELS ==
+
+def download_model(name, link):
+    return _eddl.download_model(name, link)
+
+
+def download_vgg16(top=True, input_shape=[]):
+    return _eddl.download_vgg16(top, input_shape)
+
+
+def download_resnet18(top=True, input_shape=[]):
+    return _eddl.download_resnet18(top, input_shape)
+
+
+def download_resnet34(top=True, input_shape=[]):
+    return _eddl.download_resnet34(top, input_shape)
+
+
+def download_resnet50(top=True, input_shape=[]):
+    return _eddl.download_resnet50(top, input_shape)
+
+
+def download_resnet101(top=True, input_shape=[]):
+    return _eddl.download_resnet101(top, input_shape)
+
+
+def download_resnet152(top=True, input_shape=[]):
+    return _eddl.download_resnet152(top, input_shape)
+
+
 # == DATASETS ==
 
 def exist(name):
@@ -2072,18 +2367,49 @@ def download_flickr():
 
 # == ONNX ==
 
+
+class LOG_LEVEL(_eddl.LOG_LEVEL):
+    """\
+    Enum class which defines log levels for ONNX functions.
+    """
+    TRACE = _eddl.LOG_LEVEL.TRACE
+    DEBUG = _eddl.LOG_LEVEL.DEBUG
+    INFO = _eddl.LOG_LEVEL.INFO
+    WARN = _eddl.LOG_LEVEL.WARN
+    ERROR = _eddl.LOG_LEVEL.ERROR
+    NO_LOGS = _eddl.LOG_LEVEL.NO_LOGS
+
+
 def save_net_to_onnx_file(net, path):
     return _eddl.save_net_to_onnx_file(net, path)
 
 
-# TODO: map mem and log_level args
-def import_net_from_onnx_file(path):
-    return _eddl.import_net_from_onnx_file(path)
+def import_net_from_onnx_file(
+        path, input_shape=None, mem=0, log_level=LOG_LEVEL.INFO
+):
+    """\
+    Import ONNX Net from file.
+
+    If ``input_shape`` is specified, also change the net's input shape (works
+    only for models with one input layer).
+
+    :param path: path to the file where the net is saved
+    :param input_shape: shape of the input data (without the batch dimension)
+    :param mem: device
+    :param log_level: a ``LOG_LEVEL`` value
+    :return: Net
+    """
+    if input_shape:
+        return _eddl.import_net_from_onnx_file(
+            path, input_shape, mem, log_level
+        )
+    else:
+        return _eddl.import_net_from_onnx_file(path, mem, log_level)
 
 
 def serialize_net_to_onnx_string(net, gradients):
     return _eddl.serialize_net_to_onnx_string(net, gradients)
 
 
-def import_net_from_onnx_string(model_string):
-    return _eddl.import_net_from_onnx_string(model_string)
+def import_net_from_onnx_string(model_string, mem=0):
+    return _eddl.import_net_from_onnx_string(model_string, mem=mem)

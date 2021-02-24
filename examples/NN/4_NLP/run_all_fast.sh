@@ -9,11 +9,13 @@ this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 names=(
     nlp_sentiment_rnn
-    # nlp_machine_translation
-    # nlp_text_generation
+    nlp_text_generation
+    nlp_video_to_labels
+    nlp_machine_translation
+    nlp_sentiment_gru
 )
 
 for n in "${names[@]}"; do
     echo -en "\n*** ${n} ***\n"
-    python3 "${this_dir}"/${n}.py --gpu --epochs 1 --small
+    python3 "${this_dir}"/${n}.py --gpu --small
 done

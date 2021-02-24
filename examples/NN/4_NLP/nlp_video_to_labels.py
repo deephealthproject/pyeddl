@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-Embedding + RNN example.
+Video to labels example.
 """
 
 import argparse
@@ -33,58 +33,46 @@ MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")
 
 
 def main(args):
-    eddl.download_imdb_2000()
 
-    epochs = 1 if args.small else 10
+    size = 256 // 2
 
-    length = 250
-    embdim = 32
-    vocsize = 2000
-
-    in_ = eddl.Input([1])  # 1 word
+    # Conv3D expects (B, C, dim1, dim2, dim3)
+    in_ = eddl.Input([3, 10, size, size])
     layer = in_
-    layer = eddl.RandomUniform(
-        eddl.Embedding(layer, vocsize, 1, embdim), -0.05, 0.05
-    )
-    layer = eddl.RNN(layer, 32)
-    layer = eddl.ReLu(eddl.Dense(layer, 256))
-    out = eddl.Sigmoid(eddl.Dense(layer, 1))
+    layer = eddl.MaxPool3D(eddl.ReLu(eddl.Conv3D(
+        layer, 4, [1, 3, 3], [1, 1, 1], "same"
+    )), [1, 2, 2], [1, 2, 2], "same")
+    layer = eddl.MaxPool3D(eddl.ReLu(eddl.Conv3D(
+        layer, 8, [1, 3, 3], [1, 1, 1], "same"
+    )), [1, 2, 2], [1, 2, 2], "same")
+    layer = eddl.MaxPool3D(eddl.ReLu(eddl.Conv3D(
+        layer, 16, [1, 3, 3], [1, 1, 1], "same"
+    )), [1, 2, 2], [1, 2, 2], "same")
+    layer = eddl.GlobalMaxPool3D(layer)
+    layer = eddl.Reshape(layer, [-1])
+    layer = eddl.LSTM(layer, 128)
+    layer = eddl.Dense(layer, 100)
+    layer = eddl.ReLu(layer)
+    layer = eddl.Dense(layer, 2)
+    out = eddl.ReLu(layer)
     net = eddl.Model([in_], [out])
+
     eddl.build(
         net,
-        eddl.adam(0.001),
-        ["cross_entropy"],
-        ["binary_accuracy"],
+        eddl.adam(),
+        ["mse"],
+        ["mse"],
         eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
     )
     eddl.summary(net)
 
-    x_train = Tensor.load("imdb_2000_trX.bin")
-    y_train = Tensor.load("imdb_2000_trY.bin")
-    x_test = Tensor.load("imdb_2000_tsX.bin")
-    y_test = Tensor.load("imdb_2000_tsY.bin")
-    if args.small:
-        sel = [f"0:{2 * args.batch_size}"]
-        x_train = x_train.select(sel)
-        y_train = y_train.select(sel)
-        x_test = x_test.select(sel)
-        y_test = y_test.select(sel)
-
-    #  batch x timesteps x input_dim
-    x_train.reshape_([x_train.shape[0], length, 1])
-    x_test.reshape_([x_test.shape[0], length, 1])
-    y_train.reshape_([y_train.shape[0], 1, 1])
-    y_test.reshape_([y_test.shape[0], 1, 1])
-
-    for i in range(epochs):
-        eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-        eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
-    print("All done")
+    seqImages = Tensor.randu([32, 10, 3, 10, size, size])
+    seqLabels = Tensor.randu([32, 7, 2])
+    eddl.fit(net, [seqImages], [seqLabels], 4, 2 if args.small else 10)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--batch-size", type=int, metavar="INT", default=32)
     parser.add_argument("--gpu", action="store_true")
     parser.add_argument("--small", action="store_true")
     parser.add_argument("--mem", metavar="|".join(MEM_CHOICES),

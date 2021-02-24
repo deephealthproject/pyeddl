@@ -22,3 +22,6 @@ python3 "${this_dir}"/import_net_from_file.py --gpu
 
 echo -en "\n*** check_getout_forward ***\n"
 python3 "${this_dir}"/check_getout_forward.py --gpu
+
+echo -en "\n*** import_net_and_reshape ***\n"
+python3 "${this_dir}"/import_net_and_reshape.py --gpu --small

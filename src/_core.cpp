@@ -560,7 +560,6 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def_static("static_argsort", [](class Tensor * a0, class Tensor * a1, bool const & a2) -> void { return Tensor::argsort(a0, a1, a2); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("descending"));
 		cl.def_static("static_argsort", (void (*)(class Tensor *, class Tensor *, bool, bool)) &Tensor::argsort, "Sort the indices of a tensor according to the elements in each position.\n\n  \n   Input tensor.\n  \n\n   Output tensor.\n  \n\n   Wether to sort the tensor descending or not.\n  \n\n   Wether to use stable sorting or not. Stable sorting keeps the order of equal elements.\n  \n\n    A tensor with the sorted indices.\n\nC++: Tensor::argsort(class Tensor *, class Tensor *, bool, bool) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("descending"), pybind11::arg("stable"));
 		cl.def_static("select_back", (void (*)(class Tensor *, class Tensor *, class SelDescriptor *)) &Tensor::select_back, "C++: Tensor::select_back(class Tensor *, class Tensor *, class SelDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
-		cl.def_static("set_select", (void (*)(class Tensor *, class Tensor *, class SelDescriptor *)) &Tensor::set_select, "C++: Tensor::set_select(class Tensor *, class Tensor *, class SelDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
 		cl.def_static("set_select_back", (void (*)(class Tensor *, class Tensor *, class SelDescriptor *)) &Tensor::set_select_back, "C++: Tensor::set_select_back(class Tensor *, class Tensor *, class SelDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
 		cl.def("clone", (class Tensor * (Tensor::*)()) &Tensor::clone, "Clone a tensor (same device). Similar to copy, but returning a new instance\n\n  \n    Tensor\n\nC++: Tensor::clone() --> class Tensor *", pybind11::return_value_policy::automatic);
 		cl.def("reallocate", (void (Tensor::*)(class Tensor *)) &Tensor::reallocate, "Reallocates a tensor into this one.\n  Replaces the pointer of this tensor, with the pointer of a reference tensor.\n\n  \n Reference tensor\n  \n\n     void\n\nC++: Tensor::reallocate(class Tensor *) --> void", pybind11::arg("old_t"));
@@ -1124,9 +1123,8 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("reset_accumulated_gradients", (void (Layer::*)()) &Layer::reset_accumulated_gradients, "C++: Layer::reset_accumulated_gradients() --> void");
 		cl.def("apply_accumulated_gradients", (void (Layer::*)()) &Layer::apply_accumulated_gradients, "C++: Layer::apply_accumulated_gradients() --> void");
 		cl.def("enable_distributed", (void (Layer::*)()) &Layer::enable_distributed, "C++: Layer::enable_distributed() --> void");
-		cl.def("set_my_owner", (bool (Layer::*)(void *)) &Layer::set_my_owner, "C++: Layer::set_my_owner(void *) --> bool", pybind11::arg("net"));
-		cl.def("is_my_owner", (bool (Layer::*)(void *)) &Layer::is_my_owner, "C++: Layer::is_my_owner(void *) --> bool", pybind11::arg("net"));
-		cl.def("get_my_owner", (void * (Layer::*)()) &Layer::get_my_owner, "C++: Layer::get_my_owner() --> void *", pybind11::return_value_policy::automatic);
+		cl.def("decrease_and_get_reference_counter", (int (Layer::*)()) &Layer::decrease_and_get_reference_counter, "C++: Layer::decrease_and_get_reference_counter() --> int");
+		cl.def("increase_reference_counter", (void (Layer::*)()) &Layer::increase_reference_counter, "C++: Layer::increase_reference_counter() --> void");
 		cl.def("assign", (class Layer & (Layer::*)(const class Layer &)) &Layer::operator=, "C++: Layer::operator=(const class Layer &) --> class Layer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 
 		layer_addons(cl);

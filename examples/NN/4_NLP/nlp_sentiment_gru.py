@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 """\
-Machine translation example.
+Embedding + GRU example.
 """
 
 import argparse
@@ -33,77 +33,53 @@ MEM_CHOICES = ("low_mem", "mid_mem", "full_mem")
 
 
 def main(args):
-    eddl.download_eutrans()
+    eddl.download_imdb_2000()
 
-    epochs = 1 if args.small else 5
+    epochs = 2 if args.small else 10
 
-    ilength = 30
-    olength = 30
-    invs = 687
-    outvs = 514
-    embedding = 64
+    length = 250
+    embdim = 33
+    vocsize = 2000
 
-    # Encoder
     in_ = eddl.Input([1])  # 1 word
     layer = in_
-    lE = eddl.RandomUniform(
-        eddl.Embedding(layer, invs, 1, embedding, True), -0.05, 0.05
-    )
-    enc = eddl.LSTM(lE, 128, True)
-    cps = eddl.GetStates(enc)
 
-    # Decoder
-    ldin = eddl.Input([outvs])
-    ld = eddl.ReduceArgMax(ldin, [0])
-    ld = eddl.RandomUniform(
-        eddl.Embedding(ld, outvs, 1, embedding), -0.05, 0.05
+    layer = eddl.RandomUniform(
+        eddl.Embedding(layer, vocsize, 1, embdim), -0.05, 0.05
     )
-    layer = eddl.LSTM([ld, cps], 128)
-    out = eddl.Softmax(eddl.Dense(layer, outvs))
-    eddl.setDecoder(ldin)
-
+    layer = eddl.GRU(layer, 37)
+    layer = eddl.ReLu(eddl.Dense(layer, 256))
+    out = eddl.Sigmoid(eddl.Dense(layer, 1))
     net = eddl.Model([in_], [out])
-
-    # Build model
     eddl.build(
         net,
-        eddl.adam(0.01),
-        ["softmax_cross_entropy"],
-        ["accuracy"],
+        eddl.adam(0.001),
+        ["cross_entropy"],
+        ["binary_accuracy"],
         eddl.CS_GPU(mem=args.mem) if args.gpu else eddl.CS_CPU(mem=args.mem)
     )
     eddl.summary(net)
 
-    # Load dataset
-    x_train = Tensor.load("eutrans_trX.bin")
-    y_train = Tensor.load("eutrans_trY.bin")
-    y_train = Tensor.onehot(y_train, outvs)
-    # batch x timesteps x input_dim
-    x_train.reshape_([x_train.shape[0], ilength, 1])
-    # batch x timesteps x ouput_dim
-    y_train.reshape_([y_train.shape[0], olength, outvs])
+    x_train = Tensor.load("imdb_2000_trX.bin")
+    y_train = Tensor.load("imdb_2000_trY.bin")
+    x_test = Tensor.load("imdb_2000_tsX.bin")
+    y_test = Tensor.load("imdb_2000_tsY.bin")
 
-    x_test = Tensor.load("eutrans_tsX.bin")
-    y_test = Tensor.load("eutrans_tsY.bin")
-    y_test = Tensor.onehot(y_test, outvs)
-    # batch x timesteps x input_dim
-    x_test.reshape_([x_test.shape[0], ilength, 1])
-    # batch x timesteps x ouput_dim
-    y_test.reshape_([y_test.shape[0], olength, outvs])
+    #  batch x timesteps x input_dim
+    x_train.reshape_([x_train.shape[0], length, 1])
+    x_test.reshape_([x_test.shape[0], length, 1])
+    y_train.reshape_([y_train.shape[0], 1, 1])
+    y_test.reshape_([y_test.shape[0], 1, 1])
 
     if args.small:
-        sel = [f":{3 * args.batch_size}", ":", ":"]
-        x_train = x_train.select(sel)
-        y_train = y_train.select(sel)
-        x_test = x_test.select(sel)
-        y_test = y_test.select(sel)
+        x_train = x_train.select([":64", ":", ":"])
+        y_train = y_train.select([":64", ":", ":"])
+        x_test = x_test.select([":64", ":", ":"])
+        y_test = y_test.select([":64", ":", ":"])
 
-    # Train model
-    ybatch = Tensor([args.batch_size, olength, outvs])
-    eddl.next_batch([y_train], [ybatch])
     for i in range(epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
-
+        eddl.evaluate(net, [x_test], [y_test])
     print("All done")
 
 
@@ -112,8 +88,6 @@ if __name__ == "__main__":
     parser.add_argument("--batch-size", type=int, metavar="INT", default=32)
     parser.add_argument("--gpu", action="store_true")
     parser.add_argument("--small", action="store_true")
-    # This needs full_mem, otherwise it crashes with a weird "Tensors with
-    # different size (Tensor::copy)" error during fit
     parser.add_argument("--mem", metavar="|".join(MEM_CHOICES),
-                        choices=MEM_CHOICES, default="full_mem")
+                        choices=MEM_CHOICES, default="low_mem")
     main(parser.parse_args(sys.argv[1:]))

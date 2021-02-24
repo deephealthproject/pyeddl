@@ -19,6 +19,8 @@ Creation
 
 .. autofunction:: pyeddl.eddl.removeLayer
 
+.. autofunction:: pyeddl.eddl.initializeLayer
+
 .. autofunction:: pyeddl.eddl.get_parameters
 
 .. autofunction:: pyeddl.eddl.set_parameters
@@ -183,7 +185,13 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.Conv1D
 
+.. autofunction:: pyeddl.eddl.Conv2D
+
+.. autofunction:: pyeddl.eddl.Conv3D
+
 .. autofunction:: pyeddl.eddl.PointwiseConv
+
+.. autofunction:: pyeddl.eddl.PointwiseConv2D
 
 .. autofunction:: pyeddl.eddl.Dense
 
@@ -193,11 +201,19 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.UpSampling
 
+.. autofunction:: pyeddl.eddl.UpSampling2D
+
 .. autofunction:: pyeddl.eddl.Reshape
 
 .. autofunction:: pyeddl.eddl.Flatten
 
+.. autofunction:: pyeddl.eddl.Squeeze
+
+.. autofunction:: pyeddl.eddl.Unsqueeze
+
 .. autofunction:: pyeddl.eddl.ConvT
+
+.. autofunction:: pyeddl.eddl.ConvT2D
 
 .. autofunction:: pyeddl.eddl.Embedding
 
@@ -353,9 +369,27 @@ Pooling layers
 
 .. autofunction:: pyeddl.eddl.GlobalMaxPool
 
+.. autofunction:: pyeddl.eddl.GlobalMaxPool1D
+
+.. autofunction:: pyeddl.eddl.GlobalMaxPool2D
+
+.. autofunction:: pyeddl.eddl.GlobalMaxPool3D
+
 .. autofunction:: pyeddl.eddl.GlobalAveragePool
 
+.. autofunction:: pyeddl.eddl.GlobalAveragePool1D
+
+.. autofunction:: pyeddl.eddl.GlobalAveragePool2D
+
+.. autofunction:: pyeddl.eddl.GlobalAveragePool3D
+
 .. autofunction:: pyeddl.eddl.MaxPool
+
+.. autofunction:: pyeddl.eddl.MaxPool1D
+
+.. autofunction:: pyeddl.eddl.MaxPool2D
+
+.. autofunction:: pyeddl.eddl.MaxPool3D
 
 
 Recurrent layers
@@ -364,6 +398,8 @@ Recurrent layers
 .. autofunction:: pyeddl.eddl.RNN
 
 .. autofunction:: pyeddl.eddl.LSTM
+
+.. autofunction:: pyeddl.eddl.GRU
 
 .. autofunction:: pyeddl.eddl.setDecoder
 
@@ -404,6 +440,25 @@ Regularizers
 .. autofunction:: pyeddl.eddl.L1
 
 .. autofunction:: pyeddl.eddl.L1L2
+
+
+Get Models
+----------
+
+.. autofunction:: pyeddl.eddl.download_model
+
+.. autofunction:: pyeddl.eddl.download_vgg16
+
+.. autofunction:: pyeddl.eddl.download_resnet18
+
+.. autofunction:: pyeddl.eddl.download_resnet34
+
+.. autofunction:: pyeddl.eddl.download_resnet50
+
+.. autofunction:: pyeddl.eddl.download_resnet101
+
+.. autofunction:: pyeddl.eddl.download_resnet152
+
 
 
 Datasets
