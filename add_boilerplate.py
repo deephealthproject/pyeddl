@@ -33,6 +33,7 @@ COM_MAP = {
     ".hpp": "//",
 }
 EXCLUDE_FILES = {
+    "conf.py",
     "all_includes.hpp",
 }
 PATTERN = re.compile(r"Copyright \(c\) [0-9-]+")
