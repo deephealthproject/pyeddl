@@ -8,6 +8,7 @@ The easiest way to install PyEDDL is via `Conda
 
   conda install -c dhealth pyeddl-cpu  # cpu-only version
   conda install -c dhealth pyeddl-gpu  # gpu-enabled version
+  conda install -c conda-forge -c dhealth pyeddl-cudnn  # cudnn-enabled version
 
 Each PyEDDL package installs the corresponding EDDL one as a dependency. So
 there's no need to separately install EDDL when installing via Conda.
