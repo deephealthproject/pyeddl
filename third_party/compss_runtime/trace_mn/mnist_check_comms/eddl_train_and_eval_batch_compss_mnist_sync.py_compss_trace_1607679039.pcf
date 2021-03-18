@@ -1,0 +1,433 @@
+DEFAULT_OPTIONS
+
+LEVEL               THREAD
+UNITS               NANOSEC
+LOOK_BACK           100
+SPEED               1
+FLAG_ICONS          ENABLED
+NUM_OF_STATE_COLORS 1000
+YMAX_SCALE          37
+
+
+DEFAULT_SEMANTIC
+
+THREAD_FUNC          State As Is
+
+
+STATES
+0    Idle
+1    Running
+2    Not created
+3    Waiting a message
+4    Blocking Send
+5    Synchronization
+6    Test/Probe
+7    Scheduling and Fork/Join
+8    Wait/WaitAll
+9    Blocked
+10    Immediate Send
+11    Immediate Receive
+12    I/O
+13    Group Communication
+14    Tracing Disabled
+15    Others
+16    Send Receive
+17    Memory transfer
+18    Profiling
+19    On-line analysis
+20    Remote memory access
+21    Atomic memory operation
+22    Memory ordering operation
+23    Distributed locking
+24    Overhead
+25    One-sided op
+26    Startup latency
+27    Waiting links
+28    Data copy
+29    RTT
+30    Allocating memory
+31    Freeing memory
+
+
+STATES_COLOR
+0    {117,195,255}
+1    {0,0,255}
+2    {255,255,255}
+3    {255,0,0}
+4    {255,0,174}
+5    {179,0,0}
+6    {0,255,0}
+7    {255,255,0}
+8    {235,0,0}
+9    {0,162,0}
+10    {255,0,255}
+11    {100,100,177}
+12    {172,174,41}
+13    {255,144,26}
+14    {2,255,177}
+15    {192,224,0}
+16    {66,66,66}
+17    {255,0,96}
+18    {169,169,169}
+19    {169,0,0}
+20    {0,109,255}
+21    {200,61,68}
+22    {200,66,0}
+23    {0,41,0}
+24    {139,121,177}
+25    {116,116,116}
+26    {200,50,89}
+27    {255,171,98}
+28    {0,68,189}
+29    {52,43,0}
+30    {255,46,0}
+31    {100,216,32}
+
+
+EVENT_TYPE
+0    61000000    pthread call
+VALUES
+0 Outside pthread call
+2 pthread_create
+
+
+EVENT_TYPE
+6    40000033    Executing CPU
+6    40000133    CPU-Event sampling interval
+
+
+EVENT_TYPE
+6    40000001    Application
+VALUES
+0      End
+1      Begin
+
+
+EVENT_TYPE
+6    40000050    RAW clock() value from system
+
+
+EVENT_TYPE
+6    40000003    Flushing Traces
+VALUES
+0      End
+1      Begin
+
+
+EVENT_TYPE
+6    40000002    Trace initialization
+VALUES
+0      End
+1      Begin
+
+
+EVENT_TYPE
+6    40000036    Process IDentifier
+6    40000037    Parent Process IDentifier
+6    40000038    fork() depth
+
+
+EVENT_TYPE
+7  42000050 PAPI_TOT_INS [Instr completed]
+7  42000059 PAPI_TOT_CYC [Total cycles]
+7  42000000 PAPI_L1_DCM [L1D cache misses]
+7  42000002 PAPI_L2_DCM [L2D cache misses]
+7  42000008 PAPI_L3_TCM [L3 cache misses]
+7  42000055 PAPI_BR_INS [Branches]
+7  42000046 PAPI_BR_MSP [Cond br mspredictd]
+7  42001047 RESOURCE_STALLS [Cycles Allocation is stalled due to Resource Related reason]
+7  41999999 Active hardware counter set
+
+
+GRADIENT_COLOR
+0    {0,255,2}
+1    {0,244,13}
+2    {0,232,25}
+3    {0,220,37}
+4    {0,209,48}
+5    {0,197,60}
+6    {0,185,72}
+7    {0,173,84}
+8    {0,162,95}
+9    {0,150,107}
+10    {0,138,119}
+11    {0,127,130}
+12    {0,115,142}
+13    {0,103,154}
+14    {0,91,166}
+
+
+GRADIENT_NAMES
+0    Gradient 0
+1    Grad. 1/MPI Events
+2    Grad. 2/OMP Events
+3    Grad. 3/OMP locks
+4    Grad. 4/User func
+5    Grad. 5/User Events
+6    Grad. 6/General Events
+7    Grad. 7/Hardware Counters
+8    Gradient 8
+9    Gradient 9
+10    Gradient 10
+11    Gradient 11
+12    Gradient 12
+13    Gradient 13
+14    Gradient 14
+
+
+EVENT_TYPE
+9    40000018    Tracing mode:
+VALUES
+1      Detailed
+2      CPU Bursts
+
+
+EVENT_TYPE
+0    8001001    API
+VALUES
+0      End
+1      Loading Runtime
+2      Start
+3      Stop
+4      Execute Task
+5      Waiting for tasks end
+6      Barrier
+7      Waiting for open file
+57      Waiting for open directory
+8      Waiting for get file
+9      Waiting for get object
+58      Waiting for get Directory
+12      Delete File
+59      Wait on concurrent
+
+
+EVENT_TYPE
+0    8001002    Runtime
+VALUES
+0      End
+11      Task Running
+13      Received new task
+54      Worker: Creating task sandbox
+55      Worker: Removing task sandbox
+60      Fetch task parameter
+61      Remove Obsoletes
+62      Bind Original File names To Renames..
+63      Unbind Original File names To Renames..
+64      Check OUT parameters.
+65      Init Thread for synch file system operations
+66      Local copy
+67      Local move
+17      Access Processor: Debug
+18      Access Processor: Analyse task
+19      Access Processor: Update graph
+20      Access Processor: Wait for task
+21      Access Processor: End of app
+22      Access Processor: Already accessed
+23      Access Processor: Register data access
+24      Access Processor: Transfer open file
+25      Access Processor: Transfer raw file
+26      Access Processor: Transfer object
+27      Access Processor: New version same value
+28      Access Processor: Is object here
+29      Access Processor: Set object version value
+30      Access Processor: Get last renaming
+31      Access Processor: Block and get result files
+32      Access Processor: Unblock result files
+33      Access Processor: Shutdown
+34      Access Processor: Graphstate
+35      Access Processor: Taskstate
+36      Access Processor: Delete file
+37      Access Processor: Finish access to file
+38      Access Processor: Register remote object access
+39      Access Processor: Resgister remote file access
+40      Access Processor: Deregister object
+41      Access Processor: Cancel task group
+42      Access Processor: Remove application data
+56      Acces Processor: Cancel all tasks
+45      Task Dispatcher: Action update
+46      Task Dispatcher: CE registration
+47      Task Dispatcher: Execute tasks
+48      Task Dispatcher: Get current schedule
+49      Task Dispatcher: Print current graph
+50      Task Dispatcher: Monitoring data
+51      Task Dispatcher: Shutdown
+52      Task Dispatcher: Update CEI local
+53      Task Dispatcher: Worker update request
+57      Task Dispatcher: Cancel tasks
+
+
+EVENT_TYPE
+0    8000000    Task
+VALUES
+0      End
+6      [Eddl_Compss_Distributed.]train_batch
+4      [utils.base.]_choose_and_assign_rows_xy
+2      _apply_to_tensor
+5      [utils.base.]_merge_shuffle_xy
+3      [data.array.]_filter_block
+7      [Eddl_Compss_Distributed.]eval_batch
+1      [Eddl_Compss_Distributed.]build
+
+
+EVENT_TYPE
+0    8000003    Task Transfers Request
+VALUES
+0      End
+
+
+EVENT_TYPE
+0    8000005    Storage API
+VALUES
+0      End
+38      getByID
+39      newReplica
+40      newVersion
+41      invoke
+42      executeTask
+43      getLocations
+44      consolidateVersion
+
+
+EVENT_TYPE
+0    60000100    Events inside tasks
+VALUES
+0      End
+1      CPU binding
+2      GPU binding
+3      Setup environment variables
+4      Get parameters
+5      Import user module
+6      User code
+7      Deserializing string
+8      Deserializing object
+9      Serializing object
+10      Serializing object MPI env
+11      Build success message
+12      Build COMPSs exception message
+13      Build exception message
+14      Clean environment
+15      Get by ID persistent object
+16      Get object ID
+17      Make persistent object
+18      Delete persistent object
+25      Task instantiation
+
+
+EVENT_TYPE
+0    60000150    Tasks CPU affinity
+VALUES
+0      End
+
+
+EVENT_TYPE
+0    60000160    Tasks GPU affinity
+VALUES
+0      End
+
+
+EVENT_TYPE
+0    60000200    Events inside worker
+VALUES
+0      End
+1      Worker running
+2      Process task
+3      Process ping
+4      Process quit
+5      Init storage
+6      Stop storage
+7      Init storage at worker
+8      Stop storage at worker
+9      Init storage at worker process
+10      Stop storage at worker process
+
+
+EVENT_TYPE
+0    60000300    Binding events
+VALUES
+0      End
+1001      Start runtime
+1002      Stop runtime
+1003      Application running
+1005      Start storage
+1006      Stop storage
+1007      Accessed file
+1008      Open file
+1009      Delete file
+1010      Get file
+1011      Get directory
+1012      Delete object
+1013      Barrier
+1014      Barrier group
+1015      Open task group
+1016      Close task group
+1017      Get log path
+1018      Get number of resources
+1019      Request resources
+1020      Free resources
+1021      Register Core Element
+1022      Wait on
+1023      Call to process task
+2000      Task instantiation
+2001      Extract core element
+2002      Inspect function arguments
+2003      Process function parameters
+2004      Get function information
+2005      Prepare Core Element
+2006      Check function signature
+2007      Update Core Element
+2008      Get computing nodes
+2009      Process return
+2010      Process task hints
+2011      Build return objects
+2012      Serialize objects
+2013      Build COMPSs types and directions
+2014      Cleanup
+
+
+EVENT_TYPE
+0    8000007    Type of task
+VALUES
+0      End
+1      METHOD
+2      BINARY
+3      MPI
+4      PYTHON_MPI
+5      COMPSs
+6      DECAF
+7      MULTI_NODE
+8      OMPSS
+9      OPENCL
+10      CONTAINER
+
+
+EVENT_TYPE
+0    8000002    Task IDs
+
+
+EVENT_TYPE
+0    8000004    Data Transfers
+
+
+EVENT_TYPE
+0    8000006    Ready queue count
+VALUES
+0      End
+1      Ready queue count
+
+
+EVENT_TYPE
+0    8000008    Number of requested CPUs
+
+
+EVENT_TYPE
+0    8000009    Number of requested GPUs
+
+
+EVENT_TYPE
+0    8000010     Requested Memory
+
+
+EVENT_TYPE
+0    8000011     Requested disk bandwidth
+
+

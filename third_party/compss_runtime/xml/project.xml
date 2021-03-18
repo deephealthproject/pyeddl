@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Project>
+    <MasterNode/>
+    <ComputeNode Name="127.0.0.1">
+        <InstallDir>/opt/COMPSs/</InstallDir>
+        <WorkingDir>/tmp/COMPSsWorker/</WorkingDir>
+    </ComputeNode>
+    <ComputeNode Name="compsscito1">
+        <InstallDir>/opt/COMPSs/</InstallDir>
+        <WorkingDir>/tmp/COMPSsWorker/</WorkingDir>
+        <User>jperales</User>
+        <Application>
+        	<Pythonpath>/home/compss/pyeddl/third_party/compss_distributed/</Pythonpath>
+        </Application>
+    </ComputeNode>
+    <ComputeNode Name="compsscito2">
+        <InstallDir>/opt/COMPSs/</InstallDir>
+        <WorkingDir>/tmp/COMPSsWorker/</WorkingDir>
+        <User>jperales</User>
+        <Application>
+            <Pythonpath>/home/compss/pyeddl/third_party/compss_distributed/</Pythonpath>
+        </Application>
+    </ComputeNode>
+    <ComputeNode Name="compsscito3">
+        <InstallDir>/opt/COMPSs/</InstallDir>
+        <WorkingDir>/tmp/COMPSsWorker/</WorkingDir>
+        <User>jperales</User>
+        <Application>
+            <Pythonpath>/home/compss/pyeddl/third_party/compss_distributed/</Pythonpath>
+        </Application>
+    </ComputeNode>
+</Project>
