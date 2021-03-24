@@ -7,7 +7,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker'
-                            image 'simleo/pyeddl-base:5ab93fc0'
+                            image 'simleo/pyeddl-base:0c0c1091'
                         }
                     }
                     stages {
@@ -46,7 +46,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker && gpu'
-                            image 'simleo/pyeddl-gpu-base:5ab93fc0'
+                            image 'simleo/pyeddl-gpu-base:0c0c1091'
                             args '--gpus 1'
                         }
                     }
