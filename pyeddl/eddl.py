@@ -56,8 +56,8 @@ def initializeLayer(net, l):
     _eddl.initializeLayer(net, l)
 
 
-def get_parameters(net, deepcopy=False, tocpu=False):
-    return _eddl.get_parameters(net, deepcopy, tocpu)
+def get_parameters(net, deepcopy=False):
+    return _eddl.get_parameters(net, deepcopy)
 
 
 def set_parameters(net, params):
@@ -1748,6 +1748,18 @@ def Log10(l):
     return _eddl.Log10(l)
 
 
+def Clamp(l, min, max):
+    """\
+    Layer that clamps the values of another layer.
+
+    :param l: parent layer
+    :param min: Minimum value
+    :param max: Maximum value
+    :return: Clamp layer
+    """
+    return _eddl.Clamp(l, min, max)
+
+
 def Mult(l1, l2):
     """\
     Compute the element-wise multiplication of two layers or floats.
@@ -1760,16 +1772,15 @@ def Mult(l1, l2):
     return _eddl.Mult(l1, l2)
 
 
-def Pow(l1, l2):
+def Pow(l1, k):
     """\
-    Compute the element-wise power of two layers, or a layer and a float.
+    Layer that computes the power of a layer raised to a float number.
 
     :param l1: a layer
-    :param l2: a layer or float
+    :param l2: a float
     :return: Pow layer
     """
-    # l2 can be either a layer or a float
-    return _eddl.Pow(l1, l2)
+    return _eddl.Pow(l1, k)
 
 
 def Sqrt(l):
@@ -2094,6 +2105,10 @@ def getOutput(l1):
     return _eddl.getOutput(l1)
 
 
+def getInput(l1):
+    return _eddl.getInput(l1)
+
+
 def getDelta(l1):
     return _eddl.getDelta(l1)
 
@@ -2279,6 +2294,35 @@ def L1L2(l, l1, l2):
     return _eddl.L1L2(l, l1, l2)
 
 
+# == FUSED LAYERS ==
+
+def Conv2dActivation(parent, act, filters, kernel_size, strides=[1, 1],
+                     padding="same", use_bias=True, groups=1,
+                     dilation_rate=[1, 1], name=""):
+    """\
+    Convolution + Activation layer.
+
+    :param parent: parent layer
+    :param act: name of the activation function
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param kernel_size: list of 2 integers, specifying the height and width of
+      the 2D convolution window.
+    :param strides: list of 2 integers, specifying the strides of the
+      convolution along the height and width
+    :param padding: one of "none", "valid" or "same"
+    :param use_bias: whether the layer uses a bias vector
+    :param groups: number of blocked connections from input to output channels
+    :param dilation_rate: list of 2 integers, specifying the dilation rate
+      to use for dilated convolution
+    :param name: name of the output layer
+    :return: Conv2dActivation layer
+    """
+    return _eddl.Conv2dActivation(parent, act, filters, kernel_size, strides,
+                                  padding, use_bias, groups, dilation_rate,
+                                  name)
+
+
 # == GET MODELS ==
 
 def download_model(name, link):
@@ -2307,6 +2351,10 @@ def download_resnet101(top=True, input_shape=[]):
 
 def download_resnet152(top=True, input_shape=[]):
     return _eddl.download_resnet152(top, input_shape)
+
+
+def download_densenet121(top=True, input_shape=[]):
+    return _eddl.download_densenet121(top, input_shape)
 
 
 # == DATASETS ==

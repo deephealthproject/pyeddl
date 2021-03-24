@@ -325,6 +325,8 @@ Operator layers
 
 .. autofunction:: pyeddl.eddl.Log10
 
+.. autofunction:: pyeddl.eddl.Clamp
+
 .. autofunction:: pyeddl.eddl.Mult
 
 .. autofunction:: pyeddl.eddl.Pow
@@ -442,6 +444,12 @@ Regularizers
 .. autofunction:: pyeddl.eddl.L1L2
 
 
+Fused layers
+------------
+
+.. autofunction:: pyeddl.eddl.Conv2dActivation
+
+
 Get Models
 ----------
 
@@ -458,6 +466,8 @@ Get Models
 .. autofunction:: pyeddl.eddl.download_resnet101
 
 .. autofunction:: pyeddl.eddl.download_resnet152
+
+.. autofunction:: pyeddl.eddl.download_densenet121
 
 
 
