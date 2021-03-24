@@ -42,6 +42,7 @@ def main(args):
     layer = in_
     layer = eddl.LeakyReLu(eddl.Dense(layer, 32))
     layer = eddl.L2(eddl.LSTM(layer, 128), 0.001)
+    ls = layer
     out = eddl.Softmax(eddl.Dense(layer, num_classes))
     net = eddl.Model([in_], [out])
 
@@ -77,6 +78,10 @@ def main(args):
     for i in range(args.epochs):
         eddl.fit(net, [x_train], [y_train], args.batch_size, 1)
         eddl.evaluate(net, [x_test], [y_test], bs=args.batch_size)
+        ls_in = eddl.getInput(ls)
+        ls_in.info()
+        ls_out = eddl.getOutput(ls)
+        ls_out.info()
     print("All done")
 
 

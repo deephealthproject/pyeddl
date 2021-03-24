@@ -235,7 +235,6 @@ void eddl_addons(pybind11::module &m) {
     m.def("Mult", (class Layer* (*)(class Layer*, class Layer*)) &eddl::Mult, "C++: eddl::Mult(class Layer*, class Layer*) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l1"), pybind11::arg("l2"), pybind11::keep_alive<0, 1>(), pybind11::keep_alive<0, 2>());
     m.def("Mult", (class Layer* (*)(class Layer*, float)) &eddl::Mult, "C++: eddl::Mult(class Layer*, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l1"), pybind11::arg("k"), pybind11::keep_alive<0, 1>());
     m.def("Mult", (class Layer* (*)(float, class Layer*)) &eddl::Mult, "C++: eddl::Mult(float, class Layer*) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("k"), pybind11::arg("l1"), pybind11::keep_alive<0, 2>());
-    m.def("Pow", (class Layer* (*)(class Layer*, class Layer*)) &eddl::Pow, "C++: eddl::Pow(class Layer*, class Layer*) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l1"), pybind11::arg("l2"), pybind11::keep_alive<0, 1>(), pybind11::keep_alive<0, 2>());
     m.def("Pow", (class Layer* (*)(class Layer*, float)) &eddl::Pow, "C++: eddl::Pow(class Layer*, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l1"), pybind11::arg("k"), pybind11::keep_alive<0, 1>());
     m.def("Sqrt", (class Layer* (*)(class Layer*)) &eddl::Sqrt, "C++: eddl::Sqrt(class Layer*) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::keep_alive<0, 1>());
     m.def("Sum", (class Layer* (*)(class Layer*, class Layer*)) &eddl::Sum, "C++: eddl::Sum(class Layer*, class Layer*) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l1"), pybind11::arg("l2"), pybind11::keep_alive<0, 1>(), pybind11::keep_alive<0, 2>());
@@ -305,6 +304,9 @@ void eddl_addons(pybind11::module &m) {
     m.def("L1", (class Layer* (*)(class Layer*, float)) &eddl::L1, "C++: eddl::L1(class Layer*, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("l1"), pybind11::keep_alive<0, 1>());
     m.def("L1L2", (class Layer* (*)(class Layer*, float, float)) &eddl::L1L2, "C++: eddl::L1L2(class Layer*, float, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("l1"), pybind11::arg("l2"), pybind11::keep_alive<0, 1>());
 
+    // --- fused layers ---
+    m.def("Conv2dActivation", (Layer* (*)(Layer*, string, int, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::Conv2dActivation, "Convolution + Activation layer", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("act"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("padding") = "same", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+
     // --- computing services ---
     m.def("CS_CPU", (class CompServ* (*)(int, string)) &eddl::CS_CPU, "C++: eddl::CS_CPU(int, string) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("th"), pybind11::arg("mem"));
     m.def("CS_GPU", (class CompServ* (*)(const vector<int>)) &eddl::CS_GPU, "C++: eddl::CS_GPU(const vector<int>) --> class CompServ*", pybind11::return_value_policy::reference, pybind11::arg("g"));
@@ -346,7 +348,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("removeLayer", (void (*)(class Net*, string)) &eddl::removeLayer, "C++: eddl::removeLayer(class Net*, string) --> void", pybind11::arg("net"), pybind11::arg("l"));
     m.def("initializeLayer", (void (*)(class Net*, string)) &eddl::initializeLayer, "C++: eddl::initializeLayer(class Net*, string) --> void", pybind11::arg("net"), pybind11::arg("l"));
     m.def("setTrainable", (void (*)(class Net*, string, bool)) &eddl::setTrainable, "C++: eddl::setTrainable(class Net*, string, bool) --> void", pybind11::arg("net"), pybind11::arg("lanme"), pybind11::arg("val"));
-    m.def("get_parameters", (vector<vector<Tensor*>> (*)(class Net*, bool, bool)) &eddl::get_parameters, "C++: eddl::get_parameters(class Net*, bool, bool) --> vector<vector<Tensor*>>", pybind11::return_value_policy::reference, pybind11::arg("net"), pybind11::arg("deepcopy")=false, pybind11::arg("tocpu")=false);
+    m.def("get_parameters", (vector<vector<Tensor*>> (*)(class Net*, bool)) &eddl::get_parameters, "C++: eddl::get_parameters(class Net*, bool) --> vector<vector<Tensor*>>", pybind11::return_value_policy::reference, pybind11::arg("net"), pybind11::arg("deepcopy")=false);
     m.def("set_parameters", (void (*)(class Net*, const vector<vector<Tensor*>>&)) &eddl::set_parameters, "C++: eddl::set_parameters(class Net*, const vector<vector<Tensor*>>&) --> void", pybind11::arg("net"), pybind11::arg("params"));
     m.def("build", (void (*)(class Net*, class Optimizer*, const vector<string>&, const vector<string>&, class CompServ*, bool)) &eddl::build, "C++: eddl::build(class Net*, class Optimizer*, const vector<string>&, const vector<string>&, class CompServ*, bool) --> void", pybind11::arg("net"), pybind11::arg("o"), pybind11::arg("lo"), pybind11::arg("me"), pybind11::arg("cs") = nullptr, pybind11::arg("init_weights") = true, pybind11::keep_alive<1, 2>(), pybind11::keep_alive<1, 5>());
     m.def("toGPU", (void (*)(class Net*, vector<int>, int)) &eddl::toGPU, "C++: eddl::toGPU(class Net*, vector<int>, int) --> void", pybind11::arg("net"), pybind11::arg("g"), pybind11::arg("lsb"));
@@ -378,6 +380,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("download_resnet50", (Net* (*)(bool, vector<int>)) &eddl::download_resnet50, "C++: eddl::download_resnet50(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
     m.def("download_resnet101", (Net* (*)(bool, vector<int>)) &eddl::download_resnet101, "C++: eddl::download_resnet101(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
     m.def("download_resnet152", (Net* (*)(bool, vector<int>)) &eddl::download_resnet152, "C++: eddl::download_resnet152(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
+    m.def("download_densenet121", (Net* (*)(bool, vector<int>)) &eddl::download_densenet121, "C++: eddl::download_densenet121(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
 
 
 #ifdef EDDL_WITH_PROTOBUF
@@ -392,8 +395,8 @@ void eddl_addons(pybind11::module &m) {
 
     // --- serialization ---
     m.def("save_net_to_onnx_file", (void (*)(class Net*, string)) &save_net_to_onnx_file, "C++: eddl::save_net_to_onnx_file(class Net *, string) --> void", pybind11::arg("net"), pybind11::arg("path"));
-    m.def("import_net_from_onnx_file", (class Net* (*)(string, int, int)) &import_net_from_onnx_file, "Imports ONNX Net from file", pybind11::arg("path"), pybind11::arg("mem") = 0, pybind11::arg("log_level") = LOG_LEVEL::INFO);
-    m.def("import_net_from_onnx_file", (class Net* (*)(string, vector<int>, int, int)) &import_net_from_onnx_file, "Imports ONNX Net from file and changes its input shape", pybind11::arg("path"), pybind11::arg("input_shape"), pybind11::arg("mem") = 0, pybind11::arg("log_level") = LOG_LEVEL::INFO);
+    m.def("import_net_from_onnx_file", (class Net* (*)(string, int, LOG_LEVEL)) &import_net_from_onnx_file, "Imports ONNX Net from file", pybind11::arg("path"), pybind11::arg("mem") = 0, pybind11::arg("log_level") = LOG_LEVEL::INFO);
+    m.def("import_net_from_onnx_file", (class Net* (*)(string, vector<int>, int, LOG_LEVEL)) &import_net_from_onnx_file, "Imports ONNX Net from file and changes its input shape", pybind11::arg("path"), pybind11::arg("input_shape"), pybind11::arg("mem") = 0, pybind11::arg("log_level") = LOG_LEVEL::INFO);
     m.def("serialize_net_to_onnx_string", [](Net* net, bool gradients) -> pybind11::bytes {
       string* s = serialize_net_to_onnx_string(net, gradients);
       return pybind11::bytes(*s);

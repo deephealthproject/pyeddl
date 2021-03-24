@@ -298,10 +298,10 @@ def test_operator_layers(eddl):
     eddl.Log(in_1)
     eddl.Log2(in_1)
     eddl.Log10(in_1)
+    eddl.Clamp(in_1, 0.1, 0.9)
     eddl.Mult(in_1, in_2)
     eddl.Mult(in_1, 1.0)
     eddl.Mult(1.0, in_1)
-    eddl.Pow(in_1, in_2)
     eddl.Pow(in_1, 1.0)
     eddl.Sqrt(in_1)
     # Sum is deprecated in favor of Add
@@ -478,6 +478,19 @@ def test_regularizers(eddl):
     eddl.L2(in2d, 0.001)
     eddl.L1(in2d, 0.001)
     eddl.L1L2(in2d, 0.001, 0.001)
+
+
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_fused_layers(eddl):
+    in4d = eddl.Input([3, 16, 16])
+    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1])
+    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none")
+    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none", True)
+    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none", True, 1)
+    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none", True, 1,
+                          [1, 1])
+    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none", True, 1,
+                          [1, 1], "foo")
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
