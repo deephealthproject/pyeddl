@@ -13,21 +13,22 @@ The easiest way to install PyEDDL is via `Conda
 Each PyEDDL package installs the corresponding EDDL one as a dependency. So
 there's no need to separately install EDDL when installing via Conda.
 
-Note that the highest version available from Conda might be less than the
-latest version on PyPI for recent releases.
+.. note::
+
+   The highest version available from Conda might be less than the latest
+   version on PyPI for recent releases.
 
 If you prefer to build and install from source instead, read on.
 
 To install PyEDDL from source, you need to install EDDL first. Installation
 instructions for EDDL are available as part of the `EDDL docs
-<https://deephealthproject.github.io/eddl/>`_. However, here we provide
-instructions on how to install PyEDDL including EDDL. You can refer to the
-EDDL docs if you need more details.
+<https://deephealthproject.github.io/eddl/>`_, although we also provide
+some hints here. Please refer to the EDDL docs if you need more details.
 
 Some EDDL components are optional. By default, PyEDDL assumes that EDDL has
 been installed with ONNX support. Also, EDDL can be compiled for CPU only or
-with GPU support. You can build PyEDDL in both cases, with some differences
-that will be highlighted further ahead.
+with GPU/CUDNN support. You can build PyEDDL in both cases, with some
+differences that will be highlighted further ahead.
 
 Each PyEDDL version depends on a specific EDDL version. If you are installing
 from the GitHub repo, the correct version of EDDL is available from the
@@ -52,10 +53,11 @@ libeigen3-dev, wget, ca-certificates``. Install protobuf from source::
     make -j$(nproc)
     make install
 
-If you want to compile EDDL for **GPU**, you also need the CUDA toolkit
+If you want to compile EDDL for **GPU/CUDNN**, you also need the CUDA toolkit
 (``nvidia-cuda-toolkit``). In this case, `you also need a recent version of
 Eigen3
 <https://devtalk.nvidia.com/default/topic/1026622/nvcc-can-t-compile-code-that-uses-eigen>`_.
+In the CUDNN case, you also need to install cuDNN.
 
 .. note::
 
@@ -93,6 +95,7 @@ Install EDDL::
     popd
 
 To compile for **GPU**, add ``-D BUILD_TARGET=GPU`` to the cmake flags.
+To compile for GPU with CUDNN support, add  ``-D BUILD_TARGET=CUDNN`` instead.
 
 .. note::
 
@@ -166,7 +169,7 @@ To install, run::
 
   python3 -m pip install pyeddl
 
-If EDDL was compiled for **GPU**, you need to export the ``EDDL_WITH_CUDA``
+If EDDL was compiled for GPU/CUDNN, you need to export the ``EDDL_WITH_CUDA``
 environment variable **before installing PyEDDL** so that ``setup.py`` will
 also link the ``cudart``, ``cublas`` and ``curand`` libraries. These will be
 expected in "standard" system locations, so you might need to create symlinks
