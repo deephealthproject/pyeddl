@@ -175,17 +175,19 @@
 </div>
 <p>Each PyEDDL package installs the corresponding EDDL one as a dependency. So
 there’s no need to separately install EDDL when installing via Conda.</p>
-<p>Note that the highest version available from Conda might be less than the
-latest version on PyPI for recent releases.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The highest version available from Conda might be less than the latest
+version on PyPI for recent releases.</p>
+</div>
 <p>If you prefer to build and install from source instead, read on.</p>
 <p>To install PyEDDL from source, you need to install EDDL first. Installation
-instructions for EDDL are available as part of the <a class="reference external" href="https://deephealthproject.github.io/eddl/">EDDL docs</a>. However, here we provide
-instructions on how to install PyEDDL including EDDL. You can refer to the
-EDDL docs if you need more details.</p>
+instructions for EDDL are available as part of the <a class="reference external" href="https://deephealthproject.github.io/eddl/">EDDL docs</a>, although we also provide
+some hints here. Please refer to the EDDL docs if you need more details.</p>
 <p>Some EDDL components are optional. By default, PyEDDL assumes that EDDL has
 been installed with ONNX support. Also, EDDL can be compiled for CPU only or
-with GPU support. You can build PyEDDL in both cases, with some differences
-that will be highlighted further ahead.</p>
+with GPU/CUDNN support. You can build PyEDDL in both cases, with some
+differences that will be highlighted further ahead.</p>
 <p>Each PyEDDL version depends on a specific EDDL version. If you are installing
 from the GitHub repo, the correct version of EDDL is available from the
 submodule (<code class="docutils literal notranslate"><span class="pre">third_party</span></code> dir).</p>
@@ -205,9 +207,10 @@ make -j$(nproc)
 make install
 </pre></div>
 </div>
-<p>If you want to compile EDDL for <strong>GPU</strong>, you also need the CUDA toolkit
+<p>If you want to compile EDDL for <strong>GPU/CUDNN</strong>, you also need the CUDA toolkit
 (<code class="docutils literal notranslate"><span class="pre">nvidia-cuda-toolkit</span></code>). In this case, <a class="reference external" href="https://devtalk.nvidia.com/default/topic/1026622/nvcc-can-t-compile-code-that-uses-eigen">you also need a recent version of
-Eigen3</a>.</p>
+Eigen3</a>.
+In the CUDNN case, you also need to install cuDNN.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>PyEDDL is part of the <a class="reference external" href="https://github.com/deephealthproject">DeepHealth ecosystem</a>. If you plan to use PyEDDL with
@@ -239,7 +242,8 @@ popd
 popd
 </pre></div>
 </div>
-<p>To compile for <strong>GPU</strong>, add <code class="docutils literal notranslate"><span class="pre">-D</span> <span class="pre">BUILD_TARGET=GPU</span></code> to the cmake flags.</p>
+<p>To compile for <strong>GPU</strong>, add <code class="docutils literal notranslate"><span class="pre">-D</span> <span class="pre">BUILD_TARGET=GPU</span></code> to the cmake flags.
+To compile for GPU with CUDNN support, add  <code class="docutils literal notranslate"><span class="pre">-D</span> <span class="pre">BUILD_TARGET=CUDNN</span></code> instead.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>EDDL versions 0.3 and 0.3.1 are affected by an issue that breaks the
@@ -332,7 +336,7 @@ version:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pyeddl</span>
 </pre></div>
 </div>
-<p>If EDDL was compiled for <strong>GPU</strong>, you need to export the <code class="docutils literal notranslate"><span class="pre">EDDL_WITH_CUDA</span></code>
+<p>If EDDL was compiled for GPU/CUDNN, you need to export the <code class="docutils literal notranslate"><span class="pre">EDDL_WITH_CUDA</span></code>
 environment variable <strong>before installing PyEDDL</strong> so that <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> will
 also link the <code class="docutils literal notranslate"><span class="pre">cudart</span></code>, <code class="docutils literal notranslate"><span class="pre">cublas</span></code> and <code class="docutils literal notranslate"><span class="pre">curand</span></code> libraries. These will be
 expected in “standard” system locations, so you might need to create symlinks
