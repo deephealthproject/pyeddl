@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +31,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -87,11 +90,16 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#install-eddl-dependencies">Install EDDL dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#install-eddl">Install EDDL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#install-pyeddl">Install PyEDDL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#disabling-unwanted-modules">Disabling unwanted modules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eddl-installed-in-an-arbitrary-directory">EDDL installed in an arbitrary directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conda-packages">Conda packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-images">Docker images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-from-source">Installing from source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-eddl-dependencies">Install EDDL dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-eddl">Install EDDL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-pyeddl">Install PyEDDL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disabling-unwanted-modules">Disabling unwanted modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eddl-installed-in-an-arbitrary-directory">EDDL installed in an arbitrary directory</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
@@ -167,20 +175,40 @@
             
   <div class="section" id="installation">
 <span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>The easiest way to install PyEDDL is via <a class="reference external" href="https://docs.conda.io/en/latest/">Conda</a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">dhealth</span> <span class="n">pyeddl</span><span class="o">-</span><span class="n">cpu</span>  <span class="c1"># cpu-only version</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">dhealth</span> <span class="n">pyeddl</span><span class="o">-</span><span class="n">gpu</span>  <span class="c1"># gpu-enabled version</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="o">-</span><span class="n">c</span> <span class="n">dhealth</span> <span class="n">pyeddl</span><span class="o">-</span><span class="n">cudnn</span>  <span class="c1"># cudnn-enabled version</span>
+<div class="section" id="conda-packages">
+<h2>Conda packages<a class="headerlink" href="#conda-packages" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://docs.conda.io/en/latest/">Conda</a> packages for PyEDDL come in three
+flavors:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyeddl-cpu</span></code>: CPU-only</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyeddl-gpu</span></code>: GPU-enabled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyeddl-cudnn</span></code>: GPU-enabled, with cuDNN support</p></li>
+</ul>
+<p>Choose one of the above, then install it as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">dhealth</span> <span class="o">-</span><span class="n">c</span> <span class="n">bioconda</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pyeddl</span><span class="o">-</span><span class="n">cpu</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">dhealth</span> <span class="o">-</span><span class="n">c</span> <span class="n">bioconda</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pyeddl</span><span class="o">-</span><span class="n">gpu</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">dhealth</span> <span class="o">-</span><span class="n">c</span> <span class="n">bioconda</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pyeddl</span><span class="o">-</span><span class="n">cudnn</span>
 </pre></div>
 </div>
-<p>Each PyEDDL package installs the corresponding EDDL one as a dependency. So
-there’s no need to separately install EDDL when installing via Conda.</p>
+<p>Each PyEDDL package installs the corresponding EDDL one as a dependency, as
+well as any other requirement, so there’s no need to separately install EDDL
+or PyEDDL / EDDL when installing via Conda.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The highest version available from Conda might be less than the latest
 version on PyPI for recent releases.</p>
 </div>
-<p>If you prefer to build and install from source instead, read on.</p>
+<p>Head over to <a class="reference external" href="https://github.com/deephealthproject/conda_builds">https://github.com/deephealthproject/conda_builds</a> for further
+information.</p>
+</div>
+<div class="section" id="docker-images">
+<h2>Docker images<a class="headerlink" href="#docker-images" title="Permalink to this headline">¶</a></h2>
+<p>If you don’t want to install on bare metal, the <a class="reference external" href="https://github.com/deephealthproject/docker-libs">DeepHealth Docker images</a> provide ready-to-use
+containers for the DeepHealth components, including PyEDDL. Refer to the above
+link for further information.</p>
+</div>
+<div class="section" id="installing-from-source">
+<h2>Installing from source<a class="headerlink" href="#installing-from-source" title="Permalink to this headline">¶</a></h2>
 <p>To install PyEDDL from source, you need to install EDDL first. Installation
 instructions for EDDL are available as part of the <a class="reference external" href="https://deephealthproject.github.io/eddl/">EDDL docs</a>, although we also provide
 some hints here. Please refer to the EDDL docs if you need more details.</p>
@@ -194,7 +222,7 @@ submodule (<code class="docutils literal notranslate"><span class="pre">third_pa
 <p>The following sections contain instructions to install PyEDDL from scratch,
 EDDL installation included. We use Ubuntu Linux as an example platform.</p>
 <div class="section" id="install-eddl-dependencies">
-<h2>Install EDDL dependencies<a class="headerlink" href="#install-eddl-dependencies" title="Permalink to this headline">¶</a></h2>
+<h3>Install EDDL dependencies<a class="headerlink" href="#install-eddl-dependencies" title="Permalink to this headline">¶</a></h3>
 <p>EDDL needs the development versions of the zlib and Eigen3 libraries. To
 enable ONNX I/O, you also need to install Google protobuf. On Ubuntu, for
 instance, install the following with APT: <code class="docutils literal notranslate"><span class="pre">build-essential,</span> <span class="pre">zlib1g-dev,</span>
@@ -225,7 +253,7 @@ PyEDDL installation.</p>
 </div>
 </div>
 <div class="section" id="install-eddl">
-<h2>Install EDDL<a class="headerlink" href="#install-eddl" title="Permalink to this headline">¶</a></h2>
+<h3>Install EDDL<a class="headerlink" href="#install-eddl" title="Permalink to this headline">¶</a></h3>
 <p>Clone the PyEDDL GitHub repo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="o">--</span><span class="n">recurse</span><span class="o">-</span><span class="n">submodules</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">deephealthproject</span><span class="o">/</span><span class="n">pyeddl</span><span class="o">.</span><span class="n">git</span>
 <span class="n">cd</span> <span class="n">pyeddl</span>
@@ -253,7 +281,7 @@ repository).</p>
 </div>
 </div>
 <div class="section" id="install-pyeddl">
-<h2>Install PyEDDL<a class="headerlink" href="#install-pyeddl" title="Permalink to this headline">¶</a></h2>
+<h3>Install PyEDDL<a class="headerlink" href="#install-pyeddl" title="Permalink to this headline">¶</a></h3>
 <p>You need the development version of python3 and pip. On Ubuntu, install
 <code class="docutils literal notranslate"><span class="pre">python3-dev</span></code> and <code class="docutils literal notranslate"><span class="pre">python3-pip</span></code>.</p>
 <p>Install the Python dependencies. Note that, at the moment, the pybind11
@@ -349,7 +377,7 @@ depending on your CUDA toolkit installation. For instance:</p>
 </div>
 </div>
 <div class="section" id="disabling-unwanted-modules">
-<h2>Disabling unwanted modules<a class="headerlink" href="#disabling-unwanted-modules" title="Permalink to this headline">¶</a></h2>
+<h3>Disabling unwanted modules<a class="headerlink" href="#disabling-unwanted-modules" title="Permalink to this headline">¶</a></h3>
 <p>By default, PyEDDL assumes a complete EDDL installation, including optional
 modules, and builds bindings for all of them. You can disable support for
 specific modules via environment variables. For instance, suppose you
@@ -359,7 +387,7 @@ set the <code class="docutils literal notranslate"><span class="pre">EDDL_WITH_P
 before building PyEDDL.</p>
 </div>
 <div class="section" id="eddl-installed-in-an-arbitrary-directory">
-<h2>EDDL installed in an arbitrary directory<a class="headerlink" href="#eddl-installed-in-an-arbitrary-directory" title="Permalink to this headline">¶</a></h2>
+<h3>EDDL installed in an arbitrary directory<a class="headerlink" href="#eddl-installed-in-an-arbitrary-directory" title="Permalink to this headline">¶</a></h3>
 <p>The above installation instructions assume installation in standard system
 paths (such as <code class="docutils literal notranslate"><span class="pre">/usr/local/include</span></code>, <code class="docutils literal notranslate"><span class="pre">/usr/local/lib</span></code>). However, EDDL can
 be installed in an arbitrary directory, for instance:</p>
@@ -380,6 +408,7 @@ variable:</p>
 <p>In this way, <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> will look for additional include files in
 <code class="docutils literal notranslate"><span class="pre">/home/myuser/eddl/include</span></code> and for additional libraries in
 <code class="docutils literal notranslate"><span class="pre">/home/myuser/eddl/lib</span></code>.</p>
+</div>
 </div>
 </div>
 

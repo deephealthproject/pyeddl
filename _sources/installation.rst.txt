@@ -3,22 +3,47 @@
 Installation
 ============
 
-The easiest way to install PyEDDL is via `Conda
-<https://docs.conda.io/en/latest/>`_::
 
-  conda install -c dhealth pyeddl-cpu  # cpu-only version
-  conda install -c dhealth pyeddl-gpu  # gpu-enabled version
-  conda install -c conda-forge -c dhealth pyeddl-cudnn  # cudnn-enabled version
+Conda packages
+--------------
 
-Each PyEDDL package installs the corresponding EDDL one as a dependency. So
-there's no need to separately install EDDL when installing via Conda.
+`Conda <https://docs.conda.io/en/latest/>`_ packages for PyEDDL come in three
+flavors:
+
+* ``pyeddl-cpu``: CPU-only
+* ``pyeddl-gpu``: GPU-enabled
+* ``pyeddl-cudnn``: GPU-enabled, with cuDNN support
+
+Choose one of the above, then install it as follows::
+
+  conda install -c dhealth -c bioconda -c conda-forge pyeddl-cpu
+  conda install -c dhealth -c bioconda -c conda-forge pyeddl-gpu
+  conda install -c dhealth -c bioconda -c conda-forge pyeddl-cudnn
+
+Each PyEDDL package installs the corresponding EDDL one as a dependency, as
+well as any other requirement, so there's no need to separately install EDDL
+or PyEDDL / EDDL when installing via Conda.
 
 .. note::
 
    The highest version available from Conda might be less than the latest
    version on PyPI for recent releases.
 
-If you prefer to build and install from source instead, read on.
+Head over to https://github.com/deephealthproject/conda_builds for further
+information.
+
+
+Docker images
+-------------
+
+If you don't want to install on bare metal, the `DeepHealth Docker images
+<https://github.com/deephealthproject/docker-libs>`_ provide ready-to-use
+containers for the DeepHealth components, including PyEDDL. Refer to the above
+link for further information.
+
+
+Installing from source
+----------------------
 
 To install PyEDDL from source, you need to install EDDL first. Installation
 instructions for EDDL are available as part of the `EDDL docs
@@ -37,9 +62,8 @@ submodule (``third_party`` dir).
 The following sections contain instructions to install PyEDDL from scratch,
 EDDL installation included. We use Ubuntu Linux as an example platform.
 
-
 Install EDDL dependencies
--------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 EDDL needs the development versions of the zlib and Eigen3 libraries. To
 enable ONNX I/O, you also need to install Google protobuf. On Ubuntu, for
@@ -76,7 +100,7 @@ In the CUDNN case, you also need to install cuDNN.
 
 
 Install EDDL
-------------
+^^^^^^^^^^^^
 
 Clone the PyEDDL GitHub repo::
 
@@ -106,7 +130,7 @@ To compile for GPU with CUDNN support, add  ``-D BUILD_TARGET=CUDNN`` instead.
 
 
 Install PyEDDL
---------------
+^^^^^^^^^^^^^^
 
 You need the development version of python3 and pip. On Ubuntu, install
 ``python3-dev`` and ``python3-pip``.
@@ -182,7 +206,7 @@ depending on your CUDA toolkit installation. For instance::
 
 
 Disabling unwanted modules
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 By default, PyEDDL assumes a complete EDDL installation, including optional
 modules, and builds bindings for all of them. You can disable support for
@@ -194,7 +218,7 @@ before building PyEDDL.
 
 
 EDDL installed in an arbitrary directory
-----------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The above installation instructions assume installation in standard system
 paths (such as ``/usr/local/include``, ``/usr/local/lib``). However, EDDL can
