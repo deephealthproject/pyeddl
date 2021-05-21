@@ -26,6 +26,14 @@
 
 void bind_eddl_utils(std::function<pybind11::module &(std::string const &namespace_)> &M) {
 
+    pybind11::enum_<TransformationMode>(M(""), "TransformationMode", pybind11::arithmetic(), "")
+	.value("HalfPixel", TransformationMode::HalfPixel)
+	.value("PytorchHalfPixel", TransformationMode::PytorchHalfPixel)
+	.value("AlignCorners", TransformationMode::AlignCorners)
+	.value("Asymmetric", TransformationMode::Asymmetric)
+	.value("TFCropAndResize", TransformationMode::TFCropAndResize)
+	;
+
     pybind11::enum_<WrappingMode>(M(""), "WrappingMode", pybind11::arithmetic(), "")
 	.value("Constant", WrappingMode::Constant)
 	.value("Reflect", WrappingMode::Reflect)

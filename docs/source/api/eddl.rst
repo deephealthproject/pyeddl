@@ -211,8 +211,6 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.Unsqueeze
 
-.. autofunction:: pyeddl.eddl.ConvT
-
 .. autofunction:: pyeddl.eddl.ConvT2D
 
 .. autofunction:: pyeddl.eddl.Embedding

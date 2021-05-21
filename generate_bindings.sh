@@ -17,7 +17,7 @@ popd
 
 pyeddl_mount=/pyeddl
 
-docker run --rm -v "${this_dir}":"${pyeddl_mount}" \
+docker run --user $(id -u):$(id -g) --rm -v "${this_dir}":"${pyeddl_mount}" \
   -e BINDER_EXE='/binder/build/llvm-5.0.0/build_5.0.0*/bin/binder' \
   -e EDDL_INCLUDE="${pyeddl_mount}"/include \
   -w "${pyeddl_mount}"/codegen crs4/binder:135f6e3 ./gen_bindings.sh

@@ -1121,8 +1121,8 @@ def Unsqueeze(parent, axis=0, name=""):
     return _eddl.Unsqueeze(parent, axis, name)
 
 
-def ConvT(parent, filters, kernel_size, output_padding, padding="same",
-          dilation_rate=[1, 1], strides=[1, 1], use_bias=True, name=""):
+def ConvT2D(parent, filters, kernel_size, strides=[1, 1], padding="same",
+            use_bias=True, groups=1, dilation_rate=[1, 1], name=""):
     """\
     Transposed convolution layer (sometimes called deconvolution).
 
@@ -1136,50 +1136,16 @@ def ConvT(parent, filters, kernel_size, output_padding, padding="same",
     :param filters: dimensionality of the output space (i.e., the number of
       output filters in the convolution)
     :param kernel_size: the height and width of the 2D convolution window
-    :param output_padding: the amount of padding along the height and width of
-      the output tensor. The amount of output padding along a given dimension
-      must be lower than the stride along the same dimension
+    :param strides: the strides of the convolution along the height and width
     :param padding: one of "valid" or "same"
+    :param use_bias: whether the layer uses a bias vector
     :param dilation_rate: the dilation rate to use for dilated convolution.
       Spacing between kernel elements
-    :param strides: the strides of the convolution along the height and width
-    :param use_bias: whether the layer uses a bias vector
-    :param name: name of the output layer
-    :return: ConvT layer
-
-    """
-    return _eddl.ConvT(parent, filters, kernel_size, output_padding, padding,
-                       dilation_rate, strides, use_bias, name)
-
-
-def ConvT2D(parent, filters, kernel_size, output_padding, padding="same",
-            dilation_rate=[1, 1], strides=[1, 1], use_bias=True, name=""):
-    """\
-    Transposed convolution layer (sometimes called deconvolution).
-
-    The need for transposed convolutions generally arises from the desire to
-    use a transformation going in the opposite direction of a normal
-    convolution, i.e., from something that has the shape of the output of some
-    convolution to something that has the shape of its input while maintaining
-    a connectivity pattern that is compatible with said convolution.
-
-    :param parent: parent layer
-    :param filters: dimensionality of the output space (i.e., the number of
-      output filters in the convolution)
-    :param kernel_size: the height and width of the 2D convolution window
-    :param output_padding: the amount of padding along the height and width of
-      the output tensor. The amount of output padding along a given dimension
-      must be lower than the stride along the same dimension
-    :param padding: one of "valid" or "same"
-    :param dilation_rate: the dilation rate to use for dilated convolution.
-      Spacing between kernel elements
-    :param strides: the strides of the convolution along the height and width
-    :param use_bias: whether the layer uses a bias vector
     :param name: name of the output layer
     :return: ConvT layer
     """
-    return _eddl.ConvT2D(parent, filters, kernel_size, output_padding, padding,
-                         dilation_rate, strides, use_bias, name)
+    return _eddl.ConvT2D(parent, filters, kernel_size, strides, padding,
+                         use_bias, groups, dilation_rate, name)
 
 
 def Embedding(parent, vocsize, length, output_dim, mask_zeros=False, name=""):
@@ -1314,13 +1280,14 @@ def Rotate(parent, angle, offset_center=[0, 0], da_mode="original",
     :param da_mode: one of "nearest", "constant"
     :param constant: fill value for the area outside the rotated image, used
       for all channels
+    :param name: name of the output layer
     :return: Rotate layer
     """
     return _eddl.Rotate(parent, angle, offset_center, da_mode, constant, name)
 
 
 def Scale(parent, new_shape, reshape=True, da_mode="constant", constant=0.0,
-          name=""):
+          coordinate_transformation_mode="asymmetric", name=""):
     """\
     Resize an image layer to the given size as ``[height, width]``.
 
@@ -1332,9 +1299,13 @@ def Scale(parent, new_shape, reshape=True, da_mode="constant", constant=0.0,
     :param da_mode: one of "nearest", "constant"
     :param constant: fill value for the area outside the resized image, used
       for all channels
+    :param coordinate_transformation_mode: how to transform the coordinates in
+      the resized tensor to the coordinates in the original tensor
+    :param name: name of the output layer
     :return: Scale layer
     """
-    return _eddl.Scale(parent, new_shape, reshape, da_mode, constant, name)
+    return _eddl.Scale(parent, new_shape, reshape, da_mode, constant,
+                       coordinate_transformation_mode, name)
 
 
 def Shift(parent, shift, da_mode="nearest", constant=0.0, name=""):
@@ -1448,7 +1419,8 @@ def RandomRotation(parent, factor, offset_center=[0, 0], da_mode="original",
                                 constant, name)
 
 
-def RandomScale(parent, factor, da_mode="nearest", constant=0.0, name=""):
+def RandomScale(parent, factor, da_mode="nearest", constant=0.0,
+                coordinate_transformation_mode="asymmetric", name=""):
     """\
     Resize an image layer randomly.
 
@@ -1457,10 +1429,13 @@ def RandomScale(parent, factor, da_mode="nearest", constant=0.0, name=""):
     :param da_mode: One of "nearest"
     :param constant: fill value for the area outside the resized image,
       used for all channels
+    :param coordinate_transformation_mode: how to transform the coordinates in
+      the resized tensor to the coordinates in the original tensor
     :param name: name of the output layer
     :return: ScaleRandom layer
     """
-    return _eddl.RandomScale(parent, factor, da_mode, constant, name)
+    return _eddl.RandomScale(parent, factor, da_mode, constant,
+                             coordinate_transformation_mode, name)
 
 
 def RandomShift(parent, factor_x, factor_y, da_mode="nearest", constant=0.0,
