@@ -1269,6 +1269,20 @@ def HorizontalFlip(parent, name=""):
     return _eddl.HorizontalFlip(parent, name)
 
 
+def Pad(parent, padding, constant=0.0, name=""):
+    """\
+    Pad an image on all sides.
+
+    :param parent: parent layer
+    :param padding: padding on each border, (top-bottom, left-right) or
+      (top, right, bottom, left)
+    :param constant: pad with a constant value
+    :param name: name of the output layer
+    :return: a Pad layer
+    """
+    return _eddl.Pad(parent, padding, constant, name)
+
+
 def Rotate(parent, angle, offset_center=[0, 0], da_mode="original",
            constant=0.0, name=""):
     """\

@@ -233,6 +233,8 @@ Transformation layers
 
 .. autofunction:: pyeddl.eddl.HorizontalFlip
 
+.. autofunction:: pyeddl.eddl.Pad
+
 .. autofunction:: pyeddl.eddl.Rotate
 
 .. autofunction:: pyeddl.eddl.Scale

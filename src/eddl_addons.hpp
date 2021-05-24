@@ -190,6 +190,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("Scale", (class Layer* (*)(class Layer*, vector<int>, bool, string, float, string, string)) &eddl::Scale, "Resize the input image", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("new_shape"), pybind11::arg("reshape") = true, pybind11::arg("da_mode") = "constant", pybind11::arg("constant") = 0.0f, pybind11::arg("coordinate_transformation_mode") = "asymmetric", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Flip", (class Layer* (*)(class Layer*, int, string)) &eddl::Flip, "C++: eddl::Flip(class Layer*, int, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("axis") = 0, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("HorizontalFlip", (class Layer* (*)(class Layer*, string)) &eddl::HorizontalFlip, "C++: eddl::HorizontalFlip(class Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("Pad", (Layer* (*)(Layer*, vector<int>, float, string)) &eddl::Pad, "Pad image on all sides", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("padding"), pybind11::arg("constant") = 0.0f, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("VerticalFlip", (class Layer* (*)(class Layer*, string)) &eddl::VerticalFlip, "C++: eddl::VerticalFlip(class Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Crop", (class Layer* (*)(class Layer*, vector<int>, vector<int>, bool, float, string)) &eddl::Crop, "C++: eddl::Crop(class Layer*, vector<int>, vector<int>, bool, float, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("from_coords"), pybind11::arg("to_coords"), pybind11::arg("reshape") = true, pybind11::arg("constant") = 0.0f, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("CenteredCrop", (class Layer* (*)(class Layer*, vector<int>, bool, float, string)) &eddl::CenteredCrop, "C++: eddl::CenteredCrop(class Layer*, vector<int>, bool, float, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("size"), pybind11::arg("reshape") = true, pybind11::arg("constant") = 0.0f, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
@@ -390,7 +391,6 @@ void eddl_addons(pybind11::module &m) {
     //   ColorJitter
     //   Grayscale
     //   Normalize
-    //   Pad
     //   RandomAffine
     //   RandomGrayscale
 
