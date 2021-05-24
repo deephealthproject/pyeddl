@@ -1497,7 +1497,7 @@ def Average(layers, name=""):
     return _eddl.Average(layers, name)
 
 
-def Concat(layers, axis=1, name=""):
+def Concat(layers, axis=0, name=""):
     """\
     Concatenate input layers.
 

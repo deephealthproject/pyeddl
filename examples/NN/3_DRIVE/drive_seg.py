@@ -34,53 +34,59 @@ from pyeddl.tensor import Tensor
 USE_CONCAT = 1
 
 
+def LBC(layer, *args, **kwargs):
+    return eddl.LeakyReLu(eddl.BatchNormalization(eddl.Conv(
+        layer, *args, **kwargs
+    ), True))
+
+
 def UNetWithPadding(layer):
     x = layer
     depth = 32
 
-    x = eddl.LeakyReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
-    x = eddl.LeakyReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
+    x = LBC(x, depth, [3, 3], [1, 1], "same")
+    x = LBC(x, depth, [3, 3], [1, 1], "same")
     x2 = eddl.MaxPool(x, [2, 2], [2, 2])
-    x2 = eddl.LeakyReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
-    x2 = eddl.LeakyReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
+    x2 = LBC(x2, 2*depth, [3, 3], [1, 1], "same")
+    x2 = LBC(x2, 2*depth, [3, 3], [1, 1], "same")
     x3 = eddl.MaxPool(x2, [2, 2], [2, 2])
-    x3 = eddl.LeakyReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
-    x3 = eddl.LeakyReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
+    x3 = LBC(x3, 4*depth, [3, 3], [1, 1], "same")
+    x3 = LBC(x3, 4*depth, [3, 3], [1, 1], "same")
     x4 = eddl.MaxPool(x3, [2, 2], [2, 2])
-    x4 = eddl.LeakyReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
-    x4 = eddl.LeakyReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
+    x4 = LBC(x4, 8*depth, [3, 3], [1, 1], "same")
+    x4 = LBC(x4, 8*depth, [3, 3], [1, 1], "same")
     x5 = eddl.MaxPool(x4, [2, 2], [2, 2])
-    x5 = eddl.LeakyReLu(eddl.Conv(x5, 8*depth, [3, 3], [1, 1], "same"))
-    x5 = eddl.LeakyReLu(eddl.Conv(x5, 8*depth, [3, 3], [1, 1], "same"))
-    x5 = eddl.Conv(
-        eddl.UpSampling(x5, [2, 2]), 8*depth, [2, 2], [1, 1], "same"
-    )
+    x5 = LBC(x5, 8*depth, [3, 3], [1, 1], "same")
+    x5 = LBC(x5, 8*depth, [3, 3], [1, 1], "same")
+    x5 = eddl.BatchNormalization(eddl.Conv(
+        eddl.UpSampling(x5, [2, 2]), 8*depth, [3, 3], [1, 1], "same"
+    ), True)
 
     x4 = eddl.Concat([x4, x5]) if USE_CONCAT else eddl.Add([x4, x5])
-    x4 = eddl.LeakyReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
-    x4 = eddl.LeakyReLu(eddl.Conv(x4, 8*depth, [3, 3], [1, 1], "same"))
-    x4 = eddl.Conv(
-        eddl.UpSampling(x4, [2, 2]), 4*depth, [2, 2], [1, 1], "same"
-    )
+    x4 = LBC(x4, 8*depth, [3, 3], [1, 1], "same")
+    x4 = LBC(x4, 8*depth, [3, 3], [1, 1], "same")
+    x4 = eddl.BatchNormalization(eddl.Conv(
+        eddl.UpSampling(x4, [2, 2]), 4*depth, [3, 3], [1, 1], "same"
+    ), True)
 
     x3 = eddl.Concat([x3, x4]) if USE_CONCAT else eddl.Add([x3, x4])
-    x3 = eddl.LeakyReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
-    x3 = eddl.LeakyReLu(eddl.Conv(x3, 4*depth, [3, 3], [1, 1], "same"))
+    x3 = LBC(x3, 4*depth, [3, 3], [1, 1], "same")
+    x3 = LBC(x3, 4*depth, [3, 3], [1, 1], "same")
     x3 = eddl.Conv(
-        eddl.UpSampling(x3, [2, 2]), 2*depth, [2, 2], [1, 1], "same"
+        eddl.UpSampling(x3, [2, 2]), 2*depth, [3, 3], [1, 1], "same"
     )
 
     x2 = eddl.Concat([x2, x3]) if USE_CONCAT else eddl.Add([x2, x3])
-    x2 = eddl.LeakyReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
-    x2 = eddl.LeakyReLu(eddl.Conv(x2, 2*depth, [3, 3], [1, 1], "same"))
-    x2 = eddl.Conv(
-        eddl.UpSampling(x2, [2, 2]), depth, [2, 2], [1, 1], "same"
-    )
+    x2 = LBC(x2, 2*depth, [3, 3], [1, 1], "same")
+    x2 = LBC(x2, 2*depth, [3, 3], [1, 1], "same")
+    x2 = eddl.BatchNormalization(eddl.Conv(
+        eddl.UpSampling(x2, [2, 2]), depth, [3, 3], [1, 1], "same"
+    ), True)
 
     x = eddl.Concat([x, x2]) if USE_CONCAT else eddl.Add([x, x2])
-    x = eddl.LeakyReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
-    x = eddl.LeakyReLu(eddl.Conv(x, depth, [3, 3], [1, 1], "same"))
-    x = eddl.Conv(x, 1, [1, 1])
+    x = LBC(x, depth, [3, 3], [1, 1], "same")
+    x = LBC(x, depth, [3, 3], [1, 1], "same")
+    x = eddl.BatchNormalization(eddl.Conv(x, 1, [1, 1]), True)
 
     return x
 
