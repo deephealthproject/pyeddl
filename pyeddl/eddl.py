@@ -1124,7 +1124,7 @@ def Unsqueeze(parent, axis=0, name=""):
 def ConvT2D(parent, filters, kernel_size, strides=[1, 1], padding="same",
             use_bias=True, groups=1, dilation_rate=[1, 1], name=""):
     """\
-    Transposed convolution layer (sometimes called deconvolution).
+    2D Transposed convolution layer (sometimes called deconvolution).
 
     The need for transposed convolutions generally arises from the desire to
     use a transformation going in the opposite direction of a normal
@@ -1142,9 +1142,38 @@ def ConvT2D(parent, filters, kernel_size, strides=[1, 1], padding="same",
     :param dilation_rate: the dilation rate to use for dilated convolution.
       Spacing between kernel elements
     :param name: name of the output layer
-    :return: ConvT layer
+    :return: ConvT2D layer
     """
     return _eddl.ConvT2D(parent, filters, kernel_size, strides, padding,
+                         use_bias, groups, dilation_rate, name)
+
+
+def ConvT3D(parent, filters, kernel_size, strides=[1, 1, 1], padding="same",
+            use_bias=True, groups=1, dilation_rate=[1, 1, 1], name=""):
+    """\
+    3D Transposed convolution layer (sometimes called deconvolution).
+
+    The need for transposed convolutions generally arises from the desire to
+    use a transformation going in the opposite direction of a normal
+    convolution, i.e., from something that has the shape of the output of some
+    convolution to something that has the shape of its input while maintaining
+    a connectivity pattern that is compatible with said convolution.
+
+    :param parent: parent layer
+    :param filters: dimensionality of the output space (i.e., the number of
+      output filters in the convolution)
+    :param kernel_size: the depth, height and width of the 3D convolution
+      window
+    :param strides: the strides of the convolution along the depth, height and
+      width dimensions
+    :param padding: one of "valid" or "same"
+    :param use_bias: whether the layer uses a bias vector
+    :param dilation_rate: the dilation rate to use for dilated convolution.
+      Spacing between kernel elements
+    :param name: name of the output layer
+    :return: ConvT3D layer
+    """
+    return _eddl.ConvT3D(parent, filters, kernel_size, strides, padding,
                          use_bias, groups, dilation_rate, name)
 
 

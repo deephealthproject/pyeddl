@@ -213,6 +213,8 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.ConvT2D
 
+.. autofunction:: pyeddl.eddl.ConvT3D
+
 .. autofunction:: pyeddl.eddl.Embedding
 
 .. autofunction:: pyeddl.eddl.Transpose
