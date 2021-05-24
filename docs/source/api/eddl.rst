@@ -205,6 +205,8 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.UpSampling3D
 
+.. autofunction:: pyeddl.eddl.Resize
+
 .. autofunction:: pyeddl.eddl.Reshape
 
 .. autofunction:: pyeddl.eddl.Flatten

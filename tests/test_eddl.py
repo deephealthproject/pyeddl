@@ -133,6 +133,11 @@ def test_core_layers(eddl):
     eddl.UpSampling3D(in3d, [1, 4, 5], True, "nearest", 0.0, "asymmetric")
     eddl.UpSampling3D(in3d, [1, 4, 5], True, "nearest", 0.0, "asymmetric",
                       "foo")
+    eddl.Resize(in2d, [1, 4], True)
+    eddl.Resize(in2d, [1, 4], True, "nearest")
+    eddl.Resize(in2d, [1, 4], True, "nearest", 0.0)
+    eddl.Resize(in2d, [1, 4], True, "nearest", 0.0, "asymmetric")
+    eddl.Resize(in2d, [1, 4], True, "nearest", 0.0, "asymmetric", "foo")
     eddl.Reshape(in2d, [1, 4, 4])
     eddl.Reshape(in2d, [1, 4, 4], "foo")
     eddl.Flatten(in2d)

@@ -1088,7 +1088,31 @@ def UpSampling3D(parent, new_shape, reshape=True, da_mode="constant",
     :return: UpSampling3D layer
     """
     return _eddl.UpSampling3D(parent, new_shape, reshape, da_mode, constant,
-                       coordinate_transformation_mode, name)
+                              coordinate_transformation_mode, name)
+
+
+def Resize(parent, new_shape, reshape=True, da_mode="constant", constant=0.0,
+           coordinate_transformation_mode="asymmetric", name=""):
+    """\
+    Resize an image layer to the given size as ``[height, width]``.
+
+    Same Scale, but with the backward operation supported.
+
+    :param parent: parent layer
+    :param new_shape: new shape
+    :param reshape: if True, the output shape will be new_shape (classical
+      scale; recommended). If False, the output shape will be the input shape
+      (scale < 100%: scale + padding; scale > 100%: crop + scale)
+    :param da_mode: one of "nearest", "constant"
+    :param constant: fill value for the area outside the resized image, used
+      for all channels
+    :param coordinate_transformation_mode: how to transform the coordinates in
+      the resized tensor to the coordinates in the original tensor
+    :param name: name of the output layer
+    :return: Resize layer
+    """
+    return _eddl.Resize(parent, new_shape, reshape, da_mode, constant,
+                        coordinate_transformation_mode, name)
 
 
 def Reshape(parent, shape, name=""):
