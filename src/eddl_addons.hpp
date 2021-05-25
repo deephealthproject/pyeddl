@@ -186,6 +186,8 @@ void eddl_addons(pybind11::module &m) {
     m.def("Squeeze", (Layer* (*)(Layer*, int, string)) &eddl::Squeeze, "C++: eddl::Squeeze(class Layer*, int, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("axis") = -1, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Unsqueeze", (Layer* (*)(Layer*, int, string)) &eddl::Unsqueeze, "C++: eddl::Unsqueeze(class Layer*, int, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("axis") = 0, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Transpose", (class Layer* (*)(class Layer*, string)) &eddl::Transpose, "C++: eddl::Transpose(class Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("ConstOfTensor", (Layer* (*)(Tensor*, string)) &eddl::ConstOfTensor, "Repeat tensor for each batch", pybind11::return_value_policy::reference, pybind11::arg("t"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("Where", (Layer* (*)(Layer*, Layer*, Layer*, string)) &eddl::Where, "Choose elements from layers depending on a condition", pybind11::return_value_policy::reference, pybind11::arg("parent1"), pybind11::arg("parent2"), pybind11::arg("condition"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
 
     // --- transformations ---
     m.def("Shift", (class Layer* (*)(class Layer*, vector<int>, string, float, string)) &eddl::Shift, "C++: eddl::Shift(class Layer*, vector<int>, string, float, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("shift"), pybind11::arg("da_mode") = "nearest", pybind11::arg("constant") = 0.0f, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
@@ -267,6 +269,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("Sum", (class Layer* (*)(class Layer*, float)) &eddl::Sum, "C++: eddl::Sum(class Layer*, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l1"), pybind11::arg("k"), pybind11::keep_alive<0, 1>());
     m.def("Sum", (class Layer* (*)(float, class Layer*)) &eddl::Sum, "C++: eddl::Sum(float, class Layer*) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("k"), pybind11::arg("l1"), pybind11::keep_alive<0, 2>());
     m.def("Select", (class Layer* (*)(class Layer*, vector<string>, string)) &eddl::Select, "C++: eddl::Select(class Layer*, vector<string>, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("indices"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("Expand", (Layer* (*)(Layer*, int, string)) &eddl::Expand, "Expand singleton dimensions", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("size"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Permute", (class Layer* (*)(class Layer*, vector<int>, string)) &eddl::Permute, "C++: eddl::Permute(class Layer*, vector<int>, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("dims"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
 
     // --- reduction layers ---

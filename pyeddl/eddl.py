@@ -1253,6 +1253,34 @@ def Transpose(parent, name=""):
     return _eddl.Transpose(parent, name)
 
 
+def ConstOfTensor(t, name=""):
+    """\
+    Repeat tensor for each batch.
+
+    Given a tensor (constant), this layer outputs the same tensor but repeated
+    for each batch.
+
+    :param t: a tensor
+    :param name: name of the output layer
+    :return: a ConstOfTensor layer
+    """
+    return _eddl.ConstOfTensor(t, name)
+
+
+def Where(parent1, parent2, condition, name=""):
+    """\
+    Transpose a Layer.
+
+    :param parent1: parent layer
+    :param parent2: parent layer
+    :param condition: layer that selects ``parent1`` where ``True``,
+      ``parent2`` where ``False`` (0.0 for ``False`` and 1.0 for ``True``)
+    :param name: name of the output layer
+    :return: a Where layer
+    """
+    return _eddl.Where(parent1, parent2, condition, name)
+
+
 # = Transformation layers =
 
 def Crop(parent, from_coords, to_coords, reshape=True, constant=0.0, name=""):
@@ -1883,6 +1911,18 @@ def Select(l, indices, name=""):
     :return: Select layer
     """
     return _eddl.Select(l, indices, name)
+
+
+def Expand(l, size, name=""):
+    """\
+    Expand singleton dimensions.
+
+    :param l: parent layer
+    :param size: target size for dimension expansion
+    :param name: name of the output layer
+    :return: Expand layer
+    """
+    return _eddl.Expand(l, size, name)
 
 
 def Permute(l, dims, name=""):

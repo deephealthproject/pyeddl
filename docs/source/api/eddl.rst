@@ -223,6 +223,10 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.Transpose
 
+.. autofunction:: pyeddl.eddl.ConstOfTensor
+
+.. autofunction:: pyeddl.eddl.Where
+
 
 Transformation layers
 ^^^^^^^^^^^^^^^^^^^^^
@@ -342,6 +346,8 @@ Operator layers
 .. autofunction:: pyeddl.eddl.Sum
 
 .. autofunction:: pyeddl.eddl.Select
+
+.. autofunction:: pyeddl.eddl.Expand
 
 .. autofunction:: pyeddl.eddl.Permute
 

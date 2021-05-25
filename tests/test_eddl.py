@@ -21,6 +21,8 @@
 import pytest
 import pyeddl._core.eddl as eddl_core
 import pyeddl.eddl as eddl_py
+from pyeddl._core import Tensor as CoreTensor
+from pyeddl.tensor import Tensor as PyTensor
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
@@ -153,6 +155,21 @@ def test_core_layers(eddl):
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_aux_layers(eddl):
+    Tensor = CoreTensor if eddl is eddl_core else PyTensor
+    # ConstOfTensor
+    t = Tensor([10])
+    eddl.ConstOfTensor(t)
+    eddl.ConstOfTensor(t, "foo")
+    # Where
+    l1 = eddl.Input([5])
+    l2 = eddl.Input([5])
+    c = eddl.Input([5])
+    # eddl.Where(l1, l2, c)  # broken upstream?
+    _ = l1, l2, c  # silence the linter
+
+
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
 def test_transformations(eddl):
     in2d = eddl.Input([16])
     eddl.Shift(in2d, [1, 1])
@@ -191,6 +208,9 @@ def test_transformations(eddl):
     eddl.Cutout(in2d, [0, 0], [3, 3])
     eddl.Cutout(in2d, [0, 0], [3, 3], 0.0)
     eddl.Cutout(in2d, [0, 0], [3, 3], 0.0, "foo")
+    eddl.Expand(in2d, 3)
+    eddl.Expand(in2d, 3, "foo")
+
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
