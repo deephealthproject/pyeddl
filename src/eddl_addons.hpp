@@ -21,14 +21,21 @@
 #pragma once
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
+#include <pybind11/stl_bind.h>
 #ifdef EDDL_WITH_PROTOBUF
 #include <eddl/serialization/onnx/eddl_onnx.h>
 #endif
+
+PYBIND11_MAKE_OPAQUE(std::vector<Layer*>);
 
 // Use return_value_policy::reference for objects that get deleted on the C++
 // side. In particular, layers and optimizers are deleted by the Net destructor
 
 void eddl_addons(pybind11::module &m) {
+
+    // Avoid "Could not allocate weak reference" error when returning [layer]
+    pybind11::bind_vector<std::vector<Layer*>>(m, "VLayer");
+    pybind11::implicitly_convertible<pybind11::list, std::vector<Layer*>>();
 
     // --- specific layer classes ---
 
@@ -269,7 +276,9 @@ void eddl_addons(pybind11::module &m) {
     m.def("Sum", (class Layer* (*)(class Layer*, float)) &eddl::Sum, "C++: eddl::Sum(class Layer*, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l1"), pybind11::arg("k"), pybind11::keep_alive<0, 1>());
     m.def("Sum", (class Layer* (*)(float, class Layer*)) &eddl::Sum, "C++: eddl::Sum(float, class Layer*) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("k"), pybind11::arg("l1"), pybind11::keep_alive<0, 2>());
     m.def("Select", (class Layer* (*)(class Layer*, vector<string>, string)) &eddl::Select, "C++: eddl::Select(class Layer*, vector<string>, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("indices"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("Slice", (class Layer* (*)(class Layer*, vector<string>, string)) &eddl::Slice, "Alias for Select", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("indices"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Expand", (Layer* (*)(Layer*, int, string)) &eddl::Expand, "Expand singleton dimensions", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("size"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("Split", (vector<Layer*> (*)(Layer*, vector<int>, int, bool, string)) &eddl::Split, "Split layer into list of tensor layers", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("indexes"), pybind11::arg("axis") = -1, pybind11::arg("merge_sublayers") = false, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Permute", (class Layer* (*)(class Layer*, vector<int>, string)) &eddl::Permute, "C++: eddl::Permute(class Layer*, vector<int>, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("dims"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
 
     // --- reduction layers ---
@@ -296,14 +305,25 @@ void eddl_addons(pybind11::module &m) {
 
     // --- pooling layers ---
     m.def("AveragePool", (class Layer* (*)(class Layer*, const vector<int>&, const vector<int> &, string, string)) &eddl::AveragePool, "C++: eddl::AveragePool(class Layer*, const vector<int>&, const vector<int> &, string, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("strides") = vector<int>{2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("AvgPool", (Layer* (*)(Layer*, const vector<int>&, const vector<int> &, string, string)) &eddl::AvgPool, "Alias for AveragePool", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("strides") = vector<int>{2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("AveragePool1D", (Layer* (*)(Layer*, vector<int>, vector<int>, string, string)) &eddl::AveragePool1D, "1D average pooling", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2}, pybind11::arg("strides") = vector<int>{2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("AvgPool1D", (Layer* (*)(Layer*, vector<int>, vector<int>, string, string)) &eddl::AvgPool1D, "Alias for AveragePool1D", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2}, pybind11::arg("strides") = vector<int>{2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("AveragePool2D", (Layer* (*)(Layer*, vector<int>, vector<int>, string, string)) &eddl::AveragePool2D, "2D average pooling", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("strides") = vector<int>{2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("AvgPool2D", (Layer* (*)(Layer*, vector<int>, vector<int>, string, string)) &eddl::AvgPool2D, "Alias for AveragePool2D", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("strides") = vector<int>{2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("AveragePool3D", (Layer* (*)(Layer*, vector<int>, vector<int>, string, string)) &eddl::AveragePool3D, "3D average pooling", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2, 2}, pybind11::arg("strides") = vector<int>{2, 2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("AvgPool3D", (Layer* (*)(Layer*, vector<int>, vector<int>, string, string)) &eddl::AvgPool3D, "Alias for AveragePool3D", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2, 2}, pybind11::arg("strides") = vector<int>{2, 2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("GlobalMaxPool", (class Layer* (*)(Layer*, string)) &eddl::GlobalMaxPool, "C++: eddl::GlobalMaxPool(Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("GlobalMaxPool1D", (class Layer* (*)(Layer*, string)) &eddl::GlobalMaxPool1D, "GlobalMaxPooling1D operation.", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("GlobalMaxPool2D", (class Layer* (*)(Layer*, string)) &eddl::GlobalMaxPool2D, "GlobalMaxPooling2D operation.", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("GlobalMaxPool3D", (class Layer* (*)(Layer*, string)) &eddl::GlobalMaxPool3D, "GlobalMaxPooling3D operation.", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("GlobalAveragePool", (class Layer* (*)(Layer*, string)) &eddl::GlobalAveragePool, "C++: eddl::GlobalAveragePool(Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("GlobalAvgPool", (class Layer* (*)(Layer*, string)) &eddl::GlobalAvgPool, "Alias for GlobalAveragePool", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("GlobalAveragePool1D", (Layer* (*)(Layer*, string)) &eddl::GlobalAveragePool1D, "C++: eddl::GlobalAveragePool1D(Layer*, string) --> Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("GlobalAvgPool1D", (Layer* (*)(Layer*, string)) &eddl::GlobalAvgPool1D, "Alias for GlobalAveragePool1D", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("GlobalAveragePool2D", (Layer* (*)(Layer*, string)) &eddl::GlobalAveragePool2D, "C++: eddl::GlobalAveragePool2D(Layer*, string) --> Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("GlobalAvgPool2D", (Layer* (*)(Layer*, string)) &eddl::GlobalAvgPool2D, "Alias for GlobalAveragePool2D", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("GlobalAveragePool3D", (Layer* (*)(Layer*, string)) &eddl::GlobalAveragePool3D, "C++: eddl::GlobalAveragePool3D(Layer*, string) --> Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("GlobalAvgPool3D", (Layer* (*)(Layer*, string)) &eddl::GlobalAvgPool3D, "Alias for GlobalAveragePool3D", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("MaxPool", (class Layer* (*)(class Layer*, const vector<int>&, const vector<int> &, string, string)) &eddl::MaxPool, "C++: eddl::MaxPool(class Layer*, const vector<int>&, const vector<int> &, string, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("strides") = vector<int>{2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("MaxPool1D", (class Layer* (*)(class Layer*, vector<int>, vector<int> &, string, string)) &eddl::MaxPool1D, "C++: eddl::MaxPool1D(class Layer*, vector<int>, vector<int>, string, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2}, pybind11::arg("strides") = vector<int>{2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("MaxPool2D", (Layer* (*)(Layer*, vector<int>, vector<int>, string, string)) &eddl::MaxPool2D, "MaxPooling2D operation.", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("strides") = vector<int>{2, 2}, pybind11::arg("padding") = "none", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());

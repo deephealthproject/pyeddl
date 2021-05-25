@@ -347,7 +347,11 @@ Operator layers
 
 .. autofunction:: pyeddl.eddl.Select
 
+.. autofunction:: pyeddl.eddl.Slice
+
 .. autofunction:: pyeddl.eddl.Expand
+
+.. autofunction:: pyeddl.eddl.Split
 
 .. autofunction:: pyeddl.eddl.Permute
 
@@ -381,6 +385,20 @@ Pooling layers
 
 .. autofunction:: pyeddl.eddl.AveragePool
 
+.. autofunction:: pyeddl.eddl.AvgPool
+
+.. autofunction:: pyeddl.eddl.AveragePool1D
+
+.. autofunction:: pyeddl.eddl.AvgPool1D
+
+.. autofunction:: pyeddl.eddl.AveragePool2D
+
+.. autofunction:: pyeddl.eddl.AvgPool2D
+
+.. autofunction:: pyeddl.eddl.AveragePool3D
+
+.. autofunction:: pyeddl.eddl.AvgPool3D
+
 .. autofunction:: pyeddl.eddl.GlobalMaxPool
 
 .. autofunction:: pyeddl.eddl.GlobalMaxPool1D
@@ -391,11 +409,19 @@ Pooling layers
 
 .. autofunction:: pyeddl.eddl.GlobalAveragePool
 
+.. autofunction:: pyeddl.eddl.GlobalAvgPool
+
 .. autofunction:: pyeddl.eddl.GlobalAveragePool1D
+
+.. autofunction:: pyeddl.eddl.GlobalAvgPool1D
 
 .. autofunction:: pyeddl.eddl.GlobalAveragePool2D
 
+.. autofunction:: pyeddl.eddl.GlobalAvgPool2D
+
 .. autofunction:: pyeddl.eddl.GlobalAveragePool3D
+
+.. autofunction:: pyeddl.eddl.GlobalAvgPool3D
 
 .. autofunction:: pyeddl.eddl.MaxPool
 

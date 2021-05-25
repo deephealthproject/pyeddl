@@ -1913,6 +1913,13 @@ def Select(l, indices, name=""):
     return _eddl.Select(l, indices, name)
 
 
+def Slice(l, indices, name=""):
+    """\
+    Alias for Select.
+    """
+    return _eddl.Slice(l, indices, name)
+
+
 def Expand(l, size, name=""):
     """\
     Expand singleton dimensions.
@@ -1923,6 +1930,20 @@ def Expand(l, size, name=""):
     :return: Expand layer
     """
     return _eddl.Expand(l, size, name)
+
+
+def Split(l, indexes, axis=-1, merge_sublayers=False, name=""):
+    """\
+    Split layer into a list of tensor layers.
+
+    :param l: parent layer
+    :param indexes: ``[20, 60] => [:20, 20:60, 60:]``
+    :param axis: which axis to split on (-1 = last)
+    :merge_sublayers:  merge layers symbolically (affects plotting)
+    :param name: name of the output layer
+    :return: vector of layers
+    """
+    return _eddl.Split(l, indexes, axis, merge_sublayers, name)
 
 
 def Permute(l, dims, name=""):
@@ -1990,6 +2011,80 @@ def AveragePool(parent, pool_size=[2, 2], strides=[2, 2], padding="none",
     return _eddl.AveragePool(parent, pool_size, strides, padding, name)
 
 
+def AvgPool(parent, pool_size=[2, 2], strides=[2, 2], padding="none", name=""):
+    """\
+    Alias for AveragePool.
+    """
+    return _eddl.AvgPool(parent, pool_size, strides, padding, name)
+
+
+def AveragePool1D(parent, pool_size=[2], strides=[2], padding="none", name=""):
+    """\
+    Perform 1D average pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the average pooling windows
+    :param strides: factors by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: AveragePool1D layer
+    """
+    return _eddl.AveragePool1D(parent, pool_size, strides, padding, name)
+
+
+def AvgPool1D(parent, pool_size=[2], strides=[2], padding="none", name=""):
+    """\
+    Alias for AveragePool1D.
+    """
+    return _eddl.AvgPool1D(parent, pool_size, strides, padding, name)
+
+
+def AveragePool2D(parent, pool_size=[2, 2], strides=[2, 2], padding="none",
+                  name=""):
+    """\
+    Perform 2D average pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the average pooling windows
+    :param strides: factors by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: AveragePool2D layer
+    """
+    return _eddl.AveragePool2D(parent, pool_size, strides, padding, name)
+
+
+def AvgPool2D(parent, pool_size=[2, 2], strides=[2, 2], padding="none",
+              name=""):
+    """\
+    Alias for AveragePool2D.
+    """
+    return _eddl.AvgPool2D(parent, pool_size, strides, padding, name)
+
+
+def AveragePool3D(parent, pool_size=[2, 2, 2], strides=[2, 2, 2],
+                  padding="none", name=""):
+    """\
+    Perform 3D average pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the average pooling windows
+    :param strides: factors by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: AveragePool3D layer
+    """
+    return _eddl.AveragePool3D(parent, pool_size, strides, padding, name)
+
+
+def AvgPool3D(parent, pool_size=[2, 2, 2], strides=[2, 2, 2], padding="none",
+              name=""):
+    """\
+    Alias for AveragePool3D.
+    """
+    return _eddl.AvgPool3D(parent, pool_size, strides, padding, name)
+
+
 def GlobalMaxPool(parent, name=""):
     """\
     Perform global max pooling.
@@ -2045,6 +2140,13 @@ def GlobalAveragePool(parent, name=""):
     return _eddl.GlobalAveragePool(parent, name)
 
 
+def GlobalAvgPool(parent, name=""):
+    """\
+    Alias for GlobalAveragePool.
+    """
+    return _eddl.GlobalAvgPool(parent, name)
+
+
 def GlobalAveragePool1D(parent, name=""):
     """\
     Perform 1D global average pooling.
@@ -2054,6 +2156,13 @@ def GlobalAveragePool1D(parent, name=""):
     :return: an AveragePool layer
     """
     return _eddl.GlobalAveragePool1D(parent, name)
+
+
+def GlobalAvgPool1D(parent, name=""):
+    """\
+    Alias for GlobalAveragePool1D.
+    """
+    return _eddl.GlobalAvgPool1D(parent, name)
 
 
 def GlobalAveragePool2D(parent, name=""):
@@ -2067,6 +2176,13 @@ def GlobalAveragePool2D(parent, name=""):
     return _eddl.GlobalAveragePool2D(parent, name)
 
 
+def GlobalAvgPool2D(parent, name=""):
+    """\
+    Alias for GlobalAveragePool2D.
+    """
+    return _eddl.GlobalAvgPool2D(parent, name)
+
+
 def GlobalAveragePool3D(parent, name=""):
     """\
     Perform 3D global average pooling.
@@ -2076,6 +2192,13 @@ def GlobalAveragePool3D(parent, name=""):
     :return: an AveragePool layer
     """
     return _eddl.GlobalAveragePool3D(parent, name)
+
+
+def GlobalAvgPool3D(parent, name=""):
+    """\
+    Alias for GlobalAveragePool3D.
+    """
+    return _eddl.GlobalAvgPool3D(parent, name)
 
 
 def MaxPool(parent, pool_size=[2, 2], strides=[2, 2], padding="none", name=""):
