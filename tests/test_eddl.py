@@ -484,13 +484,20 @@ def test_pooling_layers(eddl):
     eddl.GlobalMaxPool3D(in5d, "foo")
     eddl.GlobalAveragePool(in4d)
     eddl.GlobalAveragePool(in4d, "foo")
+    eddl.GlobalAvgPool(in4d)
+    eddl.GlobalAvgPool(in4d, "foo")
     eddl.GlobalAveragePool1D(in3d)
     eddl.GlobalAveragePool1D(in3d, "foo")
+    eddl.GlobalAvgPool1D(in3d)
+    eddl.GlobalAvgPool1D(in3d, "foo")
     eddl.GlobalAveragePool2D(in4d)
     eddl.GlobalAveragePool2D(in4d, "foo")
-    # not implemented yet
-    # eddl.GlobalAveragePool3D(in5d)
-    # eddl.GlobalAveragePool3D(in5d, "foo")
+    eddl.GlobalAvgPool2D(in4d)
+    eddl.GlobalAvgPool2D(in4d, "foo")
+    eddl.GlobalAveragePool3D(in5d)
+    eddl.GlobalAveragePool3D(in5d, "foo")
+    eddl.GlobalAvgPool3D(in5d)
+    eddl.GlobalAvgPool3D(in5d, "foo")
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
