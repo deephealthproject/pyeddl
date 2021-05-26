@@ -25,6 +25,17 @@
 
 template <typename type_, typename... options>
 void net_addons(pybind11::class_<type_, options...> &cl) {
+    cl.def_readwrite("cs", &Net::cs);
+    cl.def_readwrite("optimizer", &Net::optimizer);
+    cl.def_readwrite("rnet", &Net::rnet);
+    cl.def_property_readonly("Xs", [](Net& n) {
+      vector<vector<Tensor*>> v(n.Xs, n.Xs + sizeof(n.Xs) / sizeof(n.Xs[0]));
+      return v;
+    });
+    cl.def_property_readonly("Ys", [](Net& n) {
+      vector<vector<Tensor*>> v(n.Ys, n.Ys + sizeof(n.Ys) / sizeof(n.Ys[0]));
+      return v;
+    });
     cl.def("build", (void (Net::*)(class Optimizer*, vector<Loss*>, vector<Metric*>, class CompServ*, bool)) &Net::build, "C++: Net::build(class Optimizer*, vector<Loss*>, vector<Metric*>, class CompServ*, bool) --> void", pybind11::arg("opt"), pybind11::arg("lo"), pybind11::arg("me"), pybind11::arg("cs"), pybind11::arg("initialize") = true, pybind11::keep_alive<1, 2>(), pybind11::keep_alive<1, 3>(), pybind11::keep_alive<1, 4>(), pybind11::keep_alive<1, 5>());
     cl.def("forward", (void (Net::*)(vector<Layer*>)) &Net::forward, "C++: Net::forward(vector<Layer*>) --> void", pybind11::arg("in"));
     cl.def("forward", (void (Net::*)(vector<Tensor*>)) &Net::forward, "C++: Net::forward(vector<Tensor*>) --> void", pybind11::arg("in"));

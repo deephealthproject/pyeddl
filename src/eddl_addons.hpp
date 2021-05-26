@@ -459,4 +459,5 @@ void eddl_addons(pybind11::module &m) {
     m.attr("DEV_CPU") = pybind11::int_(DEV_CPU);
     m.attr("DEV_GPU") = pybind11::int_(DEV_GPU);
     m.attr("DEV_FPGA") = pybind11::int_(DEV_FPGA);
+    m.attr("MAX_THREADS") = pybind11::int_(MAX_THREADS);
 }

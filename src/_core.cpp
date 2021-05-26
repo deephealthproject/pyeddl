@@ -706,6 +706,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 #include <memory>
 #include <metric_addons.hpp>
 #include <net_addons.hpp>
+#include <optimizer_addons.hpp>
 #include <sstream> // __str__
 #include <string>
 #include <utility>
@@ -1231,6 +1232,8 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("clone", (class Optimizer * (Optimizer::*)()) &Optimizer::clone, "C++: Optimizer::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
 		cl.def("share", (class Optimizer * (Optimizer::*)()) &Optimizer::share, "C++: Optimizer::share() --> class Optimizer *", pybind11::return_value_policy::automatic);
 		cl.def("assign", (class Optimizer & (Optimizer::*)(const class Optimizer &)) &Optimizer::operator=, "C++: Optimizer::operator=(const class Optimizer &) --> class Optimizer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		optimizer_addons(cl);
 	}
 	{ // Net file: line:41
 		pybind11::class_<Net, std::shared_ptr<Net>> cl(M(""), "Net", "");
@@ -1333,6 +1336,7 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 #include <fstream>
 #include <iterator>
 #include <memory>
+#include <netloss_addons.hpp>
 #include <sstream> // __str__
 #include <string>
 #include <vector>
@@ -1362,6 +1366,8 @@ void bind_eddl_net_netloss(std::function< pybind11::module &(std::string const &
 		cl.def_readwrite("input", &NetLoss::input);
 		cl.def_readwrite("ginput", &NetLoss::ginput);
 		cl.def("compute", (float (NetLoss::*)()) &NetLoss::compute, "C++: NetLoss::compute() --> float");
+
+		netloss_addons(cl);
 	}
 }
 

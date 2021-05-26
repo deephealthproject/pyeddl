@@ -23,15 +23,7 @@
 #include <pybind11/pybind11.h>
 
 template <typename type_, typename... options>
-void layer_addons(pybind11::class_<type_, options...> &cl) {
-    cl.def_readwrite("input", &Layer::input);
-    cl.def_readwrite("output", &Layer::output);
-    cl.def_readwrite("target", &Layer::target);
-    cl.def_readwrite("delta", &Layer::delta);
-    cl.def_readwrite("orig", &Layer::orig);
-    cl.def_readwrite("sorig", &Layer::sorig);
-    cl.def_readwrite("net", &Layer::net);
-    // // Need bindings for Regularizer and Initializer
-    // cl.def_readwrite("reg", &Layer::reg);
-    // cl.def_readwrite("init", &Layer::init);
+void netloss_addons(pybind11::class_<type_, options...> &cl) {
+    cl.def_readwrite("graph", &NetLoss::graph);
+    cl.def_readwrite("fout", &NetLoss::fout);
 }
