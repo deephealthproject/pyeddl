@@ -2558,30 +2558,93 @@ def download_model(name, link):
 
 
 def download_vgg16(top=True, input_shape=[]):
+    """
+    Download a VGG16 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a VGG16 model
+    """
     return _eddl.download_vgg16(top, input_shape)
 
 
 def download_resnet18(top=True, input_shape=[]):
+    """
+    Download a ResNet18 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a ResNet18 model
+    """
     return _eddl.download_resnet18(top, input_shape)
 
 
 def download_resnet34(top=True, input_shape=[]):
+    """
+    Download a ResNet34 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a ResNet34 model
+    """
     return _eddl.download_resnet34(top, input_shape)
 
 
 def download_resnet50(top=True, input_shape=[]):
+    """
+    Download a ResNet50 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a ResNet50 model
+    """
     return _eddl.download_resnet50(top, input_shape)
 
 
 def download_resnet101(top=True, input_shape=[]):
+    """
+    Download a ResNet101 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a ResNet101 model
+    """
     return _eddl.download_resnet101(top, input_shape)
 
 
 def download_resnet152(top=True, input_shape=[]):
+    """
+    Download a ResNet152 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a ResNet152 model
+    """
     return _eddl.download_resnet152(top, input_shape)
 
 
 def download_densenet121(top=True, input_shape=[]):
+    """
+    Download a DenseNet121 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a DenseNet121 model
+    """
     return _eddl.download_densenet121(top, input_shape)
 
 
