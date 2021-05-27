@@ -91,7 +91,6 @@ void eddl_addons(pybind11::module &m) {
     pybind11::class_<LUnsqueeze, std::shared_ptr<LUnsqueeze>, LinLayer>(m, "LUnsqueeze", "");
     pybind11::class_<LUpSampling, std::shared_ptr<LUpSampling>, LinLayer>(m, "LUpSampling", "");
     pybind11::class_<LUpSampling3D, std::shared_ptr<LUpSampling3D>, LinLayer>(m, "LUpSampling3D", "");
-    pybind11::class_<LWhere, std::shared_ptr<LWhere>, LinLayer>(m, "LWhere", "");
 
     pybind11::class_<LAdd, std::shared_ptr<LAdd>, MLayer>(m, "LAdd", "");
     pybind11::class_<LAverage, std::shared_ptr<LAverage>, MLayer>(m, "LAverage", "");
@@ -105,6 +104,7 @@ void eddl_addons(pybind11::module &m) {
     pybind11::class_<LRNN, std::shared_ptr<LRNN>, MLayer>(m, "LRNN", "");
     pybind11::class_<LSubtract, std::shared_ptr<LSubtract>, MLayer>(m, "LSubtract", "");
     pybind11::class_<LStates, std::shared_ptr<LStates>, MLayer>(m, "LStates", "");
+    pybind11::class_<LWhere, std::shared_ptr<LWhere>, MLayer>(m, "LWhere", "");
 
     pybind11::class_<LAbs, std::shared_ptr<LAbs>, OperatorLayer>(m, "LAbs", "");
     pybind11::class_<LClamp, std::shared_ptr<LClamp>, OperatorLayer>(m, "LClamp", "");

@@ -557,6 +557,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def("nonzero", (class Tensor * (Tensor::*)(bool)) &Tensor::nonzero, "Returns a tensor containing the indices of nonzero elements.\n   \n\n Whether to sort the indices or not. (default: not sorted)\n\n   \n A tensor containing the indices of the nonzero elements.\n\nC++: Tensor::nonzero(bool) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("sort_indices"));
 		cl.def_static("where", (class Tensor * (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::where, "Depending on ``condition``, returns a tensor whith elements from ``A`` or ``B``.\n   \n\n Tensor with the condition to be accomplished.\n   \n\n Input tensor.\n   \n\n Input tensor.\n   \n\n A tensor with the same shape with elements from ``A`` if ``condition`` holds and from ``B`` otherwise..\n\nC++: Tensor::where(class Tensor *, class Tensor *, class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("condition"), pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("where", (void (*)(class Tensor *, class Tensor *, class Tensor *, class Tensor *)) &Tensor::where, "Depending on ``condition``, returns a tensor whith elements from ``A`` or ``B``.\n   \n\n Tensor with the condition to be accomplished.\n   \n\n Input tensor.\n   \n\n Input tensor.\n   \n\n A tensor with elements from ``A`` if ``condition`` holds and from ``B`` otherwise..\n\nC++: Tensor::where(class Tensor *, class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("condition"), pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"));
+		cl.def_static("where_back", (void (*)(class Tensor *, class Tensor *, class Tensor *, class Tensor *)) &Tensor::where_back, "C++: Tensor::where_back(class Tensor *, class Tensor *, class Tensor *, class Tensor *) --> void", pybind11::arg("condition"), pybind11::arg("PD_A"), pybind11::arg("PD_B"), pybind11::arg("D"));
 		cl.def("all", (bool (Tensor::*)()) &Tensor::all, "Test whether all elements evaluate to True.\n\n  \n    bool\n\nC++: Tensor::all() --> bool");
 		cl.def_static("static_all", (bool (*)(class Tensor *)) &Tensor::all, "C++: Tensor::all(class Tensor *) --> bool", pybind11::arg("A"));
 		cl.def("any", (bool (Tensor::*)()) &Tensor::any, "Test whether any element evaluates to True.\n\n  \n    bool\n\nC++: Tensor::any() --> bool");
@@ -1467,65 +1468,65 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 	// eddl::show_profile() file:eddl/apis/eddl.h line:729
 	M("eddl").def("show_profile", (void (*)()) &eddl::show_profile, "Shows profile information.\n\nC++: eddl::show_profile() --> void");
 
-	// eddl::Clamp(class Layer *, float, float) file:eddl/apis/eddl.h line:1731
+	// eddl::Clamp(class Layer *, float, float) file:eddl/apis/eddl.h line:1729
 	M("eddl").def("Clamp", (class Layer * (*)(class Layer *, float, float)) &eddl::Clamp, "Layer that clamps the values of another layer\n\n  \n  Parent layer\n  \n\n  Minimum value\n  \n\n  Maximum value\n  \n\n     Parent layer `l` after computing its logarithm to base 10\n\nC++: eddl::Clamp(class Layer *, float, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("min"), pybind11::arg("max"));
 
-	// eddl::GetStates(class Layer *) file:eddl/apis/eddl.h line:2152
+	// eddl::GetStates(class Layer *) file:eddl/apis/eddl.h line:2150
 	M("eddl").def("GetStates", (class Layer * (*)(class Layer *)) &eddl::GetStates, "C++: eddl::GetStates(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("parent"));
 
-	// eddl::setDecoder(class Layer *) file:eddl/apis/eddl.h line:2154
+	// eddl::setDecoder(class Layer *) file:eddl/apis/eddl.h line:2152
 	M("eddl").def("setDecoder", (void (*)(class Layer *)) &eddl::setDecoder, "C++: eddl::setDecoder(class Layer *) --> void", pybind11::arg("l"));
 
-	// eddl::getOutput(class Layer *) file:eddl/apis/eddl.h line:2160
+	// eddl::getOutput(class Layer *) file:eddl/apis/eddl.h line:2158
 	M("eddl").def("getOutput", (class Tensor * (*)(class Layer *)) &eddl::getOutput, "C++: eddl::getOutput(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"));
 
-	// eddl::getInput(class Layer *) file:eddl/apis/eddl.h line:2161
+	// eddl::getInput(class Layer *) file:eddl/apis/eddl.h line:2159
 	M("eddl").def("getInput", (class Tensor * (*)(class Layer *)) &eddl::getInput, "C++: eddl::getInput(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"));
 
-	// eddl::getDelta(class Layer *) file:eddl/apis/eddl.h line:2162
+	// eddl::getDelta(class Layer *) file:eddl/apis/eddl.h line:2160
 	M("eddl").def("getDelta", (class Tensor * (*)(class Layer *)) &eddl::getDelta, "C++: eddl::getDelta(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"));
 
-	// eddl::getParam(class Layer *, int) file:eddl/apis/eddl.h line:2163
+	// eddl::getParam(class Layer *, int) file:eddl/apis/eddl.h line:2161
 	M("eddl").def("getParam", (class Tensor * (*)(class Layer *, int)) &eddl::getParam, "C++: eddl::getParam(class Layer *, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("p"));
 
-	// eddl::getGradient(class Layer *, int) file:eddl/apis/eddl.h line:2164
+	// eddl::getGradient(class Layer *, int) file:eddl/apis/eddl.h line:2162
 	M("eddl").def("getGradient", (class Tensor * (*)(class Layer *, int)) &eddl::getGradient, "C++: eddl::getGradient(class Layer *, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("p"));
 
-	// eddl::getState(class Layer *, int) file:eddl/apis/eddl.h line:2165
+	// eddl::getState(class Layer *, int) file:eddl/apis/eddl.h line:2163
 	M("eddl").def("getState", (class Tensor * (*)(class Layer *, int)) &eddl::getState, "C++: eddl::getState(class Layer *, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("p"));
 
-	// eddl::copyOutput(class Layer *, class Layer *) file:eddl/apis/eddl.h line:2169
+	// eddl::copyOutput(class Layer *, class Layer *) file:eddl/apis/eddl.h line:2167
 	M("eddl").def("copyOutput", (void (*)(class Layer *, class Layer *)) &eddl::copyOutput, "C++: eddl::copyOutput(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::copyDelta(class Layer *, class Layer *) file:eddl/apis/eddl.h line:2170
+	// eddl::copyDelta(class Layer *, class Layer *) file:eddl/apis/eddl.h line:2168
 	M("eddl").def("copyDelta", (void (*)(class Layer *, class Layer *)) &eddl::copyDelta, "C++: eddl::copyDelta(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::copyParam(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:2171
+	// eddl::copyParam(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:2169
 	M("eddl").def("copyParam", [](class Layer * a0, class Layer * a1) -> void { return eddl::copyParam(a0, a1); }, "", pybind11::arg("l1"), pybind11::arg("l2"));
 	M("eddl").def("copyParam", (void (*)(class Layer *, class Layer *, int)) &eddl::copyParam, "C++: eddl::copyParam(class Layer *, class Layer *, int) --> void", pybind11::arg("l1"), pybind11::arg("l2"), pybind11::arg("p"));
 
-	// eddl::copyGradient(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:2172
+	// eddl::copyGradient(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:2170
 	M("eddl").def("copyGradient", (void (*)(class Layer *, class Layer *, int)) &eddl::copyGradient, "C++: eddl::copyGradient(class Layer *, class Layer *, int) --> void", pybind11::arg("l1"), pybind11::arg("l2"), pybind11::arg("p"));
 
-	// eddl::distributeParams(class Layer *) file:eddl/apis/eddl.h line:2173
+	// eddl::distributeParams(class Layer *) file:eddl/apis/eddl.h line:2171
 	M("eddl").def("distributeParams", (void (*)(class Layer *)) &eddl::distributeParams, "C++: eddl::distributeParams(class Layer *) --> void", pybind11::arg("l"));
 
-	// eddl::download_mnist() file:eddl/apis/eddl.h line:2404
+	// eddl::download_mnist() file:eddl/apis/eddl.h line:2402
 	M("eddl").def("download_mnist", (void (*)()) &eddl::download_mnist, "Downloads MNIST Dataset.\n\n  \n   http://yann.lecun.com/exdb/mnist/\n\n  \n     (void) The binary files of MNIST\n\nC++: eddl::download_mnist() --> void");
 
-	// eddl::download_cifar10() file:eddl/apis/eddl.h line:2412
+	// eddl::download_cifar10() file:eddl/apis/eddl.h line:2410
 	M("eddl").def("download_cifar10", (void (*)()) &eddl::download_cifar10, "Downloads CIFAR-10 Dataset.\n\n  \n   https://www.cs.toronto.edu/~kriz/cifar.html\n\n  \n     (void) The binary files of CIFAR-10\n\nC++: eddl::download_cifar10() --> void");
 
-	// eddl::download_drive() file:eddl/apis/eddl.h line:2420
+	// eddl::download_drive() file:eddl/apis/eddl.h line:2418
 	M("eddl").def("download_drive", (void (*)()) &eddl::download_drive, "Downloads DRIVE Dataset.\n\n  \n   https://drive.grand-challenge.org/\n\n  \n     (void) The numpy files of DRIVE\n\nC++: eddl::download_drive() --> void");
 
-	// eddl::download_imdb_2000() file:eddl/apis/eddl.h line:2429
+	// eddl::download_imdb_2000() file:eddl/apis/eddl.h line:2427
 	M("eddl").def("download_imdb_2000", (void (*)()) &eddl::download_imdb_2000, "Downloads IMDB Dataset. 2000 most frequent words\n\n  \n   https://ai.stanford.edu/~amaas/data/sentiment/\n\n  \n     (void) The binary files of IMDB\n\nC++: eddl::download_imdb_2000() --> void");
 
-	// eddl::download_eutrans() file:eddl/apis/eddl.h line:2439
+	// eddl::download_eutrans() file:eddl/apis/eddl.h line:2437
 	M("eddl").def("download_eutrans", (void (*)()) &eddl::download_eutrans, "Downloads EuTrans Dataset.\n\n  \n\n\n\n  \n     (void) The binary files of EuTrans\n\nC++: eddl::download_eutrans() --> void");
 
-	// eddl::download_flickr() file:eddl/apis/eddl.h line:2448
+	// eddl::download_flickr() file:eddl/apis/eddl.h line:2446
 	M("eddl").def("download_flickr", (void (*)()) &eddl::download_flickr, "Downloads Flickr Dataset (small partition)\n\n  \n\n\n\n  \n     (void) The binary files of Flickr\n\nC++: eddl::download_flickr() --> void");
 
 }

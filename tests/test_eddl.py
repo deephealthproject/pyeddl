@@ -165,8 +165,7 @@ def test_aux_layers(eddl):
     l1 = eddl.Input([5])
     l2 = eddl.Input([5])
     c = eddl.Input([5])
-    # eddl.Where(l1, l2, c)  # broken upstream?
-    _ = l1, l2, c  # silence the linter
+    eddl.Where(l1, l2, c)
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
@@ -295,16 +294,15 @@ def test_normalization_layers(eddl):
     eddl.LayerNormalization(in2d, True)
     eddl.LayerNormalization(in2d, True, 0.001)
     eddl.LayerNormalization(in2d, True, 0.001, "foo")
-    # Norm{,Max,MinMax} tests now lead to a "RuntimeError: axis 1 >= dim=1"
-    # eddl.Norm(in2d)
-    # eddl.Norm(in2d, 0.001)
-    # eddl.Norm(in2d, 0.001, "foo")
-    # eddl.NormMax(in2d)
-    # eddl.NormMax(in2d, 0.001)
-    # eddl.NormMax(in2d, 0.001, "foo")
-    # eddl.NormMinMax(in2d)
-    # eddl.NormMinMax(in2d, 0.001)
-    # eddl.NormMinMax(in2d, 0.001, "foo")
+    eddl.Norm(in2d)
+    eddl.Norm(in2d, 0.001)
+    eddl.Norm(in2d, 0.001, "foo")
+    eddl.NormMax(in2d)
+    eddl.NormMax(in2d, 0.001)
+    eddl.NormMax(in2d, 0.001, "foo")
+    eddl.NormMinMax(in2d)
+    eddl.NormMinMax(in2d, 0.001)
+    eddl.NormMinMax(in2d, 0.001, "foo")
     eddl.Dropout(in2d, 0.5)
     eddl.Dropout(in2d, 0.5, False, "foo")
     eddl.Dropout(in2d, 0.5, False, "foo")
@@ -476,8 +474,8 @@ def test_pooling_layers(eddl):
     eddl.GlobalMaxPool(in4d)
     eddl.GlobalMaxPool(in4d, "foo")
     # GlobalMaxPool1D has a bug upstream
-    # eddl.GlobalMaxPool1D(in3d)
-    # eddl.GlobalMaxPool1D(in3d, "foo")
+    eddl.GlobalMaxPool1D(in3d)
+    eddl.GlobalMaxPool1D(in3d, "foo")
     eddl.GlobalMaxPool2D(in4d)
     eddl.GlobalMaxPool2D(in4d, "foo")
     eddl.GlobalMaxPool3D(in5d)
