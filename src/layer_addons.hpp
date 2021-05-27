@@ -31,7 +31,6 @@ void layer_addons(pybind11::class_<type_, options...> &cl) {
     cl.def_readwrite("orig", &Layer::orig);
     cl.def_readwrite("sorig", &Layer::sorig);
     cl.def_readwrite("net", &Layer::net);
-    // // Need bindings for Regularizer and Initializer
-    // cl.def_readwrite("reg", &Layer::reg);
-    // cl.def_readwrite("init", &Layer::init);
+    cl.def_readwrite("reg", &Layer::reg);
+    cl.def_readwrite("init", &Layer::init);
 }

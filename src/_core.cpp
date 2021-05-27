@@ -805,6 +805,44 @@ struct PyCallBack_Metric : public Metric {
 	}
 };
 
+// Initializer file:eddl/initializers/initializer.h line:21
+struct PyCallBack_Initializer : public Initializer {
+	using Initializer::Initializer;
+
+	void apply(class Tensor * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Initializer *>(this), "apply");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		pybind11::pybind11_fail("Tried to call pure virtual function \"Initializer::apply\"");
+	}
+};
+
+// Regularizer file:eddl/regularizers/regularizer.h line:21
+struct PyCallBack_Regularizer : public Regularizer {
+	using Regularizer::Regularizer;
+
+	void apply(class Tensor * a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Regularizer *>(this), "apply");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		pybind11::pybind11_fail("Tried to call pure virtual function \"Regularizer::apply\"");
+	}
+};
+
 // Layer file:eddl/layers/layer.h line:32
 struct PyCallBack_Layer : public Layer {
 	using Layer::Layer;
@@ -1156,6 +1194,20 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("assign", (class Metric & (Metric::*)(const class Metric &)) &Metric::operator=, "C++: Metric::operator=(const class Metric &) --> class Metric &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 
 		metric_addons(cl);
+	}
+	{ // Initializer file:eddl/initializers/initializer.h line:21
+		pybind11::class_<Initializer, std::shared_ptr<Initializer>, PyCallBack_Initializer> cl(M(""), "Initializer", "");
+		cl.def(pybind11::init<PyCallBack_Initializer const &>());
+		cl.def_readwrite("name", &Initializer::name);
+		cl.def("apply", (void (Initializer::*)(class Tensor *)) &Initializer::apply, "C++: Initializer::apply(class Tensor *) --> void", pybind11::arg("params"));
+		cl.def("assign", (class Initializer & (Initializer::*)(const class Initializer &)) &Initializer::operator=, "C++: Initializer::operator=(const class Initializer &) --> class Initializer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // Regularizer file:eddl/regularizers/regularizer.h line:21
+		pybind11::class_<Regularizer, std::shared_ptr<Regularizer>, PyCallBack_Regularizer> cl(M(""), "Regularizer", "");
+		cl.def(pybind11::init<PyCallBack_Regularizer const &>());
+		cl.def_readwrite("name", &Regularizer::name);
+		cl.def("apply", (void (Regularizer::*)(class Tensor *)) &Regularizer::apply, "C++: Regularizer::apply(class Tensor *) --> void", pybind11::arg("T"));
+		cl.def("assign", (class Regularizer & (Regularizer::*)(const class Regularizer &)) &Regularizer::operator=, "C++: Regularizer::operator=(const class Regularizer &) --> class Regularizer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
 	{ // Layer file:eddl/layers/layer.h line:32
 		pybind11::class_<Layer, std::shared_ptr<Layer>, PyCallBack_Layer> cl(M(""), "Layer", "");
