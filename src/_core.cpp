@@ -708,6 +708,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 #include <metric_addons.hpp>
 #include <net_addons.hpp>
 #include <optimizer_addons.hpp>
+#include <sgd_addons.hpp>
 #include <sstream> // __str__
 #include <string>
 #include <utility>
@@ -1154,6 +1155,51 @@ struct PyCallBack_Optimizer : public Optimizer {
 	}
 };
 
+// SGD file:eddl/optimizers/optim.h line:52
+struct PyCallBack_SGD : public SGD {
+	using SGD::SGD;
+
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const SGD *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return SGD::clone();
+	}
+	class Optimizer * share() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const SGD *>(this), "share");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return SGD::share();
+	}
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const SGD *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return SGD::applygrads(a0);
+	}
+};
+
 void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
 	{ // Loss file:eddl/losses/loss.h line:22
@@ -1287,6 +1333,28 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("assign", (class Optimizer & (Optimizer::*)(const class Optimizer &)) &Optimizer::operator=, "C++: Optimizer::operator=(const class Optimizer &) --> class Optimizer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 
 		optimizer_addons(cl);
+	}
+	{ // SGD file:eddl/optimizers/optim.h line:52
+		pybind11::class_<SGD, std::shared_ptr<SGD>, PyCallBack_SGD, Optimizer> cl(M(""), "SGD", "");
+		cl.def( pybind11::init( [](){ return new SGD(); }, [](){ return new PyCallBack_SGD(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new SGD(a0); }, [](float const & a0){ return new PyCallBack_SGD(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new SGD(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_SGD(a0, a1); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new SGD(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_SGD(a0, a1, a2); } ), "doc");
+		cl.def( pybind11::init<float, float, float, bool>(), pybind11::arg("lr"), pybind11::arg("momentum"), pybind11::arg("weight_decay"), pybind11::arg("nesterov") );
+
+		cl.def( pybind11::init( [](PyCallBack_SGD const &o){ return new PyCallBack_SGD(o); } ) );
+		cl.def( pybind11::init( [](SGD const &o){ return new SGD(o); } ) );
+		cl.def_readwrite("lr", &SGD::lr);
+		cl.def_readwrite("mu", &SGD::mu);
+		cl.def_readwrite("weight_decay", &SGD::weight_decay);
+		cl.def_readwrite("nesterov", &SGD::nesterov);
+		cl.def_readwrite("mT", &SGD::mT);
+		cl.def("clone", (class Optimizer * (SGD::*)()) &SGD::clone, "C++: SGD::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
+		cl.def("share", (class Optimizer * (SGD::*)()) &SGD::share, "C++: SGD::share() --> class Optimizer *", pybind11::return_value_policy::automatic);
+		cl.def("applygrads", (void (SGD::*)(int)) &SGD::applygrads, "C++: SGD::applygrads(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class SGD & (SGD::*)(const class SGD &)) &SGD::operator=, "C++: SGD::operator=(const class SGD &) --> class SGD &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		sgd_addons(cl);
 	}
 	{ // Net file: line:41
 		pybind11::class_<Net, std::shared_ptr<Net>> cl(M(""), "Net", "");
