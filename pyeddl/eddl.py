@@ -1068,6 +1068,53 @@ def UpSampling2D(parent, size, interpolation="nearest", name=""):
     return _eddl.UpSampling2D(parent, size, interpolation, name)
 
 
+def UpSampling3D(parent, new_shape, reshape=True, da_mode="constant",
+                 constant=0.0, coordinate_transformation_mode="asymmetric",
+                 name=""):
+    """\
+    3D upsampling layer.
+
+    :param parent: parent layer
+    :param new_shape: new shape
+    :param reshape: if True, the output shape will be new_shape (classical
+      scale; recommended). If False, the output shape will be the input shape
+      (scale < 100%: scale + padding; scale > 100%: crop + scale)
+    :param da_mode: one of "nearest", "constant"
+    :param constant: fill value for the area outside the resized image, used
+      for all channels
+    :param coordinate_transformation_mode: how to transform the coordinates in
+      the resized tensor to the coordinates in the original tensor
+    :param name: name of the output layer
+    :return: UpSampling3D layer
+    """
+    return _eddl.UpSampling3D(parent, new_shape, reshape, da_mode, constant,
+                              coordinate_transformation_mode, name)
+
+
+def Resize(parent, new_shape, reshape=True, da_mode="constant", constant=0.0,
+           coordinate_transformation_mode="asymmetric", name=""):
+    """\
+    Resize an image layer to the given size as ``[height, width]``.
+
+    Same Scale, but with the backward operation supported.
+
+    :param parent: parent layer
+    :param new_shape: new shape
+    :param reshape: if True, the output shape will be new_shape (classical
+      scale; recommended). If False, the output shape will be the input shape
+      (scale < 100%: scale + padding; scale > 100%: crop + scale)
+    :param da_mode: one of "nearest", "constant"
+    :param constant: fill value for the area outside the resized image, used
+      for all channels
+    :param coordinate_transformation_mode: how to transform the coordinates in
+      the resized tensor to the coordinates in the original tensor
+    :param name: name of the output layer
+    :return: Resize layer
+    """
+    return _eddl.Resize(parent, new_shape, reshape, da_mode, constant,
+                        coordinate_transformation_mode, name)
+
+
 def Reshape(parent, shape, name=""):
     """\
     Reshape an output to the given shape.
@@ -1121,10 +1168,10 @@ def Unsqueeze(parent, axis=0, name=""):
     return _eddl.Unsqueeze(parent, axis, name)
 
 
-def ConvT(parent, filters, kernel_size, output_padding, padding="same",
-          dilation_rate=[1, 1], strides=[1, 1], use_bias=True, name=""):
+def ConvT2D(parent, filters, kernel_size, strides=[1, 1], padding="same",
+            use_bias=True, groups=1, dilation_rate=[1, 1], name=""):
     """\
-    Transposed convolution layer (sometimes called deconvolution).
+    2D Transposed convolution layer (sometimes called deconvolution).
 
     The need for transposed convolutions generally arises from the desire to
     use a transformation going in the opposite direction of a normal
@@ -1136,26 +1183,22 @@ def ConvT(parent, filters, kernel_size, output_padding, padding="same",
     :param filters: dimensionality of the output space (i.e., the number of
       output filters in the convolution)
     :param kernel_size: the height and width of the 2D convolution window
-    :param output_padding: the amount of padding along the height and width of
-      the output tensor. The amount of output padding along a given dimension
-      must be lower than the stride along the same dimension
+    :param strides: the strides of the convolution along the height and width
     :param padding: one of "valid" or "same"
+    :param use_bias: whether the layer uses a bias vector
     :param dilation_rate: the dilation rate to use for dilated convolution.
       Spacing between kernel elements
-    :param strides: the strides of the convolution along the height and width
-    :param use_bias: whether the layer uses a bias vector
     :param name: name of the output layer
-    :return: ConvT layer
-
+    :return: ConvT2D layer
     """
-    return _eddl.ConvT(parent, filters, kernel_size, output_padding, padding,
-                       dilation_rate, strides, use_bias, name)
+    return _eddl.ConvT2D(parent, filters, kernel_size, strides, padding,
+                         use_bias, groups, dilation_rate, name)
 
 
-def ConvT2D(parent, filters, kernel_size, output_padding, padding="same",
-            dilation_rate=[1, 1], strides=[1, 1], use_bias=True, name=""):
+def ConvT3D(parent, filters, kernel_size, strides=[1, 1, 1], padding="same",
+            use_bias=True, groups=1, dilation_rate=[1, 1, 1], name=""):
     """\
-    Transposed convolution layer (sometimes called deconvolution).
+    3D Transposed convolution layer (sometimes called deconvolution).
 
     The need for transposed convolutions generally arises from the desire to
     use a transformation going in the opposite direction of a normal
@@ -1166,20 +1209,19 @@ def ConvT2D(parent, filters, kernel_size, output_padding, padding="same",
     :param parent: parent layer
     :param filters: dimensionality of the output space (i.e., the number of
       output filters in the convolution)
-    :param kernel_size: the height and width of the 2D convolution window
-    :param output_padding: the amount of padding along the height and width of
-      the output tensor. The amount of output padding along a given dimension
-      must be lower than the stride along the same dimension
+    :param kernel_size: the depth, height and width of the 3D convolution
+      window
+    :param strides: the strides of the convolution along the depth, height and
+      width dimensions
     :param padding: one of "valid" or "same"
+    :param use_bias: whether the layer uses a bias vector
     :param dilation_rate: the dilation rate to use for dilated convolution.
       Spacing between kernel elements
-    :param strides: the strides of the convolution along the height and width
-    :param use_bias: whether the layer uses a bias vector
     :param name: name of the output layer
-    :return: ConvT layer
+    :return: ConvT3D layer
     """
-    return _eddl.ConvT2D(parent, filters, kernel_size, output_padding, padding,
-                         dilation_rate, strides, use_bias, name)
+    return _eddl.ConvT3D(parent, filters, kernel_size, strides, padding,
+                         use_bias, groups, dilation_rate, name)
 
 
 def Embedding(parent, vocsize, length, output_dim, mask_zeros=False, name=""):
@@ -1209,6 +1251,34 @@ def Transpose(parent, name=""):
     :return: the transposed layer
     """
     return _eddl.Transpose(parent, name)
+
+
+def ConstOfTensor(t, name=""):
+    """\
+    Repeat tensor for each batch.
+
+    Given a tensor (constant), this layer outputs the same tensor but repeated
+    for each batch.
+
+    :param t: a tensor
+    :param name: name of the output layer
+    :return: a ConstOfTensor layer
+    """
+    return _eddl.ConstOfTensor(t, name)
+
+
+def Where(parent1, parent2, condition, name=""):
+    """\
+    Transpose a Layer.
+
+    :param parent1: parent layer
+    :param parent2: parent layer
+    :param condition: layer that selects ``parent1`` where ``True``,
+      ``parent2`` where ``False`` (0.0 for ``False`` and 1.0 for ``True``)
+    :param name: name of the output layer
+    :return: a Where layer
+    """
+    return _eddl.Where(parent1, parent2, condition, name)
 
 
 # = Transformation layers =
@@ -1303,6 +1373,20 @@ def HorizontalFlip(parent, name=""):
     return _eddl.HorizontalFlip(parent, name)
 
 
+def Pad(parent, padding, constant=0.0, name=""):
+    """\
+    Pad an image on all sides.
+
+    :param parent: parent layer
+    :param padding: padding on each border, (top-bottom, left-right) or
+      (top, right, bottom, left)
+    :param constant: pad with a constant value
+    :param name: name of the output layer
+    :return: a Pad layer
+    """
+    return _eddl.Pad(parent, padding, constant, name)
+
+
 def Rotate(parent, angle, offset_center=[0, 0], da_mode="original",
            constant=0.0, name=""):
     """\
@@ -1314,13 +1398,14 @@ def Rotate(parent, angle, offset_center=[0, 0], da_mode="original",
     :param da_mode: one of "nearest", "constant"
     :param constant: fill value for the area outside the rotated image, used
       for all channels
+    :param name: name of the output layer
     :return: Rotate layer
     """
     return _eddl.Rotate(parent, angle, offset_center, da_mode, constant, name)
 
 
 def Scale(parent, new_shape, reshape=True, da_mode="constant", constant=0.0,
-          name=""):
+          coordinate_transformation_mode="asymmetric", name=""):
     """\
     Resize an image layer to the given size as ``[height, width]``.
 
@@ -1332,9 +1417,13 @@ def Scale(parent, new_shape, reshape=True, da_mode="constant", constant=0.0,
     :param da_mode: one of "nearest", "constant"
     :param constant: fill value for the area outside the resized image, used
       for all channels
+    :param coordinate_transformation_mode: how to transform the coordinates in
+      the resized tensor to the coordinates in the original tensor
+    :param name: name of the output layer
     :return: Scale layer
     """
-    return _eddl.Scale(parent, new_shape, reshape, da_mode, constant, name)
+    return _eddl.Scale(parent, new_shape, reshape, da_mode, constant,
+                       coordinate_transformation_mode, name)
 
 
 def Shift(parent, shift, da_mode="nearest", constant=0.0, name=""):
@@ -1448,7 +1537,8 @@ def RandomRotation(parent, factor, offset_center=[0, 0], da_mode="original",
                                 constant, name)
 
 
-def RandomScale(parent, factor, da_mode="nearest", constant=0.0, name=""):
+def RandomScale(parent, factor, da_mode="nearest", constant=0.0,
+                coordinate_transformation_mode="asymmetric", name=""):
     """\
     Resize an image layer randomly.
 
@@ -1457,10 +1547,13 @@ def RandomScale(parent, factor, da_mode="nearest", constant=0.0, name=""):
     :param da_mode: One of "nearest"
     :param constant: fill value for the area outside the resized image,
       used for all channels
+    :param coordinate_transformation_mode: how to transform the coordinates in
+      the resized tensor to the coordinates in the original tensor
     :param name: name of the output layer
     :return: ScaleRandom layer
     """
-    return _eddl.RandomScale(parent, factor, da_mode, constant, name)
+    return _eddl.RandomScale(parent, factor, da_mode, constant,
+                             coordinate_transformation_mode, name)
 
 
 def RandomShift(parent, factor_x, factor_y, da_mode="nearest", constant=0.0,
@@ -1522,7 +1615,7 @@ def Average(layers, name=""):
     return _eddl.Average(layers, name)
 
 
-def Concat(layers, axis=1, name=""):
+def Concat(layers, axis=0, name=""):
     """\
     Concatenate input layers.
 
@@ -1820,6 +1913,39 @@ def Select(l, indices, name=""):
     return _eddl.Select(l, indices, name)
 
 
+def Slice(l, indices, name=""):
+    """\
+    Alias for Select.
+    """
+    return _eddl.Slice(l, indices, name)
+
+
+def Expand(l, size, name=""):
+    """\
+    Expand singleton dimensions.
+
+    :param l: parent layer
+    :param size: target size for dimension expansion
+    :param name: name of the output layer
+    :return: Expand layer
+    """
+    return _eddl.Expand(l, size, name)
+
+
+def Split(l, indexes, axis=-1, merge_sublayers=False, name=""):
+    """\
+    Split layer into a list of tensor layers.
+
+    :param l: parent layer
+    :param indexes: ``[20, 60] => [:20, 20:60, 60:]``
+    :param axis: which axis to split on (-1 = last)
+    :merge_sublayers:  merge layers symbolically (affects plotting)
+    :param name: name of the output layer
+    :return: vector of layers
+    """
+    return _eddl.Split(l, indexes, axis, merge_sublayers, name)
+
+
 def Permute(l, dims, name=""):
     """\
     Permute the dimensions of the input according to a given pattern.
@@ -1885,6 +2011,80 @@ def AveragePool(parent, pool_size=[2, 2], strides=[2, 2], padding="none",
     return _eddl.AveragePool(parent, pool_size, strides, padding, name)
 
 
+def AvgPool(parent, pool_size=[2, 2], strides=[2, 2], padding="none", name=""):
+    """\
+    Alias for AveragePool.
+    """
+    return _eddl.AvgPool(parent, pool_size, strides, padding, name)
+
+
+def AveragePool1D(parent, pool_size=[2], strides=[2], padding="none", name=""):
+    """\
+    Perform 1D average pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the average pooling windows
+    :param strides: factors by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: AveragePool1D layer
+    """
+    return _eddl.AveragePool1D(parent, pool_size, strides, padding, name)
+
+
+def AvgPool1D(parent, pool_size=[2], strides=[2], padding="none", name=""):
+    """\
+    Alias for AveragePool1D.
+    """
+    return _eddl.AvgPool1D(parent, pool_size, strides, padding, name)
+
+
+def AveragePool2D(parent, pool_size=[2, 2], strides=[2, 2], padding="none",
+                  name=""):
+    """\
+    Perform 2D average pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the average pooling windows
+    :param strides: factors by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: AveragePool2D layer
+    """
+    return _eddl.AveragePool2D(parent, pool_size, strides, padding, name)
+
+
+def AvgPool2D(parent, pool_size=[2, 2], strides=[2, 2], padding="none",
+              name=""):
+    """\
+    Alias for AveragePool2D.
+    """
+    return _eddl.AvgPool2D(parent, pool_size, strides, padding, name)
+
+
+def AveragePool3D(parent, pool_size=[2, 2, 2], strides=[2, 2, 2],
+                  padding="none", name=""):
+    """\
+    Perform 3D average pooling.
+
+    :param parent: parent layer
+    :param pool_size: size of the average pooling windows
+    :param strides: factors by which to downscale
+    :param padding: one of "none", "valid" or "same"
+    :param name: name of the output layer
+    :return: AveragePool3D layer
+    """
+    return _eddl.AveragePool3D(parent, pool_size, strides, padding, name)
+
+
+def AvgPool3D(parent, pool_size=[2, 2, 2], strides=[2, 2, 2], padding="none",
+              name=""):
+    """\
+    Alias for AveragePool3D.
+    """
+    return _eddl.AvgPool3D(parent, pool_size, strides, padding, name)
+
+
 def GlobalMaxPool(parent, name=""):
     """\
     Perform global max pooling.
@@ -1940,6 +2140,13 @@ def GlobalAveragePool(parent, name=""):
     return _eddl.GlobalAveragePool(parent, name)
 
 
+def GlobalAvgPool(parent, name=""):
+    """\
+    Alias for GlobalAveragePool.
+    """
+    return _eddl.GlobalAvgPool(parent, name)
+
+
 def GlobalAveragePool1D(parent, name=""):
     """\
     Perform 1D global average pooling.
@@ -1949,6 +2156,13 @@ def GlobalAveragePool1D(parent, name=""):
     :return: an AveragePool layer
     """
     return _eddl.GlobalAveragePool1D(parent, name)
+
+
+def GlobalAvgPool1D(parent, name=""):
+    """\
+    Alias for GlobalAveragePool1D.
+    """
+    return _eddl.GlobalAvgPool1D(parent, name)
 
 
 def GlobalAveragePool2D(parent, name=""):
@@ -1962,6 +2176,13 @@ def GlobalAveragePool2D(parent, name=""):
     return _eddl.GlobalAveragePool2D(parent, name)
 
 
+def GlobalAvgPool2D(parent, name=""):
+    """\
+    Alias for GlobalAveragePool2D.
+    """
+    return _eddl.GlobalAvgPool2D(parent, name)
+
+
 def GlobalAveragePool3D(parent, name=""):
     """\
     Perform 3D global average pooling.
@@ -1971,6 +2192,13 @@ def GlobalAveragePool3D(parent, name=""):
     :return: an AveragePool layer
     """
     return _eddl.GlobalAveragePool3D(parent, name)
+
+
+def GlobalAvgPool3D(parent, name=""):
+    """\
+    Alias for GlobalAveragePool3D.
+    """
+    return _eddl.GlobalAvgPool3D(parent, name)
 
 
 def MaxPool(parent, pool_size=[2, 2], strides=[2, 2], padding="none", name=""):
@@ -2330,30 +2558,93 @@ def download_model(name, link):
 
 
 def download_vgg16(top=True, input_shape=[]):
+    """
+    Download a VGG16 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a VGG16 model
+    """
     return _eddl.download_vgg16(top, input_shape)
 
 
 def download_resnet18(top=True, input_shape=[]):
+    """
+    Download a ResNet18 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a ResNet18 model
+    """
     return _eddl.download_resnet18(top, input_shape)
 
 
 def download_resnet34(top=True, input_shape=[]):
+    """
+    Download a ResNet34 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a ResNet34 model
+    """
     return _eddl.download_resnet34(top, input_shape)
 
 
 def download_resnet50(top=True, input_shape=[]):
+    """
+    Download a ResNet50 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a ResNet50 model
+    """
     return _eddl.download_resnet50(top, input_shape)
 
 
 def download_resnet101(top=True, input_shape=[]):
+    """
+    Download a ResNet101 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a ResNet101 model
+    """
     return _eddl.download_resnet101(top, input_shape)
 
 
 def download_resnet152(top=True, input_shape=[]):
+    """
+    Download a ResNet152 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a ResNet152 model
+    """
     return _eddl.download_resnet152(top, input_shape)
 
 
 def download_densenet121(top=True, input_shape=[]):
+    """
+    Download a DenseNet121 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a DenseNet121 model
+    """
     return _eddl.download_densenet121(top, input_shape)
 
 

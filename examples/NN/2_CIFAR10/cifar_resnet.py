@@ -53,6 +53,7 @@ def main(args):
 
     layer = in_
     layer = eddl.ReLu(eddl.Conv(layer, 64, [3, 3], [1, 1]))
+    layer = eddl.Pad(layer, [0, 1, 1, 0])
     layer = ResBlock(layer, 64, 2, True)
     layer = ResBlock(layer, 64, 2, False)
     layer = ResBlock(layer, 128, 2, True)

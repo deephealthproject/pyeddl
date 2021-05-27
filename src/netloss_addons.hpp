@@ -19,28 +19,11 @@
 // SOFTWARE.
 
 #pragma once
-#include <functional>
+
 #include <pybind11/pybind11.h>
-#include <eddl/utils.h>
 
-
-void bind_eddl_utils(std::function<pybind11::module &(std::string const &namespace_)> &M) {
-
-    pybind11::enum_<TransformationMode>(M(""), "TransformationMode", pybind11::arithmetic(), "")
-	.value("HalfPixel", TransformationMode::HalfPixel)
-	.value("PytorchHalfPixel", TransformationMode::PytorchHalfPixel)
-	.value("AlignCorners", TransformationMode::AlignCorners)
-	.value("Asymmetric", TransformationMode::Asymmetric)
-	.value("TFCropAndResize", TransformationMode::TFCropAndResize)
-	;
-
-    pybind11::enum_<WrappingMode>(M(""), "WrappingMode", pybind11::arithmetic(), "")
-	.value("Constant", WrappingMode::Constant)
-	.value("Reflect", WrappingMode::Reflect)
-	.value("Nearest", WrappingMode::Nearest)
-	.value("Mirror", WrappingMode::Mirror)
-	.value("Wrap", WrappingMode::Wrap)
-	.value("Original", WrappingMode::Original)
-	;
-
+template <typename type_, typename... options>
+void netloss_addons(pybind11::class_<type_, options...> &cl) {
+    cl.def_readwrite("graph", &NetLoss::graph);
+    cl.def_readwrite("fout", &NetLoss::fout);
 }

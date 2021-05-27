@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 from . import _core
-from .utils import WrappingMode
+from .utils import TransformationMode, WrappingMode
 
 
 DEV_CPU = _core.eddl.DEV_CPU
@@ -1083,6 +1083,7 @@ class Tensor(_core.Tensor):
     # == Transformations ==
 
     def scale(self, new_shape, mode=WrappingMode.Constant, cval=0.,
+              coordinate_transformation_mode=TransformationMode.Asymmetric,
               keep_size=False):
         """\
         Scale the tensor. The array is scaled using spline interpolation.
@@ -1091,10 +1092,12 @@ class Tensor(_core.Tensor):
         :param mode: a WrappingMode
         :param cval: Value to fill past edges of input if mode is
           ``WrappingMode.Constant``
+        :param coordinate_transformation_mode: a TransformationMode
         :param keep_size: whether to keep the original size
         :return: a new tensor
         """
-        return _core.Tensor.scale(self, new_shape, mode, cval, keep_size)
+        return _core.Tensor.scale(self, new_shape, mode, cval,
+                                  coordinate_transformation_mode, keep_size)
 
     # == Other functions ==
 

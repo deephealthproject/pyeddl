@@ -35,15 +35,48 @@ pytest tests
 ```
 
 
-## How to build the manylinux wheels
+## Pybind11 notes
 
-A Docker setup is in place to build manylinux binary wheels for PyEDDL. See
-the `build_manylinux_wheels.sh` and `build_manylinux_wheels_gpu.sh` scripts in
-the repository root directory. The scripts copy the generated wheels to
-`/tmp/wheels` on the host. You can test them with:
+### Binding arrays of arbitrary objects
 
+Binding `Net`'s `Xs` attribute turned out to be far from trivial. The
+attribute is declared as:
+
+```cpp
+    vtensor Xs[MAX_THREADS];
 ```
-python3 -m pip install pyeddl -f /tmp/wheels/
+
+Where vtensor is an alias for `vector<Tensor*>`.
+
+Direct binding [does not work](https://stackoverflow.com/questions/52170192):
+
+```cpp
+    cl.def_readwrite("Xs", &Net::Xs);
 ```
 
-Note that the GPU wheels are built for CUDA 10.1.
+Exposing it as a NumPy array does not work either:
+
+```cpp
+    cl.def_property_readonly("Xs", [](pybind11::object& obj) {
+      Net& o = obj.cast<Net&>();
+      vector<vector<Tensor*>> v(o.Xs, o.Xs + sizeof(o.Xs) / sizeof(o.Xs[0]));
+      return v;
+    });
+```
+
+You get an "Attempt to use a non-POD or unimplemented POD type as a numpy
+dtype" error. Apparently [this can be made to work with structured
+types](https://pybind11.readthedocs.io/en/stable/advanced/pycpp/numpy.html#structured-types),
+but here we have an array of `vtensor`.
+
+I finally decided to convert the array to a vector:
+
+```cpp
+    cl.def_property_readonly("Xs", [](pybind11::object& obj) {
+      Net& o = obj.cast<Net&>();
+      vector<vector<Tensor*>> v(o.Xs, o.Xs + sizeof(o.Xs) / sizeof(o.Xs[0]));
+      return v;
+    });
+```
+
+Better ideas are welcome!

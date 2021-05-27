@@ -59,6 +59,7 @@ def main(args):
     layer = eddl.RandomCropScale(layer, [0.8, 1.0])
     layer = eddl.RandomFlip(layer, 1)
     layer = eddl.ReLu(BG(eddl.Conv(layer, 64, [3, 3], [1, 1])))
+    layer = eddl.Pad(layer, [0, 1, 1, 0])
     layer = ResBlock(layer, 64, 2, True)
     layer = ResBlock(layer, 64, 2, False)
     layer = ResBlock(layer, 128, 2, True)

@@ -203,6 +203,10 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.UpSampling2D
 
+.. autofunction:: pyeddl.eddl.UpSampling3D
+
+.. autofunction:: pyeddl.eddl.Resize
+
 .. autofunction:: pyeddl.eddl.Reshape
 
 .. autofunction:: pyeddl.eddl.Flatten
@@ -211,13 +215,17 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.Unsqueeze
 
-.. autofunction:: pyeddl.eddl.ConvT
-
 .. autofunction:: pyeddl.eddl.ConvT2D
+
+.. autofunction:: pyeddl.eddl.ConvT3D
 
 .. autofunction:: pyeddl.eddl.Embedding
 
 .. autofunction:: pyeddl.eddl.Transpose
+
+.. autofunction:: pyeddl.eddl.ConstOfTensor
+
+.. autofunction:: pyeddl.eddl.Where
 
 
 Transformation layers
@@ -234,6 +242,8 @@ Transformation layers
 .. autofunction:: pyeddl.eddl.Flip
 
 .. autofunction:: pyeddl.eddl.HorizontalFlip
+
+.. autofunction:: pyeddl.eddl.Pad
 
 .. autofunction:: pyeddl.eddl.Rotate
 
@@ -337,6 +347,12 @@ Operator layers
 
 .. autofunction:: pyeddl.eddl.Select
 
+.. autofunction:: pyeddl.eddl.Slice
+
+.. autofunction:: pyeddl.eddl.Expand
+
+.. autofunction:: pyeddl.eddl.Split
+
 .. autofunction:: pyeddl.eddl.Permute
 
 
@@ -369,6 +385,20 @@ Pooling layers
 
 .. autofunction:: pyeddl.eddl.AveragePool
 
+.. autofunction:: pyeddl.eddl.AvgPool
+
+.. autofunction:: pyeddl.eddl.AveragePool1D
+
+.. autofunction:: pyeddl.eddl.AvgPool1D
+
+.. autofunction:: pyeddl.eddl.AveragePool2D
+
+.. autofunction:: pyeddl.eddl.AvgPool2D
+
+.. autofunction:: pyeddl.eddl.AveragePool3D
+
+.. autofunction:: pyeddl.eddl.AvgPool3D
+
 .. autofunction:: pyeddl.eddl.GlobalMaxPool
 
 .. autofunction:: pyeddl.eddl.GlobalMaxPool1D
@@ -379,11 +409,19 @@ Pooling layers
 
 .. autofunction:: pyeddl.eddl.GlobalAveragePool
 
+.. autofunction:: pyeddl.eddl.GlobalAvgPool
+
 .. autofunction:: pyeddl.eddl.GlobalAveragePool1D
+
+.. autofunction:: pyeddl.eddl.GlobalAvgPool1D
 
 .. autofunction:: pyeddl.eddl.GlobalAveragePool2D
 
+.. autofunction:: pyeddl.eddl.GlobalAvgPool2D
+
 .. autofunction:: pyeddl.eddl.GlobalAveragePool3D
+
+.. autofunction:: pyeddl.eddl.GlobalAvgPool3D
 
 .. autofunction:: pyeddl.eddl.MaxPool
 

@@ -21,6 +21,17 @@
 from . import _core
 
 
+class TransformationMode(_core.TransformationMode):
+    """\
+    Enum class which defines a tensor transformation mode.
+    """
+    HalfPixel = _core.TransformationMode.HalfPixel
+    PytorchHalfPixel = _core.TransformationMode.PytorchHalfPixel
+    AlignCorners = _core.TransformationMode.AlignCorners
+    Asymmetric = _core.TransformationMode.Asymmetric
+    TFCropAndResize = _core.TransformationMode.TFCropAndResize
+
+
 class WrappingMode(_core.WrappingMode):
     """\
     Enum class which defines a wrapping mode for tensor transformations.
