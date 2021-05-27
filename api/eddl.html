@@ -1551,6 +1551,59 @@ proportion.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.UpSampling3D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">UpSampling3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">da_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_transformation_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'asymmetric'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.UpSampling3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>3D upsampling layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>new_shape</strong> – new shape</p></li>
+<li><p><strong>reshape</strong> – if True, the output shape will be new_shape (classical
+scale; recommended). If False, the output shape will be the input shape
+(scale &lt; 100%: scale + padding; scale &gt; 100%: crop + scale)</p></li>
+<li><p><strong>da_mode</strong> – one of “nearest”, “constant”</p></li>
+<li><p><strong>constant</strong> – fill value for the area outside the resized image, used
+for all channels</p></li>
+<li><p><strong>coordinate_transformation_mode</strong> – how to transform the coordinates in
+the resized tensor to the coordinates in the original tensor</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>UpSampling3D layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Resize">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">da_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_transformation_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'asymmetric'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resize an image layer to the given size as <code class="docutils literal notranslate"><span class="pre">[height,</span> <span class="pre">width]</span></code>.</p>
+<p>Same Scale, but with the backward operation supported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>new_shape</strong> – new shape</p></li>
+<li><p><strong>reshape</strong> – if True, the output shape will be new_shape (classical
+scale; recommended). If False, the output shape will be the input shape
+(scale &lt; 100%: scale + padding; scale &gt; 100%: crop + scale)</p></li>
+<li><p><strong>da_mode</strong> – one of “nearest”, “constant”</p></li>
+<li><p><strong>constant</strong> – fill value for the area outside the resized image, used
+for all channels</p></li>
+<li><p><strong>coordinate_transformation_mode</strong> – how to transform the coordinates in
+the resized tensor to the coordinates in the original tensor</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Resize layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Reshape">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Reshape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reshape an output to the given shape.</p>
@@ -1627,9 +1680,9 @@ dimension is ignored).</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pyeddl.eddl.ConvT">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">ConvT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'same'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ConvT" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transposed convolution layer (sometimes called deconvolution).</p>
+<dt class="sig sig-object py" id="pyeddl.eddl.ConvT2D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">ConvT2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'same'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ConvT2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>2D Transposed convolution layer (sometimes called deconvolution).</p>
 <p>The need for transposed convolutions generally arises from the desire to
 use a transformation going in the opposite direction of a normal
 convolution, i.e., from something that has the shape of the output of some
@@ -1642,27 +1695,24 @@ a connectivity pattern that is compatible with said convolution.</p>
 <li><p><strong>filters</strong> – dimensionality of the output space (i.e., the number of
 output filters in the convolution)</p></li>
 <li><p><strong>kernel_size</strong> – the height and width of the 2D convolution window</p></li>
-<li><p><strong>output_padding</strong> – the amount of padding along the height and width of
-the output tensor. The amount of output padding along a given dimension
-must be lower than the stride along the same dimension</p></li>
+<li><p><strong>strides</strong> – the strides of the convolution along the height and width</p></li>
 <li><p><strong>padding</strong> – one of “valid” or “same”</p></li>
+<li><p><strong>use_bias</strong> – whether the layer uses a bias vector</p></li>
 <li><p><strong>dilation_rate</strong> – the dilation rate to use for dilated convolution.
 Spacing between kernel elements</p></li>
-<li><p><strong>strides</strong> – the strides of the convolution along the height and width</p></li>
-<li><p><strong>use_bias</strong> – whether the layer uses a bias vector</p></li>
 <li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>ConvT layer</p>
+<dd class="field-even"><p>ConvT2D layer</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pyeddl.eddl.ConvT2D">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">ConvT2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'same'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ConvT2D" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transposed convolution layer (sometimes called deconvolution).</p>
+<dt class="sig sig-object py" id="pyeddl.eddl.ConvT3D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">ConvT3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'same'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ConvT3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>3D Transposed convolution layer (sometimes called deconvolution).</p>
 <p>The need for transposed convolutions generally arises from the desire to
 use a transformation going in the opposite direction of a normal
 convolution, i.e., from something that has the shape of the output of some
@@ -1674,20 +1724,19 @@ a connectivity pattern that is compatible with said convolution.</p>
 <li><p><strong>parent</strong> – parent layer</p></li>
 <li><p><strong>filters</strong> – dimensionality of the output space (i.e., the number of
 output filters in the convolution)</p></li>
-<li><p><strong>kernel_size</strong> – the height and width of the 2D convolution window</p></li>
-<li><p><strong>output_padding</strong> – the amount of padding along the height and width of
-the output tensor. The amount of output padding along a given dimension
-must be lower than the stride along the same dimension</p></li>
+<li><p><strong>kernel_size</strong> – the depth, height and width of the 3D convolution
+window</p></li>
+<li><p><strong>strides</strong> – the strides of the convolution along the depth, height and
+width dimensions</p></li>
 <li><p><strong>padding</strong> – one of “valid” or “same”</p></li>
+<li><p><strong>use_bias</strong> – whether the layer uses a bias vector</p></li>
 <li><p><strong>dilation_rate</strong> – the dilation rate to use for dilated convolution.
 Spacing between kernel elements</p></li>
-<li><p><strong>strides</strong> – the strides of the convolution along the height and width</p></li>
-<li><p><strong>use_bias</strong> – whether the layer uses a bias vector</p></li>
 <li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>ConvT layer</p>
+<dd class="field-even"><p>ConvT3D layer</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1727,6 +1776,45 @@ Spacing between kernel elements</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the transposed layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.ConstOfTensor">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">ConstOfTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ConstOfTensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Repeat tensor for each batch.</p>
+<p>Given a tensor (constant), this layer outputs the same tensor but repeated
+for each batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> – a tensor</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a ConstOfTensor layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Where">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Where</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">condition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Where" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transpose a Layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent1</strong> – parent layer</p></li>
+<li><p><strong>parent2</strong> – parent layer</p></li>
+<li><p><strong>condition</strong> – layer that selects <code class="docutils literal notranslate"><span class="pre">parent1</span></code> where <code class="docutils literal notranslate"><span class="pre">True</span></code>,
+<code class="docutils literal notranslate"><span class="pre">parent2</span></code> where <code class="docutils literal notranslate"><span class="pre">False</span></code> (0.0 for <code class="docutils literal notranslate"><span class="pre">False</span></code> and 1.0 for <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a Where layer</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1859,6 +1947,26 @@ and erase its pixels using a constant value.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Pad">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pad an image on all sides.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>padding</strong> – padding on each border, (top-bottom, left-right) or
+(top, right, bottom, left)</p></li>
+<li><p><strong>constant</strong> – pad with a constant value</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a Pad layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Rotate">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset_center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">da_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'original'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Rotate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rotate an image layer by the given angle, counterclockwise.</p>
@@ -1871,6 +1979,7 @@ and erase its pixels using a constant value.</p>
 <li><p><strong>da_mode</strong> – one of “nearest”, “constant”</p></li>
 <li><p><strong>constant</strong> – fill value for the area outside the rotated image, used
 for all channels</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1881,7 +1990,7 @@ for all channels</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Scale">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">da_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Scale" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">da_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_transformation_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'asymmetric'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resize an image layer to the given size as <code class="docutils literal notranslate"><span class="pre">[height,</span> <span class="pre">width]</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1894,6 +2003,9 @@ scale; recommended). If False, the output shape will be the input shape
 <li><p><strong>da_mode</strong> – one of “nearest”, “constant”</p></li>
 <li><p><strong>constant</strong> – fill value for the area outside the resized image, used
 for all channels</p></li>
+<li><p><strong>coordinate_transformation_mode</strong> – how to transform the coordinates in
+the resized tensor to the coordinates in the original tensor</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2061,7 +2173,7 @@ for all channels.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.RandomScale">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">RandomScale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">da_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nearest'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.RandomScale" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">RandomScale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">da_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nearest'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_transformation_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'asymmetric'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.RandomScale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resize an image layer randomly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2071,6 +2183,8 @@ for all channels.</p></li>
 <li><p><strong>da_mode</strong> – One of “nearest”</p></li>
 <li><p><strong>constant</strong> – fill value for the area outside the resized image,
 used for all channels</p></li>
+<li><p><strong>coordinate_transformation_mode</strong> – how to transform the coordinates in
+the resized tensor to the coordinates in the original tensor</p></li>
 <li><p><strong>name</strong> – name of the output layer</p></li>
 </ul>
 </dd>
@@ -2163,7 +2277,7 @@ layer).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Concat">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Concat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Concat" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Concat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Concat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Concatenate input layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2576,6 +2690,52 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Slice">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for Select.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Expand">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand singleton dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> – parent layer</p></li>
+<li><p><strong>size</strong> – target size for dimension expansion</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Expand layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Split">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merge_sublayers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split layer into a list of tensor layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> – parent layer</p></li>
+<li><p><strong>indexes</strong> – <code class="docutils literal notranslate"><span class="pre">[20,</span> <span class="pre">60]</span> <span class="pre">=&gt;</span> <span class="pre">[:20,</span> <span class="pre">20:60,</span> <span class="pre">60:]</span></code></p></li>
+<li><p><strong>axis</strong> – which axis to split on (-1 = last)</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Merge_sublayers</dt>
+<dd class="field-even"><p>merge layers symbolically (affects plotting)</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>vector of layers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Permute">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Permute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Permute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Permute the dimensions of the input according to a given pattern.</p>
@@ -2660,6 +2820,90 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 <dd class="field-even"><p>AveragePool layer</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.AvgPool">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">AvgPool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.AvgPool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for AveragePool.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.AveragePool1D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">AveragePool1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.AveragePool1D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform 1D average pooling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>pool_size</strong> – size of the average pooling windows</p></li>
+<li><p><strong>strides</strong> – factors by which to downscale</p></li>
+<li><p><strong>padding</strong> – one of “none”, “valid” or “same”</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AveragePool1D layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.AvgPool1D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">AvgPool1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.AvgPool1D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for AveragePool1D.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.AveragePool2D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">AveragePool2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.AveragePool2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform 2D average pooling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>pool_size</strong> – size of the average pooling windows</p></li>
+<li><p><strong>strides</strong> – factors by which to downscale</p></li>
+<li><p><strong>padding</strong> – one of “none”, “valid” or “same”</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AveragePool2D layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.AvgPool2D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">AvgPool2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.AvgPool2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for AveragePool2D.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.AveragePool3D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">AveragePool3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.AveragePool3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform 3D average pooling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>pool_size</strong> – size of the average pooling windows</p></li>
+<li><p><strong>strides</strong> – factors by which to downscale</p></li>
+<li><p><strong>padding</strong> – one of “none”, “valid” or “same”</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AveragePool3D layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.AvgPool3D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">AvgPool3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.AvgPool3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for AveragePool3D.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -2748,6 +2992,12 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.GlobalAvgPool">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">GlobalAvgPool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.GlobalAvgPool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for GlobalAveragePool.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.GlobalAveragePool1D">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">GlobalAveragePool1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.GlobalAveragePool1D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform 1D global average pooling.</p>
@@ -2762,6 +3012,12 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 <dd class="field-even"><p>an AveragePool layer</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.GlobalAvgPool1D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">GlobalAvgPool1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.GlobalAvgPool1D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for GlobalAveragePool1D.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -2782,6 +3038,12 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.GlobalAvgPool2D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">GlobalAvgPool2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.GlobalAvgPool2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for GlobalAveragePool2D.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.GlobalAveragePool3D">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">GlobalAveragePool3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.GlobalAveragePool3D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform 3D global average pooling.</p>
@@ -2796,6 +3058,12 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 <dd class="field-even"><p>an AveragePool layer</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.GlobalAvgPool3D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">GlobalAvgPool3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.GlobalAvgPool3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for GlobalAveragePool3D.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -3204,37 +3472,135 @@ to use for dilated convolution</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.download_vgg16">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_vgg16</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_vgg16" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Download a VGG16 model pretrained with imagenet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, remove the densely connected part from the model
+and rename the last layer as “top”.</p></li>
+<li><p><strong>input_shape</strong> – new input shape for the model (do not specify the
+batch dimension)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a VGG16 model</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.download_resnet18">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_resnet18</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_resnet18" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Download a ResNet18 model pretrained with imagenet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, remove the densely connected part from the model
+and rename the last layer as “top”.</p></li>
+<li><p><strong>input_shape</strong> – new input shape for the model (do not specify the
+batch dimension)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a ResNet18 model</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.download_resnet34">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_resnet34</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_resnet34" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Download a ResNet34 model pretrained with imagenet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, remove the densely connected part from the model
+and rename the last layer as “top”.</p></li>
+<li><p><strong>input_shape</strong> – new input shape for the model (do not specify the
+batch dimension)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a ResNet34 model</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.download_resnet50">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_resnet50</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_resnet50" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Download a ResNet50 model pretrained with imagenet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, remove the densely connected part from the model
+and rename the last layer as “top”.</p></li>
+<li><p><strong>input_shape</strong> – new input shape for the model (do not specify the
+batch dimension)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a ResNet50 model</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.download_resnet101">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_resnet101</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_resnet101" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Download a ResNet101 model pretrained with imagenet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, remove the densely connected part from the model
+and rename the last layer as “top”.</p></li>
+<li><p><strong>input_shape</strong> – new input shape for the model (do not specify the
+batch dimension)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a ResNet101 model</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.download_resnet152">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_resnet152</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_resnet152" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Download a ResNet152 model pretrained with imagenet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, remove the densely connected part from the model
+and rename the last layer as “top”.</p></li>
+<li><p><strong>input_shape</strong> – new input shape for the model (do not specify the
+batch dimension)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a ResNet152 model</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.download_densenet121">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_densenet121</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_densenet121" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Download a DenseNet121 model pretrained with imagenet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, remove the densely connected part from the model
+and rename the last layer as “top”.</p></li>
+<li><p><strong>input_shape</strong> – new input shape for the model (do not specify the
+batch dimension)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a DenseNet121 model</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="datasets">

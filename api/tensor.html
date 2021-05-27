@@ -1437,7 +1437,7 @@ of the tensor.</p>
 <p><strong>=== Transformations ===</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.scale">
-<span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">WrappingMode.Constant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.scale" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">WrappingMode.Constant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_transformation_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TransformationMode.Asymmetric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scale the tensor. The array is scaled using spline interpolation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1446,6 +1446,7 @@ of the tensor.</p>
 <li><p><strong>mode</strong> – a WrappingMode</p></li>
 <li><p><strong>cval</strong> – Value to fill past edges of input if mode is
 <code class="docutils literal notranslate"><span class="pre">WrappingMode.Constant</span></code></p></li>
+<li><p><strong>coordinate_transformation_mode</strong> – a TransformationMode</p></li>
 <li><p><strong>keep_size</strong> – whether to keep the original size</p></li>
 </ul>
 </dd>
