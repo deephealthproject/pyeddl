@@ -1,5 +1,7 @@
 .*
 Dockerfile*
-build_docker.sh
+build_*
 generate_bindings.sh
 codegen
+Makefile
+docker
