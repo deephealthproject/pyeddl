@@ -24,10 +24,10 @@ import os
 import re
 
 
-THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 THIS_YEAR = datetime.date.today().year
 C_YEAR = THIS_YEAR if THIS_YEAR == 2019 else f"2019-{THIS_YEAR}"
-LICENSE_FN = os.path.join(THIS_DIR, "LICENSE")
+LICENSE_FN = os.path.join(REPO_DIR, "LICENSE")
 COM_MAP = {
     ".py": "#",
     ".hpp": "//",
@@ -82,7 +82,7 @@ def main():
     boilerplate = get_boilerplate()
     add_boilerplate(boilerplate, LICENSE_FN)
     bp_map = {ext: comment(boilerplate, com) for ext, com in COM_MAP.items()}
-    for root, dirs, files in os.walk(THIS_DIR):
+    for root, dirs, files in os.walk(REPO_DIR):
         dirs[:] = [_ for _ in dirs if not (
             _.startswith(".") or _ == "third_party"
         )]
