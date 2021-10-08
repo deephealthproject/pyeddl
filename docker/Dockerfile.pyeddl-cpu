@@ -1,12 +1,4 @@
-FROM dhealth/dev-eddl-cpu
-
-RUN apt-get -y update && apt-get -y install --no-install-recommends \
-      python3-dev \
-      python3-pip && \
-    python3 -m pip install --upgrade --no-cache-dir \
-      pip setuptools && \
-    python3 -m pip install --upgrade --no-cache-dir \
-      numpy 'pybind11<2.6' pytest
+FROM dhealth/dev-pyeddl-base-cpu
 
 COPY . /pyeddl
 WORKDIR /pyeddl
