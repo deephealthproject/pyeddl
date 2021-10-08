@@ -2,10 +2,6 @@ FROM dhealth/dev-pyeddl-base-cudnn
 
 ENV EDDL_WITH_CUDA="true"
 
-RUN for l in cudart curand cublas; do \
-      ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/lib${l}.so /usr/lib/; \
-    done
-
 COPY . /pyeddl
 WORKDIR /pyeddl
 
