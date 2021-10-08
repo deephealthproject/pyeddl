@@ -1,4 +1,4 @@
-FROM dhealthdev/eddl-base
+FROM dhealth/dev-eddl-base
 
 COPY third_party/eddl /eddl
 WORKDIR /eddl

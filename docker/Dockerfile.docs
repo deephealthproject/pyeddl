@@ -1,4 +1,4 @@
-FROM dhealthdev/pyeddl-cpu
+FROM dhealth/dev-pyeddl-cpu
 
 WORKDIR /pyeddl
 

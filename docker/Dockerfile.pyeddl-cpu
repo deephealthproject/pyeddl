@@ -1,4 +1,4 @@
-FROM dhealthdev/eddl-cpu
+FROM dhealth/dev-eddl-cpu
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
       python3-dev \

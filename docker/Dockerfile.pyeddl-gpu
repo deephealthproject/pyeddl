@@ -1,4 +1,4 @@
-FROM dhealthdev/eddl-gpu
+FROM dhealth/dev-eddl-gpu
 
 ENV EDDL_WITH_CUDA="true"
 

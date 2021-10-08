@@ -1,4 +1,4 @@
-FROM dhealthdev/eddl-cudnn
+FROM dhealth/dev-eddl-cudnn
 
 ENV EDDL_WITH_CUDA="true"
 
