@@ -7,7 +7,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker'
-                            image 'dhealth/dev-pyeddl-base-cpu'
+                            image 'dhealth/dev-pyeddl-base-cpu:e6de5aaf'
                         }
                     }
                     stages {
@@ -46,7 +46,7 @@ pipeline {
                     agent {
                         docker {
                             label 'docker && gpu'
-                            image 'dhealth/dev-pyeddl-base-gpu'
+                            image 'dhealth/dev-pyeddl-base-gpu:e6de5aaf'
                             args '--gpus 1'
                         }
                     }

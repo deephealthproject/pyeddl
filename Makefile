@@ -1,4 +1,5 @@
 SHELL := /bin/bash
+EDDL_REV := $(shell git -C third_party/eddl rev-parse --short HEAD)
 
 all: pyeddl-cpu pyeddl-gpu pyeddl-cudnn
 
@@ -48,5 +49,12 @@ test-pyeddl-cudnn: pyeddl-cudnn
 
 get-docs: docs
 	rm -rf /tmp/html && docker run --rm dhealth/dev-pyeddl-docs bash -c "tar -c -C /pyeddl/docs/source/_build html" | tar -x -C /tmp
+
+update-jenkins-images: pyeddl-base-cpu pyeddl-base-gpu
+	for t in cpu gpu; do \
+	  docker tag dhealth/dev-pyeddl-base-$${t} dhealth/dev-pyeddl-base-$${t}:$(EDDL_REV) && \
+	  docker push dhealth/dev-pyeddl-base-$${t}:$(EDDL_REV); \
+	done
+	sed -i 's/\(dev-pyeddl-base-[cg]pu\):[a-f0-9]\+/\1:$(EDDL_REV)/g' Jenkinsfile
 
 .PHONY: all eddl-base eddl-cudnn get-docs pyeddl-base-cudnn pyeddl-cpu pyeddl-gpu test-pyeddl-cudnn docs eddl-cpu eddl-gpu pyeddl-base-cpu pyeddl-base-gpu pyeddl-cudnn test-pyeddl-cpu test-pyeddl-gpu
