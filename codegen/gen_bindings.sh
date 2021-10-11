@@ -27,8 +27,9 @@ ${binder} \
 sed -i -f add_annotation.sed bindings/_core.cpp
 
 # set nodelete option
-sed -i 's/shared_ptr<Metric/unique_ptr<Metric, pybind11::nodelete/' bindings/_core.cpp
-sed -i 's/shared_ptr<Loss/unique_ptr<Loss, pybind11::nodelete/' bindings/_core.cpp
+for c in Metric Loss Optimizer SGD Adam AdaDelta Adagrad Adamax Nadam RMSProp; do
+    sed -i "s/shared_ptr<${c}>/unique_ptr<${c}, pybind11::nodelete>/" bindings/_core.cpp
+done
 
 # add custom binding section for utils
 sed -i '/bind_eddl_descriptors_tensor_descriptors(M);/s/.*/&\

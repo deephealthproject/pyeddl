@@ -690,6 +690,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 
 
 // File: eddl/losses/loss.cpp
+#include <adam_addons.hpp>
 #include <eddl/descriptors/tensor_descriptors.h>
 #include <eddl/initializers/initializer.h>
 #include <eddl/layers/layer.h>
@@ -706,8 +707,8 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 #include <loss_addons.hpp>
 #include <memory>
 #include <metric_addons.hpp>
-#include <net_addons.hpp>
 #include <optimizer_addons.hpp>
+#include <sgd_addons.hpp>
 #include <sstream> // __str__
 #include <string>
 #include <utility>
@@ -1154,6 +1155,96 @@ struct PyCallBack_Optimizer : public Optimizer {
 	}
 };
 
+// SGD file:eddl/optimizers/optim.h line:52
+struct PyCallBack_SGD : public SGD {
+	using SGD::SGD;
+
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const SGD *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return SGD::clone();
+	}
+	class Optimizer * share() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const SGD *>(this), "share");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return SGD::share();
+	}
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const SGD *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return SGD::applygrads(a0);
+	}
+};
+
+// Adam file:eddl/optimizers/optim.h line:75
+struct PyCallBack_Adam : public Adam {
+	using Adam::Adam;
+
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Adam *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Adam::clone();
+	}
+	class Optimizer * share() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Adam *>(this), "share");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Adam::share();
+	}
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Adam *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Adam::applygrads(a0);
+	}
+};
+
 void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
 	{ // Loss file:eddl/losses/loss.h line:22
@@ -1271,7 +1362,7 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		layer_addons(cl);
 	}
 	{ // Optimizer file:eddl/optimizers/optim.h line:27
-		pybind11::class_<Optimizer, std::shared_ptr<Optimizer>, PyCallBack_Optimizer> cl(M(""), "Optimizer", "");
+		pybind11::class_<Optimizer, std::unique_ptr<Optimizer, pybind11::nodelete>, PyCallBack_Optimizer> cl(M(""), "Optimizer", "");
 		cl.def( pybind11::init( [](){ return new Optimizer(); }, [](){ return new PyCallBack_Optimizer(); } ) );
 		cl.def( pybind11::init( [](PyCallBack_Optimizer const &o){ return new PyCallBack_Optimizer(o); } ) );
 		cl.def( pybind11::init( [](Optimizer const &o){ return new Optimizer(o); } ) );
@@ -1287,6 +1378,415 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("assign", (class Optimizer & (Optimizer::*)(const class Optimizer &)) &Optimizer::operator=, "C++: Optimizer::operator=(const class Optimizer &) --> class Optimizer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 
 		optimizer_addons(cl);
+	}
+	{ // SGD file:eddl/optimizers/optim.h line:52
+		pybind11::class_<SGD, std::unique_ptr<SGD, pybind11::nodelete>, PyCallBack_SGD, Optimizer> cl(M(""), "SGD", "");
+		cl.def( pybind11::init( [](){ return new SGD(); }, [](){ return new PyCallBack_SGD(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new SGD(a0); }, [](float const & a0){ return new PyCallBack_SGD(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new SGD(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_SGD(a0, a1); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new SGD(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_SGD(a0, a1, a2); } ), "doc");
+		cl.def( pybind11::init<float, float, float, bool>(), pybind11::arg("lr"), pybind11::arg("momentum"), pybind11::arg("weight_decay"), pybind11::arg("nesterov") );
+
+		cl.def( pybind11::init( [](PyCallBack_SGD const &o){ return new PyCallBack_SGD(o); } ) );
+		cl.def( pybind11::init( [](SGD const &o){ return new SGD(o); } ) );
+		cl.def_readwrite("lr", &SGD::lr);
+		cl.def_readwrite("mu", &SGD::mu);
+		cl.def_readwrite("weight_decay", &SGD::weight_decay);
+		cl.def_readwrite("nesterov", &SGD::nesterov);
+		cl.def_readwrite("mT", &SGD::mT);
+		cl.def("clone", (class Optimizer * (SGD::*)()) &SGD::clone, "C++: SGD::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
+		cl.def("share", (class Optimizer * (SGD::*)()) &SGD::share, "C++: SGD::share() --> class Optimizer *", pybind11::return_value_policy::automatic);
+		cl.def("applygrads", (void (SGD::*)(int)) &SGD::applygrads, "C++: SGD::applygrads(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class SGD & (SGD::*)(const class SGD &)) &SGD::operator=, "C++: SGD::operator=(const class SGD &) --> class SGD &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		sgd_addons(cl);
+	}
+	{ // Adam file:eddl/optimizers/optim.h line:75
+		pybind11::class_<Adam, std::unique_ptr<Adam, pybind11::nodelete>, PyCallBack_Adam, Optimizer> cl(M(""), "Adam", "");
+		cl.def( pybind11::init( [](){ return new Adam(); }, [](){ return new PyCallBack_Adam(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new Adam(a0); }, [](float const & a0){ return new PyCallBack_Adam(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new Adam(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_Adam(a0, a1); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new Adam(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_Adam(a0, a1, a2); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2, float const & a3){ return new Adam(a0, a1, a2, a3); }, [](float const & a0, float const & a1, float const & a2, float const & a3){ return new PyCallBack_Adam(a0, a1, a2, a3); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2, float const & a3, float const & a4){ return new Adam(a0, a1, a2, a3, a4); }, [](float const & a0, float const & a1, float const & a2, float const & a3, float const & a4){ return new PyCallBack_Adam(a0, a1, a2, a3, a4); } ), "doc");
+		cl.def( pybind11::init<float, float, float, float, float, bool>(), pybind11::arg("lr"), pybind11::arg("beta_1"), pybind11::arg("beta_2"), pybind11::arg("epsilon"), pybind11::arg("weight_decay"), pybind11::arg("amsgrad") );
+
+		cl.def( pybind11::init( [](PyCallBack_Adam const &o){ return new PyCallBack_Adam(o); } ) );
+		cl.def( pybind11::init( [](Adam const &o){ return new Adam(o); } ) );
+		cl.def_readwrite("lr", &Adam::lr);
+		cl.def_readwrite("beta_1", &Adam::beta_1);
+		cl.def_readwrite("beta_2", &Adam::beta_2);
+		cl.def_readwrite("epsilon", &Adam::epsilon);
+		cl.def_readwrite("weight_decay", &Adam::weight_decay);
+		cl.def_readwrite("amsgrad", &Adam::amsgrad);
+		cl.def_readwrite("t", &Adam::t);
+		cl.def_readwrite("mT", &Adam::mT);
+		cl.def_readwrite("vT", &Adam::vT);
+		cl.def_readwrite("mCap", &Adam::mCap);
+		cl.def_readwrite("vCap", &Adam::vCap);
+		cl.def("clone", (class Optimizer * (Adam::*)()) &Adam::clone, "C++: Adam::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
+		cl.def("share", (class Optimizer * (Adam::*)()) &Adam::share, "C++: Adam::share() --> class Optimizer *", pybind11::return_value_policy::automatic);
+		cl.def("applygrads", (void (Adam::*)(int)) &Adam::applygrads, "C++: Adam::applygrads(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class Adam & (Adam::*)(const class Adam &)) &Adam::operator=, "C++: Adam::operator=(const class Adam &) --> class Adam &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		adam_addons(cl);
+	}
+}
+
+
+// File: eddl/optimizers/optim.cpp
+#include <eddl/descriptors/tensor_descriptors.h>
+#include <eddl/layers/layer.h>
+#include <eddl/losses/loss.h>
+#include <eddl/metrics/metric.h>
+#include <eddl/net/compserv.h>
+#include <eddl/optimizers/optim.h>
+#include <eddl/tensor/tensor.h>
+#include <fstream>
+#include <ios>
+#include <iterator>
+#include <memory>
+#include <net_addons.hpp>
+#include <rmsprop_addons.hpp>
+#include <sstream> // __str__
+#include <string>
+#include <utility>
+#include <vector>
+
+#include <pybind11/pybind11.h>
+#include <functional>
+#include <string>
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
+#include <utils_addons.hpp>
+
+
+#ifndef BINDER_PYBIND11_TYPE_CASTER
+	#define BINDER_PYBIND11_TYPE_CASTER
+	PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>);
+	PYBIND11_DECLARE_HOLDER_TYPE(T, T*);
+	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
+#endif
+
+// AdaDelta file:eddl/optimizers/optim.h line:105
+struct PyCallBack_AdaDelta : public AdaDelta {
+	using AdaDelta::AdaDelta;
+
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const AdaDelta *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Optimizer::applygrads(a0);
+	}
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const AdaDelta *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::clone();
+	}
+	class Optimizer * share() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const AdaDelta *>(this), "share");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::share();
+	}
+};
+
+// Adagrad file:eddl/optimizers/optim.h line:127
+struct PyCallBack_Adagrad : public Adagrad {
+	using Adagrad::Adagrad;
+
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Adagrad *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Optimizer::applygrads(a0);
+	}
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Adagrad *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::clone();
+	}
+	class Optimizer * share() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Adagrad *>(this), "share");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::share();
+	}
+};
+
+// Adamax file:eddl/optimizers/optim.h line:148
+struct PyCallBack_Adamax : public Adamax {
+	using Adamax::Adamax;
+
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Adamax *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Optimizer::applygrads(a0);
+	}
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Adamax *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::clone();
+	}
+	class Optimizer * share() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Adamax *>(this), "share");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::share();
+	}
+};
+
+// Nadam file:eddl/optimizers/optim.h line:171
+struct PyCallBack_Nadam : public Nadam {
+	using Nadam::Nadam;
+
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Nadam *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Optimizer::applygrads(a0);
+	}
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Nadam *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::clone();
+	}
+	class Optimizer * share() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const Nadam *>(this), "share");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::share();
+	}
+};
+
+// RMSProp file:eddl/optimizers/optim.h line:195
+struct PyCallBack_RMSProp : public RMSProp {
+	using RMSProp::RMSProp;
+
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const RMSProp *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return RMSProp::clone();
+	}
+	class Optimizer * share() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const RMSProp *>(this), "share");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return RMSProp::share();
+	}
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const RMSProp *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return RMSProp::applygrads(a0);
+	}
+};
+
+void bind_eddl_optimizers_optim(std::function< pybind11::module &(std::string const &namespace_) > &M)
+{
+	{ // AdaDelta file:eddl/optimizers/optim.h line:105
+		pybind11::class_<AdaDelta, std::unique_ptr<AdaDelta, pybind11::nodelete>, PyCallBack_AdaDelta, Optimizer> cl(M(""), "AdaDelta", "");
+		cl.def( pybind11::init( [](){ return new AdaDelta(); }, [](){ return new PyCallBack_AdaDelta(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new AdaDelta(a0); }, [](float const & a0){ return new PyCallBack_AdaDelta(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new AdaDelta(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_AdaDelta(a0, a1); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new AdaDelta(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_AdaDelta(a0, a1, a2); } ), "doc");
+		cl.def( pybind11::init<float, float, float, float>(), pybind11::arg("lr"), pybind11::arg("rho"), pybind11::arg("epsilon"), pybind11::arg("weight_decay") );
+
+		cl.def( pybind11::init( [](PyCallBack_AdaDelta const &o){ return new PyCallBack_AdaDelta(o); } ) );
+		cl.def( pybind11::init( [](AdaDelta const &o){ return new AdaDelta(o); } ) );
+		cl.def_readwrite("lr", &AdaDelta::lr);
+		cl.def_readwrite("rho", &AdaDelta::rho);
+		cl.def_readwrite("epsilon", &AdaDelta::epsilon);
+		cl.def_readwrite("weight_decay", &AdaDelta::weight_decay);
+		cl.def_readwrite("mT", &AdaDelta::mT);
+		cl.def("assign", (class AdaDelta & (AdaDelta::*)(const class AdaDelta &)) &AdaDelta::operator=, "C++: AdaDelta::operator=(const class AdaDelta &) --> class AdaDelta &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // Adagrad file:eddl/optimizers/optim.h line:127
+		pybind11::class_<Adagrad, std::unique_ptr<Adagrad, pybind11::nodelete>, PyCallBack_Adagrad, Optimizer> cl(M(""), "Adagrad", "");
+		cl.def( pybind11::init( [](){ return new Adagrad(); }, [](){ return new PyCallBack_Adagrad(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new Adagrad(a0); }, [](float const & a0){ return new PyCallBack_Adagrad(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new Adagrad(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_Adagrad(a0, a1); } ), "doc");
+		cl.def( pybind11::init<float, float, float>(), pybind11::arg("lr"), pybind11::arg("epsilon"), pybind11::arg("weight_decay") );
+
+		cl.def( pybind11::init( [](PyCallBack_Adagrad const &o){ return new PyCallBack_Adagrad(o); } ) );
+		cl.def( pybind11::init( [](Adagrad const &o){ return new Adagrad(o); } ) );
+		cl.def_readwrite("lr", &Adagrad::lr);
+		cl.def_readwrite("epsilon", &Adagrad::epsilon);
+		cl.def_readwrite("weight_decay", &Adagrad::weight_decay);
+		cl.def_readwrite("mT", &Adagrad::mT);
+		cl.def("assign", (class Adagrad & (Adagrad::*)(const class Adagrad &)) &Adagrad::operator=, "C++: Adagrad::operator=(const class Adagrad &) --> class Adagrad &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // Adamax file:eddl/optimizers/optim.h line:148
+		pybind11::class_<Adamax, std::unique_ptr<Adamax, pybind11::nodelete>, PyCallBack_Adamax, Optimizer> cl(M(""), "Adamax", "");
+		cl.def( pybind11::init( [](){ return new Adamax(); }, [](){ return new PyCallBack_Adamax(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new Adamax(a0); }, [](float const & a0){ return new PyCallBack_Adamax(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new Adamax(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_Adamax(a0, a1); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new Adamax(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_Adamax(a0, a1, a2); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2, float const & a3){ return new Adamax(a0, a1, a2, a3); }, [](float const & a0, float const & a1, float const & a2, float const & a3){ return new PyCallBack_Adamax(a0, a1, a2, a3); } ), "doc");
+		cl.def( pybind11::init<float, float, float, float, float>(), pybind11::arg("lr"), pybind11::arg("beta_1"), pybind11::arg("beta_2"), pybind11::arg("epsilon"), pybind11::arg("weight_decay") );
+
+		cl.def( pybind11::init( [](PyCallBack_Adamax const &o){ return new PyCallBack_Adamax(o); } ) );
+		cl.def( pybind11::init( [](Adamax const &o){ return new Adamax(o); } ) );
+		cl.def_readwrite("lr", &Adamax::lr);
+		cl.def_readwrite("beta_1", &Adamax::beta_1);
+		cl.def_readwrite("beta_2", &Adamax::beta_2);
+		cl.def_readwrite("epsilon", &Adamax::epsilon);
+		cl.def_readwrite("weight_decay", &Adamax::weight_decay);
+		cl.def_readwrite("mT", &Adamax::mT);
+		cl.def("assign", (class Adamax & (Adamax::*)(const class Adamax &)) &Adamax::operator=, "C++: Adamax::operator=(const class Adamax &) --> class Adamax &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // Nadam file:eddl/optimizers/optim.h line:171
+		pybind11::class_<Nadam, std::unique_ptr<Nadam, pybind11::nodelete>, PyCallBack_Nadam, Optimizer> cl(M(""), "Nadam", "");
+		cl.def( pybind11::init( [](){ return new Nadam(); }, [](){ return new PyCallBack_Nadam(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new Nadam(a0); }, [](float const & a0){ return new PyCallBack_Nadam(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new Nadam(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_Nadam(a0, a1); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new Nadam(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_Nadam(a0, a1, a2); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2, float const & a3){ return new Nadam(a0, a1, a2, a3); }, [](float const & a0, float const & a1, float const & a2, float const & a3){ return new PyCallBack_Nadam(a0, a1, a2, a3); } ), "doc");
+		cl.def( pybind11::init<float, float, float, float, float>(), pybind11::arg("lr"), pybind11::arg("beta_1"), pybind11::arg("beta_2"), pybind11::arg("epsilon"), pybind11::arg("schedule_decay") );
+
+		cl.def( pybind11::init( [](PyCallBack_Nadam const &o){ return new PyCallBack_Nadam(o); } ) );
+		cl.def( pybind11::init( [](Nadam const &o){ return new Nadam(o); } ) );
+		cl.def_readwrite("lr", &Nadam::lr);
+		cl.def_readwrite("beta_1", &Nadam::beta_1);
+		cl.def_readwrite("beta_2", &Nadam::beta_2);
+		cl.def_readwrite("epsilon", &Nadam::epsilon);
+		cl.def_readwrite("schedule_decay", &Nadam::schedule_decay);
+		cl.def_readwrite("mT", &Nadam::mT);
+		cl.def("assign", (class Nadam & (Nadam::*)(const class Nadam &)) &Nadam::operator=, "C++: Nadam::operator=(const class Nadam &) --> class Nadam &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
+	{ // RMSProp file:eddl/optimizers/optim.h line:195
+		pybind11::class_<RMSProp, std::unique_ptr<RMSProp, pybind11::nodelete>, PyCallBack_RMSProp, Optimizer> cl(M(""), "RMSProp", "");
+		cl.def( pybind11::init( [](){ return new RMSProp(); }, [](){ return new PyCallBack_RMSProp(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new RMSProp(a0); }, [](float const & a0){ return new PyCallBack_RMSProp(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new RMSProp(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_RMSProp(a0, a1); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new RMSProp(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_RMSProp(a0, a1, a2); } ), "doc");
+		cl.def( pybind11::init<float, float, float, float>(), pybind11::arg("lr"), pybind11::arg("rho"), pybind11::arg("epsilon"), pybind11::arg("weight_decay") );
+
+		cl.def( pybind11::init( [](PyCallBack_RMSProp const &o){ return new PyCallBack_RMSProp(o); } ) );
+		cl.def( pybind11::init( [](RMSProp const &o){ return new RMSProp(o); } ) );
+		cl.def_readwrite("lr", &RMSProp::lr);
+		cl.def_readwrite("rho", &RMSProp::rho);
+		cl.def_readwrite("epsilon", &RMSProp::epsilon);
+		cl.def_readwrite("weight_decay", &RMSProp::weight_decay);
+		cl.def_readwrite("gT", &RMSProp::gT);
+		cl.def_readwrite("gT1", &RMSProp::gT1);
+		cl.def("clone", (class Optimizer * (RMSProp::*)()) &RMSProp::clone, "C++: RMSProp::clone() --> class Optimizer *", pybind11::return_value_policy::automatic);
+		cl.def("share", (class Optimizer * (RMSProp::*)()) &RMSProp::share, "C++: RMSProp::share() --> class Optimizer *", pybind11::return_value_policy::automatic);
+		cl.def("applygrads", (void (RMSProp::*)(int)) &RMSProp::applygrads, "C++: RMSProp::applygrads(int) --> void", pybind11::arg("batch"));
+		cl.def("assign", (class RMSProp & (RMSProp::*)(const class RMSProp &)) &RMSProp::operator=, "C++: RMSProp::operator=(const class RMSProp &) --> class RMSProp &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+
+		rmsprop_addons(cl);
 	}
 	{ // Net file: line:41
 		pybind11::class_<Net, std::shared_ptr<Net>> cl(M(""), "Net", "");
@@ -1597,6 +2097,7 @@ typedef std::function< pybind11::module & (std::string const &) > ModuleGetter;
 void bind_eddl_descriptors_tensor_descriptors(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &namespace_) > &M);
+void bind_eddl_optimizers_optim(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_net_netloss(std::function< pybind11::module &(std::string const &namespace_) > &M);
 void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &namespace_) > &M);
 
@@ -1624,6 +2125,7 @@ PYBIND11_MODULE(_core, root_module) {
 	bind_eddl_utils(M);
 	bind_eddl_tensor_tensor(M);
 	bind_eddl_losses_loss(M);
+	bind_eddl_optimizers_optim(M);
 	bind_eddl_net_netloss(M);
 	bind_eddl_apis_eddl(M);
 
@@ -1634,6 +2136,7 @@ PYBIND11_MODULE(_core, root_module) {
 // eddl/descriptors/tensor_descriptors.cpp
 // eddl/tensor/tensor.cpp
 // eddl/losses/loss.cpp
+// eddl/optimizers/optim.cpp
 // eddl/net/netloss.cpp
 // eddl/apis/eddl.cpp
 
