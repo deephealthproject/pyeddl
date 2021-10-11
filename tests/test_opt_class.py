@@ -18,4 +18,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-VERSION = "1.1.0"
+import pytest
+import pyeddl.eddl as eddl
+from pyeddl._core import SGD, Adam, AdaDelta, Adagrad, Adamax, Nadam, RMSProp
+
+OPT_CLASSES = SGD, Adam, AdaDelta, Adagrad, Adamax, Nadam, RMSProp
+
+
+@pytest.mark.parametrize("opt_cls", OPT_CLASSES)
+def test_build_net(opt_cls):
+    num_classes = 10
+    in_ = eddl.Input([784])
+    layer = in_
+    layer = eddl.LeakyReLu(eddl.Dense(layer, 1024))
+    layer = eddl.LeakyReLu(eddl.Dense(layer, 1024))
+    layer = eddl.LeakyReLu(eddl.Dense(layer, 1024))
+    out = eddl.Softmax(eddl.Dense(layer, num_classes), -1)
+    net = eddl.Model([in_], [out])
+    eddl.build(
+        net,
+        opt_cls(0.01),
+        ["soft_cross_entropy"],
+        ["categorical_accuracy"],
+        eddl.CS_CPU(mem="low_mem")
+    )

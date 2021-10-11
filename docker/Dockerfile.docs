@@ -1,0 +1,7 @@
+FROM dhealth/dev-pyeddl-cpu
+
+WORKDIR /pyeddl
+
+RUN python3 -m pip install --upgrade --no-cache-dir \
+      sphinx sphinx_rtd_theme && \
+    make -C docs/source html

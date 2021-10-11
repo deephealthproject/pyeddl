@@ -1036,15 +1036,13 @@ def Input(shape, name=""):
 
 def UpSampling(parent, size, interpolation="nearest", name=""):
     """\
-    Upsampling layer.
+    2D upsampling layer.
 
-    Similar to the scale transformation. The only difference is that
-    upsampling repeats its rows/columns n times, while scaling uses a
-    proportion.
+    Identical to the scale transformation. Alias of Resize.
 
     :param parent: parent layer
     :param size: list of 2 integers (upsampling factors for rows and columns)
-    :param interpolation: "nearest" or "bilinear"
+    :param interpolation: (deprecated) only "nearest" is valid
     :param name: name of the output layer
     :return: UpSampling layer
     """
@@ -1053,17 +1051,15 @@ def UpSampling(parent, size, interpolation="nearest", name=""):
 
 def UpSampling2D(parent, size, interpolation="nearest", name=""):
     """\
-    2D Upsampling layer.
+    2D upsampling layer.
 
-    Similar to the scale transformation. The only difference is that
-    upsampling repeats its rows/columns n times, while scaling uses a
-    proportion.
+    Identical to the scale transformation. Alias of Resize.
 
     :param parent: parent layer
     :param size: list of 2 integers (upsampling factors for rows and columns)
-    :param interpolation: "nearest" or "bilinear"
+    :param interpolation: (deprecated) only "nearest" is valid
     :param name: name of the output layer
-    :return: UpSampling2D layer
+    :return: UpSampling layer
     """
     return _eddl.UpSampling2D(parent, size, interpolation, name)
 
@@ -2568,6 +2564,45 @@ def download_vgg16(top=True, input_shape=[]):
     :return: a VGG16 model
     """
     return _eddl.download_vgg16(top, input_shape)
+
+
+def download_vgg16_bn(top=True, input_shape=[]):
+    """
+    Download a VGG16 model with BatchNormalization pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a VGG16 model with BatchNormalization
+    """
+    return _eddl.download_vgg16_bn(top, input_shape)
+
+
+def download_vgg19(top=True, input_shape=[]):
+    """
+    Download a VGG19 model pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a VGG19 model
+    """
+    return _eddl.download_vgg19(top, input_shape)
+
+
+def download_vgg19_bn(top=True, input_shape=[]):
+    """
+    Download a VGG19 model with BatchNormalization pretrained with imagenet.
+
+    :param top: If ``True``, remove the densely connected part from the model
+      and rename the last layer as "top".
+    :param input_shape: new input shape for the model (do not specify the
+      batch dimension)
+    :return: a VGG19 model with BatchNormalization
+    """
+    return _eddl.download_vgg19_bn(top, input_shape)
 
 
 def download_resnet18(top=True, input_shape=[]):

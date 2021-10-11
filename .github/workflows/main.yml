@@ -25,10 +25,10 @@ jobs:
         run: |
           pip install flake8
           flake8 -v .
-      - name: build eddl image
-        run: docker build -t eddl -f Dockerfile.eddl .
+      - name: get prebuilt eddl image
+        run: docker pull dhealth/dev-eddl-cpu
       - name: build pyeddl image
-        run: docker build -t pyeddl .
+        run: docker build -t pyeddl -f docker/Dockerfile.pyeddl-cpu .
       - name: run tests
         run: docker run --rm pyeddl bash -c "pytest tests"
       - name: build dist package

@@ -1,5 +1,9 @@
 .*
-Dockerfile*
-build_docker.sh
-generate_bindings.sh
 codegen
+CONTRIBUTING.md
+dev_tools
+docker
+generate_bindings.sh
+Jenkinsfile
+Makefile
+README.md

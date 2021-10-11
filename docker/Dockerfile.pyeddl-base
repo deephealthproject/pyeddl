@@ -1,0 +1,19 @@
+ARG target
+FROM dhealth/dev-eddl-${target}
+
+RUN apt-get -y update && apt-get -y install --no-install-recommends \
+      python3-dev \
+      python3-pip && \
+    python3 -m pip install --upgrade --no-cache-dir \
+      pip setuptools && \
+    python3 -m pip install --upgrade --no-cache-dir \
+      numpy 'pybind11<2.6' pytest && \
+    for l in cudart curand cublas; do \
+      ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/lib${l}.so /usr/lib/; \
+    done && \
+    for id in 1000 1001; do \
+      mkdir -p /home/jenkins_${id} && \
+      groupadd -r -g ${id} jenkins_${id} && \
+      useradd -lr -u ${id} -g ${id} jenkins_${id} && \
+      chown -R jenkins_${id}:jenkins_${id} /home/jenkins_${id}; \
+    done

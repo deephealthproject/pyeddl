@@ -1,0 +1,8 @@
+FROM dhealth/dev-pyeddl-base-cudnn
+
+ENV EDDL_WITH_CUDA="true"
+
+COPY . /pyeddl
+WORKDIR /pyeddl
+
+RUN python3 setup.py install

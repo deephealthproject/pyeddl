@@ -423,6 +423,9 @@ void eddl_addons(pybind11::module &m) {
     // --- get models ---
     m.def("download_model", (void (*)(string, string)) &eddl::download_model, "C++: eddl::download_model(string, string) --> void", pybind11::arg("name"), pybind11::arg("link"));
     m.def("download_vgg16", (Net* (*)(bool, vector<int>)) &eddl::download_vgg16, "C++: eddl::download_vgg16(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
+    m.def("download_vgg16_bn", (Net* (*)(bool, vector<int>)) &eddl::download_vgg16_bn, "C++: eddl::download_vgg16_bn(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
+    m.def("download_vgg19", (Net* (*)(bool, vector<int>)) &eddl::download_vgg19, "C++: eddl::download_vgg19(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
+    m.def("download_vgg19_bn", (Net* (*)(bool, vector<int>)) &eddl::download_vgg19_bn, "C++: eddl::download_vgg19_bn(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
     m.def("download_resnet18", (Net* (*)(bool, vector<int>)) &eddl::download_resnet18, "C++: eddl::download_resnet18(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
     m.def("download_resnet34", (Net* (*)(bool, vector<int>)) &eddl::download_resnet34, "C++: eddl::download_resnet34(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
     m.def("download_resnet50", (Net* (*)(bool, vector<int>)) &eddl::download_resnet50, "C++: eddl::download_resnet50(string, string) --> Net*", pybind11::arg("top") = true, pybind11::arg("input_shape") = vector<int>{});
