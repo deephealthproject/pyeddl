@@ -495,6 +495,12 @@ Get Models
 
 .. autofunction:: pyeddl.eddl.download_vgg16
 
+.. autofunction:: pyeddl.eddl.download_vgg16_bn
+
+.. autofunction:: pyeddl.eddl.download_vgg19
+
+.. autofunction:: pyeddl.eddl.download_vgg19_bn
+
 .. autofunction:: pyeddl.eddl.download_resnet18
 
 .. autofunction:: pyeddl.eddl.download_resnet34
