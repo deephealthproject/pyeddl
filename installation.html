@@ -85,20 +85,19 @@
   <section id="installation">
 <span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
 <section id="conda-packages">
-<h2>Conda packages<a class="headerlink" href="#conda-packages" title="Permalink to this headline"></a></h2>
-<p><a class="reference external" href="https://docs.conda.io/en/latest/">Conda</a> packages for PyEDDL come in three
-flavors:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pyeddl-cpu</span></code>: CPU-only</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pyeddl-gpu</span></code>: GPU-enabled</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pyeddl-cudnn</span></code>: GPU-enabled, with cuDNN support</p></li>
-</ul>
-<p>Choose one of the above, then install it as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">dhealth</span> <span class="o">-</span><span class="n">c</span> <span class="n">bioconda</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pyeddl</span><span class="o">-</span><span class="n">cpu</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">dhealth</span> <span class="o">-</span><span class="n">c</span> <span class="n">bioconda</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pyeddl</span><span class="o">-</span><span class="n">gpu</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">dhealth</span> <span class="o">-</span><span class="n">c</span> <span class="n">bioconda</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pyeddl</span><span class="o">-</span><span class="n">cudnn</span>
+<h2><a class="reference external" href="https://docs.conda.io/en/latest/">Conda</a> packages<a class="headerlink" href="#conda-packages" title="Permalink to this headline"></a></h2>
+<p>Before installing, configure the Conda channels as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">dhealth</span>
+<span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
+<span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="nb">set</span> <span class="n">channel_priority</span> <span class="n">strict</span>
 </pre></div>
 </div>
+<p>Then run:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">pyeddl-cpu</span></code>: for the CPU-only version</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">pyeddl-gpu</span></code>: for the GPU-enabled version</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">pyeddl-cudnn</span></code>: for GPU-enabled with cuDNN support</p></li>
+</ul>
 <p>Each PyEDDL package installs the corresponding EDDL one as a dependency, as
 well as any other requirement, so there’s no need to separately install EDDL
 or PyEDDL / EDDL when installing via Conda.</p>
