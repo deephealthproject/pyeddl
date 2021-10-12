@@ -4,21 +4,20 @@ Installation
 ============
 
 
-Conda packages
---------------
+`Conda <https://docs.conda.io/en/latest/>`_ packages
+----------------------------------------------------
 
-`Conda <https://docs.conda.io/en/latest/>`_ packages for PyEDDL come in three
-flavors:
+Before installing, configure the Conda channels as follows::
 
-* ``pyeddl-cpu``: CPU-only
-* ``pyeddl-gpu``: GPU-enabled
-* ``pyeddl-cudnn``: GPU-enabled, with cuDNN support
+  conda config --add channels dhealth
+  conda config --add channels conda-forge
+  conda config --set channel_priority strict
 
-Choose one of the above, then install it as follows::
+Then run:
 
-  conda install -c dhealth -c bioconda -c conda-forge pyeddl-cpu
-  conda install -c dhealth -c bioconda -c conda-forge pyeddl-gpu
-  conda install -c dhealth -c bioconda -c conda-forge pyeddl-cudnn
+* ``conda install pyeddl-cpu``: for the CPU-only version
+* ``conda install pyeddl-gpu``: for the GPU-enabled version
+* ``conda install pyeddl-cudnn``: for GPU-enabled with cuDNN support
 
 Each PyEDDL package installs the corresponding EDDL one as a dependency, as
 well as any other requirement, so there's no need to separately install EDDL
