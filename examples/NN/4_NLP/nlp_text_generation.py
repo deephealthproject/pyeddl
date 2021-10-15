@@ -171,6 +171,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch-size", type=int, metavar="INT", default=24)
     parser.add_argument("--gpu", action="store_true")
     parser.add_argument("--small", action="store_true")
+    # crashes with a segfault on low_mem
     parser.add_argument("--mem", metavar="|".join(MEM_CHOICES),
-                        choices=MEM_CHOICES, default="low_mem")
+                        choices=MEM_CHOICES, default="mid_mem")
     main(parser.parse_args(sys.argv[1:]))
