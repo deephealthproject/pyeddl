@@ -9,7 +9,7 @@ this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 names=(
     nlp_sentiment_rnn
-    # nlp_text_generation
+    nlp_text_generation
     nlp_video_to_labels
     nlp_machine_translation
     nlp_sentiment_gru
