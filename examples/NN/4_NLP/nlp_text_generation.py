@@ -53,10 +53,9 @@ def main(args):
     ldecin = eddl.Input([outvs])
     ldec = eddl.ReduceArgMax(ldecin, [0])
     ldec = eddl.RandomUniform(
-        eddl.Embedding(ldec, outvs, 1, embdim), -0.05, 0.05
+        eddl.Embedding(ldec, outvs, 1, embdim, True), -0.05, 0.05
     )
 
-    # layer = eddl.Decoder(eddl.LSTM(ldec, 512, True), layer, "concat")
     ldec = eddl.Concat([ldec, lreshape])
     layer = eddl.LSTM(ldec, 512, True)
     out = eddl.Softmax(eddl.Dense(layer, outvs))
@@ -74,20 +73,20 @@ def main(args):
     eddl.summary(net)
 
     # Load dataset
-    x_train = Tensor.load("flickr_trX.bin")
-    y_train = Tensor.load("flickr_trY.bin")
+    x_train = Tensor.load("flickr_trX.bin", "bin")
+    y_train = Tensor.load("flickr_trY.bin", "bin")
     if args.small:
-        x_train = x_train.select([f":{2 * args.batch_size}", ":", ":", ":"])
-        y_train = y_train.select([f":{2 * args.batch_size}"])
+        x_train = x_train.select([f"0:{2 * args.batch_size}", ":", ":", ":"])
+        y_train = y_train.select([f"0:{2 * args.batch_size}", ":"])
     xtrain = Tensor.permute(x_train, [0, 3, 1, 2])
     y_train = Tensor.onehot(y_train, outvs)
     # batch x timesteps x input_dim
     y_train.reshape_([y_train.shape[0], olength, outvs])
 
     eddl.fit(net, [xtrain], [y_train], args.batch_size, epochs)
-    # eddl.save(net, "img2text.bin", "bin")
+    eddl.save(net, "img2text.bin", "bin")
 
-    # print("\n === INFERENCE ===\n")
+    print("\n === INFERENCE ===\n")
 
     # Get all the reshapes of the images. Only use the CNN
     timage = Tensor([x_train.shape[0], 512])  # images reshape
