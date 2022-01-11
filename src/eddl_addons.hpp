@@ -424,7 +424,7 @@ void eddl_addons(pybind11::module &m) {
     //   RandomGrayscale
 
     // --- utils ---
-    m.def("get_topk_predictions", (string (*)(Tensor*, const vector<string&>, int, int)) &eddl::get_topk_predictions, "Get top k class names along with their probabilities", pybind11::arg("class_probs"), pybind11::arg("class_names"), pybind11::arg("k") = 5, pybind11::arg("decimals") = 2);
+    m.def("get_topk_predictions", (string (*)(Tensor*, const vector<string>&, int, int)) &eddl::get_topk_predictions, "Get top k class names along with their probabilities", pybind11::arg("class_probs"), pybind11::arg("class_names"), pybind11::arg("k") = 5, pybind11::arg("decimals") = 2);
 
     // --- get models ---
     m.def("download_model", (void (*)(string, string)) &eddl::download_model, "C++: eddl::download_model(string, string) --> void", pybind11::arg("name"), pybind11::arg("link"));
