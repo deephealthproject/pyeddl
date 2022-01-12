@@ -1142,7 +1142,7 @@ def Flatten(parent, name=""):
     return _eddl.Flatten(parent, name)
 
 
-def Repeat(parent, name=""):
+def Repeat(parent, repeats, axis, name=""):
     """\
     Repeat the elements of the output tensor along the specified dimension.
 
@@ -1152,7 +1152,7 @@ def Repeat(parent, name=""):
     :param name: name of the output layer
     :return: Repeat layer
     """
-    return _eddl.Repeat(parent, name)
+    return _eddl.Repeat(parent, repeats, axis, name)
 
 
 def Tile(parent, repeats, name=""):
@@ -1187,7 +1187,7 @@ def Broadcast(parent1, parent2, name=""):
     return _eddl.Broadcast(parent1, parent2, name)
 
 
-def Bypass(parent, bypass_name, name=""):
+def Bypass(parent, bypass_name="", name=""):
     """\
     Propagate the output of the parent.
 
@@ -1201,7 +1201,7 @@ def Bypass(parent, bypass_name, name=""):
     return _eddl.Bypass(parent, bypass_name, name)
 
 
-def Shape(parent, include_batch, name=""):
+def Shape(parent, include_batch=True, name=""):
     """\
     Return the shape of the parent as the output.
 
