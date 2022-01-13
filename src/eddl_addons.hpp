@@ -409,6 +409,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("toGPU", (void (*)(class Net*, const string&)) &eddl::toGPU, "Assign model operations to the GPU", pybind11::arg("net"), pybind11::arg("mem") = "full_mem");
     m.def("toGPU", (void (*)(class Net*, vector<int>, const string&)) &eddl::toGPU, "Assign model operations to the GPU", pybind11::arg("net"), pybind11::arg("g") = vector<int>{1}, pybind11::arg("mem") = "full_mem");
     m.def("toGPU", (void (*)(class Net*, vector<int>, int, const string&)) &eddl::toGPU, "Assign model operations to the GPU", pybind11::arg("net"), pybind11::arg("g") = vector<int>{1}, pybind11::arg("lsb") = 1, pybind11::arg("mem") = "full_mem");
+    m.def("setlogfile", (void (*)(class Net*, const string&)) &eddl::setlogfile, "Save the training outputs of a model to a file", pybind11::arg("net"), pybind11::arg("fname"));
     m.def("load", (void (*)(class Net*, const string&, const string&)) &eddl::load, "C++: eddl::load(class Net*, const string&, const string&) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("format") = "bin");
     m.def("save", (void (*)(class Net*, const string&, const string&)) &eddl::save, "C++: eddl::save(class Net*, const string&, const string&) --> void", pybind11::arg("m"), pybind11::arg("fname"), pybind11::arg("format") = "bin");
     m.def("plot", (void (*)(class Net*, const string&, const string&)) &eddl::plot, "C++: eddl::plot(class Net*, const string&, const string&) --> void", pybind11::arg("m"), pybind11::arg("fname")="model.pdf", pybind11::arg("rankdir") = "LR");
