@@ -73,6 +73,10 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
     cl.def("permute", (Tensor* (Tensor::*)(const vector<int>&)) &Tensor::permute, "In-place permutation of tensor dimensions", pybind11::arg("dims"));
     cl.def_static("permute_static", (Tensor* (*)(Tensor*, const vector<int>&)) &Tensor::permute, "Permutation of tensor dimensions", pybind11::arg("A"), pybind11::arg("dims"));
     cl.def("reshape_", (void (Tensor::*)(const vector<int>&)) &Tensor::reshape_, "C++: Tensor::reshape_(const vector<int>&) --> void", pybind11::arg("new_shape"));
+    cl.def_static("tile", &Tensor::tile,
+		  pybind11::arg("A"), pybind11::arg("repeats"));
+    cl.def_static("max_accelerator_supported",
+		  &Tensor::max_accelerator_supported);
     // Expose contents as a buffer object. Allows a = numpy.array(t).
     // Mostly useful for a = numpy.array(t, copy=False) (CPU only, of course).
     cl.def_buffer([](Tensor &t) -> pybind11::buffer_info {
