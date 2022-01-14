@@ -22,8 +22,8 @@
 Application example.
 """
 
-# import argparse
-# import sys
+import argparse
+import sys
 
 import numpy as np
 import pyeddl.eddl as eddl
@@ -55,15 +55,12 @@ def preprocess_input_resnet34(input_, target_size):
 
 
 def main(args):
-    image_fname = "../../examples/data/elephant.jpg"
-    class_names_file = "../../examples/data/imagenet_class_names.txt"
-    model_path = "models/resnet34-v1-7.onnx"
     in_channels = 3
     in_height = 224
     in_width = 224
     print("Importing ONNX model")
     net = eddl.import_net_from_onnx_file(
-        model_path,
+        args.model_fn,
         [in_channels, in_height, in_width]
     )
     # Add a softmax layer to get probabilities directly from the model
@@ -77,23 +74,29 @@ def main(args):
         eddl.adam(0.001),  # not used for prediction
         ["softmax_cross_entropy"],  # not used for prediction
         ["categorical_accuracy"],  # not used for prediction
-        eddl.CS_GPU([1]),
+        eddl.CS_GPU() if args.gpu else eddl.CS_CPU(),
         False  # Disable model initialization, we want to use the ONNX weights
     )
     eddl.summary(net)
 
-    image = Tensor.load(image_fname)
+    image = Tensor.load(args.img_fn)
     image_preprocessed = preprocess_input_resnet34(
         image,
         [in_height, in_width]
     )
     outputs = eddl.predict(net, [image_preprocessed])
     print("Reading class names...")
-    with open(class_names_file, "rt") as f:
+    with open(args.classes_fn, "rt") as f:
         class_names = [_.strip() for _ in f]
     print("Top 5 predictions:")
     print(eddl.get_topk_predictions(outputs[0], class_names, 5))
 
 
 if __name__ == "__main__":
-    main(None)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("img_fn", metavar="IMAGE", help="image to classify")
+    parser.add_argument("classes_fn", metavar="CLASS_NAMES",
+                        help="text file containing ImageNet class names")
+    parser.add_argument("model_fn", metavar="MODEL", help="ONNX model file")
+    parser.add_argument("--gpu", action="store_true")
+    main(parser.parse_args(sys.argv[1:]))
