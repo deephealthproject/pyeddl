@@ -54,6 +54,8 @@ void eddl_addons(pybind11::module &m) {
     pybind11::class_<GeneratorLayer, std::shared_ptr<GeneratorLayer>, LinLayer>(m, "GeneratorLayer", "");
     pybind11::class_<LActivation, std::shared_ptr<LActivation>, LinLayer>(m, "LActivation", "");
     pybind11::class_<LBatchNorm, std::shared_ptr<LBatchNorm>, LinLayer>(m, "LBatchNorm", "");
+    pybind11::class_<LBroadcast, std::shared_ptr<LBroadcast>, LinLayer>(m, "LBroadcast", "");
+    pybind11::class_<LBypass, std::shared_ptr<LBypass>, LinLayer>(m, "LBypass", "");
     pybind11::class_<LConstOfTensor, std::shared_ptr<LConstOfTensor>, LinLayer>(m, "LConstOfTensor", "");
     pybind11::class_<LConv, std::shared_ptr<LConv>, LinLayer>(m, "LConv", "");
     pybind11::class_<LConv1D, std::shared_ptr<LConv1D>, LinLayer>(m, "LConv1D", "");
@@ -80,6 +82,7 @@ void eddl_addons(pybind11::module &m) {
     pybind11::class_<LPool, std::shared_ptr<LPool>, LinLayer>(m, "LPool", "");
     pybind11::class_<LPool1D, std::shared_ptr<LPool1D>, LinLayer>(m, "LPool1D", "");
     pybind11::class_<LPool3D, std::shared_ptr<LPool3D>, LinLayer>(m, "LPool3D", "");
+    pybind11::class_<LRepeat, std::shared_ptr<LRepeat>, LinLayer>(m, "LRepeat", "");
     pybind11::class_<LReshape, std::shared_ptr<LReshape>, LinLayer>(m, "LReshape", "");
     pybind11::class_<LResize, std::shared_ptr<LResize>, LinLayer>(m, "LResize", "");
     pybind11::class_<LSelect, std::shared_ptr<LSelect>, LinLayer>(m, "LSelect", "");
@@ -87,6 +90,7 @@ void eddl_addons(pybind11::module &m) {
     pybind11::class_<LSplit, std::shared_ptr<LSplit>, LinLayer>(m, "LSplit", "");
     pybind11::class_<LSqueeze, std::shared_ptr<LSqueeze>, LinLayer>(m, "LSqueeze", "");
     pybind11::class_<LTensor, std::shared_ptr<LTensor>, LinLayer>(m, "LTensor", "");
+    pybind11::class_<LTile, std::shared_ptr<LTile>, LinLayer>(m, "LTile", "");
     pybind11::class_<LUnsqueeze, std::shared_ptr<LUnsqueeze>, LinLayer>(m, "LUnsqueeze", "");
     pybind11::class_<LUpSampling, std::shared_ptr<LUpSampling>, LinLayer>(m, "LUpSampling", "");
     pybind11::class_<LUpSampling3D, std::shared_ptr<LUpSampling3D>, LinLayer>(m, "LUpSampling3D", "");
