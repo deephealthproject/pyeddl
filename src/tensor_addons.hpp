@@ -75,6 +75,15 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
     cl.def("reshape_", (void (Tensor::*)(const vector<int>&)) &Tensor::reshape_, "C++: Tensor::reshape_(const vector<int>&) --> void", pybind11::arg("new_shape"));
     cl.def_static("tile", &Tensor::tile,
 		  pybind11::arg("A"), pybind11::arg("repeats"));
+    cl.def_static("concat", &Tensor::concat,
+		  pybind11::arg("A"), pybind11::arg("axis") = 0,
+		  pybind11::arg("output") = nullptr);
+    cl.def_static("concat_back", &Tensor::concat_back,
+		  pybind11::arg("A"), pybind11::arg("t"),
+		  pybind11::arg("axis"));
+    cl.def_static("stack", &Tensor::stack,
+		  pybind11::arg("A"), pybind11::arg("axis") = 0,
+		  pybind11::arg("output") = nullptr);
     cl.def_static("max_accelerator_supported",
 		  &Tensor::max_accelerator_supported);
     // Expose contents as a buffer object. Allows a = numpy.array(t).

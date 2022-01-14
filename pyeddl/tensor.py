@@ -1087,6 +1087,34 @@ class Tensor(_core.Tensor):
     # == Indexing, Slicing, Joining, Mutating
 
     @staticmethod
+    def concat(A, axis=0, output=None):
+        """\
+        Join a sequence of tensors along the specified axis.
+
+        :param A: list of tensors with the same shape
+        :param axis: axis along which to join
+        :param output: output tensor
+        :return: Tensor
+        """
+        return _core.Tensor.concat(A, axis, output)
+
+    @staticmethod
+    def concat_back(A, t, axis):
+        return _core.Tensor.concat_back(A, t, axis)
+
+    @staticmethod
+    def stack(A, axis=0, output=None):
+        """\
+        Repeat tensor elements along the specified dimension.
+
+        :param A: input tensor
+        :param axis: axis along which to repeat the values
+        :param output: output tensor
+        :return: Tensor
+        """
+        return _core.Tensor.stack(A, axis, output)
+
+    @staticmethod
     def repeat(A, repeats, axis=0, output=None, derivative=False):
         """\
         Repeat the elements of a tensor along the specified dimension.

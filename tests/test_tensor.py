@@ -1011,9 +1011,31 @@ def test_trunc(Tensor):
 # --- Indexing, Slicing, Joining, Mutating ---
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_concat(Tensor):
+    a = np.arange(4).reshape(2, 2).astype(np.float32)
+    b = np.arange(0, 40, 10).reshape(2, 2).astype(np.float32)
+    t, u = Tensor(a), Tensor(b)
+    for axis in 0, 1:
+        v = Tensor.concat([t, u], axis)
+        c = np.array(v, copy=False)
+        assert np.allclose(np.concatenate([a, b], axis), c)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_stack(Tensor):
+    a = np.arange(4).reshape(2, 2).astype(np.float32)
+    b = np.arange(0, 40, 10).reshape(2, 2).astype(np.float32)
+    t, u = Tensor(a), Tensor(b)
+    for axis in 0, 1:
+        v = Tensor.stack([t, u], axis)
+        c = np.array(v, copy=False)
+        assert np.allclose(np.stack([a, b], axis), c)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
 def test_repeat(Tensor):
     a = np.arange(12).reshape(3, 4).astype(np.float32)
-    t = Tensor.fromarray(a) if Tensor is PyTensor else Tensor(a)
+    t = Tensor(a)
     for axis in 0, 1:
         u = Tensor.repeat(t, 2, axis)
         b = np.array(u, copy=False)
@@ -1023,7 +1045,7 @@ def test_repeat(Tensor):
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
 def test_tile(Tensor):
     a = np.arange(12).reshape(3, 4).astype(np.float32)
-    t = Tensor.fromarray(a) if Tensor is PyTensor else Tensor(a)
+    t = Tensor(a)
     u = Tensor.tile(t, [2, 2])
     b = np.array(u, copy=False)
     assert np.allclose(np.tile(a, [2, 2]), b)
