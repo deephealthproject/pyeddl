@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 CRS4
+# Copyright (c) 2019-2022 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -66,14 +66,15 @@ def set_parameters(net, params):
 
 def build(net, o=None, lo=None, me=None, cs=None, init_weights=True):
     """\
-    Tell the model which optimizer, losses, metrics and computing service to
-    use.
+    Configure the model for training.
 
     :param net: model
     :param o: optimizer
     :param lo: list of losses
     :param me: list of metrics
     :param cs: computing service
+    :param init_weights: if ``True``, initialize weights to random values
+      (typically set to ``False`` for pretrained models)
     :return: None
     """
     # core module has multiple overloads for this:
@@ -90,44 +91,29 @@ def build(net, o=None, lo=None, me=None, cs=None, init_weights=True):
 
 # = Computing services =
 
-def toGPU(net, g=None, lsb=None, mem=None):
+def toGPU(net, g=[1], lsb=1, mem="full_mem"):
     """\
     Assign model operations to the GPU.
 
     :param net: model
-    :param g: list of gpu ids to allocate
-    :param lsb: number of batches to sync model weights
+    :param g: list of integers to set which GPUs will be used (1=on, 0=off)
+    :param lsb: (multi-gpu setting) number of batches to run before
+      synchronizing the weights of the different GPUs
+    :param mem: memory consumption ("full_mem", "mid_mem" or "low_mem")
     :return: None
     """
-    # core module has multiple overloads for this:
-    #  1. toGPU(net, g, lsb)
-    #  2. toGPU(net, g, mem)
-    #  3. toGPU(net, g, lsb, mem)
-    #  4. toGPU(net, g)
-    #  5. toGPU(net, mem)
-    #  6. toGPU(net)
-    if g is None:
-        if mem is None:
-            return _eddl.toGPU(net)
-        return _eddl.toGPU(net, mem)
-    if lsb is None:
-        return _eddl.toGPU(net, g, mem)
-    if mem is None:
-        return _eddl.toGPU(net, g, lsb)
     return _eddl.toGPU(net, g, lsb, mem)
 
 
-def toCPU(net, t=None):
+def toCPU(net, th=-1):
     """\
     Assign model operations to the CPU.
 
     :param net: model
-    :param t: number of CPU threads
+    :param th: number of CPU threads (-1 to use all threads)
     :return: None
     """
-    if t is None:
-        return _eddl.toCPU(net)
-    return _eddl.toCPU(net, t)
+    return _eddl.toCPU(net, th)
 
 
 def CS_CPU(th=-1, mem="full_mem"):
@@ -992,6 +978,25 @@ def PointwiseConv2D(parent, filters, strides=[1, 1], use_bias=True, groups=1,
                                  dilation_rate, name)
 
 
+def DepthwiseConv2D(parent, kernel_size, strides=[1, 1], padding="same",
+                    use_bias=True, dilation_rate=[1, 1], name=""):
+    """\
+    2D Depthwise convolution layer.
+
+    :param parent: parent layer
+    :param kernel_size: height and width of the convolution window
+    :param strides: list of 2 integers, specifying the strides of the
+      convolution along the height and width
+    :param use_bias: whether the layer uses a bias vector
+    :param dilation_rate: list of 2 integers, specifying the dilation rate
+      to use for dilated convolution
+    :param name: name of the output layer
+    :return: Convolution layer
+    """
+    return _eddl.DepthwiseConv2D(parent, kernel_size, strides, padding,
+                                 use_bias, dilation_rate, name)
+
+
 def Dense(parent, ndim, use_bias=True, name=""):
     """\
     Regular densely-connected layer.
@@ -1132,9 +1137,81 @@ def Flatten(parent, name=""):
 
     :param parent: parent layer
     :param name: name of the output layer
-    :return: a Reshape layer
+    :return: Flatten layer
     """
     return _eddl.Flatten(parent, name)
+
+
+def Repeat(parent, repeats, axis, name=""):
+    """\
+    Repeat the elements of the output tensor along the specified dimension.
+
+    :param parent: parent layer
+    :param repeats: number of repetitions (integer or list of integers)
+    :param axis: axis along which to repeat values (batch is ignored)
+    :param name: name of the output layer
+    :return: Repeat layer
+    """
+    return _eddl.Repeat(parent, repeats, axis, name)
+
+
+def Tile(parent, repeats, name=""):
+    """\
+    Construct a tensor by repeating the elements of input.
+
+    The repeats argument specifies the number of repetitions in each dimension.
+
+    :param parent: parent layer
+    :param repeats: (list of integers) number of repetitions per dimension
+    :param name: name of the output layer
+    :return: Tile layer
+    """
+    return _eddl.Tile(parent, repeats, name)
+
+
+def Broadcast(parent1, parent2, name=""):
+    """\
+    Prepare the output of the smaller layer to be broadcasted into the bigger
+    one (parent1 or parent2).
+
+    Example::
+
+        f(P1(3), P2(4,2,3,5)) => P1 is x.  (P2 has no delta)
+        f(P1(4,2,3,5), P2(3)) => P2 is x.  (P1 has no delta)
+
+    :param parent1: parent layer
+    :param parent2: parent layer
+    :param name: name of the output layer
+    :return: Broadcast layer
+    """
+    return _eddl.Broadcast(parent1, parent2, name)
+
+
+def Bypass(parent, bypass_name="", name=""):
+    """\
+    Propagate the output of the parent.
+
+    No-op layer, used internally for ONNX.
+
+    :param parent: parent layer
+    :param bypass_name: name of the layer to bypass
+    :param name: name of the output layer
+    :return: Bypass layer
+    """
+    return _eddl.Bypass(parent, bypass_name, name)
+
+
+def Shape(parent, include_batch=True, name=""):
+    """\
+    Return the shape of the parent as the output.
+
+    :param parent: parent layer
+    :param include_batch: If ``True``, the batch dimension is included in the
+      output
+    :param name: name of the output layer
+    :return: Shape layer
+    """
+    return _eddl.Shape(parent, include_batch, name)
 
 
 def Squeeze(parent, axis=-1, name=""):
@@ -1837,16 +1914,30 @@ def Log10(l):
     return _eddl.Log10(l)
 
 
-def Clamp(l, min, max):
+def Clamp(parent, min, max, name=""):
     """\
-    Layer that clamps the values of another layer.
+    Clamp all elements in input into the range ``[min, max]``.
 
     :param l: parent layer
-    :param min: Minimum value
-    :param max: Maximum value
+    :param min: lower bound of the range to be clamped to
+    :param max: upper bound of the range to be clamped to
     :return: Clamp layer
     """
-    return _eddl.Clamp(l, min, max)
+    return _eddl.Clamp(parent, min, max, name)
+
+
+def Clip(parent, min, max, name=""):
+    """\
+    Clamp all elements in input into the range ``[min, max]``.
+
+    Alias for ``Clamp``.
+
+    :param l: parent layer
+    :param min: lower bound of the range to be clamped to
+    :param max: upper bound of the range to be clamped to
+    :return: Clamp layer
+    """
+    return _eddl.Clip(parent, min, max, name)
 
 
 def Mult(l1, l2):
@@ -2545,6 +2636,23 @@ def Conv2dActivation(parent, act, filters, kernel_size, strides=[1, 1],
     return _eddl.Conv2dActivation(parent, act, filters, kernel_size, strides,
                                   padding, use_bias, groups, dilation_rate,
                                   name)
+
+
+# == UTILS ==
+
+def get_topk_predictions(class_probs, class_names, k=5, decimals=2):
+    """
+    Get the top k class names along with their probabilities.
+
+    :param class_probs: tensor with class probabilities (shapes: ``(n)``,
+      ``(1, n)`` or ``(n, 1)``)
+      and rename the last layer as "top".
+    :param class_names: class names as a list of strings
+    :param k: number of classes to return
+    :param decimals: number of decimal places for probability values
+    :return: a string containing the top class names
+    """
+    return _eddl.get_topk_predictions(class_probs, class_names, k, decimals)
 
 
 # == GET MODELS ==

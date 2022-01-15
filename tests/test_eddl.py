@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 CRS4
+# Copyright (c) 2019-2022 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ def test_core_layers(eddl):
     in2d = eddl.Input([16])
     in3d = eddl.Input([1, 16])
     in4d = eddl.Input([3, 16, 16])
+    in4d_2 = eddl.Input([1, 16, 16])
     in5d = eddl.Input([3, 10, 16, 16])
     eddl.Activation(in2d, "relu")
     eddl.Activation(in2d, "relu", [0.02])
@@ -101,6 +102,12 @@ def test_core_layers(eddl):
     eddl.PointwiseConv2D(in4d, 16, [1, 1], False, 1)
     eddl.PointwiseConv2D(in4d, 16, [1, 1], False, 1, [1, 1])
     eddl.PointwiseConv2D(in4d, 16, [1, 1], False, 1, [1, 1], "foo")
+    eddl.DepthwiseConv2D(in4d_2, [1, 1])
+    eddl.DepthwiseConv2D(in4d_2, [1, 1], [1, 1])
+    eddl.DepthwiseConv2D(in4d_2, [1, 1], [1, 1], "same")
+    eddl.DepthwiseConv2D(in4d_2, [1, 1], [1, 1], "same", True)
+    eddl.DepthwiseConv2D(in4d_2, [1, 1], [1, 1], "same", True, [1, 1])
+    eddl.DepthwiseConv2D(in4d_2, [1, 1], [1, 1], "same", True, [1, 1], "foo")
     eddl.ConvT2D(in4d, 16, [1, 1])
     eddl.ConvT2D(in4d, 16, [1, 1], [1, 1])
     eddl.ConvT2D(in4d, 16, [1, 1], [1, 1], "valid")
@@ -144,6 +151,20 @@ def test_core_layers(eddl):
     eddl.Reshape(in2d, [1, 4, 4], "foo")
     eddl.Flatten(in2d)
     eddl.Flatten(in2d, "foo")
+    eddl.Repeat(in4d, 2, 0)
+    eddl.Repeat(in4d, 2, 0, "foo")
+    eddl.Repeat(in4d, [2, 3, 4], 0)
+    eddl.Repeat(in4d, [2, 3, 4], 0, "foo")
+    eddl.Tile(in4d, [2, 3, 4])
+    eddl.Tile(in4d, [2, 3, 4], "foo")
+    eddl.Broadcast(in2d, in4d)
+    eddl.Broadcast(in2d, in4d, "foo")
+    eddl.Bypass(in2d)
+    eddl.Bypass(in2d, "foo")
+    eddl.Bypass(in2d, "foo", "bar")
+    eddl.Shape(in2d)
+    eddl.Shape(in2d, False)
+    eddl.Shape(in2d, False, "foo")
     eddl.Squeeze(in2d)
     eddl.Squeeze(in2d, 0)
     eddl.Squeeze(in2d, 0, "foo")
@@ -333,6 +354,9 @@ def test_operator_layers(eddl):
     eddl.Log2(in_1)
     eddl.Log10(in_1)
     eddl.Clamp(in_1, 0.1, 0.9)
+    eddl.Clamp(in_1, 0.1, 0.9, "foo")
+    eddl.Clip(in_1, 0.1, 0.9)
+    eddl.Clip(in_1, 0.1, 0.9, "foo")
     eddl.Mult(in_1, in_2)
     eddl.Mult(in_1, 1.0)
     eddl.Mult(1.0, in_1)
@@ -574,6 +598,14 @@ def test_fused_layers(eddl):
                           [1, 1])
     eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none", True, 1,
                           [1, 1], "foo")
+
+
+@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
+def test_utils(eddl):
+    Tensor = CoreTensor if eddl is eddl_core else PyTensor
+    t = Tensor.randn([5]).abs()
+    t.div_(t.sum())
+    eddl.get_topk_predictions(t, list("abcde"), 4)
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])

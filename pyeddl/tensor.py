@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 CRS4
+# Copyright (c) 2019-2022 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -427,6 +427,10 @@ class Tensor(_core.Tensor):
         :return: Tensor
         """
         return _core.Tensor.clamp(self, min, max)
+
+    @staticmethod
+    def d_clamp(D, I, PD, min, max):
+        return _core.Tensor.d_clamp(D, I, PD, min, max)
 
     def clampmax_(self, max):
         """\
@@ -1080,6 +1084,77 @@ class Tensor(_core.Tensor):
         """
         return _core.Tensor.trunc(self)
 
+    # == Indexing, Slicing, Joining, Mutating
+
+    @staticmethod
+    def concat(A, axis=0, output=None):
+        """\
+        Join a sequence of tensors along the specified axis.
+
+        :param A: list of tensors with the same shape
+        :param axis: axis along which to join
+        :param output: output tensor
+        :return: Tensor
+        """
+        return _core.Tensor.concat(A, axis, output)
+
+    @staticmethod
+    def concat_back(A, t, axis):
+        return _core.Tensor.concat_back(A, t, axis)
+
+    @staticmethod
+    def stack(A, axis=0, output=None):
+        """\
+        Repeat tensor elements along the specified dimension.
+
+        :param A: input tensor
+        :param axis: axis along which to repeat the values
+        :param output: output tensor
+        :return: Tensor
+        """
+        return _core.Tensor.stack(A, axis, output)
+
+    @staticmethod
+    def repeat(A, repeats, axis=0, output=None, derivative=False):
+        """\
+        Repeat the elements of a tensor along the specified dimension.
+
+        :param A: input tensor
+        :param repeats: number of repetitions
+        :param axis: axis along which to repeat values
+        :param output: output tensor
+        :param derivative: apply derivative for ``output = repeat(A)``
+        :return: Tensor
+        """
+        return _core.Tensor.repeat(A, repeats, axis, output, derivative)
+
+    @staticmethod
+    def repeat_desc(A, repeats, axis=0, output=None):
+        return _core.Tensor.repeat(A, repeats, axis, output)
+
+    @staticmethod
+    def tile(A, repeats):
+        """\
+        Construct an array by repeating A for the given number of times.
+
+        :param A: input tensor
+        :param repeats: number of repetitions of A
+        :return: Tensor
+        """
+        return _core.Tensor.tile(A, repeats)
+
+    @staticmethod
+    def broadcast(A, B, output=None):
+        """\
+        Return a new tensor A to be broadcasted into B
+
+        :param A: input tensor
+        :param B: input tensor
+        :param output: output tensor
+        :return: Tensor
+        """
+        return _core.Tensor.broadcast(A, B, output)
+
     # == Transformations ==
 
     def scale(self, new_shape, mode=WrappingMode.Constant, cval=0.,
@@ -1146,3 +1221,7 @@ class Tensor(_core.Tensor):
     @staticmethod
     def onehot(in_, vocs):
         return _core.Tensor.onehot(in_, vocs)
+
+    @staticmethod
+    def max_accelerator_supported():
+        return _core.Tensor.max_accelerator_supported()

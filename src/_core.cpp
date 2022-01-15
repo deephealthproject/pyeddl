@@ -136,7 +136,7 @@ struct PyCallBack_ExpandDescriptor : public ExpandDescriptor {
 	}
 };
 
-// ReduceDescriptor2 file:eddl/descriptors/tensor_descriptors.h line:98
+// ReduceDescriptor2 file:eddl/descriptors/tensor_descriptors.h line:123
 struct PyCallBack_ReduceDescriptor2 : public ReduceDescriptor2 {
 	using ReduceDescriptor2::ReduceDescriptor2;
 
@@ -200,7 +200,7 @@ void bind_eddl_descriptors_tensor_descriptors(std::function< pybind11::module &(
 		cl.def("build_indices", (void (ExpandDescriptor::*)()) &ExpandDescriptor::build_indices, "C++: ExpandDescriptor::build_indices() --> void");
 		cl.def("assign", (class ExpandDescriptor & (ExpandDescriptor::*)(const class ExpandDescriptor &)) &ExpandDescriptor::operator=, "C++: ExpandDescriptor::operator=(const class ExpandDescriptor &) --> class ExpandDescriptor &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 	}
-	{ // ReduceDescriptor2 file:eddl/descriptors/tensor_descriptors.h line:98
+	{ // ReduceDescriptor2 file:eddl/descriptors/tensor_descriptors.h line:123
 		pybind11::class_<ReduceDescriptor2, std::shared_ptr<ReduceDescriptor2>, PyCallBack_ReduceDescriptor2, TensorDescriptor> cl(M(""), "ReduceDescriptor2", "");
 		cl.def( pybind11::init( [](PyCallBack_ReduceDescriptor2 const &o){ return new PyCallBack_ReduceDescriptor2(o); } ) );
 		cl.def( pybind11::init( [](ReduceDescriptor2 const &o){ return new ReduceDescriptor2(o); } ) );
@@ -391,6 +391,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def("clamp_", (void (Tensor::*)(float, float)) &Tensor::clamp_, "In-place clamp all elements in the input tensor to the range [min, max].\n   \n\n The lower bound of the clamping range.\n   \n\n The upper bound of the clamping range.\n\nC++: Tensor::clamp_(float, float) --> void", pybind11::arg("min"), pybind11::arg("max"));
 		cl.def("clamp", (class Tensor * (Tensor::*)(float, float)) &Tensor::clamp, "Clamp all elements in the input tensor to the range [min, max].\n   \n\n The lower bound of the clamping range.\n   \n\n The upper bound of the clamping range.\n   \n\n A new tensor with the clamped values in the input tensor.\n\nC++: Tensor::clamp(float, float) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("min"), pybind11::arg("max"));
 		cl.def_static("static_clamp", (void (*)(class Tensor *, class Tensor *, float, float)) &Tensor::clamp, "Clamp all elements in the input tensor to the range [min, max].\n   \n\n The tensor where the operation is applied.\n   \n\n The output tensor with the result.\n   \n\n The lower bound of the clamping range.\n   \n\n The upper bound of the clamping range.\n\nC++: Tensor::clamp(class Tensor *, class Tensor *, float, float) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("min"), pybind11::arg("max"));
+		cl.def_static("d_clamp", (void (*)(class Tensor *, class Tensor *, class Tensor *, float, float)) &Tensor::d_clamp, "C++: Tensor::d_clamp(class Tensor *, class Tensor *, class Tensor *, float, float) --> void", pybind11::arg("D"), pybind11::arg("I"), pybind11::arg("PD"), pybind11::arg("min"), pybind11::arg("max"));
 		cl.def("clampmax_", (void (Tensor::*)(float)) &Tensor::clampmax_, "In-place clamp all elements in the input tensor to the range [-infty, max].\n   \n\n The upper bound of the clamping range.\n\nC++: Tensor::clampmax_(float) --> void", pybind11::arg("max"));
 		cl.def("clampmax", (class Tensor * (Tensor::*)(float)) &Tensor::clampmax, "Clamp all elements in the input tensor to the range [-infty, max].\n   \n\n The upper bound of the clamping range.\n   \n\n A new tensor with the clamped values.\n\nC++: Tensor::clampmax(float) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("max"));
 		cl.def_static("static_clampmax", (void (*)(class Tensor *, class Tensor *, float)) &Tensor::clampmax, "Clamp all elements in the input tensor to the range [-infty, max].\n   \n\n The tensor where the operation is applied.\n   \n\n The output tensor.\n   \n\n The upper bound of the clamping range.\n\nC++: Tensor::clampmax(class Tensor *, class Tensor *, float) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("max"));
@@ -642,6 +643,15 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def_static("static_argsort", [](class Tensor * a0, class Tensor * a1) -> void { return Tensor::argsort(a0, a1); }, "", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("static_argsort", [](class Tensor * a0, class Tensor * a1, bool const & a2) -> void { return Tensor::argsort(a0, a1, a2); }, "", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("descending"));
 		cl.def_static("static_argsort", (void (*)(class Tensor *, class Tensor *, bool, bool)) &Tensor::argsort, "Sort the indices of a tensor according to the elements in each position.\n\n  \n   Input tensor.\n  \n\n   Output tensor.\n  \n\n   Wether to sort the tensor descending or not.\n  \n\n   Wether to use stable sorting or not. Stable sorting keeps the order of equal elements.\n  \n\n    A tensor with the sorted indices.\n\nC++: Tensor::argsort(class Tensor *, class Tensor *, bool, bool) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("descending"), pybind11::arg("stable"));
+		cl.def_static("repeat", [](class Tensor * a0, unsigned int const & a1) -> Tensor * { return Tensor::repeat(a0, a1); }, "", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("repeats"));
+		cl.def_static("repeat", [](class Tensor * a0, unsigned int const & a1, unsigned int const & a2) -> Tensor * { return Tensor::repeat(a0, a1, a2); }, "", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("repeats"), pybind11::arg("axis"));
+		cl.def_static("repeat", [](class Tensor * a0, unsigned int const & a1, unsigned int const & a2, class Tensor * a3) -> Tensor * { return Tensor::repeat(a0, a1, a2, a3); }, "", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("repeats"), pybind11::arg("axis"), pybind11::arg("output"));
+		cl.def_static("repeat", (class Tensor * (*)(class Tensor *, unsigned int, unsigned int, class Tensor *, bool)) &Tensor::repeat, "C++: Tensor::repeat(class Tensor *, unsigned int, unsigned int, class Tensor *, bool) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("repeats"), pybind11::arg("axis"), pybind11::arg("output"), pybind11::arg("derivative"));
+		cl.def_static("repeat_desc", [](class Tensor * a0, unsigned int const & a1) -> Tensor * { return Tensor::repeat_desc(a0, a1); }, "", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("repeats"));
+		cl.def_static("repeat_desc", [](class Tensor * a0, unsigned int const & a1, unsigned int const & a2) -> Tensor * { return Tensor::repeat_desc(a0, a1, a2); }, "", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("repeats"), pybind11::arg("axis"));
+		cl.def_static("repeat_desc", (class Tensor * (*)(class Tensor *, unsigned int, unsigned int, class Tensor *)) &Tensor::repeat_desc, "C++: Tensor::repeat_desc(class Tensor *, unsigned int, unsigned int, class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("repeats"), pybind11::arg("axis"), pybind11::arg("output"));
+		cl.def_static("broadcast", [](class Tensor * a0, class Tensor * a1) -> Tensor * { return Tensor::broadcast(a0, a1); }, "", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("B"));
+		cl.def_static("broadcast", (class Tensor * (*)(class Tensor *, class Tensor *, class Tensor *)) &Tensor::broadcast, "Returns a new tensor A to be broadcasted into B\n   \n\n Input tensor.\n   \n\n Input tensor.\n   \n\n Output tensor (optional).\n   \n\n A new tensor C based on A, but prepared to be broadcasted in to B\n\nC++: Tensor::broadcast(class Tensor *, class Tensor *, class Tensor *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("output"));
 		cl.def_static("select_back", (void (*)(class Tensor *, class Tensor *, class SelDescriptor *)) &Tensor::select_back, "C++: Tensor::select_back(class Tensor *, class Tensor *, class SelDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
 		cl.def_static("set_select_back", (void (*)(class Tensor *, class Tensor *, class SelDescriptor *)) &Tensor::set_select_back, "C++: Tensor::set_select_back(class Tensor *, class Tensor *, class SelDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
 		cl.def_static("gather", (void (*)(class Tensor *, class Tensor *, class GatherDescriptor *)) &Tensor::gather, "Gathers values along an axis specified by dim.\n\n  \n  the source tensor\n  \n\n  the axis along which to index\n  \n\n  the indices of elements to gather\n  \n\n     void\n\nC++: Tensor::gather(class Tensor *, class Tensor *, class GatherDescriptor *) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("sd"));
@@ -666,7 +676,7 @@ void bind_eddl_tensor_tensor(std::function< pybind11::module &(std::string const
 		cl.def("fill_rand_binary", (class Tensor * (Tensor::*)(float)) &Tensor::fill_rand_binary, "Fills a tensor in-place, with values randomly sampled from a binary distribution\n\n  \n Binarization threshold. 1 if rnd() >= t, 0 otherwise\n   \n\n A new tensor with the result\n\nC++: Tensor::fill_rand_binary(float) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("v"));
 		cl.def_static("copy", (void (*)(class Tensor *, class Tensor *)) &Tensor::copy, "Copy data from tensor A to B.\n\n  \n   Tensor\n  \n\n   Tensor\n  \n\n    void\n\nC++: Tensor::copy(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("static_fill", (void (*)(class Tensor *, int, int, class Tensor *, int, int, int)) &Tensor::fill, "Fill tensor with values from another tensor\n   \n\n The tensor to take values from.\n   \n\n Initial position of A.\n   \n\n Final position of A.\n   \n\n The tensor to fill\n   \n\n Initial position of B\n   \n\n Final position of B\n   \n\n step to go from one position to the following one\n\nC++: Tensor::fill(class Tensor *, int, int, class Tensor *, int, int, int) --> void", pybind11::arg("A"), pybind11::arg("aini"), pybind11::arg("aend"), pybind11::arg("B"), pybind11::arg("bini"), pybind11::arg("bend"), pybind11::arg("inc"));
-		cl.def_static("tile", (void (*)(class Tensor *, class Tensor *)) &Tensor::tile, "C++: Tensor::tile(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
+		cl.def_static("tile_deprecated", (void (*)(class Tensor *, class Tensor *)) &Tensor::tile_deprecated, "C++: Tensor::tile_deprecated(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("static_add", (void (*)(float, class Tensor *, float, class Tensor *, class Tensor *, int)) &Tensor::add, "Weighted element-wise sum of two tensors.\n   \n\n Weight of tensor ``A``.\n   \n\n Input tensor.\n   \n\n Weight of tensor ``B``.\n   \n\n Input tensor.\n   \n\n Output tensor. C = sc*A + scB*B\n   \n\n if ``incC`` is 1, C += sc*A + scB*B\n\nC++: Tensor::add(float, class Tensor *, float, class Tensor *, class Tensor *, int) --> void", pybind11::arg("scA"), pybind11::arg("A"), pybind11::arg("scB"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("incC"));
 		cl.def_static("inc", (void (*)(class Tensor *, class Tensor *)) &Tensor::inc, "Increment element-wise one tensors with the values of another.\n   \n\n Input tensor.\n   \n\n Output tensor. The incremented tensor with values from ``A``.\n\nC++: Tensor::inc(class Tensor *, class Tensor *) --> void", pybind11::arg("A"), pybind11::arg("B"));
 		cl.def_static("el_div", (void (*)(class Tensor *, class Tensor *, class Tensor *, int)) &Tensor::el_div, "Eelement-wise division of two tensors.\n   \n\n Input tensor.\n   \n\n Input tensor.\n   \n\n Output tensor. C = A./B\n   \n\n if ``incC`` is 1, C += A./B\n\nC++: Tensor::el_div(class Tensor *, class Tensor *, class Tensor *, int) --> void", pybind11::arg("A"), pybind11::arg("B"), pybind11::arg("C"), pybind11::arg("incC"));
@@ -1043,32 +1053,6 @@ struct PyCallBack_Layer : public Layer {
 		}
 		return Layer::backward();
 	}
-	void update_weights(class Tensor * a0, class Tensor * a1) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const Layer *>(this), "update_weights");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return Layer::update_weights(a0, a1);
-	}
-	void accumulate_accumulated_gradients(class Tensor * a0, class Tensor * a1) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const Layer *>(this), "accumulate_accumulated_gradients");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0, a1);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return Layer::accumulate_accumulated_gradients(a0, a1);
-	}
 	void reset_accumulated_gradients() override { 
 		pybind11::gil_scoped_acquire gil;
 		pybind11::function overload = pybind11::get_overload(static_cast<const Layer *>(this), "reset_accumulated_gradients");
@@ -1245,6 +1229,51 @@ struct PyCallBack_Adam : public Adam {
 	}
 };
 
+// AdaDelta file:eddl/optimizers/optim.h line:105
+struct PyCallBack_AdaDelta : public AdaDelta {
+	using AdaDelta::AdaDelta;
+
+	void applygrads(int a0) override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const AdaDelta *>(this), "applygrads");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
+			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
+				static pybind11::detail::overload_caster_t<void> caster;
+				return pybind11::detail::cast_ref<void>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<void>(std::move(o));
+		}
+		return Optimizer::applygrads(a0);
+	}
+	class Optimizer * clone() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const AdaDelta *>(this), "clone");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::clone();
+	}
+	class Optimizer * share() override { 
+		pybind11::gil_scoped_acquire gil;
+		pybind11::function overload = pybind11::get_overload(static_cast<const AdaDelta *>(this), "share");
+		if (overload) {
+			auto o = overload.operator()<pybind11::return_value_policy::reference>();
+			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
+				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
+				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
+			}
+			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
+		}
+		return Optimizer::share();
+	}
+};
+
 void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
 	{ // Loss file:eddl/losses/loss.h line:22
@@ -1337,6 +1366,8 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("clamp", (void (Layer::*)(float, float)) &Layer::clamp, "C++: Layer::clamp(float, float) --> void", pybind11::arg("min"), pybind11::arg("max"));
 		cl.def("set_detach", (void (Layer::*)()) &Layer::set_detach, "C++: Layer::set_detach() --> void");
 		cl.def("set_mem_level", (void (Layer::*)(int)) &Layer::set_mem_level, "C++: Layer::set_mem_level(int) --> void", pybind11::arg("mem"));
+		cl.def("decrease_and_get_reference_counter", (int (Layer::*)()) &Layer::decrease_and_get_reference_counter, "C++: Layer::decrease_and_get_reference_counter() --> int");
+		cl.def("increase_reference_counter", (void (Layer::*)()) &Layer::increase_reference_counter, "C++: Layer::increase_reference_counter() --> void");
 		cl.def("mem_delta_parent", (void (Layer::*)()) &Layer::mem_delta_parent, "C++: Layer::mem_delta_parent() --> void");
 		cl.def("mem_delta", (void (Layer::*)()) &Layer::mem_delta, "C++: Layer::mem_delta() --> void");
 		cl.def("free_delta", (void (Layer::*)()) &Layer::free_delta, "C++: Layer::free_delta() --> void");
@@ -1350,13 +1381,9 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 		cl.def("addparent", (void (Layer::*)(class Layer *)) &Layer::addparent, "C++: Layer::addparent(class Layer *) --> void", pybind11::arg("l"));
 		cl.def("forward", (void (Layer::*)()) &Layer::forward, "C++: Layer::forward() --> void");
 		cl.def("backward", (void (Layer::*)()) &Layer::backward, "C++: Layer::backward() --> void");
-		cl.def("update_weights", (void (Layer::*)(class Tensor *, class Tensor *)) &Layer::update_weights, "C++: Layer::update_weights(class Tensor *, class Tensor *) --> void", pybind11::arg("w"), pybind11::arg("bias"));
-		cl.def("accumulate_accumulated_gradients", (void (Layer::*)(class Tensor *, class Tensor *)) &Layer::accumulate_accumulated_gradients, "C++: Layer::accumulate_accumulated_gradients(class Tensor *, class Tensor *) --> void", pybind11::arg("gw"), pybind11::arg("gbias"));
 		cl.def("reset_accumulated_gradients", (void (Layer::*)()) &Layer::reset_accumulated_gradients, "C++: Layer::reset_accumulated_gradients() --> void");
 		cl.def("apply_accumulated_gradients", (void (Layer::*)()) &Layer::apply_accumulated_gradients, "C++: Layer::apply_accumulated_gradients() --> void");
 		cl.def("enable_distributed", (void (Layer::*)()) &Layer::enable_distributed, "C++: Layer::enable_distributed() --> void");
-		cl.def("decrease_and_get_reference_counter", (int (Layer::*)()) &Layer::decrease_and_get_reference_counter, "C++: Layer::decrease_and_get_reference_counter() --> int");
-		cl.def("increase_reference_counter", (void (Layer::*)()) &Layer::increase_reference_counter, "C++: Layer::increase_reference_counter() --> void");
 		cl.def("assign", (class Layer & (Layer::*)(const class Layer &)) &Layer::operator=, "C++: Layer::operator=(const class Layer &) --> class Layer &", pybind11::return_value_policy::automatic, pybind11::arg(""));
 
 		layer_addons(cl);
@@ -1431,6 +1458,23 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 
 		adam_addons(cl);
 	}
+	{ // AdaDelta file:eddl/optimizers/optim.h line:105
+		pybind11::class_<AdaDelta, std::unique_ptr<AdaDelta, pybind11::nodelete>, PyCallBack_AdaDelta, Optimizer> cl(M(""), "AdaDelta", "");
+		cl.def( pybind11::init( [](){ return new AdaDelta(); }, [](){ return new PyCallBack_AdaDelta(); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0){ return new AdaDelta(a0); }, [](float const & a0){ return new PyCallBack_AdaDelta(a0); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new AdaDelta(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_AdaDelta(a0, a1); } ), "doc");
+		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new AdaDelta(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_AdaDelta(a0, a1, a2); } ), "doc");
+		cl.def( pybind11::init<float, float, float, float>(), pybind11::arg("lr"), pybind11::arg("rho"), pybind11::arg("epsilon"), pybind11::arg("weight_decay") );
+
+		cl.def( pybind11::init( [](PyCallBack_AdaDelta const &o){ return new PyCallBack_AdaDelta(o); } ) );
+		cl.def( pybind11::init( [](AdaDelta const &o){ return new AdaDelta(o); } ) );
+		cl.def_readwrite("lr", &AdaDelta::lr);
+		cl.def_readwrite("rho", &AdaDelta::rho);
+		cl.def_readwrite("epsilon", &AdaDelta::epsilon);
+		cl.def_readwrite("weight_decay", &AdaDelta::weight_decay);
+		cl.def_readwrite("mT", &AdaDelta::mT);
+		cl.def("assign", (class AdaDelta & (AdaDelta::*)(const class AdaDelta &)) &AdaDelta::operator=, "C++: AdaDelta::operator=(const class AdaDelta &) --> class AdaDelta &", pybind11::return_value_policy::automatic, pybind11::arg(""));
+	}
 }
 
 
@@ -1467,51 +1511,6 @@ void bind_eddl_losses_loss(std::function< pybind11::module &(std::string const &
 	PYBIND11_DECLARE_HOLDER_TYPE(T, T*);
 	PYBIND11_MAKE_OPAQUE(std::shared_ptr<void>);
 #endif
-
-// AdaDelta file:eddl/optimizers/optim.h line:105
-struct PyCallBack_AdaDelta : public AdaDelta {
-	using AdaDelta::AdaDelta;
-
-	void applygrads(int a0) override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const AdaDelta *>(this), "applygrads");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>(a0);
-			if (pybind11::detail::cast_is_temporary_value_reference<void>::value) {
-				static pybind11::detail::overload_caster_t<void> caster;
-				return pybind11::detail::cast_ref<void>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<void>(std::move(o));
-		}
-		return Optimizer::applygrads(a0);
-	}
-	class Optimizer * clone() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const AdaDelta *>(this), "clone");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
-				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
-				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
-		}
-		return Optimizer::clone();
-	}
-	class Optimizer * share() override { 
-		pybind11::gil_scoped_acquire gil;
-		pybind11::function overload = pybind11::get_overload(static_cast<const AdaDelta *>(this), "share");
-		if (overload) {
-			auto o = overload.operator()<pybind11::return_value_policy::reference>();
-			if (pybind11::detail::cast_is_temporary_value_reference<class Optimizer *>::value) {
-				static pybind11::detail::overload_caster_t<class Optimizer *> caster;
-				return pybind11::detail::cast_ref<class Optimizer *>(std::move(o), caster);
-			}
-			else return pybind11::detail::cast_safe<class Optimizer *>(std::move(o));
-		}
-		return Optimizer::share();
-	}
-};
 
 // Adagrad file:eddl/optimizers/optim.h line:127
 struct PyCallBack_Adagrad : public Adagrad {
@@ -1695,23 +1694,6 @@ struct PyCallBack_RMSProp : public RMSProp {
 
 void bind_eddl_optimizers_optim(std::function< pybind11::module &(std::string const &namespace_) > &M)
 {
-	{ // AdaDelta file:eddl/optimizers/optim.h line:105
-		pybind11::class_<AdaDelta, std::unique_ptr<AdaDelta, pybind11::nodelete>, PyCallBack_AdaDelta, Optimizer> cl(M(""), "AdaDelta", "");
-		cl.def( pybind11::init( [](){ return new AdaDelta(); }, [](){ return new PyCallBack_AdaDelta(); } ), "doc");
-		cl.def( pybind11::init( [](float const & a0){ return new AdaDelta(a0); }, [](float const & a0){ return new PyCallBack_AdaDelta(a0); } ), "doc");
-		cl.def( pybind11::init( [](float const & a0, float const & a1){ return new AdaDelta(a0, a1); }, [](float const & a0, float const & a1){ return new PyCallBack_AdaDelta(a0, a1); } ), "doc");
-		cl.def( pybind11::init( [](float const & a0, float const & a1, float const & a2){ return new AdaDelta(a0, a1, a2); }, [](float const & a0, float const & a1, float const & a2){ return new PyCallBack_AdaDelta(a0, a1, a2); } ), "doc");
-		cl.def( pybind11::init<float, float, float, float>(), pybind11::arg("lr"), pybind11::arg("rho"), pybind11::arg("epsilon"), pybind11::arg("weight_decay") );
-
-		cl.def( pybind11::init( [](PyCallBack_AdaDelta const &o){ return new PyCallBack_AdaDelta(o); } ) );
-		cl.def( pybind11::init( [](AdaDelta const &o){ return new AdaDelta(o); } ) );
-		cl.def_readwrite("lr", &AdaDelta::lr);
-		cl.def_readwrite("rho", &AdaDelta::rho);
-		cl.def_readwrite("epsilon", &AdaDelta::epsilon);
-		cl.def_readwrite("weight_decay", &AdaDelta::weight_decay);
-		cl.def_readwrite("mT", &AdaDelta::mT);
-		cl.def("assign", (class AdaDelta & (AdaDelta::*)(const class AdaDelta &)) &AdaDelta::operator=, "C++: AdaDelta::operator=(const class AdaDelta &) --> class AdaDelta &", pybind11::return_value_policy::automatic, pybind11::arg(""));
-	}
 	{ // Adagrad file:eddl/optimizers/optim.h line:127
 		pybind11::class_<Adagrad, std::unique_ptr<Adagrad, pybind11::nodelete>, PyCallBack_Adagrad, Optimizer> cl(M(""), "Adagrad", "");
 		cl.def( pybind11::init( [](){ return new Adagrad(); }, [](){ return new PyCallBack_Adagrad(); } ), "doc");
@@ -1962,123 +1944,111 @@ void bind_eddl_apis_eddl(std::function< pybind11::module &(std::string const &na
 {
 
 	eddl_addons(M("eddl"));
-	// eddl::build(class Net *, class Optimizer *, class CompServ *, bool) file:eddl/apis/eddl.h line:92
+	// eddl::build(class Net *, class Optimizer *, class CompServ *, bool) file:eddl/apis/eddl.h line:101
 	M("eddl").def("build", [](class Net * a0) -> void { return eddl::build(a0); }, "", pybind11::arg("net"));
 	M("eddl").def("build", [](class Net * a0, class Optimizer * a1) -> void { return eddl::build(a0, a1); }, "", pybind11::arg("net"), pybind11::arg("o"));
 	M("eddl").def("build", [](class Net * a0, class Optimizer * a1, class CompServ * a2) -> void { return eddl::build(a0, a1, a2); }, "", pybind11::arg("net"), pybind11::arg("o"), pybind11::arg("cs"));
-	M("eddl").def("build", (void (*)(class Net *, class Optimizer *, class CompServ *, bool)) &eddl::build, "C++: eddl::build(class Net *, class Optimizer *, class CompServ *, bool) --> void", pybind11::arg("net"), pybind11::arg("o"), pybind11::arg("cs"), pybind11::arg("init_weigths"));
+	M("eddl").def("build", (void (*)(class Net *, class Optimizer *, class CompServ *, bool)) &eddl::build, "Configures the model for training.\n\n  \n  Model\n  \n\n  Optimizer\n  \n\n  Computing service\n  \n\n  'True' if the weights can be initialized to random values, else False (e.g.: Used when loading a pretrained model)\n  \n\n     (void)\n\nC++: eddl::build(class Net *, class Optimizer *, class CompServ *, bool) --> void", pybind11::arg("net"), pybind11::arg("o"), pybind11::arg("cs"), pybind11::arg("init_weigths"));
 
-	// eddl::toGPU(class Net *) file:eddl/apis/eddl.h line:122
-	M("eddl").def("toGPU", (void (*)(class Net *)) &eddl::toGPU, "C++: eddl::toGPU(class Net *) --> void", pybind11::arg("net"));
-
-	// eddl::toCPU(class Net *, int) file:eddl/apis/eddl.h line:132
+	// eddl::toCPU(class Net *, int) file:eddl/apis/eddl.h line:126
 	M("eddl").def("toCPU", [](class Net * a0) -> void { return eddl::toCPU(a0); }, "", pybind11::arg("net"));
-	M("eddl").def("toCPU", (void (*)(class Net *, int)) &eddl::toCPU, "Assign model operations to the CPU.\n\n  \n  Model\n  \n\n  CPU Threads\n  \n\n     (void)\n\nC++: eddl::toCPU(class Net *, int) --> void", pybind11::arg("net"), pybind11::arg("t"));
+	M("eddl").def("toCPU", (void (*)(class Net *, int)) &eddl::toCPU, "Assign model operations to the CPU.\n  \n\n  Model\n  \n\n  CPU Threads. (if '-1', use all threads)\n  \n\n     (void)\n\nC++: eddl::toCPU(class Net *, int) --> void", pybind11::arg("net"), pybind11::arg("th"));
 
-	// eddl::CS_CPU() file:eddl/apis/eddl.h line:141
-	M("eddl").def("CS_CPU", (class CompServ * (*)()) &eddl::CS_CPU, "Executes the code in the CPU.\n\n  \n  Indicates the number of threads to use (-1 = all available threads)\n  \n\n  Indicates the memory consumption of the model. One of \"full_mem\" (default), \"mid_mem\" or \"low_mem\".\n  \n\n     The computer service itself.\n\nC++: eddl::CS_CPU() --> class CompServ *", pybind11::return_value_policy::automatic);
-
-	// eddl::CS_CPU(int) file:eddl/apis/eddl.h line:150
-	M("eddl").def("CS_CPU", (class CompServ * (*)(int)) &eddl::CS_CPU, "Executes the code in the CPU.\n\n  \n  Indicates the number of threads to use (-1 = all available threads)\n  \n\n     The computer service itself.\n\nC++: eddl::CS_CPU(int) --> class CompServ *", pybind11::return_value_policy::automatic, pybind11::arg("th"));
-
-	// eddl::summary(class Net *) file:eddl/apis/eddl.h line:275
+	// eddl::summary(class Net *) file:eddl/apis/eddl.h line:203
 	M("eddl").def("summary", (void (*)(class Net *)) &eddl::summary, "Prints a summary representation of your model.\n\n  \n  Model to print\n  \n\n     (void) Prints the model\n\nC++: eddl::summary(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::set_mode(class Net *, int) file:eddl/apis/eddl.h line:530
+	// eddl::set_mode(class Net *, int) file:eddl/apis/eddl.h line:463
 	M("eddl").def("set_mode", (void (*)(class Net *, int)) &eddl::set_mode, "Set model mode.\n\n  \n  Model\n  \n\n  Train 1, Test 0\n  \n\n     (void)\n\nC++: eddl::set_mode(class Net *, int) --> void", pybind11::arg("net"), pybind11::arg("mode"));
 
-	// eddl::reset_loss(class Net *) file:eddl/apis/eddl.h line:537
+	// eddl::reset_loss(class Net *) file:eddl/apis/eddl.h line:470
 	M("eddl").def("reset_loss", (void (*)(class Net *)) &eddl::reset_loss, "Resets model loss.\n\n  \n  Model\n  \n\n     (void)\n\nC++: eddl::reset_loss(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::zeroGrads(class Net *) file:eddl/apis/eddl.h line:575
+	// eddl::zeroGrads(class Net *) file:eddl/apis/eddl.h line:508
 	M("eddl").def("zeroGrads", (void (*)(class Net *)) &eddl::zeroGrads, "Set model gradients to zero.\n\n  \n  Model\n  \n\n     (void)\n\nC++: eddl::zeroGrads(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::backward(class Net *) file:eddl/apis/eddl.h line:590
+	// eddl::backward(class Net *) file:eddl/apis/eddl.h line:523
 	M("eddl").def("backward", (void (*)(class Net *)) &eddl::backward, "Computes the gradient of the model through the backward graph.\n\n  \n  Model\n  \n\n     (void)\n\nC++: eddl::backward(class Net *) --> void", pybind11::arg("net"));
 
-	// eddl::backward(class NetLoss *) file:eddl/apis/eddl.h line:597
+	// eddl::backward(class NetLoss *) file:eddl/apis/eddl.h line:530
 	M("eddl").def("backward", (void (*)(class NetLoss *)) &eddl::backward, "Computes the gradient of the model associated to the given loss object through the backward graph.\n\n  \n  Loss\n  \n\n     (void)\n\nC++: eddl::backward(class NetLoss *) --> void", pybind11::arg("l"));
 
-	// eddl::optimize(class NetLoss *) file:eddl/apis/eddl.h line:598
+	// eddl::optimize(class NetLoss *) file:eddl/apis/eddl.h line:531
 	M("eddl").def("optimize", (void (*)(class NetLoss *)) &eddl::optimize, "C++: eddl::optimize(class NetLoss *) --> void", pybind11::arg("l"));
 
-	// eddl::update(class Net *) file:eddl/apis/eddl.h line:606
+	// eddl::update(class Net *) file:eddl/apis/eddl.h line:539
 	M("eddl").def("update", (void (*)(class Net *)) &eddl::update, "Updates the weights of the model\n\n  \n  Model\n  \n\n     (void)\n\nC++: eddl::update(class Net *) --> void", pybind11::arg("m"));
 
-	// eddl::print_loss(class Net *, int) file:eddl/apis/eddl.h line:614
+	// eddl::print_loss(class Net *, int) file:eddl/apis/eddl.h line:547
 	M("eddl").def("print_loss", (void (*)(class Net *, int)) &eddl::print_loss, "Prints model loss at some batch.\n\n  \n  Model\n  \n\n  Batch number\n  \n\n     (void)\n\nC++: eddl::print_loss(class Net *, int) --> void", pybind11::arg("m"), pybind11::arg("batch"));
 
-	// eddl::clamp(class Net *, float, float) file:eddl/apis/eddl.h line:641
+	// eddl::clamp(class Net *, float, float) file:eddl/apis/eddl.h line:574
 	M("eddl").def("clamp", (void (*)(class Net *, float, float)) &eddl::clamp, "Model parameters values clipping.\n\n  \n  Model\n  \n\n  Minimum value\n  \n\n   Maximum value\n  \n\n     (void) Performs model clamp between min and max\n\nC++: eddl::clamp(class Net *, float, float) --> void", pybind11::arg("m"), pybind11::arg("min"), pybind11::arg("max"));
 
-	// eddl::compute_loss(class NetLoss *) file:eddl/apis/eddl.h line:650
+	// eddl::compute_loss(class NetLoss *) file:eddl/apis/eddl.h line:583
 	M("eddl").def("compute_loss", (float (*)(class NetLoss *)) &eddl::compute_loss, "Computes loss of the associated model\n\n  \n  Loss\n  \n\n (float) Computed loss\n\nC++: eddl::compute_loss(class NetLoss *) --> float", pybind11::arg("L"));
 
-	// eddl::compute_metric(class NetLoss *) file:eddl/apis/eddl.h line:657
+	// eddl::compute_metric(class NetLoss *) file:eddl/apis/eddl.h line:590
 	M("eddl").def("compute_metric", (float (*)(class NetLoss *)) &eddl::compute_metric, "Computes loss of the associated model (same as ``compute_loss``)\n\n  \n  Loss\n  \n\n (float) Computed loss\n\nC++: eddl::compute_metric(class NetLoss *) --> float", pybind11::arg("L"));
 
-	// eddl::show_profile() file:eddl/apis/eddl.h line:729
+	// eddl::show_profile() file:eddl/apis/eddl.h line:662
 	M("eddl").def("show_profile", (void (*)()) &eddl::show_profile, "Shows profile information.\n\nC++: eddl::show_profile() --> void");
 
-	// eddl::Clamp(class Layer *, float, float) file:eddl/apis/eddl.h line:1729
-	M("eddl").def("Clamp", (class Layer * (*)(class Layer *, float, float)) &eddl::Clamp, "Layer that clamps the values of another layer\n\n  \n  Parent layer\n  \n\n  Minimum value\n  \n\n  Maximum value\n  \n\n     Parent layer `l` after computing its logarithm to base 10\n\nC++: eddl::Clamp(class Layer *, float, float) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("l"), pybind11::arg("min"), pybind11::arg("max"));
-
-	// eddl::GetStates(class Layer *) file:eddl/apis/eddl.h line:2150
+	// eddl::GetStates(class Layer *) file:eddl/apis/eddl.h line:2149
 	M("eddl").def("GetStates", (class Layer * (*)(class Layer *)) &eddl::GetStates, "C++: eddl::GetStates(class Layer *) --> class Layer *", pybind11::return_value_policy::automatic, pybind11::arg("parent"));
 
-	// eddl::setDecoder(class Layer *) file:eddl/apis/eddl.h line:2152
+	// eddl::setDecoder(class Layer *) file:eddl/apis/eddl.h line:2151
 	M("eddl").def("setDecoder", (void (*)(class Layer *)) &eddl::setDecoder, "C++: eddl::setDecoder(class Layer *) --> void", pybind11::arg("l"));
 
-	// eddl::getOutput(class Layer *) file:eddl/apis/eddl.h line:2158
+	// eddl::getOutput(class Layer *) file:eddl/apis/eddl.h line:2157
 	M("eddl").def("getOutput", (class Tensor * (*)(class Layer *)) &eddl::getOutput, "C++: eddl::getOutput(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"));
 
-	// eddl::getInput(class Layer *) file:eddl/apis/eddl.h line:2159
+	// eddl::getInput(class Layer *) file:eddl/apis/eddl.h line:2158
 	M("eddl").def("getInput", (class Tensor * (*)(class Layer *)) &eddl::getInput, "C++: eddl::getInput(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"));
 
-	// eddl::getDelta(class Layer *) file:eddl/apis/eddl.h line:2160
+	// eddl::getDelta(class Layer *) file:eddl/apis/eddl.h line:2159
 	M("eddl").def("getDelta", (class Tensor * (*)(class Layer *)) &eddl::getDelta, "C++: eddl::getDelta(class Layer *) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"));
 
-	// eddl::getParam(class Layer *, int) file:eddl/apis/eddl.h line:2161
+	// eddl::getParam(class Layer *, int) file:eddl/apis/eddl.h line:2160
 	M("eddl").def("getParam", (class Tensor * (*)(class Layer *, int)) &eddl::getParam, "C++: eddl::getParam(class Layer *, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("p"));
 
-	// eddl::getGradient(class Layer *, int) file:eddl/apis/eddl.h line:2162
+	// eddl::getGradient(class Layer *, int) file:eddl/apis/eddl.h line:2161
 	M("eddl").def("getGradient", (class Tensor * (*)(class Layer *, int)) &eddl::getGradient, "C++: eddl::getGradient(class Layer *, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("p"));
 
-	// eddl::getState(class Layer *, int) file:eddl/apis/eddl.h line:2163
+	// eddl::getState(class Layer *, int) file:eddl/apis/eddl.h line:2162
 	M("eddl").def("getState", (class Tensor * (*)(class Layer *, int)) &eddl::getState, "C++: eddl::getState(class Layer *, int) --> class Tensor *", pybind11::return_value_policy::automatic, pybind11::arg("l1"), pybind11::arg("p"));
 
-	// eddl::copyOutput(class Layer *, class Layer *) file:eddl/apis/eddl.h line:2167
+	// eddl::copyOutput(class Layer *, class Layer *) file:eddl/apis/eddl.h line:2166
 	M("eddl").def("copyOutput", (void (*)(class Layer *, class Layer *)) &eddl::copyOutput, "C++: eddl::copyOutput(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::copyDelta(class Layer *, class Layer *) file:eddl/apis/eddl.h line:2168
+	// eddl::copyDelta(class Layer *, class Layer *) file:eddl/apis/eddl.h line:2167
 	M("eddl").def("copyDelta", (void (*)(class Layer *, class Layer *)) &eddl::copyDelta, "C++: eddl::copyDelta(class Layer *, class Layer *) --> void", pybind11::arg("l1"), pybind11::arg("l2"));
 
-	// eddl::copyParam(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:2169
+	// eddl::copyParam(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:2168
 	M("eddl").def("copyParam", [](class Layer * a0, class Layer * a1) -> void { return eddl::copyParam(a0, a1); }, "", pybind11::arg("l1"), pybind11::arg("l2"));
 	M("eddl").def("copyParam", (void (*)(class Layer *, class Layer *, int)) &eddl::copyParam, "C++: eddl::copyParam(class Layer *, class Layer *, int) --> void", pybind11::arg("l1"), pybind11::arg("l2"), pybind11::arg("p"));
 
-	// eddl::copyGradient(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:2170
+	// eddl::copyGradient(class Layer *, class Layer *, int) file:eddl/apis/eddl.h line:2169
 	M("eddl").def("copyGradient", (void (*)(class Layer *, class Layer *, int)) &eddl::copyGradient, "C++: eddl::copyGradient(class Layer *, class Layer *, int) --> void", pybind11::arg("l1"), pybind11::arg("l2"), pybind11::arg("p"));
 
-	// eddl::distributeParams(class Layer *) file:eddl/apis/eddl.h line:2171
+	// eddl::distributeParams(class Layer *) file:eddl/apis/eddl.h line:2170
 	M("eddl").def("distributeParams", (void (*)(class Layer *)) &eddl::distributeParams, "C++: eddl::distributeParams(class Layer *) --> void", pybind11::arg("l"));
 
-	// eddl::download_mnist() file:eddl/apis/eddl.h line:2435
+	// eddl::download_mnist() file:eddl/apis/eddl.h line:2459
 	M("eddl").def("download_mnist", (void (*)()) &eddl::download_mnist, "Downloads MNIST Dataset.\n\n  \n   http://yann.lecun.com/exdb/mnist/\n\n  \n     (void) The binary files of MNIST\n\nC++: eddl::download_mnist() --> void");
 
-	// eddl::download_cifar10() file:eddl/apis/eddl.h line:2443
+	// eddl::download_cifar10() file:eddl/apis/eddl.h line:2467
 	M("eddl").def("download_cifar10", (void (*)()) &eddl::download_cifar10, "Downloads CIFAR-10 Dataset.\n\n  \n   https://www.cs.toronto.edu/~kriz/cifar.html\n\n  \n     (void) The binary files of CIFAR-10\n\nC++: eddl::download_cifar10() --> void");
 
-	// eddl::download_drive() file:eddl/apis/eddl.h line:2451
+	// eddl::download_drive() file:eddl/apis/eddl.h line:2475
 	M("eddl").def("download_drive", (void (*)()) &eddl::download_drive, "Downloads DRIVE Dataset.\n\n  \n   https://drive.grand-challenge.org/\n\n  \n     (void) The numpy files of DRIVE\n\nC++: eddl::download_drive() --> void");
 
-	// eddl::download_imdb_2000() file:eddl/apis/eddl.h line:2460
+	// eddl::download_imdb_2000() file:eddl/apis/eddl.h line:2484
 	M("eddl").def("download_imdb_2000", (void (*)()) &eddl::download_imdb_2000, "Downloads IMDB Dataset. 2000 most frequent words\n\n  \n   https://ai.stanford.edu/~amaas/data/sentiment/\n\n  \n     (void) The binary files of IMDB\n\nC++: eddl::download_imdb_2000() --> void");
 
-	// eddl::download_eutrans() file:eddl/apis/eddl.h line:2470
+	// eddl::download_eutrans() file:eddl/apis/eddl.h line:2494
 	M("eddl").def("download_eutrans", (void (*)()) &eddl::download_eutrans, "Downloads EuTrans Dataset.\n\n  \n\n\n\n  \n     (void) The binary files of EuTrans\n\nC++: eddl::download_eutrans() --> void");
 
-	// eddl::download_flickr() file:eddl/apis/eddl.h line:2479
+	// eddl::download_flickr() file:eddl/apis/eddl.h line:2503
 	M("eddl").def("download_flickr", (void (*)()) &eddl::download_flickr, "Downloads Flickr Dataset (small partition)\n\n  \n\n\n\n  \n     (void) The binary files of Flickr\n\nC++: eddl::download_flickr() --> void");
 
 }

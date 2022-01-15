@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 CRS4
+# Copyright (c) 2019-2022 CRS4
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -1008,6 +1008,56 @@ def test_trunc(Tensor):
     assert np.allclose(np.trunc(a), b)
 
 
+# --- Indexing, Slicing, Joining, Mutating ---
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_concat(Tensor):
+    a = np.arange(4).reshape(2, 2).astype(np.float32)
+    b = np.arange(0, 40, 10).reshape(2, 2).astype(np.float32)
+    t, u = Tensor(a), Tensor(b)
+    for axis in 0, 1:
+        v = Tensor.concat([t, u], axis)
+        c = np.array(v, copy=False)
+        assert np.allclose(np.concatenate([a, b], axis), c)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_stack(Tensor):
+    a = np.arange(4).reshape(2, 2).astype(np.float32)
+    b = np.arange(0, 40, 10).reshape(2, 2).astype(np.float32)
+    t, u = Tensor(a), Tensor(b)
+    for axis in 0, 1:
+        v = Tensor.stack([t, u], axis)
+        c = np.array(v, copy=False)
+        assert np.allclose(np.stack([a, b], axis), c)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_repeat(Tensor):
+    a = np.arange(12).reshape(3, 4).astype(np.float32)
+    t = Tensor(a)
+    for axis in 0, 1:
+        u = Tensor.repeat(t, 2, axis)
+        b = np.array(u, copy=False)
+        assert np.allclose(np.repeat(a, 2, axis), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_tile(Tensor):
+    a = np.arange(12).reshape(3, 4).astype(np.float32)
+    t = Tensor(a)
+    u = Tensor.tile(t, [2, 2])
+    b = np.array(u, copy=False)
+    assert np.allclose(np.tile(a, [2, 2]), b)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_broadcast(Tensor):
+    t = Tensor.arange(0, 3, 1)
+    u = Tensor([3, 4])
+    assert Tensor.broadcast(t, u).shape == [3, 4]
+
+
 # --- Transformations ---
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
@@ -1080,3 +1130,9 @@ def test_onehot(Tensor):
          [1., 0., 0., 0., 0.]]   # 0
     ], dtype=np.float32)
     assert np.allclose(b, exp)
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_max_accelerator_supported(Tensor):
+    mas = Tensor.max_accelerator_supported()
+    assert mas in {'cpu', 'cuda', 'cudnn', 'fpga'}

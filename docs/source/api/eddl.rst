@@ -193,6 +193,8 @@ Core layers
 
 .. autofunction:: pyeddl.eddl.PointwiseConv2D
 
+.. autofunction:: pyeddl.eddl.DepthwiseConv2D
+
 .. autofunction:: pyeddl.eddl.Dense
 
 .. autofunction:: pyeddl.eddl.Dropout
@@ -210,6 +212,16 @@ Core layers
 .. autofunction:: pyeddl.eddl.Reshape
 
 .. autofunction:: pyeddl.eddl.Flatten
+
+.. autofunction:: pyeddl.eddl.Repeat
+
+.. autofunction:: pyeddl.eddl.Tile
+
+.. autofunction:: pyeddl.eddl.Broadcast
+
+.. autofunction:: pyeddl.eddl.Bypass
+
+.. autofunction:: pyeddl.eddl.Shape
 
 .. autofunction:: pyeddl.eddl.Squeeze
 
@@ -336,6 +348,8 @@ Operator layers
 .. autofunction:: pyeddl.eddl.Log10
 
 .. autofunction:: pyeddl.eddl.Clamp
+
+.. autofunction:: pyeddl.eddl.Clip
 
 .. autofunction:: pyeddl.eddl.Mult
 
@@ -486,6 +500,12 @@ Fused layers
 ------------
 
 .. autofunction:: pyeddl.eddl.Conv2dActivation
+
+
+Utils
+-----
+
+.. autofunction:: pyeddl.eddl.get_topk_predictions
 
 
 Get Models
