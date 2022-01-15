@@ -1,0 +1,29 @@
+name: docs
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: get prebuilt base image
+        run: docker pull dhealth/dev-pyeddl-base-cpu
+      - name: build docs
+        run: |
+          docker build -t dhealth/dev-pyeddl-cpu -f docker/Dockerfile.pyeddl-cpu .
+          docker build -t dhealth/dev-pyeddl-docs -f docker/Dockerfile.docs .
+          docker run --rm dhealth/dev-pyeddl-docs bash -c "tar -c -C /pyeddl/docs/source/_build html" | tar -x -C /tmp
+      # https://github.com/marketplace/actions/github-pages-action
+      - name: publish docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: /tmp/html
+          enable_jekyll: false
