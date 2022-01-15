@@ -74,19 +74,19 @@
 <span id="tensor"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.tensor</span></code> — Tensor<a class="headerlink" href="#pyeddl-tensor-tensor" title="Permalink to this headline"></a></h1>
 <dl class="py data">
 <dt class="sig sig-object py" id="pyeddl.tensor.DEV_CPU">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.tensor.</span></span><span class="sig-name descname"><span class="pre">DEV_CPU</span></span><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#pyeddl.tensor.DEV_CPU" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeddl.tensor.</span></span><span class="sig-name descname"><span class="pre">DEV_CPU</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#pyeddl.tensor.DEV_CPU" title="Permalink to this definition"></a></dt>
 <dd><p>A constant representing the CPU device</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="pyeddl.tensor.DEV_GPU">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.tensor.</span></span><span class="sig-name descname"><span class="pre">DEV_GPU</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1000</span></em><a class="headerlink" href="#pyeddl.tensor.DEV_GPU" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeddl.tensor.</span></span><span class="sig-name descname"><span class="pre">DEV_GPU</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1000</span></em><a class="headerlink" href="#pyeddl.tensor.DEV_GPU" title="Permalink to this definition"></a></dt>
 <dd><p>A constant representing the GPU device</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyeddl.tensor.</span></span><span class="sig-name descname"><span class="pre">Tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyeddl.tensor.</span></span><span class="sig-name descname"><span class="pre">Tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor" title="Permalink to this definition"></a></dt>
 <dd><p>Create an uninitialized tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -102,7 +102,7 @@
 <p><strong>=== Creation Methods ===</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.fromarray">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">fromarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.fromarray" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.fromarray" title="Permalink to this definition"></a></dt>
 <dd><p>Create a tensor from a NumPy array.</p>
 <p>The tensor will be initialized with values, shape, etc. from the array.</p>
 <p>The data type is automatically converted to float32, with one
@@ -124,7 +124,7 @@ array is 1D, it must be of type float32. See
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.zeros">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.zeros" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.zeros" title="Permalink to this definition"></a></dt>
 <dd><p>Create a tensor of the specified shape and fill it with zeros.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -141,7 +141,7 @@ array is 1D, it must be of type float32. See
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.ones">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">ones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.ones" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.ones" title="Permalink to this definition"></a></dt>
 <dd><p>Create a tensor of the specified shape and fill it with ones.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -158,7 +158,7 @@ array is 1D, it must be of type float32. See
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.full">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.full" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.full" title="Permalink to this definition"></a></dt>
 <dd><p>Create a tensor of the specified shape and fill it with <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -176,7 +176,7 @@ array is 1D, it must be of type float32. See
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.arange">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">arange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.arange" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">arange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.arange" title="Permalink to this definition"></a></dt>
 <dd><p>Create a 1D tensor with evenly spaced values within a given interval.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -195,7 +195,7 @@ array is 1D, it must be of type float32. See
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.range">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.range" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.range" title="Permalink to this definition"></a></dt>
 <dd><p>Create a 1D tensor with evenly spaced values within a given interval.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -214,7 +214,7 @@ array is 1D, it must be of type float32. See
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.linspace">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">linspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.linspace" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">linspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.linspace" title="Permalink to this definition"></a></dt>
 <dd><p>Create a 1D tensor with evenly spaced values within a given interval.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -233,7 +233,7 @@ array is 1D, it must be of type float32. See
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.logspace">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">logspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.logspace" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">logspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.logspace" title="Permalink to this definition"></a></dt>
 <dd><p>Create a 1D tensor with evenly spaced values on a log scale.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -253,7 +253,7 @@ array is 1D, it must be of type float32. See
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.eye">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">eye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.eye" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.eye" title="Permalink to this definition"></a></dt>
 <dd><p>Create a <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">size</span></code> tensor with ones on the diagonal and zeros
 elsewhere.</p>
 <dl class="field-list simple">
@@ -271,7 +271,7 @@ elsewhere.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.randn">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">randn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.randn" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">randn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.randn" title="Permalink to this definition"></a></dt>
 <dd><p>Create a tensor with normally distributed random values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -338,7 +338,7 @@ instance: <code class="docutils literal notranslate"><span class="pre">[&quot;1:
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.copy">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.copy" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.copy" title="Permalink to this definition"></a></dt>
 <dd><p>Copy data from tensor <code class="docutils literal notranslate"><span class="pre">A</span></code> to tensor <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -356,7 +356,7 @@ instance: <code class="docutils literal notranslate"><span class="pre">[&quot;1:
 <p><strong>=== Serialization Methods ===</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.load">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.load" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.load" title="Permalink to this definition"></a></dt>
 <dd><p>Load a tensor from a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -953,7 +953,7 @@ of the tensor.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.mult2D">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">mult2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.mult2D" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mult2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.mult2D" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the matrix product of <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1342,6 +1342,98 @@ of the tensor.</p>
 </dl>
 </dd></dl>
 
+<p><strong>=== Indexing, Slicing, Joining, Mutating ===</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.concat">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">concat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.concat" title="Permalink to this definition"></a></dt>
+<dd><p>Join a sequence of tensors along the specified axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – list of tensors with the same shape</p></li>
+<li><p><strong>axis</strong> – axis along which to join</p></li>
+<li><p><strong>output</strong> – output tensor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.stack">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.stack" title="Permalink to this definition"></a></dt>
+<dd><p>Repeat tensor elements along the specified dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – input tensor</p></li>
+<li><p><strong>axis</strong> – axis along which to repeat the values</p></li>
+<li><p><strong>output</strong> – output tensor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.repeat">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">repeat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">derivative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.repeat" title="Permalink to this definition"></a></dt>
+<dd><p>Repeat the elements of a tensor along the specified dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – input tensor</p></li>
+<li><p><strong>repeats</strong> – number of repetitions</p></li>
+<li><p><strong>axis</strong> – axis along which to repeat values</p></li>
+<li><p><strong>output</strong> – output tensor</p></li>
+<li><p><strong>derivative</strong> – apply derivative for <code class="docutils literal notranslate"><span class="pre">output</span> <span class="pre">=</span> <span class="pre">repeat(A)</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.tile">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.tile" title="Permalink to this definition"></a></dt>
+<dd><p>Construct an array by repeating A for the given number of times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – input tensor</p></li>
+<li><p><strong>repeats</strong> – number of repetitions of A</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.broadcast">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">broadcast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.broadcast" title="Permalink to this definition"></a></dt>
+<dd><p>Return a new tensor A to be broadcasted into B</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – input tensor</p></li>
+<li><p><strong>B</strong> – input tensor</p></li>
+<li><p><strong>output</strong> – output tensor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
 <p><strong>=== Transformations ===</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.scale">
@@ -1439,7 +1531,12 @@ of the tensor.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.onehot">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">in:</span> <span class="pre">pyeddl._core.Tensor</span></em>, <em class="sig-param"><span class="pre">vocs:</span> <span class="pre">int</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pyeddl._core.Tensor</span></span></span><a class="headerlink" href="#pyeddl.tensor.Tensor.onehot" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in:</span> <span class="pre">pyeddl._core.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vocs:</span> <span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pyeddl._core.Tensor</span></span></span><a class="headerlink" href="#pyeddl.tensor.Tensor.onehot" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.max_accelerator_supported">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_accelerator_supported</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pyeddl.tensor.Tensor.max_accelerator_supported" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1456,7 +1553,7 @@ of the tensor.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2021, CRS4.</p>
+    <p>&#169; Copyright 2019-2022, CRS4.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#initializers">Initializers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#regularizers">Regularizers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#fused-layers">Fused layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utils">Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#get-models">Get Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#datasets">Datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#onnx-support">ONNX support</a></li>
@@ -164,8 +165,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.build">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">me</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.build" title="Permalink to this definition"></a></dt>
-<dd><p>Tell the model which optimizer, losses, metrics and computing service to
-use.</p>
+<dd><p>Configure the model for training.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -174,6 +174,8 @@ use.</p>
 <li><p><strong>lo</strong> – list of losses</p></li>
 <li><p><strong>me</strong> – list of metrics</p></li>
 <li><p><strong>cs</strong> – computing service</p></li>
+<li><p><strong>init_weights</strong> – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, initialize weights to random values
+(typically set to <code class="docutils literal notranslate"><span class="pre">False</span></code> for pretrained models)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -187,14 +189,16 @@ use.</p>
 <h3>Computing services<a class="headerlink" href="#computing-services" title="Permalink to this headline"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.toGPU">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">toGPU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lsb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.toGPU" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">toGPU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lsb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'full_mem'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.toGPU" title="Permalink to this definition"></a></dt>
 <dd><p>Assign model operations to the GPU.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>net</strong> – model</p></li>
-<li><p><strong>g</strong> – list of gpu ids to allocate</p></li>
-<li><p><strong>lsb</strong> – number of batches to sync model weights</p></li>
+<li><p><strong>g</strong> – list of integers to set which GPUs will be used (1=on, 0=off)</p></li>
+<li><p><strong>lsb</strong> – (multi-gpu setting) number of batches to run before
+synchronizing the weights of the different GPUs</p></li>
+<li><p><strong>mem</strong> – memory consumption (“full_mem”, “mid_mem” or “low_mem”)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -205,13 +209,13 @@ use.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.toCPU">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">toCPU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.toCPU" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">toCPU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">th</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.toCPU" title="Permalink to this definition"></a></dt>
 <dd><p>Assign model operations to the CPU.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>net</strong> – model</p></li>
-<li><p><strong>t</strong> – number of CPU threads</p></li>
+<li><p><strong>th</strong> – number of CPU threads (-1 to use all threads)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1356,6 +1360,29 @@ to use for dilated convolution</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.DepthwiseConv2D">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">DepthwiseConv2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'same'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.DepthwiseConv2D" title="Permalink to this definition"></a></dt>
+<dd><p>2D Depthwise convolution layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>kernel_size</strong> – height and width of the convolution window</p></li>
+<li><p><strong>strides</strong> – list of 2 integers, specifying the strides of the
+convolution along the height and width</p></li>
+<li><p><strong>use_bias</strong> – whether the layer uses a bias vector</p></li>
+<li><p><strong>dilation_rate</strong> – list of 2 integers, specifying the dilation rate
+to use for dilated convolution</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Convolution layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Dense">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Dense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Dense" title="Permalink to this definition"></a></dt>
 <dd><p>Regular densely-connected layer.</p>
@@ -1539,7 +1566,107 @@ axis</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a Reshape layer</p>
+<dd class="field-even"><p>Flatten layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Repeat">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Repeat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Repeat" title="Permalink to this definition"></a></dt>
+<dd><p>Repeat the elements of the output tensor along the specified dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>repeats</strong> – number of repetitions (integer or list of integers)</p></li>
+<li><p><strong>axis</strong> – axis along which to repeat values (batch is ignored)</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Repeat layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Tile">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Tile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Tile" title="Permalink to this definition"></a></dt>
+<dd><p>Construct a tensor by repeating the elements of input.</p>
+<p>The repeats argument specifies the number of repetitions in each dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>repeats</strong> – (list of integers) number of repetitions per dimension</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tile layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Broadcast">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Broadcast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Broadcast" title="Permalink to this definition"></a></dt>
+<dd><p>Prepare the output of the smaller layer to be broadcasted into the bigger
+one (parent1 or parent2).</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">P1</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">P2</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span> <span class="o">=&gt;</span> <span class="n">P1</span> <span class="ow">is</span> <span class="n">x</span><span class="o">.</span>  <span class="p">(</span><span class="n">P2</span> <span class="n">has</span> <span class="n">no</span> <span class="n">delta</span><span class="p">)</span>
+<span class="n">f</span><span class="p">(</span><span class="n">P1</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">P2</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="o">=&gt;</span> <span class="n">P2</span> <span class="ow">is</span> <span class="n">x</span><span class="o">.</span>  <span class="p">(</span><span class="n">P1</span> <span class="n">has</span> <span class="n">no</span> <span class="n">delta</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent1</strong> – parent layer</p></li>
+<li><p><strong>parent2</strong> – parent layer</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Broadcast layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Bypass">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Bypass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bypass_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Bypass" title="Permalink to this definition"></a></dt>
+<dd><p>Propagate the output of the parent.</p>
+<p>No-op layer, used internally for ONNX.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>bypass_name</strong> – name of the layer to bypass</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bypass layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Shape">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Shape" title="Permalink to this definition"></a></dt>
+<dd><p>Return the shape of the parent as the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>include_batch</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the batch dimension is included in the
+output</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Shape layer</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2492,14 +2619,33 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Clamp">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Clamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Clamp" title="Permalink to this definition"></a></dt>
-<dd><p>Layer that clamps the values of another layer.</p>
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Clamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Clamp" title="Permalink to this definition"></a></dt>
+<dd><p>Clamp all elements in input into the range <code class="docutils literal notranslate"><span class="pre">[min,</span> <span class="pre">max]</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>l</strong> – parent layer</p></li>
-<li><p><strong>min</strong> – Minimum value</p></li>
-<li><p><strong>max</strong> – Maximum value</p></li>
+<li><p><strong>min</strong> – lower bound of the range to be clamped to</p></li>
+<li><p><strong>max</strong> – upper bound of the range to be clamped to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Clamp layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Clip">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Clip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Clip" title="Permalink to this definition"></a></dt>
+<dd><p>Clamp all elements in input into the range <code class="docutils literal notranslate"><span class="pre">[min,</span> <span class="pre">max]</span></code>.</p>
+<p>Alias for <code class="docutils literal notranslate"><span class="pre">Clamp</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> – parent layer</p></li>
+<li><p><strong>min</strong> – lower bound of the range to be clamped to</p></li>
+<li><p><strong>max</strong> – upper bound of the range to be clamped to</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -3366,6 +3512,30 @@ to use for dilated convolution</p></li>
 </dd></dl>
 
 </section>
+<section id="utils">
+<h2>Utils<a class="headerlink" href="#utils" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.get_topk_predictions">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">get_topk_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_probs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.get_topk_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Get the top k class names along with their probabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>class_probs</strong> – tensor with class probabilities (shapes: <code class="docutils literal notranslate"><span class="pre">(n)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">n)</span></code> or <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">1)</span></code>)
+and rename the last layer as “top”.</p></li>
+<li><p><strong>class_names</strong> – class names as a list of strings</p></li>
+<li><p><strong>k</strong> – number of classes to return</p></li>
+<li><p><strong>decimals</strong> – number of decimal places for probability values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a string containing the top class names</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="get-models">
 <h2>Get Models<a class="headerlink" href="#get-models" title="Permalink to this headline"></a></h2>
 <dl class="py function">
@@ -3664,7 +3834,7 @@ only for models with one input layer).</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019-2021, CRS4.</p>
+    <p>&#169; Copyright 2019-2022, CRS4.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

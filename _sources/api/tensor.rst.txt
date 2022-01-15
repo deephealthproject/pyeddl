@@ -199,6 +199,18 @@
 
   .. automethod:: Tensor.trunc
 
+  **=== Indexing, Slicing, Joining, Mutating ===**
+
+  .. automethod:: Tensor.concat
+
+  .. automethod:: Tensor.stack
+
+  .. automethod:: Tensor.repeat
+
+  .. automethod:: Tensor.tile
+
+  .. automethod:: Tensor.broadcast
+
   **=== Transformations ===**
 
   .. automethod:: Tensor.scale
@@ -218,3 +230,5 @@
   .. automethod:: Tensor.getShape
 
   .. automethod:: Tensor.onehot
+
+  .. automethod:: Tensor.max_accelerator_supported
