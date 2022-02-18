@@ -153,15 +153,15 @@ def main(args):
         else:
             word = text.select(["0", str(j - 1), ":"])
             word.reshape_([1, outvs])  # batch = 1
-    treshape.reshape_([1, 512])  # batch = 1
-    state = Tensor.zeros([1, 2, 512])  # batch = 1
-    input_ = [word, treshape, state]
-    eddl.forward(decoder, input_)
-    # outword = eddl.getOutput(out)
-    vstates = eddl.getStates(lstm)
-    for i in range(len(vstates)):
-        vstates[i].reshape_([1, 1, 512])
-        state.set_select([":", str(i), ":"], vstates[i])
+        treshape.reshape_([1, 512])  # batch = 1
+        state = Tensor.zeros([1, 2, 512])  # batch = 1
+        input_ = [word, treshape, state]
+        eddl.forward(decoder, input_)
+        # outword = eddl.getOutput(out)
+        vstates = eddl.getStates(lstm)
+        for i in range(len(vstates)):
+            vstates[i].reshape_([1, 1, 512])
+            state.set_select([":", str(i), ":"], vstates[i])
 
     print("All done")
 
