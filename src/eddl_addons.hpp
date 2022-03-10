@@ -59,7 +59,6 @@ void eddl_addons(pybind11::module &m) {
     pybind11::class_<LConstOfTensor, std::shared_ptr<LConstOfTensor>, LinLayer>(m, "LConstOfTensor", "");
     pybind11::class_<LConv, std::shared_ptr<LConv>, LinLayer>(m, "LConv", "");
     pybind11::class_<LConv1D, std::shared_ptr<LConv1D>, LinLayer>(m, "LConv1D", "");
-    pybind11::class_<LConv2dActivation, std::shared_ptr<LConv2dActivation>, LinLayer>(m, "LConv2dActivation", "");
     pybind11::class_<LConv3D, std::shared_ptr<LConv3D>, LinLayer>(m, "LConv3D", "");
     pybind11::class_<LConvT2D, std::shared_ptr<LConvT2D>, LinLayer>(m, "LConvT2D", "");
     pybind11::class_<LConvT3D, std::shared_ptr<LConvT3D>, LinLayer>(m, "LConvT3D", "");
@@ -74,6 +73,7 @@ void eddl_addons(pybind11::module &m) {
     pybind11::class_<LGroupNorm, std::shared_ptr<LGroupNorm>, LinLayer>(m, "LGroupNorm", "");
     pybind11::class_<LInput, std::shared_ptr<LInput>, LinLayer>(m, "LInput", "");
     pybind11::class_<LLayerNorm, std::shared_ptr<LLayerNorm>, LinLayer>(m, "LLayerNorm", "");
+    pybind11::class_<LMultiThreshold, std::shared_ptr<LMultiThreshold>, LinLayer>(m, "LMultiThreshold", "");
     pybind11::class_<LNorm, std::shared_ptr<LNorm>, LinLayer>(m, "LNorm", "");
     pybind11::class_<LNormMax, std::shared_ptr<LNormMax>, LinLayer>(m, "LNormMax", "");
     pybind11::class_<LNormMinMax, std::shared_ptr<LNormMinMax>, LinLayer>(m, "LNormMinMax", "");
@@ -91,6 +91,8 @@ void eddl_addons(pybind11::module &m) {
     pybind11::class_<LSqueeze, std::shared_ptr<LSqueeze>, LinLayer>(m, "LSqueeze", "");
     pybind11::class_<LTensor, std::shared_ptr<LTensor>, LinLayer>(m, "LTensor", "");
     pybind11::class_<LTile, std::shared_ptr<LTile>, LinLayer>(m, "LTile", "");
+    pybind11::class_<LTopK, std::shared_ptr<LTopK>, LinLayer>(m, "LTopK", "");
+    pybind11::class_<LTransform, std::shared_ptr<LTransform>, LinLayer>(m, "LTransform", "");
     pybind11::class_<LUnsqueeze, std::shared_ptr<LUnsqueeze>, LinLayer>(m, "LUnsqueeze", "");
     pybind11::class_<LUpSampling, std::shared_ptr<LUpSampling>, LinLayer>(m, "LUpSampling", "");
     pybind11::class_<LUpSampling3D, std::shared_ptr<LUpSampling3D>, LinLayer>(m, "LUpSampling3D", "");
@@ -100,6 +102,7 @@ void eddl_addons(pybind11::module &m) {
     pybind11::class_<LConcat, std::shared_ptr<LConcat>, MLayer>(m, "LConcat", "");
     pybind11::class_<LCopyStates, std::shared_ptr<LCopyStates>, MLayer>(m, "LCopyStates", "");
     pybind11::class_<LGRU, std::shared_ptr<LGRU>, MLayer>(m, "LGRU", "");
+    pybind11::class_<LHLSinf, std::shared_ptr<LHLSinf>, MLayer>(m, "LHLSinf", "");
     pybind11::class_<LLSTM, std::shared_ptr<LLSTM>, MLayer>(m, "LLSTM", "");
     pybind11::class_<LMatMul, std::shared_ptr<LMatMul>, MLayer>(m, "LMatMul", "");
     pybind11::class_<LMaximum, std::shared_ptr<LMaximum>, MLayer>(m, "LMaximum", "");
@@ -193,6 +196,7 @@ void eddl_addons(pybind11::module &m) {
     m.def("UpSampling3D", (Layer* (*)(Layer*, vector<int>, bool, string, float, string, string)) &eddl::UpSampling3D, "3D Upsampling layer", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("new_shape"), pybind11::arg("reshape") = true, pybind11::arg("da_mode") = "constant", pybind11::arg("constant") = 0.0f, pybind11::arg("coordinate_transformation_mode") = "asymmetric", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Resize", (Layer* (*)(Layer*, vector<int>, bool, string, float, string, string)) &eddl::Resize, "Resize the input image", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("new_shape"), pybind11::arg("reshape") = true, pybind11::arg("da_mode") = "constant", pybind11::arg("constant") = 0.0f, pybind11::arg("coordinate_transformation_mode") = "asymmetric", pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Reshape", (class Layer* (*)(class Layer*, const vector<int>&, string)) &eddl::Reshape, "C++: eddl::Reshape(class Layer*, const vector<int>&, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("shape"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    m.def("Transform", (class Layer* (*)(class Layer*, int, int, int, int, string)) &eddl::Transform, "", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("copy_cpu_to_fpga"), pybind11::arg("copy_fpga_to_cpu"), pybind11::arg("transform"), pybind11::arg("mode"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Flatten", (class Layer* (*)(class Layer*, string)) &eddl::Flatten, "C++: eddl::Flatten(class Layer*, string) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Repeat", (class Layer* (*)(class Layer*, const vector<unsigned int>&, unsigned int, string)) &eddl::Repeat, "Repeat the elements of the output tensor along the specified dimension", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("repeats"), pybind11::arg("axis"), pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
     m.def("Repeat", (class Layer* (*)(class Layer*, unsigned int, unsigned int, string)) &eddl::Repeat, "Repeat the elements of the output tensor along the specified dimension", pybind11::arg("parent"), pybind11::arg("repeats"), pybind11::arg("axis"), pybind11::arg("name") = "", pybind11::return_value_policy::reference, pybind11::keep_alive<0, 1>());
@@ -365,9 +369,6 @@ void eddl_addons(pybind11::module &m) {
     m.def("L1", (class Layer* (*)(class Layer*, float)) &eddl::L1, "C++: eddl::L1(class Layer*, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("l1"), pybind11::keep_alive<0, 1>());
     m.def("L1L2", (class Layer* (*)(class Layer*, float, float)) &eddl::L1L2, "C++: eddl::L1L2(class Layer*, float, float) --> class Layer*", pybind11::return_value_policy::reference, pybind11::arg("l"), pybind11::arg("l1"), pybind11::arg("l2"), pybind11::keep_alive<0, 1>());
 
-    // --- fused layers ---
-    m.def("Conv2dActivation", (Layer* (*)(Layer*, string, int, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::Conv2dActivation, "Convolution + Activation layer", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("act"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("padding") = "same", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
-
     // --- computing services ---
     m.def("CS_CPU", (class CompServ* (*)(int, string)) &eddl::CS_CPU, "Executes the code in the CPU", pybind11::return_value_policy::reference, pybind11::arg("th") = -1, pybind11::arg("mem") = "full_mem");
     m.def("CS_GPU", (class CompServ* (*)(const vector<int>&, const string&)) &eddl::CS_GPU, "Executes the code in the GPU", pybind11::return_value_policy::reference, pybind11::arg("g"), pybind11::arg("mem") = "full_mem");
@@ -427,6 +428,12 @@ void eddl_addons(pybind11::module &m) {
     //   Normalize
     //   RandomAffine
     //   RandomGrayscale
+    // m.def("ConvSTM", (class Layer* (*)(class Layer*, int, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::ConvSTM, "", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("padding") = "same", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    // m.def("ConvSTMAdd", (class Layer* (*)(const vector<Layer*>&, int, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::ConvSTMAdd, "", pybind11::return_value_policy::reference, pybind11::arg("layers"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("padding") = "same", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    // m.def("ConvMaxPool", (class Layer* (*)(class Layer*, int, const vector<int>&, const vector<int>&, string, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::ConvMaxPool, "", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("conv_padding") = "same", pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("pool_strides") = vector<int>{2, 2}, pybind11::arg("pool_padding") = "none", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    // m.def("ConvReLUMaxPool", (class Layer* (*)(class Layer*, int, const vector<int>&, const vector<int>&, string, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::ConvReLUMaxPool, "", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("conv_padding") = "same", pybind11::arg("pool_size") = vector<int>{2, 2}, pybind11::arg("pool_strides") = vector<int>{2, 2}, pybind11::arg("pool_padding") = "none", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    // m.def("ConvReLU", (class Layer* (*)(class Layer*, int, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::ConvReLU, "", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("padding") = "same", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
+    // m.def("Conv2dActivation", (Layer* (*)(Layer*, string, int, const vector<int>&, const vector<int>&, string, bool, int, const vector<int>&, string)) &eddl::Conv2dActivation, "Convolution + Activation layer", pybind11::return_value_policy::reference, pybind11::arg("parent"), pybind11::arg("act"), pybind11::arg("filters"), pybind11::arg("kernel_size"), pybind11::arg("strides") = vector<int>{1, 1}, pybind11::arg("padding") = "same", pybind11::arg("use_bias") = true, pybind11::arg("groups") = 1, pybind11::arg("dilation_rate") = vector<int>{1, 1}, pybind11::arg("name") = "", pybind11::keep_alive<0, 1>());
 
     // --- utils ---
     m.def("get_topk_predictions", (string (*)(Tensor*, const vector<string>&, int, int)) &eddl::get_topk_predictions, "Get top k class names along with their probabilities", pybind11::arg("class_probs"), pybind11::arg("class_names"), pybind11::arg("k") = 5, pybind11::arg("decimals") = 2);

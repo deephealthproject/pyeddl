@@ -28,6 +28,7 @@ def_static("<NAME>", ...) to def_static("static_<NAME>", ...)
 import argparse
 import io
 import re
+import shutil
 import tempfile
 from pathlib import Path
 
@@ -104,7 +105,7 @@ def main(args):
     with io.open(BINDINGS_FILE, "rt") as fin:
         with tempfile.NamedTemporaryFile(mode="wt", delete=False) as fout:
             replace_static_names(fin, fout, common_defs)
-    Path(fout.name).rename(args.out_file)
+    shutil.move(fout.name, args.out_file)
 
 
 if __name__ == "__main__":

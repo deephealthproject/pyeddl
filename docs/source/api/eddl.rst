@@ -35,6 +35,8 @@ Computing services
 
 .. autofunction:: pyeddl.eddl.toCPU
 
+.. autofunction:: pyeddl.eddl.toFPGA
+
 .. autofunction:: pyeddl.eddl.CS_CPU
 
 .. autofunction:: pyeddl.eddl.CS_GPU
@@ -145,6 +147,10 @@ Losses and metrics
 
 .. autofunction:: pyeddl.eddl.detach
 
+.. autofunction:: pyeddl.eddl.show_profile
+
+.. autofunction:: pyeddl.eddl.reset_profile
+
 
 Layers
 ------
@@ -210,6 +216,8 @@ Core layers
 .. autofunction:: pyeddl.eddl.Resize
 
 .. autofunction:: pyeddl.eddl.Reshape
+
+.. autofunction:: pyeddl.eddl.Transform
 
 .. autofunction:: pyeddl.eddl.Flatten
 
@@ -496,12 +504,6 @@ Regularizers
 .. autofunction:: pyeddl.eddl.L1L2
 
 
-Fused layers
-------------
-
-.. autofunction:: pyeddl.eddl.Conv2dActivation
-
-
 Utils
 -----
 
@@ -551,6 +553,13 @@ Datasets
 .. autofunction:: pyeddl.eddl.download_eutrans
 
 .. autofunction:: pyeddl.eddl.download_flickr
+
+
+
+Accelerators
+------------
+
+.. autofunction:: pyeddl.eddl.download_hlsinf
 
 
 ONNX support

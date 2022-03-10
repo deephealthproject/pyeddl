@@ -1223,5 +1223,19 @@ class Tensor(_core.Tensor):
         return _core.Tensor.onehot(in_, vocs)
 
     @staticmethod
-    def max_accelerator_supported():
-        return _core.Tensor.max_accelerator_supported()
+    def hardware_supported():
+        """\
+        Get a list of hardware accelerators for which EDDL has been compiled.
+
+        :return: list of supported accelerators
+        """
+        return _core.Tensor.hardware_supported()
+
+    @staticmethod
+    def is_hardware_supported(hardware):
+        """\
+        Check if a specific hardware is supported.
+
+        :return: True if the hardware is supported
+        """
+        return _core.Tensor.is_hardware_supported(hardware)

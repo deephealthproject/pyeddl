@@ -1133,6 +1133,12 @@ def test_onehot(Tensor):
 
 
 @pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
-def test_max_accelerator_supported(Tensor):
-    mas = Tensor.max_accelerator_supported()
-    assert mas in {'cpu', 'cuda', 'cudnn', 'fpga'}
+def test_hardware_supported(Tensor):
+    supported = Tensor.hardware_supported()
+    assert set(supported) <= {'cpu', 'cuda', 'cudnn', 'fpga'}
+
+
+@pytest.mark.parametrize("Tensor", [CoreTensor, PyTensor])
+def test_is_hardware_supported(Tensor):
+    assert any([Tensor.is_hardware_supported(_)
+               for _ in ('cpu', 'cuda', 'cudnn', 'fpga')])

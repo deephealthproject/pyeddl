@@ -231,4 +231,6 @@
 
   .. automethod:: Tensor.onehot
 
-  .. automethod:: Tensor.max_accelerator_supported
+  .. automethod:: Tensor.hardware_supported
+
+  .. automethod:: Tensor.is_hardware_supported

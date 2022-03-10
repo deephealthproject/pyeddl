@@ -588,19 +588,6 @@ def test_regularizers(eddl):
 
 
 @pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
-def test_fused_layers(eddl):
-    in4d = eddl.Input([3, 16, 16])
-    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1])
-    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none")
-    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none", True)
-    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none", True, 1)
-    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none", True, 1,
-                          [1, 1])
-    eddl.Conv2dActivation(in4d, "relu", 16, [1, 1], [2, 2], "none", True, 1,
-                          [1, 1], "foo")
-
-
-@pytest.mark.parametrize("eddl", [eddl_core, eddl_py])
 def test_utils(eddl):
     Tensor = CoreTensor if eddl is eddl_core else PyTensor
     t = Tensor.randn([5]).abs()
@@ -613,11 +600,13 @@ def test_computing_services(eddl):
     eddl.CS_CPU()
     eddl.CS_CPU(1)
     eddl.CS_CPU(1, "low_mem")
-    if eddl is eddl_py:
-        eddl.CS_GPU()
-    eddl.CS_GPU([1])
-    eddl.CS_GPU([1], 1)
-    eddl.CS_GPU([1], 1, "low_mem")
-    eddl.CS_FPGA([1])
-    eddl.CS_FPGA([1], 1)
+    if CoreTensor.is_hardware_supported("cuda"):
+        if eddl is eddl_py:
+            eddl.CS_GPU()
+        eddl.CS_GPU([1])
+        eddl.CS_GPU([1], 1)
+        eddl.CS_GPU([1], 1, "low_mem")
+    if CoreTensor.is_hardware_supported("fpga"):
+        eddl.CS_FPGA([1])
+        eddl.CS_FPGA([1], 1)
     eddl.CS_COMPSS("foo.xml")
