@@ -9,7 +9,7 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
     python3 -m pip install --upgrade --no-cache-dir \
       numpy 'pybind11<2.6' pytest && \
     for l in cudart curand cublas; do \
-      ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/lib${l}.so /usr/lib/; \
+      ln -s /usr/local/cuda-11.3/targets/x86_64-linux/lib/lib${l}.so /usr/lib/; \
     done && \
     for id in 1000 1001; do \
       mkdir -p /home/jenkins_${id} && \
