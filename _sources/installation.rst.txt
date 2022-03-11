@@ -117,8 +117,13 @@ Install EDDL::
     popd
     popd
 
-To compile for **GPU**, add ``-D BUILD_TARGET=GPU`` to the cmake flags.
-To compile for GPU with CUDNN support, add  ``-D BUILD_TARGET=CUDNN`` instead.
+The above sequence builds EDDL with the default target, which at the moment is
+``CUDNN``. To compile for a specific target, add the following to the cmake
+flags:
+
+* ``-D BUILD_TARGET=CPU`` for CPU-only
+* ``-D BUILD_TARGET=GPU`` for GPU-enabled (also works on the CPU)
+* ``-D BUILD_TARGET=CUDNN`` for GPU with CUDNN support (also works on the CPU)
 
 .. note::
 
@@ -193,6 +198,8 @@ version:
 +----------------+--------------+
 | 1.2.0          | 1.0.4b       |
 +----------------+--------------+
+| 1.3.0          | 1.1b         |
++----------------+--------------+
 
 To install, run::
 
@@ -202,12 +209,12 @@ If EDDL was compiled for GPU/CUDNN, you need to export the ``EDDL_WITH_CUDA``
 environment variable **before installing PyEDDL** so that ``setup.py`` will
 also link the ``cudart``, ``cublas`` and ``curand`` libraries. These will be
 expected in "standard" system locations, so you might need to create symlinks
-depending on your CUDA toolkit installation. For instance::
+depending on your CUDA toolkit installation. For instance, with CUDA 11.3::
 
     export EDDL_WITH_CUDA="true"
-    ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcudart.so /usr/lib/
-    ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcurand.so /usr/lib/
-    ln -s /usr/local/cuda-10.1/targets/x86_64-linux/lib/libcublas.so /usr/lib/
+    ln -s /usr/local/cuda-11.3/targets/x86_64-linux/lib/libcudart.so /usr/lib/
+    ln -s /usr/local/cuda-11.3/targets/x86_64-linux/lib/libcurand.so /usr/lib/
+    ln -s /usr/local/cuda-11.3/targets/x86_64-linux/lib/libcublas.so /usr/lib/
 
 
 Disabling unwanted modules

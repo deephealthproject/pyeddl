@@ -232,8 +232,6 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.Conv2D">Conv2D() (in module pyeddl.eddl)</a>
 </li>
-      <li><a href="api/eddl.html#pyeddl.eddl.Conv2dActivation">Conv2dActivation() (in module pyeddl.eddl)</a>
-</li>
       <li><a href="api/eddl.html#pyeddl.eddl.Conv3D">Conv3D() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.ConvT2D">ConvT2D() (in module pyeddl.eddl)</a>
@@ -296,9 +294,11 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.download_eutrans">download_eutrans() (in module pyeddl.eddl)</a>
 </li>
+      <li><a href="api/eddl.html#pyeddl.eddl.download_flickr">download_flickr() (in module pyeddl.eddl)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/eddl.html#pyeddl.eddl.download_flickr">download_flickr() (in module pyeddl.eddl)</a>
+      <li><a href="api/eddl.html#pyeddl.eddl.download_hlsinf">download_hlsinf() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.download_imdb_2000">download_imdb_2000() (in module pyeddl.eddl)</a>
 </li>
@@ -458,6 +458,8 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.HardSigmoid">HardSigmoid() (in module pyeddl.eddl)</a>
 </li>
+      <li><a href="api/tensor.html#pyeddl.tensor.Tensor.hardware_supported">hardware_supported() (pyeddl.tensor.Tensor static method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/eddl.html#pyeddl.eddl.HeNormal">HeNormal() (in module pyeddl.eddl)</a>
@@ -476,13 +478,15 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.import_net_from_onnx_string">import_net_from_onnx_string() (in module pyeddl.eddl)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.info">info() (pyeddl.tensor.Tensor method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/eddl.html#pyeddl.eddl.initializeLayer">initializeLayer() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.Input">Input() (in module pyeddl.eddl)</a>
+</li>
+      <li><a href="api/tensor.html#pyeddl.tensor.Tensor.is_hardware_supported">is_hardware_supported() (pyeddl.tensor.Tensor static method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -547,8 +551,6 @@
       <li><a href="api/eddl.html#pyeddl.eddl.MatMul">MatMul() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.max">max() (pyeddl.tensor.Tensor method)</a>
-</li>
-      <li><a href="api/tensor.html#pyeddl.tensor.Tensor.max_accelerator_supported">max_accelerator_supported() (pyeddl.tensor.Tensor static method)</a>
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.Maximum">Maximum() (in module pyeddl.eddl)</a>
 </li>
@@ -716,6 +718,8 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.reset_loss">reset_loss() (in module pyeddl.eddl)</a>
 </li>
+      <li><a href="api/eddl.html#pyeddl.eddl.reset_profile">reset_profile() (in module pyeddl.eddl)</a>
+</li>
       <li><a href="api/eddl.html#pyeddl.eddl.Reshape">Reshape() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.reshape_">reshape_() (pyeddl.tensor.Tensor method)</a>
@@ -782,16 +786,18 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.Shift">Shift() (in module pyeddl.eddl)</a>
 </li>
+      <li><a href="api/eddl.html#pyeddl.eddl.show_profile">show_profile() (in module pyeddl.eddl)</a>
+</li>
       <li><a href="api/eddl.html#pyeddl.eddl.Sigmoid">Sigmoid() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.sigmoid">sigmoid() (pyeddl.tensor.Tensor method)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.sigmoid_">sigmoid_() (pyeddl.tensor.Tensor method)</a>
 </li>
-      <li><a href="api/tensor.html#pyeddl.tensor.Tensor.sign">sign() (pyeddl.tensor.Tensor method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tensor.html#pyeddl.tensor.Tensor.sign">sign() (pyeddl.tensor.Tensor method)</a>
+</li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.sign_">sign_() (pyeddl.tensor.Tensor method)</a>
 </li>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.sin">sin() (pyeddl.tensor.Tensor method)</a>
@@ -862,16 +868,18 @@
 </li>
       <li><a href="api/eddl.html#pyeddl.eddl.Tile">Tile() (in module pyeddl.eddl)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tensor.html#pyeddl.tensor.Tensor.tile">tile() (pyeddl.tensor.Tensor static method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/eddl.html#pyeddl.eddl.toCPU">toCPU() (in module pyeddl.eddl)</a>
 
       <ul>
         <li><a href="api/tensor.html#pyeddl.tensor.Tensor.toCPU">(pyeddl.tensor.Tensor method)</a>
 </li>
       </ul></li>
+      <li><a href="api/eddl.html#pyeddl.eddl.toFPGA">toFPGA() (in module pyeddl.eddl)</a>
+</li>
       <li><a href="api/eddl.html#pyeddl.eddl.toGPU">toGPU() (in module pyeddl.eddl)</a>
 
       <ul>
@@ -879,6 +887,8 @@
 </li>
       </ul></li>
       <li><a href="api/eddl.html#pyeddl.eddl.train_batch">train_batch() (in module pyeddl.eddl)</a>
+</li>
+      <li><a href="api/eddl.html#pyeddl.eddl.Transform">Transform() (in module pyeddl.eddl)</a>
 </li>
       <li><a href="api/utils.html#pyeddl.utils.TransformationMode">TransformationMode (class in pyeddl.utils)</a>
 </li>

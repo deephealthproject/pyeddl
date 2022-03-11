@@ -73,10 +73,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#initializers">Initializers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#regularizers">Regularizers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fused-layers">Fused layers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#utils">Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#get-models">Get Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#datasets">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accelerators">Accelerators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#onnx-support">ONNX support</a></li>
 </ul>
 </li>
@@ -216,6 +216,24 @@ synchronizing the weights of the different GPUs</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>net</strong> – model</p></li>
 <li><p><strong>th</strong> – number of CPU threads (-1 to use all threads)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.toFPGA">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">toFPGA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hlsinf_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hlsinf_subversion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.toFPGA" title="Permalink to this definition"></a></dt>
+<dd><p>Assign model operations to the FPGA.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – model</p></li>
+<li><p><strong>hlsinf_version</strong> – HLSinf accelerator version to use</p></li>
+<li><p><strong>hlsinf_subversion</strong> – HLSinf accelerator subversion to use</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -947,6 +965,28 @@ default) through the backward graph.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.show_profile">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">show_profile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.show_profile" title="Permalink to this definition"></a></dt>
+<dd><p>Show profile information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.reset_profile">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">reset_profile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.reset_profile" title="Permalink to this definition"></a></dt>
+<dd><p>Reset profile information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 <section id="layers">
@@ -1549,6 +1589,24 @@ axis</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Reshape layer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.Transform">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_cpu_to_fpga</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_fpga_to_cpu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Transform" title="Permalink to this definition"></a></dt>
+<dd><p>Transform an input to an output format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – parent layer</p></li>
+<li><p><strong>mode</strong> – 0 = CHW to GHWC; 1 = GHWC to CHW</p></li>
+<li><p><strong>name</strong> – name of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Transform layer</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3480,38 +3538,6 @@ the weight tensor.</p>
 </dd></dl>
 
 </section>
-<section id="fused-layers">
-<h2>Fused layers<a class="headerlink" href="#fused-layers" title="Permalink to this headline"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="pyeddl.eddl.Conv2dActivation">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Conv2dActivation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'same'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Conv2dActivation" title="Permalink to this definition"></a></dt>
-<dd><p>Convolution + Activation layer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parent</strong> – parent layer</p></li>
-<li><p><strong>act</strong> – name of the activation function</p></li>
-<li><p><strong>filters</strong> – dimensionality of the output space (i.e., the number of
-output filters in the convolution)</p></li>
-<li><p><strong>kernel_size</strong> – list of 2 integers, specifying the height and width of
-the 2D convolution window.</p></li>
-<li><p><strong>strides</strong> – list of 2 integers, specifying the strides of the
-convolution along the height and width</p></li>
-<li><p><strong>padding</strong> – one of “none”, “valid” or “same”</p></li>
-<li><p><strong>use_bias</strong> – whether the layer uses a bias vector</p></li>
-<li><p><strong>groups</strong> – number of blocked connections from input to output channels</p></li>
-<li><p><strong>dilation_rate</strong> – list of 2 integers, specifying the dilation rate
-to use for dilated convolution</p></li>
-<li><p><strong>name</strong> – name of the output layer</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Conv2dActivation layer</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
 <section id="utils">
 <h2>Utils<a class="headerlink" href="#utils" title="Permalink to this headline"></a></h2>
 <dl class="py function">
@@ -3779,6 +3805,26 @@ batch dimension)</p></li>
 <dt class="sig sig-object py" id="pyeddl.eddl.download_flickr">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_flickr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_flickr" title="Permalink to this definition"></a></dt>
 <dd><p>Download the Flickr Dataset (small partition).</p>
+</dd></dl>
+
+</section>
+<section id="accelerators">
+<h2>Accelerators<a class="headerlink" href="#accelerators" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyeddl.eddl.download_hlsinf">
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_hlsinf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subversion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_hlsinf" title="Permalink to this definition"></a></dt>
+<dd><p>Download the HLSinf accelerator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>version</strong> – accelerator version</p></li>
+<li><p><strong>subversion</strong> – accelerator subversion</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
