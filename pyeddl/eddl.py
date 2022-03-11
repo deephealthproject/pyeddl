@@ -116,6 +116,18 @@ def toCPU(net, th=-1):
     return _eddl.toCPU(net, th)
 
 
+def toFPGA(net, hlsinf_version=1, hlsinf_subversion=0):
+    """\
+    Assign model operations to the FPGA.
+
+    :param net: model
+    :param hlsinf_version: HLSinf accelerator version to use
+    :param hlsinf_subversion: HLSinf accelerator subversion to use
+    :return: None
+    """
+    return _eddl.toFPGA(net, hlsinf_version, hlsinf_subversion)
+
+
 def CS_CPU(th=-1, mem="full_mem"):
     """\
     Create a computing service that executes the code in the CPU.
@@ -676,6 +688,24 @@ def detach(l):
     return _eddl.detach(l)
 
 
+def show_profile():
+    """\
+    Show profile information.
+
+    :return: None
+    """
+    return _eddl.show_profile()
+
+
+def reset_profile():
+    """\
+    Reset profile information.
+
+    :return: None
+    """
+    return _eddl.reset_profile()
+
+
 # == LAYERS ==
 
 # = Core layers =
@@ -1127,6 +1157,20 @@ def Reshape(parent, shape, name=""):
     :return: Reshape layer
     """
     return _eddl.Reshape(parent, shape, name)
+
+
+def Transform(parent, copy_cpu_to_fpga, copy_fpga_to_cpu, transform, mode,
+              name=""):
+    """\
+    Transform an input to an output format.
+
+    :param parent: parent layer
+    :param mode: 0 = CHW to GHWC; 1 = GHWC to CHW
+    :param name: name of the output layer
+    :return: Transform layer
+    """
+    return _eddl.Transform(parent, copy_cpu_to_fpga, copy_fpga_to_cpu,
+                           transform, mode, name)
 
 
 def Flatten(parent, name=""):
@@ -2609,35 +2653,6 @@ def L1L2(l, l1, l2):
     return _eddl.L1L2(l, l1, l2)
 
 
-# == FUSED LAYERS ==
-
-def Conv2dActivation(parent, act, filters, kernel_size, strides=[1, 1],
-                     padding="same", use_bias=True, groups=1,
-                     dilation_rate=[1, 1], name=""):
-    """\
-    Convolution + Activation layer.
-
-    :param parent: parent layer
-    :param act: name of the activation function
-    :param filters: dimensionality of the output space (i.e., the number of
-      output filters in the convolution)
-    :param kernel_size: list of 2 integers, specifying the height and width of
-      the 2D convolution window.
-    :param strides: list of 2 integers, specifying the strides of the
-      convolution along the height and width
-    :param padding: one of "none", "valid" or "same"
-    :param use_bias: whether the layer uses a bias vector
-    :param groups: number of blocked connections from input to output channels
-    :param dilation_rate: list of 2 integers, specifying the dilation rate
-      to use for dilated convolution
-    :param name: name of the output layer
-    :return: Conv2dActivation layer
-    """
-    return _eddl.Conv2dActivation(parent, act, filters, kernel_size, strides,
-                                  padding, use_bias, groups, dilation_rate,
-                                  name)
-
-
 # == UTILS ==
 
 def get_topk_predictions(class_probs, class_names, k=5, decimals=2):
@@ -2845,6 +2860,19 @@ def download_flickr():
     Download the Flickr Dataset (small partition).
     """
     return _eddl.download_flickr()
+
+
+# == Accelerators ==
+
+def download_hlsinf(version, subversion):
+    """\
+    Download the HLSinf accelerator.
+
+    :param version: accelerator version
+    :param subversion: accelerator subversion
+    :return: None
+    """
+    return _eddl.download_hlsinf(version, subversion)
 
 
 # == ONNX ==

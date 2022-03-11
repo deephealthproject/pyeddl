@@ -44,6 +44,7 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
     cl.def(pybind11::init<const vector<int>&, int>(),
            pybind11::arg("shape"), pybind11::arg("dev") = DEV_CPU,
            pybind11::keep_alive<1, 2>());
+    cl.def_static("getDeviceID", (int (*)(const string&)) &Tensor::getDeviceID, "Return the device ID given a device name", pybind11::arg("dev"));
     cl.def("getShape", &Tensor::getShape);
     cl.def("select", (Tensor* (Tensor::*)(const vector<string>&)) &Tensor::select, "C++: Tensor::select(const vector<string>&) --> Tensor*", pybind11::arg("indices"));
     cl.def("set_select", (void (Tensor::*)(const vector<string>&, Tensor*)) &Tensor::set_select, "C++: Tensor::set_select(const vector<string>&, Tensor*) --> void", pybind11::arg("indices"), pybind11::arg("A"));
@@ -84,8 +85,8 @@ void tensor_addons(pybind11::class_<type_, options...> &cl) {
     cl.def_static("stack", &Tensor::stack,
 		  pybind11::arg("A"), pybind11::arg("axis") = 0,
 		  pybind11::arg("output") = nullptr);
-    cl.def_static("max_accelerator_supported",
-		  &Tensor::max_accelerator_supported);
+    cl.def_static("hardware_supported", &Tensor::hardware_supported);
+    cl.def_static("is_hardware_supported", &Tensor::is_hardware_supported);
     // Expose contents as a buffer object. Allows a = numpy.array(t).
     // Mostly useful for a = numpy.array(t, copy=False) (CPU only, of course).
     cl.def_buffer([](Tensor &t) -> pybind11::buffer_info {

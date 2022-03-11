@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-devel
+FROM nvidia/cuda:11.3.1-cudnn8-devel-ubuntu18.04
 
 ARG cmake_v=3.21.3
 ARG eigen_v=3.3.7
@@ -6,8 +6,7 @@ ARG proto_v=3.11.4
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
       wget \
-      zlib1g-dev && \
-    ln -s /usr/lib/x86_64-linux-gnu/libcublas.so /usr/local/cuda/lib64/
+      zlib1g-dev
 
 RUN wget -q https://github.com/Kitware/CMake/releases/download/v${cmake_v}/cmake-${cmake_v}-linux-x86_64.sh && \
     chmod u+x cmake-${cmake_v}-linux-x86_64.sh && \
