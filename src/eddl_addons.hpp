@@ -463,7 +463,7 @@ void eddl_addons(pybind11::module &m) {
 	.value("NO_LOGS", LOG_LEVEL::NO_LOGS);
 
     // --- serialization ---
-    m.def("save_net_to_onnx_file", (void (*)(class Net*, string)) &save_net_to_onnx_file, "C++: eddl::save_net_to_onnx_file(class Net *, string) --> void", pybind11::arg("net"), pybind11::arg("path"));
+    m.def("save_net_to_onnx_file", (void (*)(class Net*, string, int)) &save_net_to_onnx_file, "C++: eddl::save_net_to_onnx_file(class Net *, string, int) --> void", pybind11::arg("net"), pybind11::arg("path"), pybind11::arg("seq_len") = 0);
     m.def("import_net_from_onnx_file", (class Net* (*)(string, int, LOG_LEVEL)) &import_net_from_onnx_file, "Imports ONNX Net from file", pybind11::arg("path"), pybind11::arg("mem") = 0, pybind11::arg("log_level") = LOG_LEVEL::INFO);
     m.def("import_net_from_onnx_file", (class Net* (*)(string, vector<int>, int, LOG_LEVEL)) &import_net_from_onnx_file, "Imports ONNX Net from file and changes its input shape", pybind11::arg("path"), pybind11::arg("input_shape"), pybind11::arg("mem") = 0, pybind11::arg("log_level") = LOG_LEVEL::INFO);
     m.def("serialize_net_to_onnx_string", [](Net* net, bool gradients) -> pybind11::bytes {
