@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -109,11 +110,11 @@
            <div itemprop="articleBody">
              
   <section id="pyeddl-eddl-eddl-api">
-<span id="eddl"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API<a class="headerlink" href="#pyeddl-eddl-eddl-api" title="Permalink to this headline"></a></h1>
+<span id="eddl"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyeddl.eddl</span></code> — eddl API<a class="headerlink" href="#pyeddl-eddl-eddl-api" title="Permalink to this heading"></a></h1>
 <section id="model">
-<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline"></a></h2>
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this heading"></a></h2>
 <section id="creation">
-<h3>Creation<a class="headerlink" href="#creation" title="Permalink to this headline"></a></h3>
+<h3>Creation<a class="headerlink" href="#creation" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Model">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Model" title="Permalink to this definition"></a></dt>
@@ -186,7 +187,7 @@
 
 </section>
 <section id="computing-services">
-<h3>Computing services<a class="headerlink" href="#computing-services" title="Permalink to this headline"></a></h3>
+<h3>Computing services<a class="headerlink" href="#computing-services" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.toGPU">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">toGPU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lsb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'full_mem'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.toGPU" title="Permalink to this definition"></a></dt>
@@ -314,7 +315,7 @@ synchronizing the weights of the different FPGAs</p></li>
 
 </section>
 <section id="info-and-logs">
-<h3>Info and logs<a class="headerlink" href="#info-and-logs" title="Permalink to this headline"></a></h3>
+<h3>Info and logs<a class="headerlink" href="#info-and-logs" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.setlogfile">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">setlogfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.setlogfile" title="Permalink to this definition"></a></dt>
@@ -365,7 +366,7 @@ synchronizing the weights of the different FPGAs</p></li>
 
 </section>
 <section id="serialization">
-<h3>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline"></a></h3>
+<h3>Serialization<a class="headerlink" href="#serialization" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.load">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bin'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.load" title="Permalink to this definition"></a></dt>
@@ -402,7 +403,7 @@ synchronizing the weights of the different FPGAs</p></li>
 
 </section>
 <section id="optimizers">
-<h3>Optimizers<a class="headerlink" href="#optimizers" title="Permalink to this headline"></a></h3>
+<h3>Optimizers<a class="headerlink" href="#optimizers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.setlr">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">setlr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.setlr" title="Permalink to this definition"></a></dt>
@@ -587,7 +588,7 @@ stability</p></li>
 
 </section>
 <section id="training-and-evaluation-coarse-methods">
-<h3>Training and evaluation: coarse methods<a class="headerlink" href="#training-and-evaluation-coarse-methods" title="Permalink to this headline"></a></h3>
+<h3>Training and evaluation: coarse methods<a class="headerlink" href="#training-and-evaluation-coarse-methods" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.fit">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.fit" title="Permalink to this definition"></a></dt>
@@ -630,7 +631,7 @@ the entire data provided</p></li>
 
 </section>
 <section id="training-and-evaluation-finer-methods">
-<h3>Training and evaluation: finer methods<a class="headerlink" href="#training-and-evaluation-finer-methods" title="Permalink to this headline"></a></h3>
+<h3>Training and evaluation: finer methods<a class="headerlink" href="#training-and-evaluation-finer-methods" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.random_indices">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">random_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.random_indices" title="Permalink to this definition"></a></dt>
@@ -710,7 +711,7 @@ chosen from</p></li>
 
 </section>
 <section id="training-and-evaluation-finest-methods">
-<h3>Training and evaluation: finest methods<a class="headerlink" href="#training-and-evaluation-finest-methods" title="Permalink to this headline"></a></h3>
+<h3>Training and evaluation: finest methods<a class="headerlink" href="#training-and-evaluation-finest-methods" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.set_mode">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">set_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.set_mode" title="Permalink to this definition"></a></dt>
@@ -853,7 +854,7 @@ default) through the backward graph.</p>
 
 </section>
 <section id="constraints">
-<h3>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline"></a></h3>
+<h3>Constraints<a class="headerlink" href="#constraints" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.clamp">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">clamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.clamp" title="Permalink to this definition"></a></dt>
@@ -888,7 +889,7 @@ default) through the backward graph.</p>
 
 </section>
 <section id="losses-and-metrics">
-<h3>Losses and metrics<a class="headerlink" href="#losses-and-metrics" title="Permalink to this headline"></a></h3>
+<h3>Losses and metrics<a class="headerlink" href="#losses-and-metrics" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.compute_metric">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">compute_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.compute_metric" title="Permalink to this definition"></a></dt>
@@ -990,9 +991,9 @@ default) through the backward graph.</p>
 </section>
 </section>
 <section id="layers">
-<h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline"></a></h2>
+<h2>Layers<a class="headerlink" href="#layers" title="Permalink to this heading"></a></h2>
 <section id="core-layers">
-<h3>Core layers<a class="headerlink" href="#core-layers" title="Permalink to this headline"></a></h3>
+<h3>Core layers<a class="headerlink" href="#core-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Activation">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Activation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Activation" title="Permalink to this definition"></a></dt>
@@ -1910,7 +1911,7 @@ for each batch.</p>
 
 </section>
 <section id="transformation-layers">
-<h3>Transformation layers<a class="headerlink" href="#transformation-layers" title="Permalink to this headline"></a></h3>
+<h3>Transformation layers<a class="headerlink" href="#transformation-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Crop">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Crop" title="Permalink to this definition"></a></dt>
@@ -2143,7 +2144,7 @@ for all channels</p></li>
 
 </section>
 <section id="data-augmentation-layers">
-<h3>Data augmentation layers<a class="headerlink" href="#data-augmentation-layers" title="Permalink to this headline"></a></h3>
+<h3>Data augmentation layers<a class="headerlink" href="#data-augmentation-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.RandomCrop">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">RandomCrop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.RandomCrop" title="Permalink to this definition"></a></dt>
@@ -2324,7 +2325,7 @@ for all channels</p></li>
 
 </section>
 <section id="merge-layers">
-<h3>Merge layers<a class="headerlink" href="#merge-layers" title="Permalink to this headline"></a></h3>
+<h3>Merge layers<a class="headerlink" href="#merge-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Add">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Add" title="Permalink to this definition"></a></dt>
@@ -2440,7 +2441,7 @@ layer).</p>
 
 </section>
 <section id="noise-layers">
-<h3>Noise layers<a class="headerlink" href="#noise-layers" title="Permalink to this headline"></a></h3>
+<h3>Noise layers<a class="headerlink" href="#noise-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.GaussianNoise">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">GaussianNoise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.GaussianNoise" title="Permalink to this definition"></a></dt>
@@ -2465,7 +2466,7 @@ it is only active at training time.</p>
 
 </section>
 <section id="normalization-layers">
-<h3>Normalization layers<a class="headerlink" href="#normalization-layers" title="Permalink to this headline"></a></h3>
+<h3>Normalization layers<a class="headerlink" href="#normalization-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.BatchNormalization">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">BatchNormalization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">momentum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.BatchNormalization" title="Permalink to this definition"></a></dt>
@@ -2552,7 +2553,7 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 
 </section>
 <section id="operator-layers">
-<h3>Operator layers<a class="headerlink" href="#operator-layers" title="Permalink to this headline"></a></h3>
+<h3>Operator layers<a class="headerlink" href="#operator-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.Abs">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">Abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.Abs" title="Permalink to this definition"></a></dt>
@@ -2863,7 +2864,7 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 
 </section>
 <section id="reduction-layers">
-<h3>Reduction layers<a class="headerlink" href="#reduction-layers" title="Permalink to this headline"></a></h3>
+<h3>Reduction layers<a class="headerlink" href="#reduction-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.ReduceMean">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">ReduceMean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.ReduceMean" title="Permalink to this definition"></a></dt>
@@ -2896,7 +2897,7 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 
 </section>
 <section id="generator-layers">
-<h3>Generator layers<a class="headerlink" href="#generator-layers" title="Permalink to this headline"></a></h3>
+<h3>Generator layers<a class="headerlink" href="#generator-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.GaussGenerator">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">GaussGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stdev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.GaussGenerator" title="Permalink to this definition"></a></dt>
@@ -2909,7 +2910,7 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 
 </section>
 <section id="pooling-layers">
-<h3>Pooling layers<a class="headerlink" href="#pooling-layers" title="Permalink to this headline"></a></h3>
+<h3>Pooling layers<a class="headerlink" href="#pooling-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.AveragePool">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">AveragePool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">2]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.AveragePool" title="Permalink to this definition"></a></dt>
@@ -3256,7 +3257,7 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 
 </section>
 <section id="recurrent-layers">
-<h3>Recurrent layers<a class="headerlink" href="#recurrent-layers" title="Permalink to this headline"></a></h3>
+<h3>Recurrent layers<a class="headerlink" href="#recurrent-layers" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.RNN">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">RNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tanh'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirectional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.RNN" title="Permalink to this definition"></a></dt>
@@ -3330,7 +3331,7 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 
 </section>
 <section id="utilities">
-<h3>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline"></a></h3>
+<h3>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.setTrainable">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">setTrainable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lanme</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.setTrainable" title="Permalink to this definition"></a></dt>
@@ -3344,7 +3345,7 @@ sizes. See: <a class="reference external" href="https://arxiv.org/abs/1803.08494
 </section>
 </section>
 <section id="initializers">
-<h2>Initializers<a class="headerlink" href="#initializers" title="Permalink to this headline"></a></h2>
+<h2>Initializers<a class="headerlink" href="#initializers" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.GlorotNormal">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">GlorotNormal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1234</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.GlorotNormal" title="Permalink to this definition"></a></dt>
@@ -3484,7 +3485,7 @@ the weight tensor.</p>
 
 </section>
 <section id="regularizers">
-<h2>Regularizers<a class="headerlink" href="#regularizers" title="Permalink to this headline"></a></h2>
+<h2>Regularizers<a class="headerlink" href="#regularizers" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.L2">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">L2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.L2" title="Permalink to this definition"></a></dt>
@@ -3539,7 +3540,7 @@ the weight tensor.</p>
 
 </section>
 <section id="utils">
-<h2>Utils<a class="headerlink" href="#utils" title="Permalink to this headline"></a></h2>
+<h2>Utils<a class="headerlink" href="#utils" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.get_topk_predictions">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">get_topk_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_probs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.get_topk_predictions" title="Permalink to this definition"></a></dt>
@@ -3563,7 +3564,7 @@ and rename the last layer as “top”.</p></li>
 
 </section>
 <section id="get-models">
-<h2>Get Models<a class="headerlink" href="#get-models" title="Permalink to this headline"></a></h2>
+<h2>Get Models<a class="headerlink" href="#get-models" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.download_model">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_model" title="Permalink to this definition"></a></dt>
@@ -3761,7 +3762,7 @@ batch dimension)</p></li>
 
 </section>
 <section id="datasets">
-<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline"></a></h2>
+<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.exist">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">exist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.exist" title="Permalink to this definition"></a></dt>
@@ -3809,7 +3810,7 @@ batch dimension)</p></li>
 
 </section>
 <section id="accelerators">
-<h2>Accelerators<a class="headerlink" href="#accelerators" title="Permalink to this headline"></a></h2>
+<h2>Accelerators<a class="headerlink" href="#accelerators" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.download_hlsinf">
 <span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">download_hlsinf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subversion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.download_hlsinf" title="Permalink to this definition"></a></dt>
@@ -3829,10 +3830,10 @@ batch dimension)</p></li>
 
 </section>
 <section id="onnx-support">
-<h2>ONNX support<a class="headerlink" href="#onnx-support" title="Permalink to this headline"></a></h2>
+<h2>ONNX support<a class="headerlink" href="#onnx-support" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyeddl.eddl.save_net_to_onnx_file">
-<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">save_net_to_onnx_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.save_net_to_onnx_file" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyeddl.eddl.</span></span><span class="sig-name descname"><span class="pre">save_net_to_onnx_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.eddl.save_net_to_onnx_file" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
