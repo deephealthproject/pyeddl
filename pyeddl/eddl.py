@@ -2890,8 +2890,8 @@ class LOG_LEVEL(_eddl.LOG_LEVEL):
     NO_LOGS = _eddl.LOG_LEVEL.NO_LOGS
 
 
-def save_net_to_onnx_file(net, path):
-    return _eddl.save_net_to_onnx_file(net, path)
+def save_net_to_onnx_file(net, path, seq_len=0):
+    return _eddl.save_net_to_onnx_file(net, path, seq_len)
 
 
 def import_net_from_onnx_file(
