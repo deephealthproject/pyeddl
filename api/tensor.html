@@ -271,6 +271,23 @@ elsewhere.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.randu">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">randu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.randu" title="Permalink to this definition"></a></dt>
+<dd><p>Create a tensor with uniformly distributed random values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> – shape of the tensor to create</p></li>
+<li><p><strong>dev</strong> – device to use: <a class="reference internal" href="#pyeddl.tensor.DEV_CPU" title="pyeddl.tensor.DEV_CPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_CPU</span></code></a> or <a class="reference internal" href="#pyeddl.tensor.DEV_GPU" title="pyeddl.tensor.DEV_GPU"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEV_GPU</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyeddl.tensor.Tensor.randn">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">randn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.randn" title="Permalink to this definition"></a></dt>
 <dd><p>Create a tensor with normally distributed random values.</p>
@@ -333,6 +350,23 @@ instance: <code class="docutils literal notranslate"><span class="pre">[&quot;1:
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.set_select">
+<span class="sig-name descname"><span class="pre">set_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.set_select" title="Permalink to this definition"></a></dt>
+<dd><p>Sets tensor elements to the values of tensor A using the selected
+indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> – list of strings representing the indices to be
+set. These indices must follow a NumPy-like syntax. For
+instance: <code class="docutils literal notranslate"><span class="pre">[&quot;1:3&quot;,</span> <span class="pre">&quot;2&quot;]</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -682,6 +716,42 @@ of the tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.diag_">
+<span class="sig-name descname"><span class="pre">diag_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.diag_" title="Permalink to this definition"></a></dt>
+<dd><p>Select diagonal elements.</p>
+<p>Modifies the tensor (elements other than those in the selected
+diagonal are set to zero).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>k</strong> – offset (0 for the main diagonal, positive for the nth
+diagonal above the main one, negative for the nth diagonal below the
+main one)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.diag">
+<span class="sig-name descname"><span class="pre">diag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.diag" title="Permalink to this definition"></a></dt>
+<dd><p>Select diagonal elements.</p>
+<p>Returns a new tensor which is the same as this one, except that
+elements other than those in the selected diagonal are set to zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>k</strong> – offset (0 for the main diagonal, positive for the nth
+diagonal above the main one, negative for the nth diagonal below the
+main one)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1315,6 +1385,22 @@ of the tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyeddl.tensor.Tensor.trace">
+<span class="sig-name descname"><span class="pre">trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyeddl.tensor.Tensor.trace" title="Permalink to this definition"></a></dt>
+<dd><p>Sum diagonal elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>k</strong> – offset (0 for the main diagonal, positive for the nth
+diagonal above the main one, negative for the nth diagonal below the
+main one)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
