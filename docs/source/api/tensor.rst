@@ -31,6 +31,8 @@
 
   .. automethod:: Tensor.eye
 
+  .. automethod:: Tensor.randu
+
   .. automethod:: Tensor.randn
 
   **=== Data Copying Methods ===**
@@ -42,6 +44,8 @@
   .. automethod:: Tensor.clone
 
   .. automethod:: Tensor.select
+
+  .. automethod:: Tensor.set_select
 
   .. automethod:: Tensor.copy
 
@@ -96,6 +100,10 @@
   .. automethod:: Tensor.cosh_
 
   .. automethod:: Tensor.cosh
+
+  .. automethod:: Tensor.diag_
+
+  .. automethod:: Tensor.diag
 
   .. automethod:: Tensor.div_
 
@@ -194,6 +202,8 @@
   .. automethod:: Tensor.tanh_
 
   .. automethod:: Tensor.tanh
+
+  .. automethod:: Tensor.trace
 
   .. automethod:: Tensor.trunc_
 
